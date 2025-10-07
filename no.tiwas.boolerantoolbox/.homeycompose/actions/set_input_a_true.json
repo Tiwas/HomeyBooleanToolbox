@@ -1,5 +1,0 @@
-{
-  "id": "set_input_a_true",
-  "title": { "en": "Set input A to TRUE", "nb": "Sett inngang A til TRUE" },
-  "args": [{ "name": "device", "type": "device", "filter": "driver_id=logic-unit" }]
-}

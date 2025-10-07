@@ -17,7 +17,8 @@ Add-Content -Path $outputFile -Value ""
 
 # Get all relevant files recursively (.json, .js, .svg)
 # The -Force flag includes hidden directories like .homeycompose
-Get-ChildItem -Path . -Recurse -Include *.json, *.js, *.svg -Force | ForEach-Object {
+# The -Exclude flag skips the specified directories
+Get-ChildItem -Path . -Recurse -Include *.json, *.js, *.svg -Force -Exclude "node_modules", ".homeybuild" | ForEach-Object {
     # Get the relative path of the file
     $relativePath = $_.FullName.Substring($PSScriptRoot.Length + 1)
     

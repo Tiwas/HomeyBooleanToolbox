@@ -1,0 +1,7 @@
+# Node.js dependencies
+node_modules/
+
+# Homey build artifacts
+.homeybuild/
+
+codebase.*

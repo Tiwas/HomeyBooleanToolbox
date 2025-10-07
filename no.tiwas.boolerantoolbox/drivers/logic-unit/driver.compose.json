@@ -1,6 +1,11 @@
 {
-  "name": "drivers.logic-unit.name",
-  "class": "tool",
+  "id": "logic-unit",
+  "$schema": "https://developer.homey.app/schemas/driver.compose.v1.schema.json",
+  "name": {
+    "en": "Logic Unit",
+    "nb": "Logisk Enhet"
+  },
+  "class": "other",
   "pair": [
     {
       "id": "list_devices",
@@ -56,4 +61,3 @@
     { "id": "input_e_not", "type": "checkbox", "label": "settings.labels.invert", "value": false }
   ]
 }
-
