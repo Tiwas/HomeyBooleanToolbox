@@ -1,0 +1,5 @@
+{
+  "id": "set_input_d_false",
+  "title": { "en": "Set input D to FALSE", "nb": "Sett inngang D til FALSE" },
+  "args": [{ "name": "device", "type": "device", "filter": "driver_id=logic-unit" }]
+}

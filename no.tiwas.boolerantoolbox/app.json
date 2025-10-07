@@ -1,0 +1,80 @@
+{
+  "id": "no.tiwas.booleantoolbox",
+  "name": {
+    "en": "Boolean Toolbox",
+    "nb": "Boolean Toolbox"
+  },
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "author": {
+    "name": "Lars Kvanum"
+  },
+  "category": "tools",
+  "description": {
+    "en": "Create advanced, state-aware logic units for your flows.",
+    "nb": "Lag avanserte, tilstandsbevisste logiske enheter for dine flows."
+  },
+  "drivers": [
+    {
+      "id": "logic-unit",
+      "name": {
+        "en": "Logic Unit",
+        "nb": "Logisk Enhet"
+      },
+      "class": "tool",
+      "images": {
+        "small": "/drivers/logic-unit/assets/images/small.png",
+        "large": "/drivers/logic-unit/assets/images/large.png"
+      },
+      "flow": {
+        "triggers": [
+          {
+            "id": "output_true"
+          },
+          {
+            "id": "output_false"
+          }
+        ],
+        "conditions": [
+          {
+            "id": "output_is_true"
+          }
+        ],
+        "actions": [
+          {
+            "id": "set_input_a_true"
+          },
+          {
+            "id": "set_input_a_false"
+          },
+          {
+            "id": "set_input_b_true"
+          },
+          {
+            "id": "set_input_b_false"
+          },
+          {
+            "id": "set_input_c_true"
+          },
+          {
+            "id": "set_input_c_false"
+          },
+          {
+            "id": "set_input_d_true"
+          },
+          {
+            "id": "set_input_d_false"
+          },
+          {
+            "id": "set_input_e_true"
+          },
+          {
+            "id": "set_input_e_false"
+          }
+        ]
+      }
+    }
+  ]
+}
+

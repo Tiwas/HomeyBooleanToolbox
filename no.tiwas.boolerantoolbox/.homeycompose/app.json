@@ -1,0 +1,23 @@
+{
+  "id": "no.tiwas.booleantoolbox",
+  "triggers": [
+    "output_true",
+    "output_false"
+  ],
+  "conditions": [
+    "output_is_true"
+  ],
+  "actions": [
+    "set_input_a_true",
+    "set_input_a_false",
+    "set_input_b_true",
+    "set_input_b_false",
+    "set_input_c_true",
+    "set_input_c_false",
+    "set_input_d_true",
+    "set_input_d_false",
+    "set_input_e_true",
+    "set_input_e_false"
+  ]
+}
+
