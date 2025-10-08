@@ -39,6 +39,10 @@
           "id": "expression",
           "type": "textarea",
           "label": { "en": "Boolean Expression", "nb": "Boolsk Uttrykk" },
+          "hint": {
+            "en": "Use A, B, C, D, E. Valid operators: * (AND), + (OR), ^ (XOR), ! (NOT). Use () to group. Example: (A+B)*!C",
+            "nb": "Bruk A, B, C, D, E. Gyldige operatorer: * (AND), + (OR), ^ (XOR), ! (NOT). Bruk () for å gruppere. Eksempel: (A+B)*!C"
+          },
           "value": "(A+B)*C"
         },
         {
