@@ -11,6 +11,11 @@ class LogicUnitDevice extends Homey.Device {
   // Kjører når enheten initialiseres
   async onInit() {
     this.log(`Device '${this.getName()}' initializing.`);
+    
+    if (!this.hasCapability('onoff')) {
+      await this.addCapability('onoff');
+    }
+
     this.initializeState();
     this.registerDeviceTriggers();
   }
@@ -18,7 +23,7 @@ class LogicUnitDevice extends Homey.Device {
   // Setter opp den interne tilstanden for inngangene
   initializeState() {
     this.inputStates = {};
-    this.lastOutputState = null; // Lagrer siste resultat (true/false)
+    this.lastOutputState = null;
     ['a', 'b', 'c', 'd', 'e'].forEach(id => {
       this.inputStates[id] = { value: false, isSet: false };
     });
@@ -39,7 +44,7 @@ class LogicUnitDevice extends Homey.Device {
   }
 
   // KJERNEFUNKSJON: Evaluerer all logikken
-  evaluateLogic() {
+  async evaluateLogic() {
     const settings = this.getSettings();
     const activeInputs = ['a', 'b', 'c', 'd', 'e'].filter(id => settings[`input_${id}_enabled`]);
 
@@ -79,6 +84,8 @@ class LogicUnitDevice extends Homey.Device {
     this.log(`Evaluation complete. Final result: ${finalResult}`);
     this.lastOutputState = finalResult;
 
+    await this.setCapabilityValue('onoff', finalResult);
+
     if (finalResult) {
       this.triggerOutputTrue.trigger(this, {}, {}).catch(this.error);
     } else {
@@ -90,9 +97,17 @@ class LogicUnitDevice extends Homey.Device {
 
   // Nullstiller 'isSet' for alle innganger
   resetInputStates() {
-    this.log('Resetting all inputs for next evaluation round.');
+    this.log('Resetting inputs for next evaluation round...');
+    const settings = this.getSettings();
+
     for (const id in this.inputStates) {
-      this.inputStates[id].isSet = false;
+      // Sjekk om auto-reset er skrudd på for denne inngangen
+      if (settings[`input_${id}_auto_reset`]) {
+        this.log(`Input '${id.toUpperCase()}' has auto-reset enabled. Resetting.`);
+        this.inputStates[id].isSet = false;
+      } else {
+        this.log(`Input '${id.toUpperCase()}' requires manual reset (set to false).`);
+      }
     }
   }
 
@@ -100,6 +115,12 @@ class LogicUnitDevice extends Homey.Device {
   onSettings() {
     this.log('Settings changed. Resetting inputs.');
     this.resetInputStates();
+  }
+
+  // NY METODE: Fanger opp forsøk på å endre onoff fra en flow og ignorerer dem.
+  async onCapabilityOnoff( value, opts ) {
+    this.log(`'onoff' capability was set to '${value}' from a flow. This action is ignored.`);
+    // Vi gjør ingenting her. Kapabiliteten skal kun oppdateres av evaluateLogic().
   }
 }
 
@@ -109,22 +130,47 @@ class LogicUnitDevice extends Homey.Device {
 // =================================================================================================
 class LogicUnitDriver extends Homey.Driver {
 
-  // Denne metoden forteller Homey nøyaktig hvilken Device-klasse som skal brukes.
   onMapDeviceClass(device) {
     return LogicUnitDevice;
   }
 
-  // Kjører når driveren initialiseres
   async onInit() {
     this.log('Boolean Toolbox Driver initializing...');
     this.registerFlowCards();
+  }
+
+  // KLASISK PARINGSMETODE: Gir full kontroll over paringen
+  async onPair(session) {
+    this.log('*** onPair session started! ***');
+
+    session.emit('show_view', 'list_devices');
+
+    session.setHandler('list_devices', async (data) => {
+      this.log('*** onPair list_devices handler called! ***');
+      
+      const devices = [
+        {
+          name: 'New Logic Unit',
+          data: {
+            id: `logic-unit-${Date.now()}`
+          }
+        }
+      ];
+
+      this.log(`*** Found devices to return: ${JSON.stringify(devices)} ***`);
+      return devices;
+    });
+
+    session.setHandler('add_device', async (data) => {
+      this.log(`*** Adding device: ${data.device.name} ***`);
+      return data.device;
+    });
   }
 
   // Registrerer alle globale Flow-kort
   registerFlowCards() {
     this.log('Registering global Condition and Action cards...');
 
-    // --- OG (Condition) ---
     this.homey.flow.getConditionCard('output_is_true')
       .registerRunListener(async (args, state) => {
         if (!args.device) return false;
@@ -132,7 +178,6 @@ class LogicUnitDriver extends Homey.Driver {
         return args.device.lastOutputState === true;
       });
 
-    // --- DA (Actions) ---
     const registerInputAction = (inputId) => {
       this.homey.flow.getActionCard(`set_input_${inputId}_true`)
         .registerRunListener(async (args, state) => {
@@ -153,6 +198,4 @@ class LogicUnitDriver extends Homey.Driver {
   }
 }
 
-// Eksporter KUN Driver-klassen.
 module.exports = LogicUnitDriver;
-

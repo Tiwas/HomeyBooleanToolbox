@@ -1,7 +1,6 @@
 {
-  "name": "no.tiwas.booleantoolbox",
+  "name": "no.tiwas.booleantoolbox2",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +8,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "homey": "^3.9.4"
-  }
+  "description": ""
 }

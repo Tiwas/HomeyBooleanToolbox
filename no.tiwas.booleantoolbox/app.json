@@ -15,18 +15,105 @@
     "en": "Create advanced, state-aware logic units for your flows.",
     "nb": "Lag avanserte, tilstandsbevisste logiske enheter for dine flows."
   },
-	"drivers": [
-	  {
-		"id": "logic-unit",
-		"name": {
-		  "en": "Logic Unit",
-		  "nb": "Logisk Enhet"
-		},
-		"class": "other",
-		"capabilities": []
-	  }
-	],
-	"flow": {
+  "drivers": [
+    {
+      "id": "logic-unit",
+      "name": {
+        "en": "Logic Unit",
+        "nb": "Logisk Enhet"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff"
+      ],
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": { "next": "add_devices" }
+        },
+        { "id": "add_devices", "template": "add_devices" }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "id": "group_a",
+          "label": { "en": "Input A", "nb": "Inngang A" },
+          "children": [
+            { "id": "input_a_enabled", "type": "checkbox", "label": { "en": "Enable Input", "nb": "Aktiver Inngang" }, "value": true },
+            { "id": "input_a_operator", "type": "dropdown", "label": { "en": "Operator", "nb": "Operator" }, "value": "and", "values": [
+                { "id": "and", "label": { "en": "AND (*)", "nb": "AND (*)" } },
+                { "id": "or", "label": { "en": "OR (+)", "nb": "OR (+)" } },
+                { "id": "xor", "label": { "en": "XOR (⊕)", "nb": "XOR (⊕)" } }
+            ]},
+            { "id": "input_a_not", "type": "checkbox", "label": { "en": "Invert (NOT)", "nb": "Inverter (NOT)" }, "value": false },
+            { "id": "input_a_auto_reset", "type": "checkbox", "label": { "en": "Auto-reset after evaluation", "nb": "Tilbakestill etter evaluering" }, "value": false }
+          ]
+        },
+        {
+          "type": "group",
+          "id": "group_b",
+          "label": { "en": "Input B", "nb": "Inngang B" },
+          "children": [
+            { "id": "input_b_enabled", "type": "checkbox", "label": { "en": "Enable Input", "nb": "Aktiver Inngang" }, "value": false },
+            { "id": "input_b_operator", "type": "dropdown", "label": { "en": "Operator", "nb": "Operator" }, "value": "and", "values": [
+                { "id": "and", "label": { "en": "AND (*)", "nb": "AND (*)" } },
+                { "id": "or", "label": { "en": "OR (+)", "nb": "OR (+)" } },
+                { "id": "xor", "label": { "en": "XOR (⊕)", "nb": "XOR (⊕)" } }
+            ]},
+            { "id": "input_b_not", "type": "checkbox", "label": { "en": "Invert (NOT)", "nb": "Inverter (NOT)" }, "value": false },
+            { "id": "input_b_auto_reset", "type": "checkbox", "label": { "en": "Auto-reset after evaluation", "nb": "Tilbakestill etter evaluering" }, "value": false }
+          ]
+        },
+        {
+          "type": "group",
+          "id": "group_c",
+          "label": { "en": "Input C", "nb": "Inngang C" },
+          "children": [
+            { "id": "input_c_enabled", "type": "checkbox", "label": { "en": "Enable Input", "nb": "Aktiver Inngang" }, "value": false },
+            { "id": "input_c_operator", "type": "dropdown", "label": { "en": "Operator", "nb": "Operator" }, "value": "and", "values": [
+                { "id": "and", "label": { "en": "AND (*)", "nb": "AND (*)" } },
+                { "id": "or", "label": { "en": "OR (+)", "nb": "OR (+)" } },
+                { "id": "xor", "label": { "en": "XOR (⊕)", "nb": "XOR (⊕)" } }
+            ]},
+            { "id": "input_c_not", "type": "checkbox", "label": { "en": "Invert (NOT)", "nb": "Inverter (NOT)" }, "value": false },
+            { "id": "input_c_auto_reset", "type": "checkbox", "label": { "en": "Auto-reset after evaluation", "nb": "Tilbakestill etter evaluering" }, "value": false }
+          ]
+        },
+        {
+          "type": "group",
+          "id": "group_d",
+          "label": { "en": "Input D", "nb": "Inngang D" },
+          "children": [
+            { "id": "input_d_enabled", "type": "checkbox", "label": { "en": "Enable Input", "nb": "Aktiver Inngang" }, "value": false },
+            { "id": "input_d_operator", "type": "dropdown", "label": { "en": "Operator", "nb": "Operator" }, "value": "and", "values": [
+                { "id": "and", "label": { "en": "AND (*)", "nb": "AND (*)" } },
+                { "id": "or", "label": { "en": "OR (+)", "nb": "OR (+)" } },
+                { "id": "xor", "label": { "en": "XOR (⊕)", "nb": "XOR (⊕)" } }
+            ]},
+            { "id": "input_d_not", "type": "checkbox", "label": { "en": "Invert (NOT)", "nb": "Inverter (NOT)" }, "value": false },
+            { "id": "input_d_auto_reset", "type": "checkbox", "label": { "en": "Auto-reset after evaluation", "nb": "Tilbakestill etter evaluering" }, "value": false }
+          ]
+        },
+        {
+          "type": "group",
+          "id": "group_e",
+          "label": { "en": "Input E", "nb": "Inngang E" },
+          "children": [
+            { "id": "input_e_enabled", "type": "checkbox", "label": { "en": "Enable Input", "nb": "Aktiver Inngang" }, "value": false },
+            { "id": "input_e_operator", "type": "dropdown", "label": { "en": "Operator", "nb": "Operator" }, "value": "and", "values": [
+                { "id": "and", "label": { "en": "AND (*)", "nb": "AND (*)" } },
+                { "id": "or", "label": { "en": "OR (+)", "nb": "OR (+)" } },
+                { "id": "xor", "label": { "en": "XOR (⊕)", "nb": "XOR (⊕)" } }
+            ]},
+            { "id": "input_e_not", "type": "checkbox", "label": { "en": "Invert (NOT)", "nb": "Inverter (NOT)" }, "value": false },
+            { "id": "input_e_auto_reset", "type": "checkbox", "label": { "en": "Auto-reset after evaluation", "nb": "Tilbakestill etter evaluering" }, "value": false }
+          ]
+        }
+      ]
+    }
+  ],
+  "flow": {
     "triggers": [
       {
         "id": "output_true",

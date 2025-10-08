@@ -1,27 +1,61 @@
 <svg width="200" height="200" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
   <!-- 
     Icon for Boolean Toolbox App
-    This icon represents the core function: AND (*) and OR (+) logic.
-    The blue color is modern and fits well with the Homey design scheme.
+    Represents a logic circuit: (A AND B) OR (A OR B)
+    Dark theme with bright circuit traces.
   -->
   <defs>
     <style>
-      .bg { fill: #4A90E2; } /* A modern, tech-blue background */
-      .symbol { 
+      .bg { fill: #1a1a1a; } /* Dark background */
+      .trace { 
+        stroke: #00ff88; /* Bright green for traces */
+        stroke-width: 1.5; 
+        fill: none;
+      }
+      .gate { 
+        stroke: #00ff88;
+        stroke-width: 1.5;
+        fill: none;
+      }
+      .label { 
         fill: #ffffff; 
-        font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-        font-size: 60px; 
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 10px; 
         font-weight: bold; 
-        text-anchor: middle; /* Centers the text horizontally */
-        dominant-baseline: central; /* Centers the text vertically */
+        text-anchor: middle;
+        dominant-baseline: central;
       }
     </style>
   </defs>
 
-  <!-- Background with rounded corners -->
-  <rect class="bg" width="100" height="100" rx="20"/>
+  <!-- Background -->
+  <rect class="bg" width="100" height="100" rx="10"/>
 
-  <!-- Logic symbols: Asterisk for AND, Plus for OR -->
-  <text x="33" y="52" class="symbol">*</text>
-  <text x="67" y="52" class="symbol">+</text>
+  <!-- Input Labels -->
+  <text x="10" y="25" class="label">A</text>
+  <text x="10" y="75" class="label">B</text>
+
+  <!-- Input Traces -->
+  <path class="trace" d="M 18 25 L 35 25" />
+  <path class="trace" d="M 18 75 L 35 75" />
+
+  <!-- AND Gate (A & B) -->
+  <path class="gate" d="M 35 20 L 35 30 A 5 5 0 0 0 45 30 L 45 20 Z" />
+  <path class="trace" d="M 45 25 L 55 25" />
+
+  <!-- OR Gate (A | B) -->
+  <path class="gate" d="M 35 70 Q 40 70, 40 75 Q 40 80, 45 80 L 45 70 Z" />
+  <path class="trace" d="M 45 75 L 55 75" />
+
+  <!-- Final OR Gate (combining AND and OR results) -->
+  <path class="gate" d="M 55 50 Q 60 50, 60 55 Q 60 60, 65 60 L 65 50 Z" />
+  <path class="trace" d="M 65 55 L 80 55" />
+
+  <!-- Traces to final gate -->
+  <path class="trace" d="M 50 25 L 50 50 L 55 50" />
+  <path class="trace" d="M 50 75 L 50 60 L 55 60" />
+
+  <!-- Output Label -->
+  <text x="85" y="55" class="label">Q</text>
+
 </svg>
