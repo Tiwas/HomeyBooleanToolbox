@@ -40,6 +40,7 @@ git clone https://github.com/YOUR_USERNAME/Boolean-Toolbox.git
 cd Boolean-Toolbox/no.tiwas.booleantoolbox
 npm install
 homey app run --remote
+```
 
 ## How to Use
 
@@ -64,6 +65,7 @@ Don't want to create a device just to test an idea? You can use the online emula
 
 The source code for the Homey application itself is located within the `no.tiwas.booleantoolbox` directory.
 
+```
 .
 ├── no.tiwas.booleantoolbox/ <-- Main application source code
 │ ├── app.json
@@ -72,7 +74,7 @@ The source code for the Homey application itself is located within the `no.tiwas
 │ └── ...
 ├── emulator.html <-- The online logic emulator
 └── README.md
-
+```
 
 ## For Developers
 
@@ -90,4 +92,3 @@ This project is built with the Homey SDK v3. To get started with development:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
