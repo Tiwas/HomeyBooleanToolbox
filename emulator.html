@@ -3,292 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boolean Toolbox Emulator</title>
+    <title>Boolean Logic Emulator for Homey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --bg-color: #121212;
-            --surface-color: #1e1e1e;
-            --primary-color: #4A90E2;
-            --on-surface-color: #e0e0e0;
-            --true-color: #4caf50;
-            --false-color: #f44336;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--on-surface-color);
-            margin: 0;
-            padding: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            color: #e2e8f0;
         }
-
-        main {
-            background-color: var(--surface-color);
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 800px;
-        }
-
-        h1, h2 {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 0.5rem;
-            margin-top: 2rem;
-        }
-
-        h1 { text-align: center; }
         
-        .input-group {
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            background-color: #252525;
-        }
-
-        .input-group h3 {
-            margin-top: 0;
-            color: #ccc;
-        }
-
-        .controls-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            align-items: end;
-        }
-
-        .control-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        select, input[type="checkbox"] {
-            padding: 0.5rem;
-            border-radius: 4px;
-            border: 1px solid #555;
-            background-color: #333;
-            color: var(--on-surface-color);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        button {
-            flex-grow: 1;
-            padding: 0.7rem;
-            border: none;
-            border-radius: 4px;
+        /* Three-state Switch CSS */
+        .tri-switch {
+            position: relative;
+            width: 90px;
+            height: 34px;
+            background-color: #2d3748;
+            border-radius: 17px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+        }
+        .tri-switch-thumb {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            position: absolute;
+            transition: all 0.3s cubic-bezier(.77,0,.18,1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
             font-weight: bold;
-            transition: background-color 0.2s;
         }
 
-        .btn-true { background-color: var(--true-color); color: white; }
-        .btn-false { background-color: var(--false-color); color: white; }
-        .btn-reset { background-color: #666; color: white; }
+        /* States */
+        .tri-switch[data-state="undefined"] .tri-switch-thumb {
+            left: calc(50% - 14px); /* Center */
+            background-color: #718096; /* gray-500 */
+        }
+         .tri-switch[data-state="undefined"] .tri-switch-thumb::after {
+            content: '';
+        }
 
-        button:hover { opacity: 0.8; }
-        
-        #output-display {
-            text-align: center;
+        .tri-switch[data-state="true"] .tri-switch-thumb {
+            left: calc(100% - 32px); /* Right */
+            background-color: #38a169; /* green-600 */
+        }
+        .tri-switch[data-state="true"] .tri-switch-thumb::after {
+            content: '✓';
+        }
+
+        .tri-switch[data-state="false"] .tri-switch-thumb {
+            left: 4px; /* Left */
+            background-color: #e53e3e; /* red-600 */
+        }
+        .tri-switch[data-state="false"] .tri-switch-thumb::after {
+            content: '✕';
+        }
+
+        .result-box {
+            font-weight: 700;
             font-size: 2rem;
-            font-weight: bold;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-top: 2rem;
-            transition: all 0.3s ease;
+            border-radius: 0.5rem;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease-in-out;
+            min-height: 80px;
         }
-        
-        .output-true {
-            background-color: rgba(76, 175, 80, 0.2);
-            color: var(--true-color);
-            border: 2px solid var(--true-color);
-        }
-
-        .output-false {
-            background-color: rgba(244, 67, 54, 0.2);
-            color: var(--false-color);
-            border: 2px solid var(--false-color);
-        }
-        
-        .output-idle {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #888;
-            border: 2px solid #555;
-        }
-
+        .result-undefined { background-color: #4a5568; color: #a0aec0; }
+        .result-true { background-color: #38a169; color: white; box-shadow: 0 0 15px rgba(56, 161, 105, 0.5); }
+        .result-false { background-color: #e53e3e; color: white; box-shadow: 0 0 15px rgba(229, 62, 62, 0.5); }
+        .result-error { background-color: #dd6b20; color: white; font-size: 1rem; }
     </style>
 </head>
-<body>
+<body class="flex items-center justify-center min-h-screen p-4">
 
-    <main>
-        <h1>Boolean Toolbox Emulator</h1>
-        <p>Design and test your logic unit before creating it in Homey. Configure the inputs below and use the buttons to set their values to true or false.</p>
-
-        <div id="input-container">
-            <!-- Input groups will be generated by JavaScript -->
-        </div>
-
-        <h2>Output</h2>
-        <div id="output-display" class="output-idle">
-            Waiting for inputs...
-        </div>
-    </main>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const inputs = ['a', 'b', 'c', 'd', 'e'];
-    const inputContainer = document.getElementById('input-container');
-    const outputDisplay = document.getElementById('output-display');
-
-    // This state object mimics the state in the Homey app
-    const state = {};
-    inputs.forEach(id => {
-        state[id] = { value: false, isSet: false };
-    });
-
-    // Function to create the HTML for a single input configuration
-    function createInputGroup(id) {
-        const group = document.createElement('div');
-        group.className = 'input-group';
-        group.innerHTML = `
-            <h3>Input ${id.toUpperCase()}</h3>
-            <div class="controls-grid">
-                <div class="control-item">
-                    <label for="enabled-${id}">Enable Input</label>
-                    <input type="checkbox" id="enabled-${id}" data-input="${id}" data-setting="enabled" ${id === 'a' ? 'checked' : ''}>
-                </div>
-                <div class="control-item">
-                    <label for="operator-${id}">Operator</label>
-                    <select id="operator-${id}" data-input="${id}" data-setting="operator">
-                        <option value="and">AND (*)</option>
-                        <option value="or">OR (+)</option>
-                        <option value="xor">XOR (⊕)</option>
-                    </select>
-                </div>
-                <div class="control-item">
-                    <label for="invert-${id}">Invert (NOT)</label>
-                    <input type="checkbox" id="invert-${id}" data-input="${id}" data-setting="invert">
-                </div>
-                <div class="control-item">
-                    <label for="autoreset-${id}">Auto-reset</label>
-                    <input type="checkbox" id="autoreset-${id}" data-input="${id}" data-setting="autoreset">
-                </div>
-                <div class="control-item">
-                    <label>Set Value</label>
-                    <div class="button-group">
-                        <button class="btn-true" data-action="set" data-input="${id}" data-value="true">Set True</button>
-                        <button class="btn-false" data-action="set" data-input="${id}" data-value="false">Set False</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        return group;
-    }
-
-    // Function to get current settings from the form
-    function getSettings() {
-        const settings = {};
-        inputs.forEach(id => {
-            settings[`input_${id}_enabled`] = document.getElementById(`enabled-${id}`).checked;
-            settings[`input_${id}_operator`] = document.getElementById(`operator-${id}`).value;
-            settings[`input_${id}_not`] = document.getElementById(`invert-${id}`).checked;
-            settings[`input_${id}_auto_reset`] = document.getElementById(`autoreset-${id}`).checked;
-        });
-        return settings;
-    }
-
-    // The core logic evaluation function, replicated from the Homey app
-    function evaluateLogic() {
-        const settings = getSettings();
-        const activeInputs = inputs.filter(id => settings[`input_${id}_enabled`]);
-
-        if (activeInputs.length === 0) {
-            outputDisplay.textContent = 'No inputs enabled';
-            outputDisplay.className = 'output-idle';
-            return;
-        }
-
-        const allInputsSet = activeInputs.every(id => state[id].isSet);
-        if (!allInputsSet) {
-            outputDisplay.textContent = `Waiting for ${activeInputs.filter(id => !state[id].isSet).map(id => id.toUpperCase()).join(', ')}...`;
-            outputDisplay.className = 'output-idle';
-            return;
-        }
-
-        const groups = { and: [], or: [], xor: [] };
-        activeInputs.forEach(id => {
-            const operator = settings[`input_${id}_operator`];
-            let value = state[id].value;
-            if (settings[`input_${id}_not`]) {
-                value = !value;
-            }
-            groups[operator].push(value);
-        });
-
-        const andResult = groups.and.length > 0 ? groups.and.every(v => v === true) : null;
-        const orResult = groups.or.length > 0 ? groups.or.some(v => v === true) : null;
-        const xorResult = groups.xor.length > 0 ? (groups.xor.filter(v => v === true).length % 2 !== 0) : null;
+    <div class="w-full max-w-lg bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8 space-y-6">
         
-        const finalResult = [andResult, orResult, xorResult]
-            .filter(res => res !== null)
-            .every(res => res === true);
+        <!-- Header -->
+        <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-center text-white">Boolean Logic Emulator</h1>
+            <p class="text-center text-gray-400 mt-1">Test your Homey Boolean Toolbox logic</p>
+        </div>
 
-        // Update the output display
-        outputDisplay.textContent = `Output: ${finalResult ? 'TRUE' : 'FALSE'}`;
-        outputDisplay.className = finalResult ? 'output-true' : 'output-false';
+        <!-- Expression Input -->
+        <div class="space-y-2">
+            <label for="expression" class="font-semibold text-gray-300">Boolean Expression</label>
+            <input type="text" id="expression" class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 transition-colors" value="(A + B) * C">
+            <div class="flex items-center mt-2">
+                <input type="checkbox" id="invert_final" class="h-4 w-4 rounded bg-gray-700 border-gray-600 text-blue-500 focus:ring-blue-500">
+                <label for="invert_final" class="ml-2 text-sm text-gray-400">Invert final result (NOT)</label>
+            </div>
+        </div>
+        
+        <!-- Input Controls -->
+        <div id="input-controls" class="grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4 pt-4 justify-items-center">
+            <!-- Toggles will be generated by JS -->
+        </div>
 
-        // Handle auto-reset
-        for (const id in state) {
-            if (settings[`input_${id}_auto_reset`]) {
-                state[id].isSet = false;
+        <!-- Status & Result -->
+        <div class="space-y-4 pt-4 border-t border-gray-700">
+            <div>
+                <h3 class="font-semibold text-gray-300 mb-2">Current State</h3>
+                <div id="current-state" class="p-3 bg-gray-900 rounded-lg text-gray-400 font-mono text-sm min-h-[40px] whitespace-pre-wrap"></div>
+            </div>
+            <div class="flex flex-col items-center space-y-2">
+                 <h3 class="font-semibold text-gray-300">Final Result</h3>
+                <div id="result" class="result-box result-undefined flex items-center justify-center text-center">
+                    WAITING
+                </div>
+                <button id="reset-button" class="w-full md:w-auto mt-4 px-6 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg font-semibold transition-colors">Reset State</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const expressionInput = document.getElementById('expression');
+            const invertFinalCheckbox = document.getElementById('invert_final');
+            const inputControlsContainer = document.getElementById('input-controls');
+            const currentStateDiv = document.getElementById('current-state');
+            const resultDiv = document.getElementById('result');
+            const resetButton = document.getElementById('reset-button');
+            
+            const inputs = ['A', 'B', 'C', 'D', 'E'];
+            let inputStates = {};
+
+            // --- Core Functions ---
+
+            function initialize() {
+                inputControlsContainer.innerHTML = '';
+                inputs.forEach(id => {
+                    const group = document.createElement('div');
+                    group.className = 'flex flex-col items-center space-y-2';
+                    group.innerHTML = `
+                        <p class="text-center font-bold text-lg">${id}</p>
+                        <div class="tri-switch" data-input="${id}" data-state="undefined">
+                            <div class="tri-switch-thumb"></div>
+                        </div>
+                    `;
+                    inputControlsContainer.appendChild(group);
+                });
+
+                addEventListeners();
+                resetState();
             }
-        }
-    }
 
-    // --- Event Listeners ---
+            function resetState() {
+                inputs.forEach(id => {
+                    inputStates[id.toLowerCase()] = 'undefined';
+                });
+                document.querySelectorAll('.tri-switch').forEach(toggle => {
+                    toggle.dataset.state = 'undefined';
+                });
+                updateUI();
+                evaluateLogic();
+            }
 
-    // Add event listeners to all buttons
-    document.addEventListener('click', (event) => {
-        if (event.target.matches('[data-action="set"]')) {
-            const inputId = event.target.dataset.input;
-            const value = event.target.dataset.value === 'true';
-            state[inputId].value = value;
-            state[inputId].isSet = true;
-            evaluateLogic();
-        }
-    });
+            function cycleInputState(inputId, currentState) {
+                let nextState;
+                let nextValue;
 
-    // Add event listeners to all settings (checkboxes, dropdowns)
-    document.addEventListener('change', (event) => {
-        if (event.target.matches('[data-setting]')) {
-            // Reset all inputs when settings change
-            inputs.forEach(id => state[id].isSet = false);
-            evaluateLogic();
-        }
-    });
+                if (currentState === 'undefined') {
+                    nextState = 'true';
+                    nextValue = true;
+                } else if (currentState === 'true') {
+                    nextState = 'false';
+                    nextValue = false;
+                } else { // currentState === 'false'
+                    nextState = 'undefined';
+                    nextValue = 'undefined';
+                }
+                
+                inputStates[inputId.toLowerCase()] = nextValue;
+                return nextState;
+            }
 
-    // --- Initialization ---
-    inputs.forEach(id => {
-        inputContainer.appendChild(createInputGroup(id));
-    });
-    evaluateLogic(); // Initial evaluation
-});
-</script>
+            function parseExpression(expression) {
+                const matches = expression.match(/\b[A-E]\b/g);
+                return matches ? [...new Set(matches.map(char => char.toUpperCase()))] : [];
+            }
+            
+            function evaluateLogic() {
+                const expression = expressionInput.value;
+                if (!expression) {
+                    updateResultUI(null, "Expression cannot be empty.");
+                    return;
+                }
 
+                const requiredInputs = parseExpression(expression);
+                if (requiredInputs.length === 0) {
+                     updateResultUI(null, "No valid inputs (A-E) found.");
+                     return;
+                }
+
+                const allInputsDefined = requiredInputs.every(id => inputStates[id.toLowerCase()] !== 'undefined');
+                
+                if (!allInputsDefined) {
+                    updateResultUI(null, null); // Waiting state
+                    return;
+                }
+
+                let evalExpression = expression.toUpperCase();
+                for (const key in inputStates) {
+                    // Only replace defined values, not 'undefined' string
+                    if (inputStates[key] !== 'undefined') {
+                        const regex = new RegExp(`\\b${key.toUpperCase()}\\b`, 'g');
+                        evalExpression = evalExpression.replace(regex, inputStates[key]);
+                    }
+                }
+
+                evalExpression = evalExpression.replace(/\*/g, '&&').replace(/\+/g, '||').replace(/\^/g, '!=');
+                
+                try {
+                    let finalResult = eval(evalExpression);
+                    if (invertFinalCheckbox.checked) {
+                        finalResult = !finalResult;
+                    }
+                    updateResultUI(finalResult, null);
+                } catch (e) {
+                    console.error(`Evaluation Error: ${e.message}`);
+                    updateResultUI(null, `Syntax Error`);
+                }
+            }
+
+            // --- UI Update Functions ---
+            
+            function updateUI() {
+                const definedStates = [];
+                for (const id in inputStates) {
+                    const state = inputStates[id];
+                    if (state !== 'undefined') {
+                        definedStates.push(`${id.toUpperCase()}=${state}`);
+                    }
+                }
+                currentStateDiv.textContent = definedStates.length > 0 ? definedStates.join(', ') : 'No signals set.';
+            }
+
+            function updateResultUI(result, error) {
+                if (error) {
+                    resultDiv.className = 'result-box result-error flex items-center justify-center text-center';
+                    resultDiv.textContent = error;
+                    return;
+                }
+                
+                if (result === null || result === undefined) {
+                    resultDiv.className = 'result-box result-undefined flex items-center justify-center text-center';
+                    resultDiv.textContent = 'WAITING';
+                } else if (result) {
+                    resultDiv.className = 'result-box result-true flex items-center justify-center text-center';
+                    resultDiv.textContent = 'TRUE';
+                } else {
+                    resultDiv.className = 'result-box result-false flex items-center justify-center text-center';
+                    resultDiv.textContent = 'FALSE';
+                }
+            }
+
+            // --- Event Listeners ---
+
+            function addEventListeners() {
+                 inputControlsContainer.addEventListener('click', (e) => {
+                    const slider = e.target.closest('.tri-switch');
+                    if (!slider) return;
+
+                    const inputId = slider.dataset.input;
+                    const currentState = slider.dataset.state;
+                    
+                    const nextState = cycleInputState(inputId, currentState);
+                    slider.dataset.state = nextState;
+
+                    updateUI();
+                    evaluateLogic();
+                });
+
+                resetButton.addEventListener('click', resetState);
+                
+                expressionInput.addEventListener('input', () => {
+                    updateUI();
+                    evaluateLogic();
+                });
+                invertFinalCheckbox.addEventListener('change', () => {
+                    updateUI();
+                    evaluateLogic();
+                });
+            }
+
+            // --- Start the app ---
+            initialize();
+        });
+    </script>
 </body>
 </html>
+

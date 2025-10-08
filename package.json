@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "homey": "^3.9.4"
+  }
+}
