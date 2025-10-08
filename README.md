@@ -90,3 +90,4 @@ This project is built with the Homey SDK v3. To get started with development:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
