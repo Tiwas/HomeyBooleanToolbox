@@ -10,7 +10,7 @@ Standard Homey Flows are powerful, but creating complex logic can quickly become
 
 | Standard Homey Flow | With Boolean Toolbox |
 | --- | --- |
-| !(https://tiwas.github.io/HomeyBooleanToolbox/homey%20std.png) | !(https://tiwas.github.io/HomeyBooleanToolbox/logic%20unit.jpg) |
+| ![https://tiwas.github.io/HomeyBooleanToolbox/homey%20std.png)](https://tiwas.github.io/HomeyBooleanToolbox/homey%20std.png) | ![(https://tiwas.github.io/HomeyBooleanToolbox/logic%20unit.jpg)](https://tiwas.github.io/HomeyBooleanToolbox/logic%20unit.jpg) |
 | *A complex web of logic cards.* | *A single Logic Unit provides a clean, controllable result.* |
 
 Boolean Toolbox solves this by providing a virtual "Logic Unit" device. Instead of wiring together multiple cards, you define your entire logic in a single text-based expression. The device waits for all necessary input signals, evaluates the expression, and gives you a single, predictable `true` or `false` output.
