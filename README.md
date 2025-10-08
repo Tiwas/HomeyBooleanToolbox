@@ -59,7 +59,7 @@ homey app run --remote
 
 Don't want to create a device just to test an idea? You can use the online emulator to design and test your logic before implementing it in Homey.
 
-**[Try the Emulator Here](emulator.html)**
+**[Try the Emulator Here](https://tiwas.github.io/HomeyBooleanToolbox/emulator.html)**
 
 ## Project Structure
 
