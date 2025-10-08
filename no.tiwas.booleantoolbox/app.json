@@ -1,6 +1,6 @@
 {
   "id": "no.tiwas.booleantoolbox",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -15,7 +15,7 @@
     "en": "Create advanced, state-aware logic units for your flows.",
     "nb": "Lag avanserte, tilstandsbevisste logiske enheter for dine flows."
   },
-  "drivers": [
+    "drivers": [
     {
       "id": "logic-unit",
       "name": {
@@ -36,79 +36,16 @@
       ],
       "settings": [
         {
-          "type": "group",
-          "id": "group_a",
-          "label": { "en": "Input A", "nb": "Inngang A" },
-          "children": [
-            { "id": "input_a_enabled", "type": "checkbox", "label": { "en": "Enable Input", "nb": "Aktiver Inngang" }, "value": true },
-            { "id": "input_a_operator", "type": "dropdown", "label": { "en": "Operator", "nb": "Operator" }, "value": "and", "values": [
-                { "id": "and", "label": { "en": "AND (*)", "nb": "AND (*)" } },
-                { "id": "or", "label": { "en": "OR (+)", "nb": "OR (+)" } },
-                { "id": "xor", "label": { "en": "XOR (⊕)", "nb": "XOR (⊕)" } }
-            ]},
-            { "id": "input_a_not", "type": "checkbox", "label": { "en": "Invert (NOT)", "nb": "Inverter (NOT)" }, "value": false },
-            { "id": "input_a_auto_reset", "type": "checkbox", "label": { "en": "Auto-reset after evaluation", "nb": "Tilbakestill etter evaluering" }, "value": false }
-          ]
+          "id": "expression",
+          "type": "textarea",
+          "label": { "en": "Boolean Expression", "nb": "Boolsk Uttrykk" },
+          "value": "(A+B)*C"
         },
         {
-          "type": "group",
-          "id": "group_b",
-          "label": { "en": "Input B", "nb": "Inngang B" },
-          "children": [
-            { "id": "input_b_enabled", "type": "checkbox", "label": { "en": "Enable Input", "nb": "Aktiver Inngang" }, "value": false },
-            { "id": "input_b_operator", "type": "dropdown", "label": { "en": "Operator", "nb": "Operator" }, "value": "and", "values": [
-                { "id": "and", "label": { "en": "AND (*)", "nb": "AND (*)" } },
-                { "id": "or", "label": { "en": "OR (+)", "nb": "OR (+)" } },
-                { "id": "xor", "label": { "en": "XOR (⊕)", "nb": "XOR (⊕)" } }
-            ]},
-            { "id": "input_b_not", "type": "checkbox", "label": { "en": "Invert (NOT)", "nb": "Inverter (NOT)" }, "value": false },
-            { "id": "input_b_auto_reset", "type": "checkbox", "label": { "en": "Auto-reset after evaluation", "nb": "Tilbakestill etter evaluering" }, "value": false }
-          ]
-        },
-        {
-          "type": "group",
-          "id": "group_c",
-          "label": { "en": "Input C", "nb": "Inngang C" },
-          "children": [
-            { "id": "input_c_enabled", "type": "checkbox", "label": { "en": "Enable Input", "nb": "Aktiver Inngang" }, "value": false },
-            { "id": "input_c_operator", "type": "dropdown", "label": { "en": "Operator", "nb": "Operator" }, "value": "and", "values": [
-                { "id": "and", "label": { "en": "AND (*)", "nb": "AND (*)" } },
-                { "id": "or", "label": { "en": "OR (+)", "nb": "OR (+)" } },
-                { "id": "xor", "label": { "en": "XOR (⊕)", "nb": "XOR (⊕)" } }
-            ]},
-            { "id": "input_c_not", "type": "checkbox", "label": { "en": "Invert (NOT)", "nb": "Inverter (NOT)" }, "value": false },
-            { "id": "input_c_auto_reset", "type": "checkbox", "label": { "en": "Auto-reset after evaluation", "nb": "Tilbakestill etter evaluering" }, "value": false }
-          ]
-        },
-        {
-          "type": "group",
-          "id": "group_d",
-          "label": { "en": "Input D", "nb": "Inngang D" },
-          "children": [
-            { "id": "input_d_enabled", "type": "checkbox", "label": { "en": "Enable Input", "nb": "Aktiver Inngang" }, "value": false },
-            { "id": "input_d_operator", "type": "dropdown", "label": { "en": "Operator", "nb": "Operator" }, "value": "and", "values": [
-                { "id": "and", "label": { "en": "AND (*)", "nb": "AND (*)" } },
-                { "id": "or", "label": { "en": "OR (+)", "nb": "OR (+)" } },
-                { "id": "xor", "label": { "en": "XOR (⊕)", "nb": "XOR (⊕)" } }
-            ]},
-            { "id": "input_d_not", "type": "checkbox", "label": { "en": "Invert (NOT)", "nb": "Inverter (NOT)" }, "value": false },
-            { "id": "input_d_auto_reset", "type": "checkbox", "label": { "en": "Auto-reset after evaluation", "nb": "Tilbakestill etter evaluering" }, "value": false }
-          ]
-        },
-        {
-          "type": "group",
-          "id": "group_e",
-          "label": { "en": "Input E", "nb": "Inngang E" },
-          "children": [
-            { "id": "input_e_enabled", "type": "checkbox", "label": { "en": "Enable Input", "nb": "Aktiver Inngang" }, "value": false },
-            { "id": "input_e_operator", "type": "dropdown", "label": { "en": "Operator", "nb": "Operator" }, "value": "and", "values": [
-                { "id": "and", "label": { "en": "AND (*)", "nb": "AND (*)" } },
-                { "id": "or", "label": { "en": "OR (+)", "nb": "OR (+)" } },
-                { "id": "xor", "label": { "en": "XOR (⊕)", "nb": "XOR (⊕)" } }
-            ]},
-            { "id": "input_e_not", "type": "checkbox", "label": { "en": "Invert (NOT)", "nb": "Inverter (NOT)" }, "value": false },
-            { "id": "input_e_auto_reset", "type": "checkbox", "label": { "en": "Auto-reset after evaluation", "nb": "Tilbakestill etter evaluering" }, "value": false }
-          ]
+          "id": "invert_final",
+          "type": "checkbox",
+          "label": { "en": "Invert final result (NOT)", "nb": "Inverter endelig resultat (NOT)" },
+          "value": false
         }
       ]
     }
@@ -127,6 +64,13 @@
             "type": "device",
             "filter": "driver_id=logic-unit"
           }
+        ],
+        "tokens": [
+          {
+            "name": "inputs",
+            "type": "string",
+            "title": { "en": "Input States", "nb": "Inngangstilstander" }
+          }
         ]
       },
       {
@@ -140,6 +84,13 @@
             "name": "device",
             "type": "device",
             "filter": "driver_id=logic-unit"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "inputs",
+            "type": "string",
+            "title": { "en": "Input States", "nb": "Inngangstilstander" }
           }
         ]
       }
@@ -162,10 +113,10 @@
     ],
     "actions": [
       {
-        "id": "set_input_a_true",
+        "id": "set_input_a1_true",
         "title": {
-          "en": "Set input A to true",
-          "nb": "Sett inngang A til sant"
+          "en": "Set input A to true (from true-path)",
+          "nb": "Sett inngang A til sant (fra true-sti)"
         },
         "args": [
           {
@@ -176,10 +127,10 @@
         ]
       },
       {
-        "id": "set_input_a_false",
+        "id": "set_input_a2_true",
         "title": {
-          "en": "Set input A to false",
-          "nb": "Sett inngang A til usant"
+          "en": "Set input A to false (from false-path)",
+          "nb": "Sett inngang A til usant (fra false-sti)"
         },
         "args": [
           {
@@ -190,10 +141,10 @@
         ]
       },
       {
-        "id": "set_input_b_true",
+        "id": "set_input_b1_true",
         "title": {
-          "en": "Set input B to true",
-          "nb": "Sett inngang B til sant"
+          "en": "Set input B to true (from true-path)",
+          "nb": "Sett inngang B til sant (fra true-sti)"
         },
         "args": [
           {
@@ -204,10 +155,10 @@
         ]
       },
       {
-        "id": "set_input_b_false",
+        "id": "set_input_b2_true",
         "title": {
-          "en": "Set input B to false",
-          "nb": "Sett inngang B til usant"
+          "en": "Set input B to false (from false-path)",
+          "nb": "Sett inngang B til usant (fra false-sti)"
         },
         "args": [
           {
@@ -218,10 +169,10 @@
         ]
       },
       {
-        "id": "set_input_c_true",
+        "id": "set_input_c1_true",
         "title": {
-          "en": "Set input C to true",
-          "nb": "Sett inngang C til sant"
+          "en": "Set input C to true (from true-path)",
+          "nb": "Sett inngang C til sant (fra true-sti)"
         },
         "args": [
           {
@@ -232,10 +183,10 @@
         ]
       },
       {
-        "id": "set_input_c_false",
+        "id": "set_input_c2_true",
         "title": {
-          "en": "Set input C to false",
-          "nb": "Sett inngang C til usant"
+          "en": "Set input C to false (from false-path)",
+          "nb": "Sett inngang C til usant (fra false-sti)"
         },
         "args": [
           {
@@ -246,10 +197,10 @@
         ]
       },
       {
-        "id": "set_input_d_true",
+        "id": "set_input_d1_true",
         "title": {
-          "en": "Set input D to true",
-          "nb": "Sett inngang D til sant"
+          "en": "Set input D to true (from true-path)",
+          "nb": "Sett inngang D til sant (fra true-sti)"
         },
         "args": [
           {
@@ -260,10 +211,10 @@
         ]
       },
       {
-        "id": "set_input_d_false",
+        "id": "set_input_d2_true",
         "title": {
-          "en": "Set input D to false",
-          "nb": "Sett inngang D til usant"
+          "en": "Set input D to false (from false-path)",
+          "nb": "Sett inngang D til usant (fra false-sti)"
         },
         "args": [
           {
@@ -274,10 +225,10 @@
         ]
       },
       {
-        "id": "set_input_e_true",
+        "id": "set_input_e1_true",
         "title": {
-          "en": "Set input E to true",
-          "nb": "Sett inngang E til sant"
+          "en": "Set input E to true (from true-path)",
+          "nb": "Sett inngang E til sant (fra true-sti)"
         },
         "args": [
           {
@@ -288,10 +239,10 @@
         ]
       },
       {
-        "id": "set_input_e_false",
+        "id": "set_input_e2_true",
         "title": {
-          "en": "Set input E to false",
-          "nb": "Sett inngang E til usant"
+          "en": "Set input E to false (from false-path)",
+          "nb": "Sett inngang E til usant (fra false-sti)"
         },
         "args": [
           {
