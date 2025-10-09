@@ -1,6 +1,15 @@
 {
   "id": "no.tiwas.booleantoolbox",
-  "version": "0.1.0",
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "tiwasno"
+      }
+    }
+  },
+  "brandColor": "#FF0000",
+  "version": "0.5.0",
+  "icon": "/assets/images/icon.png",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -15,7 +24,7 @@
     "en": "Create advanced, state-aware logic units for your flows.",
     "nb": "Lag avanserte, tilstandsbevisste logiske enheter for dine flows."
   },
-    "drivers": [
+  "drivers": [
     {
       "id": "logic-unit",
       "name": {
@@ -26,19 +35,32 @@
       "capabilities": [
         "onoff"
       ],
+      "images":
+      {
+        "large": "/drivers/logic-unit/assets/images/large.png",
+        "small": "/drivers/logic-unit/assets/images/small.png"
+      },
       "pair": [
         {
           "id": "list_devices",
           "template": "list_devices",
-          "navigation": { "next": "add_devices" }
+          "navigation": {
+            "next": "add_devices"
+          }
         },
-        { "id": "add_devices", "template": "add_devices" }
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
       ],
       "settings": [
         {
           "id": "expression",
           "type": "textarea",
-          "label": { "en": "Boolean Expression", "nb": "Boolsk Uttrykk" },
+          "label": {
+            "en": "Boolean Expression",
+            "nb": "Boolsk Uttrykk"
+          },
           "hint": {
             "en": "Use A-E. Operators: AND (*, &, AND), OR (+, |, OR), XOR (^, !=, XOR), NOT (!, NOT). Use () to group. Example: (A OR B) AND NOT C",
             "nb": "Bruk A-E. Operatorer: AND (*, &, AND), OR (+, |, OR), XOR (^, !=, XOR), NOT (!, NOT). Bruk () for å gruppere. Eksempel: (A OR B) AND NOT C"
@@ -48,7 +70,10 @@
         {
           "id": "invert_final",
           "type": "checkbox",
-          "label": { "en": "Invert final result (NOT)", "nb": "Inverter endelig resultat (NOT)" },
+          "label": {
+            "en": "Invert final result (NOT)",
+            "nb": "Inverter endelig resultat (NOT)"
+          },
           "value": false
         }
       ]
@@ -73,7 +98,10 @@
           {
             "name": "inputs",
             "type": "string",
-            "title": { "en": "Input States", "nb": "Inngangstilstander" }
+            "title": {
+              "en": "Input States",
+              "nb": "Inngangstilstander"
+            }
           }
         ]
       },
@@ -94,7 +122,10 @@
           {
             "name": "inputs",
             "type": "string",
-            "title": { "en": "Input States", "nb": "Inngangstilstander" }
+            "title": {
+              "en": "Input States",
+              "nb": "Inngangstilstander"
+            }
           }
         ]
       }
@@ -258,14 +289,9 @@
       }
     ]
   },
-  "images": [
-    {
-      "type": "large",
-      "path": "/assets/images/large.png"
-    },
-    {
-      "type": "small",
-      "path": "/assets/images/small.png"
+  "images": {
+      "large": "/assets/images/large.png",
+      "small": "/assets/images/small.png"
     }
-  ]
 }
+
