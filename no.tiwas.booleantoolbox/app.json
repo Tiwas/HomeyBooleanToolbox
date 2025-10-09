@@ -296,9 +296,9 @@
     ]
   },
   "images": {
-      "xlarge": "/assets/images/xlarge.png",
-      "large": "/assets/images/large.png",
-      "small": "/assets/images/small.png"
+      "xlarge": "/assets/images/xlarge.jpeg",
+      "large": "/assets/images/large.jpeg",
+      "small": "/assets/images/small.jpeg"
     }
 }
 
