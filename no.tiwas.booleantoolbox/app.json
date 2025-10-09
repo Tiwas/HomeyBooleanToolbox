@@ -7,6 +7,12 @@
       }
     }
   },
+  "homeyCommunityTopicId": 143906,
+  "bugs": {
+    "url": "https://github.com/Tiwas/HomeyBooleanToolbox/issues"
+  },  
+  "source": "https://github.com/Tiwas/HomeyBooleanToolbox",
+  "homepage": "https://tiwas.github.io/HomeyBooleanToolbox/",
   "brandColor": "#FF0000",
   "version": "0.5.0",
   "icon": "/assets/images/icon.png",
@@ -290,6 +296,7 @@
     ]
   },
   "images": {
+      "xlarge": "/assets/images/xlarge.png",
       "large": "/assets/images/large.png",
       "small": "/assets/images/small.png"
     }
