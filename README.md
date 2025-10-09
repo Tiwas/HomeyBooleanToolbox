@@ -1,6 +1,6 @@
 # Boolean Toolbox for Homey
 
-![Boolean Toolbox Icon](no.tiwas.booleantoolbox/assets/icon.svg)
+![Boolean Toolbox Icon](no.tiwas.booleantoolbox/assets/images/xlarge.jpeg)
 
 Create advanced, state-aware logic units for your Homey flows. Move beyond simple `AND`/`OR` cards and build powerful logic modules based on dynamic boolean expressions.
 
