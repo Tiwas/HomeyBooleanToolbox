@@ -20,7 +20,7 @@
         "operators": {
             "and": "AND (*)",
             "or": "OR (+)",
-            "xor": "XOR (⊕)"
+            "xor": "XOR (^)"
         }
     }
 }

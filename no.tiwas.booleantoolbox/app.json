@@ -40,8 +40,8 @@
           "type": "textarea",
           "label": { "en": "Boolean Expression", "nb": "Boolsk Uttrykk" },
           "hint": {
-            "en": "Use A, B, C, D, E. Valid operators: * (AND), + (OR), ^ (XOR), ! (NOT). Use () to group. Example: (A+B)*!C",
-            "nb": "Bruk A, B, C, D, E. Gyldige operatorer: * (AND), + (OR), ^ (XOR), ! (NOT). Bruk () for å gruppere. Eksempel: (A+B)*!C"
+            "en": "Use A-E. Operators: AND (*, &, AND), OR (+, |, OR), XOR (^, !=, XOR), NOT (!, NOT). Use () to group. Example: (A OR B) AND NOT C",
+            "nb": "Bruk A-E. Operatorer: AND (*, &, AND), OR (+, |, OR), XOR (^, !=, XOR), NOT (!, NOT). Bruk () for å gruppere. Eksempel: (A OR B) AND NOT C"
           },
           "value": "(A+B)*C"
         },
@@ -261,11 +261,11 @@
   "images": [
     {
       "type": "large",
-      "path": "/assets/images/promo_large.jpg"
+      "path": "/assets/images/large.png"
     },
     {
       "type": "small",
-      "path": "/assets/images/promo_small.jpg"
+      "path": "/assets/images/small.png"
     }
   ]
 }

@@ -30,7 +30,7 @@ class LogicUnitDevice extends Homey.Device {
   }
 
   parseExpression(expression) {
-    const matches = expression.match(/\b[A-E]\b/g);
+    const matches = expression.match(/\b[A-E]\b/gi);
     return matches ? [...new Set(matches.map(char => char.toUpperCase()))] : [];
   }
 
@@ -74,23 +74,34 @@ class LogicUnitDevice extends Homey.Device {
       E: this.inputStates.e,
     };
 
-    let evalExpression = expression.toUpperCase();
+    let evalExpression = expression;
+
+    // --- START OF MODIFIED LOGIC ---
+    // Replace textual and alternative operators with standard JS operators.
+    // We use word boundaries (\b) for text operators to avoid replacing parts of other words.
+    // The 'gi' flag makes the replacement case-insensitive.
+    evalExpression = evalExpression.replace(/\bAND\b|&|\*/gi, '&&');
+    evalExpression = evalExpression.replace(/\bOR\b|\||\+/gi, '||');
+    evalExpression = evalExpression.replace(/\bXOR\b|\^|!=/gi, '!=');
+    evalExpression = evalExpression.replace(/\bNOT\b/gi, '!');
+
+    // Now, replace variables (A-E) with their boolean values.
     for (const key in values) {
-      const regex = new RegExp(`\\b${key}\\b`, 'g');
+      const regex = new RegExp(`\\b${key}\\b`, 'gi');
       evalExpression = evalExpression.replace(regex, values[key]);
     }
-
-    evalExpression = evalExpression.replace(/\+/g, '||');
-    evalExpression = evalExpression.replace(/\*/g, '&&');
-    evalExpression = evalExpression.replace(/\^/g, '!=');
+    // --- END OF MODIFIED LOGIC ---
 
     try {
-      let finalResult = eval(evalExpression);
+      // Using a function constructor for slightly safer evaluation than direct eval()
+      const evaluate = new Function(`return ${evalExpression}`);
+      let finalResult = evaluate();
+
       if (settings.invert_final) {
         finalResult = !finalResult;
       }
 
-      this.log(`Evaluation complete. Final result: ${finalResult}`);
+      this.log(`Evaluation complete. Expression: "${evalExpression}". Final result: ${finalResult}`);
 
       const previousState = this.lastOutputState;
       const stateChanged = previousState !== finalResult;
