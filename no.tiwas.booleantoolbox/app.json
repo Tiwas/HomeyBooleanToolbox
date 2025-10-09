@@ -10,11 +10,11 @@
   "homeyCommunityTopicId": 143906,
   "bugs": {
     "url": "https://github.com/Tiwas/HomeyBooleanToolbox/issues"
-  },  
+  },
   "source": "https://github.com/Tiwas/HomeyBooleanToolbox",
   "homepage": "https://tiwas.github.io/HomeyBooleanToolbox/",
   "brandColor": "#FF0000",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "icon": "/assets/images/icon.png",
   "compatibility": ">=5.0.0",
   "sdk": 3,
@@ -41,8 +41,7 @@
       "capabilities": [
         "onoff"
       ],
-      "images":
-      {
+      "images": {
         "large": "/drivers/logic-unit/assets/images/large.png",
         "small": "/drivers/logic-unit/assets/images/small.png"
       },
@@ -296,9 +295,8 @@
     ]
   },
   "images": {
-      "xlarge": "/assets/images/xlarge.jpeg",
-      "large": "/assets/images/large.jpeg",
-      "small": "/assets/images/small.jpeg"
-    }
+    "xlarge": "/assets/images/xlarge.jpeg",
+    "large": "/assets/images/large.jpeg",
+    "small": "/assets/images/small.jpeg"
+  }
 }
-
