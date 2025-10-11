@@ -13,7 +13,6 @@
             color: #e2e8f0;
         }
         
-        /* Three-state Switch CSS */
         .tri-switch {
             position: relative;
             width: 90px;
@@ -21,12 +20,18 @@
             background-color: #2d3748;
             border-radius: 17px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             padding: 4px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
         }
+        
+        .tri-switch.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
         .tri-switch-thumb {
             width: 28px;
             height: 28px;
@@ -42,26 +47,22 @@
             font-weight: bold;
         }
 
-        /* States */
         .tri-switch[data-state="undefined"] .tri-switch-thumb {
-            left: calc(50% - 14px); /* Center */
-            background-color: #718096; /* gray-500 */
-        }
-         .tri-switch[data-state="undefined"] .tri-switch-thumb::after {
-            content: '';
+            left: calc(50% - 14px);
+            background-color: #718096;
         }
 
         .tri-switch[data-state="true"] .tri-switch-thumb {
-            left: 4px; /* Left */
-            background-color: #38a169; /* green-600 */
+            left: 4px;
+            background-color: #38a169;
         }
         .tri-switch[data-state="true"] .tri-switch-thumb::after {
             content: '✓';
         }
 
         .tri-switch[data-state="false"] .tri-switch-thumb {
-            left: calc(100% - 32px); /* Right */
-            background-color: #e53e3e; /* red-600 */
+            left: calc(100% - 32px);
+            background-color: #e53e3e;
         }
         .tri-switch[data-state="false"] .tri-switch-thumb::after {
             content: '✕';
@@ -79,11 +80,65 @@
         .result-true { background-color: #38a169; color: white; box-shadow: 0 0 15px rgba(56, 161, 105, 0.5); }
         .result-false { background-color: #e53e3e; color: white; box-shadow: 0 0 15px rgba(229, 62, 62, 0.5); }
         .result-error { background-color: #dd6b20; color: white; font-size: 1rem; }
+        
+        .truth-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .truth-table th {
+            background-color: #2d3748;
+            padding: 8px;
+            border: 1px solid #4a5568;
+            font-weight: 600;
+        }
+        
+        .truth-table td {
+            padding: 8px;
+            border: 1px solid #4a5568;
+            text-align: center;
+        }
+        
+        .truth-table tr:nth-child(even) {
+            background-color: #2d3748;
+        }
+        
+        .truth-table td.result-true-cell {
+            background-color: #38a169;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .truth-table td.result-false-cell {
+            background-color: #e53e3e;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .input-true {
+            color: #38a169;
+            font-size: 1.2rem;
+        }
+        
+        .input-false {
+            color: #e53e3e;
+            font-size: 1.2rem;
+        }
+        
+        .expand-button {
+            transition: transform 0.3s ease;
+        }
+        
+        .expand-button.expanded {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-lg bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8 space-y-6">
+    <div class="w-full max-w-4xl bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8 space-y-6">
         
         <div class="flex flex-col items-center text-center">
             <img src="https://tiwas.github.io/HomeyBooleanToolbox/no.tiwas.booleantoolbox/assets/icon.svg" alt="Boolean Toolbox Logo" class="w-20 h-20 mb-4 rounded-lg">
@@ -93,15 +148,30 @@
 
         <div class="space-y-2">
             <label for="expression" class="font-semibold text-gray-300">Boolean Expression</label>
-            <input type="text" id="expression" class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 transition-colors" value="(A OR B) AND NOT C">
+            <input type="text" id="expression" class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 transition-colors" value="(A OR B) AND NOT C" placeholder="e.g. (A+B)*C">
             <div class="flex items-center mt-2">
                 <input type="checkbox" id="invert_final" class="h-4 w-4 rounded bg-gray-700 border-gray-600 text-blue-500 focus:ring-blue-500">
                 <label for="invert_final" class="ml-2 text-sm text-gray-400">Invert final result (NOT)</label>
             </div>
+            <p class="text-xs text-gray-500 mt-2">Operators: AND (*, &, AND), OR (+, |, OR), XOR (^, !=, XOR), NOT (!, NOT)</p>
         </div>
         
-        <div id="input-controls" class="grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4 pt-4 justify-items-center">
+        <div class="border-t border-gray-700 pt-4">
+            <button id="truth-table-toggle" class="w-full flex items-center justify-between p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                <span class="font-semibold text-gray-300">Truth Table</span>
+                <svg class="expand-button w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            <div id="truth-table-container" class="hidden mt-4 overflow-x-auto">
+                <table class="truth-table text-sm">
+                    <thead id="truth-table-head"></thead>
+                    <tbody id="truth-table-body"></tbody>
+                </table>
             </div>
+        </div>
+        
+        <div id="input-controls" class="grid grid-cols-2 sm:grid-cols-5 gap-y-6 gap-x-4 pt-4 justify-items-center"></div>
 
         <div class="space-y-4 pt-4 border-t border-gray-700">
             <div>
@@ -117,14 +187,13 @@
             </div>
         </div>
 
-        <!-- KORRIGERT DIV MED CSS GRID -->
         <div class="grid grid-cols-[1fr_auto_1fr] items-baseline gap-x-3 pt-4 border-t border-gray-700">
             <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-sm text-gray-500 hover:text-blue-400 transition-colors justify-self-end">
                 View&nbsp;on&nbsp;GitHub
             </a>
             <span class="text-gray-600">|</span>
             <a href="https://tiwas.github.io/HomeyBooleanToolbox/" class="text-sm text-gray-500 hover:text-blue-400 transition-colors justify-self-start">
-                Homepage&nbsp;(on&nbsp;GitHub)
+                Homepage
             </a>
         </div>
     </div>
@@ -137,9 +206,14 @@
             const currentStateDiv = document.getElementById('current-state');
             const resultDiv = document.getElementById('result');
             const resetButton = document.getElementById('reset-button');
+            const truthTableToggle = document.getElementById('truth-table-toggle');
+            const truthTableContainer = document.getElementById('truth-table-container');
+            const truthTableHead = document.getElementById('truth-table-head');
+            const truthTableBody = document.getElementById('truth-table-body');
             
-            const inputs = ['A', 'B', 'C', 'D', 'E'];
+            const inputs = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
             let inputStates = {};
+            let requiredInputs = [];
 
             function initialize() {
                 inputControlsContainer.innerHTML = '';
@@ -170,64 +244,82 @@
             }
 
             function parseExpression(expression) {
-                const matches = expression.match(/\b[A-E]\b/gi);
+                const matches = expression.match(/\b[A-J]\b/gi);
                 return matches ? [...new Set(matches.map(char => char.toUpperCase()))] : [];
             }
             
+            function updateInputStates() {
+                requiredInputs = parseExpression(expressionInput.value);
+                
+                document.querySelectorAll('.tri-switch').forEach(toggle => {
+                    const inputId = toggle.dataset.input;
+                    if (requiredInputs.includes(inputId)) {
+                        toggle.classList.remove('disabled');
+                    } else {
+                        toggle.classList.add('disabled');
+                    }
+                });
+            }
+            
             function evaluateLogic() {
+                updateInputStates();
                 const expression = expressionInput.value;
                 if (!expression) {
                     updateResultUI(null, "Expression cannot be empty.");
                     return;
                 }
-                const requiredInputs = parseExpression(expression);
                 if (requiredInputs.length === 0) {
-                     updateResultUI(null, "No valid inputs (A-E) found.");
+                     updateResultUI(null, "No valid inputs (A-J) found.");
                      return;
                 }
                 const allInputsDefined = requiredInputs.every(id => inputStates[id.toLowerCase()] !== 'undefined');
                 if (!allInputsDefined) {
-                    updateResultUI(null, null); // Waiting state
+                    updateResultUI(null, null);
                     return;
                 }
-                let evalExpression = expression;
-
-                // --- START OF MODIFIED LOGIC ---
-                // Replace textual and alternative operators with standard JS operators.
-                // The 'gi' flag makes the replacement case-insensitive.
-                evalExpression = evalExpression.replace(/\bAND\b|&|\*/gi, '&&');
-                evalExpression = evalExpression.replace(/\bOR\b|\||\+/gi, '||');
-                evalExpression = evalExpression.replace(/\bXOR\b|\^|!=/gi, '!=');
-                evalExpression = evalExpression.replace(/\bNOT\b/gi, '!');
-                // --- END OF MODIFIED LOGIC ---
-
-                for (const key in inputStates) {
-                    if (inputStates[key] !== 'undefined') {
-                        const regex = new RegExp(`\\b${key.toUpperCase()}\\b`, 'gi');
-                        evalExpression = evalExpression.replace(regex, inputStates[key]);
-                    }
-                }
                 
-                try {
-                    let finalResult = new Function(`return ${evalExpression}`)();
+                const result = evaluateExpression(expression, inputStates);
+                if (result.error) {
+                    updateResultUI(null, 'Syntax Error');
+                } else {
+                    let finalResult = result.value;
                     if (invertFinalCheckbox.checked) {
                         finalResult = !finalResult;
                     }
                     updateResultUI(!!finalResult, null);
+                }
+            }
+            
+            function evaluateExpression(expression, states) {
+                let evalExpression = expression;
+                evalExpression = evalExpression.replace(/\bAND\b|&|\*/gi, '&&');
+                evalExpression = evalExpression.replace(/\bOR\b|\||\+/gi, '||');
+                evalExpression = evalExpression.replace(/\bXOR\b|\^|!=/gi, '!=');
+                evalExpression = evalExpression.replace(/\bNOT\b/gi, '!');
+
+                for (const key in states) {
+                    if (states[key] !== 'undefined') {
+                        const regex = new RegExp(`\\b${key.toUpperCase()}\\b`, 'gi');
+                        evalExpression = evalExpression.replace(regex, states[key]);
+                    }
+                }
+                
+                try {
+                    const value = new Function(`return ${evalExpression}`)();
+                    return { value: !!value, error: null };
                 } catch (e) {
-                    console.error(`Evaluation Error: ${e.message}`);
-                    updateResultUI(null, `Syntax Error`);
+                    return { value: null, error: e.message };
                 }
             }
 
             function updateUI() {
                 const definedStates = [];
-                for (const id in inputStates) {
-                    const state = inputStates[id];
+                requiredInputs.forEach(id => {
+                    const state = inputStates[id.toLowerCase()];
                     if (state !== 'undefined') {
-                        definedStates.push(`${id.toUpperCase()}=${state}`);
+                        definedStates.push(`${id}=${state}`);
                     }
-                }
+                });
                 currentStateDiv.textContent = definedStates.length > 0 ? definedStates.join(', ') : 'No signals set.';
             }
 
@@ -248,11 +340,72 @@
                     resultDiv.textContent = 'FALSE';
                 }
             }
+            
+            function generateTruthTable() {
+                const expression = expressionInput.value;
+                const required = parseExpression(expression);
+                
+                if (required.length === 0) {
+                    truthTableHead.innerHTML = '<tr><th>No inputs found</th></tr>';
+                    truthTableBody.innerHTML = '';
+                    return;
+                }
+                
+                if (required.length > 6) {
+                    truthTableHead.innerHTML = `<tr><th colspan="${required.length + 1}">Too many inputs (max 6 for table)</th></tr>`;
+                    truthTableBody.innerHTML = '';
+                    return;
+                }
+                
+                // Generate header
+                let headerHTML = '<tr>';
+                required.forEach(input => {
+                    headerHTML += `<th>${input}</th>`;
+                });
+                headerHTML += '<th>Result</th></tr>';
+                truthTableHead.innerHTML = headerHTML;
+                
+                // Generate all combinations
+                const numRows = Math.pow(2, required.length);
+                let bodyHTML = '';
+                
+                for (let i = 0; i < numRows; i++) {
+                    const testStates = {};
+                    let rowHTML = '<tr>';
+                    
+                    required.forEach((input, idx) => {
+                        const bitValue = !!(i & (1 << (required.length - 1 - idx)));
+                        testStates[input.toLowerCase()] = bitValue;
+                        const icon = bitValue ? '<span class="input-true">✓</span>' : '<span class="input-false">✕</span>';
+                        rowHTML += `<td>${icon}</td>`;
+                    });
+                    
+                    const result = evaluateExpression(expression, testStates);
+                    let finalResult = result.value;
+                    if (invertFinalCheckbox.checked && finalResult !== null) {
+                        finalResult = !finalResult;
+                    }
+                    
+                    if (result.error) {
+                        rowHTML += '<td class="result-error">ERROR</td>';
+                    } else {
+                        const cellClass = finalResult ? 'result-true-cell' : 'result-false-cell';
+                        const icon = finalResult ? '✓' : '✕';
+                        rowHTML += `<td class="${cellClass}">${icon}</td>`;
+                    }
+                    
+                    rowHTML += '</tr>';
+                    bodyHTML += rowHTML;
+                }
+                
+                truthTableBody.innerHTML = bodyHTML;
+            }
 
             function addEventListeners() {
-                 inputControlsContainer.addEventListener('click', (e) => {
+                inputControlsContainer.addEventListener('click', (e) => {
                     const slider = e.target.closest('.tri-switch');
-                    if (!slider) return;
+                    if (!slider || slider.classList.contains('disabled')) return;
+                    
                     const rect = slider.getBoundingClientRect();
                     const clickX = e.clientX - rect.left;
                     const oneThirdWidth = rect.width / 3;
@@ -278,13 +431,30 @@
                 });
 
                 resetButton.addEventListener('click', resetState);
+                
                 expressionInput.addEventListener('input', () => {
                     updateUI();
                     evaluateLogic();
+                    if (!truthTableContainer.classList.contains('hidden')) {
+                        generateTruthTable();
+                    }
                 });
+                
                 invertFinalCheckbox.addEventListener('change', () => {
-                    updateUI();
                     evaluateLogic();
+                    if (!truthTableContainer.classList.contains('hidden')) {
+                        generateTruthTable();
+                    }
+                });
+                
+                truthTableToggle.addEventListener('click', () => {
+                    const isHidden = truthTableContainer.classList.contains('hidden');
+                    truthTableContainer.classList.toggle('hidden');
+                    truthTableToggle.querySelector('.expand-button').classList.toggle('expanded');
+                    
+                    if (isHidden) {
+                        generateTruthTable();
+                    }
                 });
             }
 
@@ -293,4 +463,3 @@
     </script>
 </body>
 </html>
-

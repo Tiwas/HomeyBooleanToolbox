@@ -1,5 +1,21 @@
 {
   "id": "no.tiwas.booleantoolbox",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "name": {
+    "en": "Boolean Toolbox",
+    "nb": "Boolean Toolbox"
+  },
+  "description": {
+    "en": "Create advanced, state-aware logic units with multiple formulas.",
+    "nb": "Lag avanserte, tilstandsbevisste logiske enheter med flere formler."
+  },
+  "category": "tools",
+  "brandColor": "#FF0000",
+  "author": {
+    "name": "Lars Kvanum"
+  },
   "contributing": {
     "donate": {
       "paypal": {
@@ -7,43 +23,33 @@
       }
     }
   },
-  "homeyCommunityTopicId": 143906,
   "bugs": {
     "url": "https://github.com/Tiwas/HomeyBooleanToolbox/issues"
   },
   "source": "https://github.com/Tiwas/HomeyBooleanToolbox",
   "homepage": "https://tiwas.github.io/HomeyBooleanToolbox/",
-  "brandColor": "#FF0000",
-  "version": "0.7.0",
-  "icon": "/assets/images/icon.png",
-  "compatibility": ">=5.0.0",
-  "sdk": 3,
-  "name": {
-    "en": "Boolean Toolbox",
-    "nb": "Boolean Toolbox"
-  },
-  "author": {
-    "name": "Lars Kvanum"
-  },
-  "category": "tools",
-  "description": {
-    "en": "Create advanced, state-aware logic units for your flows.",
-    "nb": "Lag avanserte, tilstandsbevisste logiske enheter for dine flows."
+  "images": {
+    "xlarge": "/assets/images/xlarge.jpeg",
+    "large": "/assets/images/large.jpeg",
+    "small": "/assets/images/small.jpeg"
   },
   "drivers": [
     {
-      "id": "logic-unit",
+      "id": "logic-unit-2",
       "name": {
-        "en": "Logic Unit",
-        "nb": "Logisk Enhet"
+        "en": "Logic Unit (2 inputs)",
+        "nb": "Logisk Enhet (2 innganger)"
       },
       "class": "other",
-      "capabilities": [
-        "onoff"
-      ],
+      "capabilities": ["onoff"],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
       "images": {
-        "large": "/drivers/logic-unit/assets/images/large.png",
-        "small": "/drivers/logic-unit/assets/images/small.png"
+        "large": "/drivers/logic-unit-2/assets/images/large.png",
+        "small": "/drivers/logic-unit-2/assets/images/small.png"
       },
       "pair": [
         {
@@ -60,26 +66,385 @@
       ],
       "settings": [
         {
-          "id": "expression",
+          "id": "formulas",
           "type": "textarea",
           "label": {
-            "en": "Boolean Expression",
-            "nb": "Boolsk Uttrykk"
+            "en": "Formulas (JSON)",
+            "nb": "Formler (JSON)"
           },
           "hint": {
-            "en": "Use A-E. Operators: AND (*, &, AND), OR (+, |, OR), XOR (^, !=, XOR), NOT (!, NOT). Use () to group. Example: (A OR B) AND NOT C",
-            "nb": "Bruk A-E. Operatorer: AND (*, &, AND), OR (+, |, OR), XOR (^, !=, XOR), NOT (!, NOT). Bruk () for å gruppere. Eksempel: (A OR B) AND NOT C"
+            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"A AND B\",\"expression\":\"A AND B\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"A * B\",\"expression\":\"A * B\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A + B\",\"expression\":\"A + B\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"A XOR B\",\"expression\":\"A ^ B\",\"enabled\":true},{\"id\":\"f5\",\"name\":\"NOT A\",\"expression\":\"!A\",\"enabled\":true}]",
+            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"A AND B\",\"expression\":\"A AND B\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"A * B\",\"expression\":\"A * B\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A + B\",\"expression\":\"A + B\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"A XOR B\",\"expression\":\"A ^ B\",\"enabled\":true},{\"id\":\"f5\",\"name\":\"NOT A\",\"expression\":\"!A\",\"enabled\":true}]"
           },
-          "value": "(A+B)*C"
+          "value": "[]"
+        }
+      ]
+    },
+    {
+      "id": "logic-unit-3",
+      "name": {
+        "en": "Logic Unit (3 inputs)",
+        "nb": "Logisk Enhet (3 innganger)"
+      },
+      "class": "other",
+      "capabilities": ["onoff"],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/drivers/logic-unit-3/assets/images/large.png",
+        "small": "/drivers/logic-unit-3/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
         },
         {
-          "id": "invert_final",
-          "type": "checkbox",
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
           "label": {
-            "en": "Invert final result (NOT)",
-            "nb": "Inverter endelig resultat (NOT)"
+            "en": "Formulas (JSON)",
+            "nb": "Formler (JSON)"
           },
-          "value": false
+          "hint": {
+            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"A AND B AND C\",\"expression\":\"A AND B AND C\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*C\",\"expression\":\"(A+B)*C\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A XOR B XOR C\",\"expression\":\"A^B^C\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"!A | B & C\",\"expression\":\"!A | B & C\",\"enabled\":true}]",
+            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"A AND B AND C\",\"expression\":\"A AND B AND C\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*C\",\"expression\":\"(A+B)*C\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A XOR B XOR C\",\"expression\":\"A^B^C\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"!A | B & C\",\"expression\":\"!A | B & C\",\"enabled\":true}]"
+          },
+          "value": "[]"
+        }
+      ]
+    },    
+    {
+      "id": "logic-unit-4",
+      "name": {
+        "en": "Logic Unit (4 inputs)",
+        "nb": "Logisk Enhet (4 innganger)"
+      },
+      "class": "other",
+      "capabilities": ["onoff"],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/drivers/logic-unit-4/assets/images/large.png",
+        "small": "/drivers/logic-unit-4/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "nb": "Formler (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"A AND B XOR C\",\"expression\":\"A AND B XOR C\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*(C+D)\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A XOR (B&C&D)\",\"expression\":\"A^(B&C&D)\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"!(A|B) & (C!=D)\",\"expression\":\"!(A|B) & (C!=D)\",\"enabled\":true}]",
+            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"A AND B XOR C\",\"expression\":\"A AND B XOR C\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*(C+D)\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A XOR (B&C&D)\",\"expression\":\"A^(B&C&D)\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"!(A|B) & (C!=D)\",\"expression\":\"!(A|B) & (C!=D)\",\"enabled\":true}]"
+          },
+          "value": "[]"
+        }
+      ]
+    },    
+    {
+      "id": "logic-unit-5",
+      "name": {
+        "en": "Logic Unit (5 inputs)",
+        "nb": "Logisk Enhet (5 innganger)"
+      },
+      "class": "other",
+      "capabilities": ["onoff"],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/drivers/logic-unit-5/assets/images/large.png",
+        "small": "/drivers/logic-unit-5/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "nb": "Formler (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"All inputs active\",\"expression\":\"A AND B AND C AND D AND E\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*(C+D)*E\",\"expression\":\"(A+B)*(C+D)*E\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Complex XOR\",\"expression\":\"(A^B) AND (C^D^E)\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Mixed operators\",\"expression\":\"!A | (B&C) XOR (D+E)\",\"enabled\":true}]",
+            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Alle innganger aktive\",\"expression\":\"A AND B AND C AND D AND E\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*(C+D)*E\",\"expression\":\"(A+B)*(C+D)*E\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Kompleks XOR\",\"expression\":\"(A^B) AND (C^D^E)\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Blandede operatorer\",\"expression\":\"!A | (B&C) XOR (D+E)\",\"enabled\":true}]"
+          },
+          "value": "[]"
+        }
+      ]
+    },    
+    {
+      "id": "logic-unit-6",
+      "name": {
+        "en": "Logic Unit (6 inputs)",
+        "nb": "Logisk Enhet (6 innganger)"
+      },
+      "class": "other",
+      "capabilities": ["onoff"],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/drivers/logic-unit-6/assets/images/large.png",
+        "small": "/drivers/logic-unit-6/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "nb": "Formler (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"Majority vote\",\"expression\":\"(A&B)|(B&C)|(A&C)|(A&B&C&D&E&F)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Three groups\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Parity check\",\"expression\":\"A^B^C^D^E^F\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Advanced logic\",\"expression\":\"!(A|B) & (C XOR D) | (E&F)\",\"enabled\":true}]",
+            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Flertallsstemme\",\"expression\":\"(A&B)|(B&C)|(A&C)|(A&B&C&D&E&F)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Tre grupper\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Paritetssjekk\",\"expression\":\"A^B^C^D^E^F\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Avansert logikk\",\"expression\":\"!(A|B) & (C XOR D) | (E&F)\",\"enabled\":true}]"
+          },
+          "value": "[]"
+        }
+      ]
+    },    
+    {
+      "id": "logic-unit-7",
+      "name": {
+        "en": "Logic Unit (7 inputs)",
+        "nb": "Logisk Enhet (7 innganger)"
+      },
+      "class": "other",
+      "capabilities": ["onoff"],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/drivers/logic-unit-7/assets/images/large.png",
+        "small": "/drivers/logic-unit-7/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "nb": "Formler (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"All or nothing\",\"expression\":\"(A&B&C&D&E&F&G) | !(A|B|C|D|E|F|G)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Grouped logic\",\"expression\":\"(A+B+C) * (D+E) * (F+G)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Sequential XOR\",\"expression\":\"A^B^C^D^E^F^G\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Priority system\",\"expression\":\"A | (!A&B) | (!A&!B&C) | (D&E&F&G)\",\"enabled\":true}]",
+            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Alt eller ingenting\",\"expression\":\"(A&B&C&D&E&F&G) | !(A|B|C|D|E|F|G)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Grupperte logikk\",\"expression\":\"(A+B+C) * (D+E) * (F+G)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Sekvensiell XOR\",\"expression\":\"A^B^C^D^E^F^G\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Prioritetssystem\",\"expression\":\"A | (!A&B) | (!A&!B&C) | (D&E&F&G)\",\"enabled\":true}]"
+          },
+          "value": "[]"
+        }
+      ]
+    },    
+    {
+      "id": "logic-unit-8",
+      "name": {
+        "en": "Logic Unit (8 inputs)",
+        "nb": "Logisk Enhet (8 innganger)"
+      },
+      "class": "other",
+      "capabilities": ["onoff"],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/drivers/logic-unit-8/assets/images/large.png",
+        "small": "/drivers/logic-unit-8/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "nb": "Formler (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"Complex cascade\",\"expression\":\"(A&B) | (C&D&E) | (F&G&H)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Four pairs\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Even parity\",\"expression\":\"A^B^C^D^E^F^G^H\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Conditional chain\",\"expression\":\"(A&B&C) XOR (D&E) | !(F|G|H)\",\"enabled\":true}]",
+            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Kompleks kaskade\",\"expression\":\"(A&B) | (C&D&E) | (F&G&H)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Fire par\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Jevn paritet\",\"expression\":\"A^B^C^D^E^F^G^H\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Betinget kjede\",\"expression\":\"(A&B&C) XOR (D&E) | !(F|G|H)\",\"enabled\":true}]"
+          },
+          "value": "[]"
+        }
+      ]
+    },    
+    {
+      "id": "logic-unit-9",
+      "name": {
+        "en": "Logic Unit (9 inputs)",
+        "nb": "Logisk Enhet (9 innganger)"
+      },
+      "class": "other",
+      "capabilities": ["onoff"],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/drivers/logic-unit-9/assets/images/large.png",
+        "small": "/drivers/logic-unit-9/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "nb": "Formler (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"Majority 5 of 9\",\"expression\":\"((A&B&C&D&E)|(A&B&C&F&G)|(D&E&H&I))\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Three trios\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"XOR chain 9\",\"expression\":\"A^B^C^D^E^F^G^H^I\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Nested conditions\",\"expression\":\"(A|(B&C)) XOR (D&(E|F|G)) & !(H^I)\",\"enabled\":true}]",
+            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Flertall 5 av 9\",\"expression\":\"((A&B&C&D&E)|(A&B&C&F&G)|(D&E&H&I))\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Tre trioer\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"XOR-kjede 9\",\"expression\":\"A^B^C^D^E^F^G^H^I\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Nestede betingelser\",\"expression\":\"(A|(B&C)) XOR (D&(E|F|G)) & !(H^I)\",\"enabled\":true}]"
+          },
+          "value": "[]"
+        }
+      ]
+    },
+    {
+      "id": "logic-unit-10",
+      "name": {
+        "en": "Logic Unit (10 inputs)",
+        "nb": "Logisk Enhet (10 innganger)"
+      },
+      "class": "other",
+      "capabilities": ["onoff"],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/drivers/logic-unit-10/assets/images/large.png",
+        "small": "/drivers/logic-unit-10/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "nb": "Formler (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"All 10 inputs\",\"expression\":\"A&B&C&D&E&F&G&H&I&J\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Five pairs OR\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)*(I+J)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Full XOR parity\",\"expression\":\"A^B^C^D^E^F^G^H^I^J\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Complex weighted\",\"expression\":\"(A&B&C) | (D&E&F&G) | (H&I&J) XOR !(A|J)\",\"enabled\":true}]",
+            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Alle 10 innganger\",\"expression\":\"A&B&C&D&E&F&G&H&I&J\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Fem par OR\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)*(I+J)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Full XOR-paritet\",\"expression\":\"A^B^C^D^E^F^G^H^I^J\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Kompleks vektet\",\"expression\":\"(A&B&C) | (D&E&F&G) | (H&I&J) XOR !(A|J)\",\"enabled\":true}]"
+          },
+          "value": "[]"
         }
       ]
     }
@@ -87,43 +452,53 @@
   "flow": {
     "triggers": [
       {
-        "id": "output_changed_to_true",
+        "id": "formula_changed_to_true",
         "title": {
-          "en": "Output changed to TRUE",
-          "nb": "Utgang ble SANN"
+          "en": "Formula result changed to TRUE",
+          "nb": "Formelresultat ble SANN"
         },
         "titleFormatted": {
-          "en": "Output for [[device]] changed to TRUE",
-          "nb": "Utgang på [[device]] ble SANN"
+          "en": "Formula [[formula]] changed to TRUE",
+          "nb": "Formel [[formula]] ble SANN"
         },
         "args": [
           {
-            "type": "autocomplete",
+            "type": "device",
             "name": "device",
+            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
             "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
+              "en": "Select Formula",
+              "nb": "Velg Formel"
             }
           }
         ]
       },
       {
-        "id": "output_changed_to_false",
+        "id": "formula_changed_to_false",
         "title": {
-          "en": "Output changed to FALSE",
-          "nb": "Utgang ble USANN"
+          "en": "Formula result changed to FALSE",
+          "nb": "Formelresultat ble USANN"
         },
         "titleFormatted": {
-          "en": "Output for [[device]] changed to FALSE",
-          "nb": "Utgang på [[device]] ble USANN"
+          "en": "Formula [[formula]] changed to FALSE",
+          "nb": "Formel [[formula]] ble USANN"
         },
         "args": [
           {
-            "type": "autocomplete",
+            "type": "device",
             "name": "device",
+            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
             "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
+              "en": "Select Formula",
+              "nb": "Velg Formel"
             }
           }
         ]
@@ -131,14 +506,14 @@
     ],
     "actions": [
       {
-        "id": "evaluate_logic",
+        "id": "set_input_value",
         "title": {
-          "en": "Evaluate logic",
-          "nb": "Evaluer logikk"
+          "en": "Set input value",
+          "nb": "Sett inngangsverdi"
         },
         "titleFormatted": {
-          "en": "Evaluate logic for [[device]]",
-          "nb": "Evaluer logikk for [[device]]"
+          "en": "Set [[input]] to [[value]] on [[device]]",
+          "nb": "Sett [[input]] til [[value]] på [[device]]"
         },
         "args": [
           {
@@ -148,18 +523,46 @@
               "en": "Select Logic Unit",
               "nb": "Velg Logisk Enhet"
             }
+          },
+          {
+            "type": "autocomplete",
+            "name": "input",
+            "placeholder": {
+              "en": "Select Input",
+              "nb": "Velg Inngang"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "true",
+                  "nb": "sann"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "false",
+                  "nb": "usann"
+                }
+              }
+            ]
           }
         ]
       },
       {
-        "id": "set_input_a_true",
+        "id": "set_input_and_evaluate_formula",
         "title": {
-          "en": "Set input A to true",
-          "nb": "Sett input A til sann"
+          "en": "Set input and evaluate formula",
+          "nb": "Sett inngang og evaluer formel"
         },
         "titleFormatted": {
-          "en": "Set input A to true for [[device]]",
-          "nb": "Sett input A til sann for [[device]]"
+          "en": "Set [[input]] to [[value]] and evaluate [[formula]] on [[device]]",
+          "nb": "Sett [[input]] til [[value]] og evaluer [[formula]] på [[device]]"
         },
         "args": [
           {
@@ -169,18 +572,54 @@
               "en": "Select Logic Unit",
               "nb": "Velg Logisk Enhet"
             }
+          },
+          {
+            "type": "autocomplete",
+            "name": "input",
+            "placeholder": {
+              "en": "Select Input",
+              "nb": "Velg Inngang"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "true",
+                  "nb": "sann"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "false",
+                  "nb": "usann"
+                }
+              }
+            ]
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "placeholder": {
+              "en": "Select Formula",
+              "nb": "Velg Formel"
+            }
           }
         ]
       },
       {
-        "id": "set_input_a_false",
+        "id": "evaluate_formula",
         "title": {
-          "en": "Set input A to false",
-          "nb": "Sett input A til usann"
+          "en": "Evaluate formula",
+          "nb": "Evaluer formel"
         },
         "titleFormatted": {
-          "en": "Set input A to false for [[device]]",
-          "nb": "Sett input A til usann for [[device]]"
+          "en": "Evaluate [[formula]] on [[device]]",
+          "nb": "Evaluer [[formula]] på [[device]]"
         },
         "args": [
           {
@@ -190,165 +629,26 @@
               "en": "Select Logic Unit",
               "nb": "Velg Logisk Enhet"
             }
-          }
-        ]
-      },
-      {
-        "id": "set_input_b_true",
-        "title": {
-          "en": "Set input B to true",
-          "nb": "Sett input B til sann"
-        },
-        "titleFormatted": {
-          "en": "Set input B to true for [[device]]",
-          "nb": "Sett input B til sann for [[device]]"
-        },
-        "args": [
+          },
           {
             "type": "autocomplete",
-            "name": "device",
+            "name": "formula",
             "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
+              "en": "Select Formula",
+              "nb": "Velg Formel"
             }
           }
         ]
       },
       {
-        "id": "set_input_b_false",
+        "id": "evaluate_all_formulas",
         "title": {
-          "en": "Set input B to false",
-          "nb": "Sett input B til usann"
+          "en": "Evaluate all formulas",
+          "nb": "Evaluer alle formler"
         },
         "titleFormatted": {
-          "en": "Set input B to false for [[device]]",
-          "nb": "Sett input B til usann for [[device]]"
-        },
-        "args": [
-          {
-            "type": "autocomplete",
-            "name": "device",
-            "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
-            }
-          }
-        ]
-      },
-      {
-        "id": "set_input_c_true",
-        "title": {
-          "en": "Set input C to true",
-          "nb": "Sett input C til sann"
-        },
-        "titleFormatted": {
-          "en": "Set input C to true for [[device]]",
-          "nb": "Sett input C til sann for [[device]]"
-        },
-        "args": [
-          {
-            "type": "autocomplete",
-            "name": "device",
-            "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
-            }
-          }
-        ]
-      },
-      {
-        "id": "set_input_c_false",
-        "title": {
-          "en": "Set input C to false",
-          "nb": "Sett input C til usann"
-        },
-        "titleFormatted": {
-          "en": "Set input C to false for [[device]]",
-          "nb": "Sett input C til usann for [[device]]"
-        },
-        "args": [
-          {
-            "type": "autocomplete",
-            "name": "device",
-            "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
-            }
-          }
-        ]
-      },
-      {
-        "id": "set_input_d_true",
-        "title": {
-          "en": "Set input D to true",
-          "nb": "Sett input D til sann"
-        },
-        "titleFormatted": {
-          "en": "Set input D to true for [[device]]",
-          "nb": "Sett input D til sann for [[device]]"
-        },
-        "args": [
-          {
-            "type": "autocomplete",
-            "name": "device",
-            "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
-            }
-          }
-        ]
-      },
-      {
-        "id": "set_input_d_false",
-        "title": {
-          "en": "Set input D to false",
-          "nb": "Sett input D til usann"
-        },
-        "titleFormatted": {
-          "en": "Set input D to false for [[device]]",
-          "nb": "Sett input D til usann for [[device]]"
-        },
-        "args": [
-          {
-            "type": "autocomplete",
-            "name": "device",
-            "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
-            }
-          }
-        ]
-      },
-      {
-        "id": "set_input_e_true",
-        "title": {
-          "en": "Set input E to true",
-          "nb": "Sett input E til sann"
-        },
-        "titleFormatted": {
-          "en": "Set input E to true for [[device]]",
-          "nb": "Sett input E til sann for [[device]]"
-        },
-        "args": [
-          {
-            "type": "autocomplete",
-            "name": "device",
-            "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
-            }
-          }
-        ]
-      },
-      {
-        "id": "set_input_e_false",
-        "title": {
-          "en": "Set input E to false",
-          "nb": "Sett input E til usann"
-        },
-        "titleFormatted": {
-          "en": "Set input E to false for [[device]]",
-          "nb": "Sett input E til usann for [[device]]"
+          "en": "Evaluate all formulas on [[device]]",
+          "nb": "Evaluer alle formler på [[device]]"
         },
         "args": [
           {
@@ -364,14 +664,14 @@
     ],
     "conditions": [
       {
-        "id": "output_is",
+        "id": "formula_result_is",
         "title": {
-          "en": "The logical result is...",
-          "nb": "Logisk resultat er..."
+          "en": "Formula result is...",
+          "nb": "Formelresultat er..."
         },
         "titleFormatted": {
-          "en": "The logical result for [[device]] is [[what_is]]",
-          "nb": "Logisk resultat for [[device]] er [[what_is]]"
+          "en": "Formula [[formula]] on [[device]] is [[what_is]]",
+          "nb": "Formel [[formula]] på [[device]] er [[what_is]]"
         },
         "args": [
           {
@@ -380,6 +680,14 @@
             "placeholder": {
               "en": "Select Logic Unit",
               "nb": "Velg Logisk Enhet"
+            }
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "placeholder": {
+              "en": "Select Formula",
+              "nb": "Velg Formel"
             }
           },
           {
@@ -405,10 +713,5 @@
         ]
       }
     ]
-  },
-  "images": {
-    "xlarge": "/assets/images/xlarge.jpeg",
-    "large": "/assets/images/large.jpeg",
-    "small": "/assets/images/small.jpeg"
   }
 }
