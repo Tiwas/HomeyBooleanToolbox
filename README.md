@@ -35,6 +35,7 @@ Boolean Toolbox solves this by providing virtual "Logic Unit" devices. Instead o
   - NOT: `!` or `NOT`
 
 ![Advanced Settings](web/advanced_settings.png)
+
 *Configure multiple formulas in JSON format with comprehensive operator support*
 
 ## Installation
