@@ -33,14 +33,14 @@ This app is not currently in the official Homey App Store. You can install it ma
 1. Go to **Settings** &gt; **Apps** in your Homey app.
 2. Click the **(+) Add app** button.
 3. Click on **Custom URL**.
-4. Enter the URL to the `app.json` file from this repository's latest release. For example:`https://github.com/Tiwas/HomeyBooleanToolbox/main/no.tiwas.booleantoolbox/app.json`
+4. Enter the URL to the `app.json` file from this repository's latest release. For example:`https://github.com/Tiwas/HomeyBooleanToolbox/blob/main/no.tiwas.booleantoolbox/app.json`
 5. Follow the on-screen instructions to install.
 
 ### Method 2: For Developers
 
 If you have the Homey CLI installed, you can clone this repository and run the app locally.
 
-`https://raw.githubusercontent.com/YOUR_USERNAME/Boolean-Toolbox/main/no.tiwas.booleantoolbox/app.json`
+`https://github.com/Tiwas/HomeyBooleanToolbox/blob/main/no.tiwas.booleantoolbox/app.json`
 
 ## How to Use
 
