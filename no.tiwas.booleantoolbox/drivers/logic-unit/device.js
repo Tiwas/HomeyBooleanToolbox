@@ -34,7 +34,6 @@ module.exports = class LogicUnitDevice extends Homey.Device {
   async setInputStateAndEvaluate(inputId, value) {
     this.log(`Input '${inputId.toUpperCase()}' set to: ${value}.`);
     this.inputStates[inputId] = value;
-    // Note: We don't auto-evaluate here anymore - user must use "Evaluate logic" card
   }
 
   // Evaluate and return result (for use with "Evaluate logic" action card)
