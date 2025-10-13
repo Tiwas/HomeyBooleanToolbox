@@ -13,5 +13,8 @@
   },
   "1.1.0": {
     "en": "MAJOR UPDATE: Each formula now has its own isolated input state! New 'First Impression' mode locks inputs at first value. Added timeout detection and manual re-evaluation. ⚠️ Breaking changes - recommended to create new devices."
+  },
+  "1.1.1": {
+    "en": "Machine translated languages"
   }
 }
