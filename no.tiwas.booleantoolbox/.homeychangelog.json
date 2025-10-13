@@ -9,6 +9,9 @@
     "en": "It should now actually work..."
   },
   "1.0.0": {
-    "en": "Support for 10 inputs, some awesome cards to deal with rapidle changing inputs and much more!"
+    "en": "Support for 10 inputs, some awesome cards to deal with rapidly changing inputs and much more!"
+  },
+  "1.1.0": {
+    "en": "MAJOR UPDATE: Each formula now has its own isolated input state! New 'First Impression' mode locks inputs at first value. Added timeout detection and manual re-evaluation. ⚠️ Breaking changes - recommended to create new devices."
   }
 }

@@ -15,8 +15,8 @@ module.exports = class LogicUnitDevice extends Homey.Device {
     this.numInputs = this.getData().numInputs || 5;
     this.availableInputs = this.getAvailableInputIds();
     
-    this.initializeState();
     this.initializeFormulas();
+    this.startTimeoutChecks();
   }
 
   getAvailableInputIds() {
@@ -32,7 +32,31 @@ module.exports = class LogicUnitDevice extends Homey.Device {
   initializeFormulas() {
     const settings = this.getSettings();
     try {
-      this.formulas = settings.formulas ? JSON.parse(settings.formulas) : [];
+      const formulasData = settings.formulas ? JSON.parse(settings.formulas) : [];
+      
+      // Initialize each formula with its own input state and timeout
+      this.formulas = formulasData.map(f => ({
+        id: f.id,
+        name: f.name,
+        expression: f.expression,
+        enabled: f.enabled !== false,
+        timeout: f.timeout || 0, // Timeout in seconds, 0 = no timeout
+        firstImpression: f.firstImpression !== false && f.firstImpression !== 0, // Default true, supports 1/0
+        inputStates: {},
+        lockedInputs: {}, // Track which inputs are locked in first impression mode
+        lastInputTime: null,
+        result: null,
+        timedOut: false
+      }));
+      
+      // Initialize input states for each formula
+      this.formulas.forEach(formula => {
+        this.availableInputs.forEach(id => {
+          formula.inputStates[id] = 'undefined';
+          formula.lockedInputs[id] = false;
+        });
+      });
+      
     } catch (e) {
       this.error('Failed to parse formulas:', e);
       this.formulas = [];
@@ -40,12 +64,26 @@ module.exports = class LogicUnitDevice extends Homey.Device {
     
     // Ensure we have at least one default formula
     if (this.formulas.length === 0) {
-      this.formulas = [{
+      const defaultFormula = {
         id: 'formula_1',
         name: 'Formula 1',
         expression: this.getDefaultExpression(),
-        enabled: true
-      }];
+        enabled: true,
+        timeout: 0,
+        firstImpression: true,
+        inputStates: {},
+        lockedInputs: {},
+        lastInputTime: null,
+        result: null,
+        timedOut: false
+      };
+      
+      this.availableInputs.forEach(id => {
+        defaultFormula.inputStates[id] = 'undefined';
+        defaultFormula.lockedInputs[id] = false;
+      });
+      
+      this.formulas = [defaultFormula];
     }
   }
 
@@ -71,16 +109,6 @@ module.exports = class LogicUnitDevice extends Homey.Device {
       id: input.toLowerCase(),
       name: input
     }));
-  }
-
-  // Reset all inputs to 'undefined'
-  initializeState() {
-    this.inputStates = {};
-    this.formulaResults = {}; // Store results per formula
-    this.availableInputs.forEach(id => {
-      this.inputStates[id] = 'undefined';
-    });
-    this.log(`All ${this.numInputs} input states reset to undefined.`);
   }
 
   // Validate boolean expression
@@ -143,30 +171,53 @@ module.exports = class LogicUnitDevice extends Homey.Device {
     return matches ? [...new Set(matches.map(char => char.toUpperCase()))] : [];
   }
 
-  // Set input value and evaluate specific formula
-  async setInputAndEvaluateFormula(inputId, value, formulaId) {
-    this.log(`Input '${inputId.toUpperCase()}' set to: ${value} for formula '${formulaId}'.`);
-    this.inputStates[inputId] = value;
+  // Set input value for a specific formula
+  async setInputForFormula(formulaId, inputId, value) {
+    const formula = this.formulas.find(f => f.id === formulaId);
+    if (!formula) {
+      this.log(`Formula '${formulaId}' not found.`);
+      return null;
+    }
     
-    const result = await this.evaluateFormula(formulaId);
-    return result;
-  }
-
-  // Set input value and evaluate all formulas
-  async setInputStateAndEvaluate(inputId, value) {
-    this.log(`Input '${inputId.toUpperCase()}' set to: ${value}.`);
-    this.inputStates[inputId] = value;
+    // Check if input is already locked in first impression mode
+    if (formula.firstImpression && formula.lockedInputs[inputId]) {
+      this.log(`Input '${inputId.toUpperCase()}' is locked for formula '${formula.name}' (first impression mode) - ignoring update`);
+      return formula.result;
+    }
     
-    // Evaluate all enabled formulas
-    await this.evaluateAllFormulas();
+    this.log(`Setting input '${inputId.toUpperCase()}' to ${value} for formula '${formula.name}'${formula.firstImpression ? ' (first impression - locking)' : ''}`);
+    
+    formula.inputStates[inputId] = value;
+    formula.timedOut = false;
+    
+    // Lock input in first impression mode
+    if (formula.firstImpression && value !== 'undefined') {
+      formula.lockedInputs[inputId] = true;
+      this.log(`🔒 Input '${inputId.toUpperCase()}' locked at value ${value}`);
+    }
+    
+    // Update last input time for timeout tracking
+    if (value !== 'undefined') {
+      formula.lastInputTime = Date.now();
+    }
+    
+    return await this.evaluateFormula(formulaId);
   }
 
   // Evaluate specific formula by ID
-  async evaluateFormula(formulaId) {
+  async evaluateFormula(formulaId, resetLocks = false) {
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula || !formula.enabled) {
       this.log(`Formula '${formulaId}' not found or disabled.`);
       return null;
+    }
+
+    // Reset locks if requested (for manual re-evaluation)
+    if (resetLocks && formula.firstImpression) {
+      this.availableInputs.forEach(id => {
+        formula.lockedInputs[id] = false;
+      });
+      this.log(`🔓 Unlocked all inputs for formula '${formula.name}'`);
     }
 
     const expression = formula.expression;
@@ -180,17 +231,17 @@ module.exports = class LogicUnitDevice extends Homey.Device {
 
     // Check if all REQUIRED inputs have a value
     const allInputsDefined = requiredInputs.every(id => 
-      this.inputStates[id.toLowerCase()] !== 'undefined'
+      formula.inputStates[id.toLowerCase()] !== 'undefined'
     );
     
     if (!allInputsDefined) {
-      this.log(`Formula '${formula.name}': Waiting for more inputs. Required: [${requiredInputs.join(', ')}]`);
+      this.log(`Formula '${formula.name}': Waiting for inputs. Required: [${requiredInputs.join(', ')}]`);
       return null;
     }
 
     const values = {};
     this.availableInputs.forEach(id => {
-      values[id.toUpperCase()] = this.inputStates[id];
+      values[id.toUpperCase()] = formula.inputStates[id];
     });
 
     this.log(`Formula '${formula.name}': Evaluating with inputs:`, values);
@@ -217,7 +268,8 @@ module.exports = class LogicUnitDevice extends Homey.Device {
       const result = !!evaluate();
 
       this.log(`✅ Formula '${formula.name}' result: ${result}`);
-      this.formulaResults[formulaId] = result;
+      formula.result = result;
+      formula.timedOut = false;
       
       // Trigger flow cards for this formula
       const triggerData = {
@@ -249,20 +301,118 @@ module.exports = class LogicUnitDevice extends Homey.Device {
 
   // Evaluate all enabled formulas
   async evaluateAllFormulas() {
+    this.log('Re-evaluating all formulas (resetting locks)...');
+    
+    const results = [];
     for (const formula of this.formulas) {
       if (formula.enabled) {
-        await this.evaluateFormula(formula.id);
+        // Reset locks for manual re-evaluation
+        this.availableInputs.forEach(id => {
+          formula.lockedInputs[id] = false;
+        });
+        this.log(`🔓 Unlocked all inputs for formula '${formula.name}'`);
+        
+        const result = await this.evaluateFormula(formula.id);
+        results.push({ id: formula.id, name: formula.name, result });
       }
     }
+    
+    this.log(`Evaluated ${results.length} formulas`);
+    return results;
   }
 
   // Get formula result
   getFormulaResult(formulaId) {
-    return this.formulaResults[formulaId];
+    const formula = this.formulas.find(f => f.id === formulaId);
+    if (!formula) {
+      this.log(`getFormulaResult: Formula '${formulaId}' not found`);
+      return null;
+    }
+    
+    this.log(`getFormulaResult: Formula '${formula.name}' (${formulaId}) result = ${formula.result} (type: ${typeof formula.result})`);
+    return formula ? formula.result : null;
+  }
+  
+  // Check if formula has timed out
+  hasFormulaTimedOut(formulaId) {
+    const formula = this.formulas.find(f => f.id === formulaId);
+    if (!formula) return false;
+    return formula.timedOut;
+  }
+  
+  // Start timeout checks
+  startTimeoutChecks() {
+    // Check every second for timeouts
+    this.timeoutInterval = setInterval(() => {
+      this.checkTimeouts();
+    }, 1000);
+  }
+  
+  // Check all formulas for timeouts
+  checkTimeouts() {
+    const now = Date.now();
+    
+    this.formulas.forEach(formula => {
+      // Skip if no timeout configured (0, null, undefined = infinite)
+      if (!formula.timeout || formula.timeout <= 0) return;
+      
+      // Skip if formula already timed out or disabled
+      if (formula.timedOut || !formula.enabled) return;
+      
+      // Skip if no inputs have been set yet
+      if (!formula.lastInputTime) return;
+      
+      // Check if at least one input is set
+      const hasAnyInput = this.availableInputs.some(id => 
+        formula.inputStates[id] !== 'undefined'
+      );
+      
+      if (!hasAnyInput) return;
+      
+      // Check if all required inputs are set
+      const requiredInputs = this.parseExpression(formula.expression);
+      const allInputsDefined = requiredInputs.every(id => 
+        formula.inputStates[id.toLowerCase()] !== 'undefined'
+      );
+      
+      // If all inputs are defined, no timeout needed
+      if (allInputsDefined) return;
+      
+      // Check if timeout has expired
+      const timeoutMs = formula.timeout * 1000;
+      const elapsed = now - formula.lastInputTime;
+      
+      if (elapsed >= timeoutMs) {
+        this.log(`⏱️ Formula '${formula.name}' timed out after ${formula.timeout}s`);
+        formula.timedOut = true;
+        
+        // Trigger timeout event
+        const triggerData = {
+          formula: {
+            id: formula.id,
+            name: formula.name
+          }
+        };
+        
+        const state = {
+          formulaId: formula.id
+        };
+        
+        this.homey.flow.getDeviceTriggerCard('formula_timeout')
+          .trigger(this, triggerData, state)
+          .catch(err => this.error('Error triggering timeout:', err));
+      }
+    });
   }
 
   async onSettings({ oldSettings, newSettings, changedKeys }) {
     this.log('Settings changed. Reinitializing formulas.');
+    
+    // Stop old timeout checks
+    if (this.timeoutInterval) {
+      clearInterval(this.timeoutInterval);
+    }
+    
     this.initializeFormulas();
     
     // Validate all formulas if they changed
@@ -274,9 +424,15 @@ module.exports = class LogicUnitDevice extends Homey.Device {
         }
       }
     }
+    
+    // Restart timeout checks
+    this.startTimeoutChecks();
   }
 
   async onDeleted() {
     this.log('Logic Unit has been deleted');
+    if (this.timeoutInterval) {
+      clearInterval(this.timeoutInterval);
+    }
   }
 };

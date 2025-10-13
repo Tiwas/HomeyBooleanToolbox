@@ -1,15 +1,16 @@
 {
   "id": "no.tiwas.booleantoolbox",
-  "version": "1.0.0",
+  "support": "https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906",
+  "version": "1.1.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
     "en": "Boolean Toolbox",
-    "nb": "Boolean Toolbox"
+    "no": "Boolean Toolbox"
   },
   "description": {
     "en": "Create advanced, state-aware logic units with multiple formulas.",
-    "nb": "Lag avanserte, tilstandsbevisste logiske enheter med flere formler."
+    "no": "Lag avanserte, tilstandsbevisste logiske enheter med flere formler."
   },
   "category": "tools",
   "brandColor": "#FF0000",
@@ -38,7 +39,7 @@
       "id": "logic-unit-2",
       "name": {
         "en": "Logic Unit (2 inputs)",
-        "nb": "Logisk Enhet (2 innganger)"
+        "no": "Logisk Enhet (2 innganger)"
       },
       "class": "other",
       "capabilities": ["onoff"],
@@ -70,11 +71,11 @@
           "type": "textarea",
           "label": {
             "en": "Formulas (JSON)",
-            "nb": "Formler (JSON)"
+            "no": "Formler (JSON)"
           },
           "hint": {
-            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"A AND B\",\"expression\":\"A AND B\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"A * B\",\"expression\":\"A * B\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A + B\",\"expression\":\"A + B\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"A XOR B\",\"expression\":\"A ^ B\",\"enabled\":true},{\"id\":\"f5\",\"name\":\"NOT A\",\"expression\":\"!A\",\"enabled\":true}]",
-            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"A AND B\",\"expression\":\"A AND B\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"A * B\",\"expression\":\"A * B\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A + B\",\"expression\":\"A + B\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"A XOR B\",\"expression\":\"A ^ B\",\"enabled\":true},{\"id\":\"f5\",\"name\":\"NOT A\",\"expression\":\"!A\",\"enabled\":true}]"
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"My Formula\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus"
           },
           "value": "[]"
         }
@@ -84,7 +85,7 @@
       "id": "logic-unit-3",
       "name": {
         "en": "Logic Unit (3 inputs)",
-        "nb": "Logisk Enhet (3 innganger)"
+        "no": "Logisk Enhet (3 innganger)"
       },
       "class": "other",
       "capabilities": ["onoff"],
@@ -116,21 +117,21 @@
           "type": "textarea",
           "label": {
             "en": "Formulas (JSON)",
-            "nb": "Formler (JSON)"
+            "no": "Formler (JSON)"
           },
           "hint": {
-            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"A AND B AND C\",\"expression\":\"A AND B AND C\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*C\",\"expression\":\"(A+B)*C\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A XOR B XOR C\",\"expression\":\"A^B^C\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"!A | B & C\",\"expression\":\"!A | B & C\",\"enabled\":true}]",
-            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"A AND B AND C\",\"expression\":\"A AND B AND C\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*C\",\"expression\":\"(A+B)*C\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A XOR B XOR C\",\"expression\":\"A^B^C\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"!A | B & C\",\"expression\":\"!A | B & C\",\"enabled\":true}]"
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"My Formula\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus"
           },
           "value": "[]"
         }
       ]
-    },    
+    },
     {
       "id": "logic-unit-4",
       "name": {
         "en": "Logic Unit (4 inputs)",
-        "nb": "Logisk Enhet (4 innganger)"
+        "no": "Logisk Enhet (4 innganger)"
       },
       "class": "other",
       "capabilities": ["onoff"],
@@ -162,21 +163,21 @@
           "type": "textarea",
           "label": {
             "en": "Formulas (JSON)",
-            "nb": "Formler (JSON)"
+            "no": "Formler (JSON)"
           },
           "hint": {
-            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"A AND B XOR C\",\"expression\":\"A AND B XOR C\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*(C+D)\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A XOR (B&C&D)\",\"expression\":\"A^(B&C&D)\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"!(A|B) & (C!=D)\",\"expression\":\"!(A|B) & (C!=D)\",\"enabled\":true}]",
-            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"A AND B XOR C\",\"expression\":\"A AND B XOR C\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*(C+D)\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"A XOR (B&C&D)\",\"expression\":\"A^(B&C&D)\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"!(A|B) & (C!=D)\",\"expression\":\"!(A|B) & (C!=D)\",\"enabled\":true}]"
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"My Formula\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus"
           },
           "value": "[]"
         }
       ]
-    },    
+    },
     {
       "id": "logic-unit-5",
       "name": {
         "en": "Logic Unit (5 inputs)",
-        "nb": "Logisk Enhet (5 innganger)"
+        "no": "Logisk Enhet (5 innganger)"
       },
       "class": "other",
       "capabilities": ["onoff"],
@@ -208,21 +209,21 @@
           "type": "textarea",
           "label": {
             "en": "Formulas (JSON)",
-            "nb": "Formler (JSON)"
+            "no": "Formler (JSON)"
           },
           "hint": {
-            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"All inputs active\",\"expression\":\"A AND B AND C AND D AND E\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*(C+D)*E\",\"expression\":\"(A+B)*(C+D)*E\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Complex XOR\",\"expression\":\"(A^B) AND (C^D^E)\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Mixed operators\",\"expression\":\"!A | (B&C) XOR (D+E)\",\"enabled\":true}]",
-            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Alle innganger aktive\",\"expression\":\"A AND B AND C AND D AND E\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"(A+B)*(C+D)*E\",\"expression\":\"(A+B)*(C+D)*E\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Kompleks XOR\",\"expression\":\"(A^B) AND (C^D^E)\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Blandede operatorer\",\"expression\":\"!A | (B&C) XOR (D+E)\",\"enabled\":true}]"
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"All active\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Alle aktive\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus"
           },
           "value": "[]"
         }
       ]
-    },    
+    },
     {
       "id": "logic-unit-6",
       "name": {
         "en": "Logic Unit (6 inputs)",
-        "nb": "Logisk Enhet (6 innganger)"
+        "no": "Logisk Enhet (6 innganger)"
       },
       "class": "other",
       "capabilities": ["onoff"],
@@ -254,21 +255,21 @@
           "type": "textarea",
           "label": {
             "en": "Formulas (JSON)",
-            "nb": "Formler (JSON)"
+            "no": "Formler (JSON)"
           },
           "hint": {
-            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"Majority vote\",\"expression\":\"(A&B)|(B&C)|(A&C)|(A&B&C&D&E&F)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Three groups\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Parity check\",\"expression\":\"A^B^C^D^E^F\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Advanced logic\",\"expression\":\"!(A|B) & (C XOR D) | (E&F)\",\"enabled\":true}]",
-            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Flertallsstemme\",\"expression\":\"(A&B)|(B&C)|(A&C)|(A&B&C&D&E&F)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Tre grupper\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Paritetssjekk\",\"expression\":\"A^B^C^D^E^F\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Avansert logikk\",\"expression\":\"!(A|B) & (C XOR D) | (E&F)\",\"enabled\":true}]"
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Three groups\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Tre grupper\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus"
           },
           "value": "[]"
         }
       ]
-    },    
+    },
     {
       "id": "logic-unit-7",
       "name": {
         "en": "Logic Unit (7 inputs)",
-        "nb": "Logisk Enhet (7 innganger)"
+        "no": "Logisk Enhet (7 innganger)"
       },
       "class": "other",
       "capabilities": ["onoff"],
@@ -300,21 +301,21 @@
           "type": "textarea",
           "label": {
             "en": "Formulas (JSON)",
-            "nb": "Formler (JSON)"
+            "no": "Formler (JSON)"
           },
           "hint": {
-            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"All or nothing\",\"expression\":\"(A&B&C&D&E&F&G) | !(A|B|C|D|E|F|G)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Grouped logic\",\"expression\":\"(A+B+C) * (D+E) * (F+G)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Sequential XOR\",\"expression\":\"A^B^C^D^E^F^G\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Priority system\",\"expression\":\"A | (!A&B) | (!A&!B&C) | (D&E&F&G)\",\"enabled\":true}]",
-            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Alt eller ingenting\",\"expression\":\"(A&B&C&D&E&F&G) | !(A|B|C|D|E|F|G)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Grupperte logikk\",\"expression\":\"(A+B+C) * (D+E) * (F+G)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Sekvensiell XOR\",\"expression\":\"A^B^C^D^E^F^G\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Prioritetssystem\",\"expression\":\"A | (!A&B) | (!A&!B&C) | (D&E&F&G)\",\"enabled\":true}]"
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Grouped\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Grupperte\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus"
           },
           "value": "[]"
         }
       ]
-    },    
+    },
     {
       "id": "logic-unit-8",
       "name": {
         "en": "Logic Unit (8 inputs)",
-        "nb": "Logisk Enhet (8 innganger)"
+        "no": "Logisk Enhet (8 innganger)"
       },
       "class": "other",
       "capabilities": ["onoff"],
@@ -346,21 +347,21 @@
           "type": "textarea",
           "label": {
             "en": "Formulas (JSON)",
-            "nb": "Formler (JSON)"
+            "no": "Formler (JSON)"
           },
           "hint": {
-            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"Complex cascade\",\"expression\":\"(A&B) | (C&D&E) | (F&G&H)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Four pairs\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Even parity\",\"expression\":\"A^B^C^D^E^F^G^H\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Conditional chain\",\"expression\":\"(A&B&C) XOR (D&E) | !(F|G|H)\",\"enabled\":true}]",
-            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Kompleks kaskade\",\"expression\":\"(A&B) | (C&D&E) | (F&G&H)\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Fire par\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Jevn paritet\",\"expression\":\"A^B^C^D^E^F^G^H\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Betinget kjede\",\"expression\":\"(A&B&C) XOR (D&E) | !(F|G|H)\",\"enabled\":true}]"
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Four pairs\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Fire par\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus"
           },
           "value": "[]"
         }
       ]
-    },    
+    },
     {
       "id": "logic-unit-9",
       "name": {
         "en": "Logic Unit (9 inputs)",
-        "nb": "Logisk Enhet (9 innganger)"
+        "no": "Logisk Enhet (9 innganger)"
       },
       "class": "other",
       "capabilities": ["onoff"],
@@ -392,11 +393,11 @@
           "type": "textarea",
           "label": {
             "en": "Formulas (JSON)",
-            "nb": "Formler (JSON)"
+            "no": "Formler (JSON)"
           },
           "hint": {
-            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"Majority 5 of 9\",\"expression\":\"((A&B&C&D&E)|(A&B&C&F&G)|(D&E&H&I))\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Three trios\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"XOR chain 9\",\"expression\":\"A^B^C^D^E^F^G^H^I\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Nested conditions\",\"expression\":\"(A|(B&C)) XOR (D&(E|F|G)) & !(H^I)\",\"enabled\":true}]",
-            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Flertall 5 av 9\",\"expression\":\"((A&B&C&D&E)|(A&B&C&F&G)|(D&E&H&I))\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Tre trioer\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"XOR-kjede 9\",\"expression\":\"A^B^C^D^E^F^G^H^I\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Nestede betingelser\",\"expression\":\"(A|(B&C)) XOR (D&(E|F|G)) & !(H^I)\",\"enabled\":true}]"
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Three trios\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Tre trioer\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus"
           },
           "value": "[]"
         }
@@ -406,7 +407,7 @@
       "id": "logic-unit-10",
       "name": {
         "en": "Logic Unit (10 inputs)",
-        "nb": "Logisk Enhet (10 innganger)"
+        "no": "Logisk Enhet (10 innganger)"
       },
       "class": "other",
       "capabilities": ["onoff"],
@@ -438,11 +439,11 @@
           "type": "textarea",
           "label": {
             "en": "Formulas (JSON)",
-            "nb": "Formler (JSON)"
+            "no": "Formler (JSON)"
           },
           "hint": {
-            "en": "JSON array. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Examples:\n[{\"id\":\"f1\",\"name\":\"All 10 inputs\",\"expression\":\"A&B&C&D&E&F&G&H&I&J\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Five pairs OR\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)*(I+J)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Full XOR parity\",\"expression\":\"A^B^C^D^E^F^G^H^I^J\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Complex weighted\",\"expression\":\"(A&B&C) | (D&E&F&G) | (H&I&J) XOR !(A|J)\",\"enabled\":true}]",
-            "nb": "JSON-array. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!). Eksempler:\n[{\"id\":\"f1\",\"name\":\"Alle 10 innganger\",\"expression\":\"A&B&C&D&E&F&G&H&I&J\",\"enabled\":true},{\"id\":\"f2\",\"name\":\"Fem par OR\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)*(I+J)\",\"enabled\":true},{\"id\":\"f3\",\"name\":\"Full XOR-paritet\",\"expression\":\"A^B^C^D^E^F^G^H^I^J\",\"enabled\":true},{\"id\":\"f4\",\"name\":\"Kompleks vektet\",\"expression\":\"(A&B&C) | (D&E&F&G) | (H&I&J) XOR !(A|J)\",\"enabled\":true}]"
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Five pairs\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)*(I+J)\",\"enabled\":true,\"timeout\":240,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Fem par\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)*(I+J)\",\"enabled\":true,\"timeout\":240,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus"
           },
           "value": "[]"
         }
@@ -455,11 +456,11 @@
         "id": "formula_changed_to_true",
         "title": {
           "en": "Formula result changed to TRUE",
-          "nb": "Formelresultat ble SANN"
+          "no": "Formelresultat ble SANN"
         },
         "titleFormatted": {
           "en": "Formula [[formula]] changed to TRUE",
-          "nb": "Formel [[formula]] ble SANN"
+          "no": "Formel [[formula]] ble SANN"
         },
         "args": [
           {
@@ -472,7 +473,7 @@
             "name": "formula",
             "placeholder": {
               "en": "Select Formula",
-              "nb": "Velg Formel"
+              "no": "Velg Formel"
             }
           }
         ]
@@ -481,11 +482,11 @@
         "id": "formula_changed_to_false",
         "title": {
           "en": "Formula result changed to FALSE",
-          "nb": "Formelresultat ble USANN"
+          "no": "Formelresultat ble USANN"
         },
         "titleFormatted": {
           "en": "Formula [[formula]] changed to FALSE",
-          "nb": "Formel [[formula]] ble USANN"
+          "no": "Formel [[formula]] ble USANN"
         },
         "args": [
           {
@@ -498,7 +499,33 @@
             "name": "formula",
             "placeholder": {
               "en": "Select Formula",
-              "nb": "Velg Formel"
+              "no": "Velg Formel"
+            }
+          }
+        ]
+      },
+      {
+        "id": "formula_timeout",
+        "title": {
+          "en": "Formula timed out",
+          "no": "Formel fikk timeout"
+        },
+        "titleFormatted": {
+          "en": "Formula [[formula]] timed out",
+          "no": "Formel [[formula]] fikk timeout"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "placeholder": {
+              "en": "Select Formula",
+              "no": "Velg Formel"
             }
           }
         ]
@@ -508,106 +535,54 @@
       {
         "id": "set_input_value",
         "title": {
-          "en": "Set input value",
-          "nb": "Sett inngangsverdi"
+          "en": "Set input value for formula",
+          "no": "Sett inngangsverdi for formel"
         },
         "titleFormatted": {
-          "en": "Set [[input]] to [[value]] on [[device]]",
-          "nb": "Sett [[input]] til [[value]] på [[device]]"
+          "en": "Set [[input]] to [[value]] for [[formula]]",
+          "no": "Sett [[input]] til [[value]] for [[formula]]"
         },
         "args": [
           {
-            "type": "autocomplete",
+            "type": "device",
             "name": "device",
-            "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
-            }
-          },
-          {
-            "type": "autocomplete",
-            "name": "input",
-            "placeholder": {
-              "en": "Select Input",
-              "nb": "Velg Inngang"
-            }
-          },
-          {
-            "name": "value",
-            "type": "dropdown",
-            "values": [
-              {
-                "id": "true",
-                "label": {
-                  "en": "true",
-                  "nb": "sann"
-                }
-              },
-              {
-                "id": "false",
-                "label": {
-                  "en": "false",
-                  "nb": "usann"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "set_input_and_evaluate_formula",
-        "title": {
-          "en": "Set input and evaluate formula",
-          "nb": "Sett inngang og evaluer formel"
-        },
-        "titleFormatted": {
-          "en": "Set [[input]] to [[value]] and evaluate [[formula]] on [[device]]",
-          "nb": "Sett [[input]] til [[value]] og evaluer [[formula]] på [[device]]"
-        },
-        "args": [
-          {
-            "type": "autocomplete",
-            "name": "device",
-            "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
-            }
-          },
-          {
-            "type": "autocomplete",
-            "name": "input",
-            "placeholder": {
-              "en": "Select Input",
-              "nb": "Velg Inngang"
-            }
-          },
-          {
-            "name": "value",
-            "type": "dropdown",
-            "values": [
-              {
-                "id": "true",
-                "label": {
-                  "en": "true",
-                  "nb": "sann"
-                }
-              },
-              {
-                "id": "false",
-                "label": {
-                  "en": "false",
-                  "nb": "usann"
-                }
-              }
-            ]
+            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
           },
           {
             "type": "autocomplete",
             "name": "formula",
             "placeholder": {
               "en": "Select Formula",
-              "nb": "Velg Formel"
+              "no": "Velg Formel"
             }
+          },
+          {
+            "type": "autocomplete",
+            "name": "input",
+            "placeholder": {
+              "en": "Select Input",
+              "no": "Velg Inngang"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "true",
+                  "no": "sann"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "false",
+                  "no": "usann"
+                }
+              }
+            ]
           }
         ]
       },
@@ -615,27 +590,24 @@
         "id": "evaluate_formula",
         "title": {
           "en": "Evaluate formula",
-          "nb": "Evaluer formel"
+          "no": "Evaluer formel"
         },
         "titleFormatted": {
-          "en": "Evaluate [[formula]] on [[device]]",
-          "nb": "Evaluer [[formula]] på [[device]]"
+          "en": "Evaluate [[formula]]",
+          "no": "Evaluer [[formula]]"
         },
         "args": [
           {
-            "type": "autocomplete",
+            "type": "device",
             "name": "device",
-            "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
-            }
+            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
           },
           {
             "type": "autocomplete",
             "name": "formula",
             "placeholder": {
               "en": "Select Formula",
-              "nb": "Velg Formel"
+              "no": "Velg Formel"
             }
           }
         ]
@@ -643,21 +615,14 @@
       {
         "id": "evaluate_all_formulas",
         "title": {
-          "en": "Evaluate all formulas",
-          "nb": "Evaluer alle formler"
-        },
-        "titleFormatted": {
-          "en": "Evaluate all formulas on [[device]]",
-          "nb": "Evaluer alle formler på [[device]]"
+          "en": "Re-evaluate all formulas",
+          "no": "Re-evaluer alle formler"
         },
         "args": [
           {
-            "type": "autocomplete",
+            "type": "device",
             "name": "device",
-            "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
-            }
+            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
           }
         ]
       }
@@ -667,27 +632,24 @@
         "id": "formula_result_is",
         "title": {
           "en": "Formula result is...",
-          "nb": "Formelresultat er..."
+          "no": "Formelresultat er..."
         },
         "titleFormatted": {
-          "en": "Formula [[formula]] on [[device]] is [[what_is]]",
-          "nb": "Formel [[formula]] på [[device]] er [[what_is]]"
+          "en": "Formula [[formula]] is [[what_is]]",
+          "no": "Formel [[formula]] er [[what_is]]"
         },
         "args": [
           {
-            "type": "autocomplete",
+            "type": "device",
             "name": "device",
-            "placeholder": {
-              "en": "Select Logic Unit",
-              "nb": "Velg Logisk Enhet"
-            }
+            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
           },
           {
             "type": "autocomplete",
             "name": "formula",
             "placeholder": {
               "en": "Select Formula",
-              "nb": "Velg Formel"
+              "no": "Velg Formel"
             }
           },
           {
@@ -698,17 +660,43 @@
                 "id": "true",
                 "label": {
                   "en": "true",
-                  "nb": "sann"
+                  "no": "sann"
                 }
               },
               {
                 "id": "false",
                 "label": {
                   "en": "false",
-                  "nb": "usann"
+                  "no": "usann"
                 }
               }
             ]
+          }
+        ]
+      },
+      {
+        "id": "formula_has_timed_out",
+        "title": {
+          "en": "Formula has timed out",
+          "no": "Formel har fått timeout"
+        },
+        "titleFormatted": {
+          "en": "Formula [[formula]] has timed out",
+          "no": "Formel [[formula]] har fått timeout"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "placeholder": {
+              "en": "Select Formula",
+              "no": "Velg Formel"
+            }
           }
         ]
       }
