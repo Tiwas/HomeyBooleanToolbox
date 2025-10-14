@@ -2,7 +2,7 @@
 
 Create advanced, state-aware logic units with multiple formulas and intelligent input handling.
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
+[![Version](https://img.shields.io/badge/version-1.1.1-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
 [![Homey](https://img.shields.io/badge/Homey-5.0+-green.svg)](https://homey.app)
 
 ## 🎉 What's New in v1.1.0
