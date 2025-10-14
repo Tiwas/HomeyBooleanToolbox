@@ -458,7 +458,11 @@ If you find this app useful, consider supporting development:
 
 ## 📝 Changelog
 
-### v1.1.0 (Current)
+### v1.1.1 (Current)
+- 🌍 Added machine-generated translations for multiple languages
+- 📝 Minor documentation updates
+
+### v1.1.0
 - ✨ Each formula now has isolated input state
 - ✨ New "First Impression" mode (lock inputs at first value)
 - ✨ Timeout detection per formula
@@ -490,4 +494,4 @@ This app is provided as-is. Use at your own risk.
 
 ---
 
-**Boolean Toolbox v1.1.0** - Create smarter automations with advanced boolean logic! 🚀
+**Boolean Toolbox v1.1.1** - Create smarter automations with advanced boolean logic! 🚀
