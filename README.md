@@ -5,6 +5,14 @@ Create advanced, state-aware logic units with multiple formulas and intelligent 
 [![Version](https://img.shields.io/badge/version-1.1.1-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
 [![Homey](https://img.shields.io/badge/Homey-5.0+-green.svg)](https://homey.app)
 
+## 🛠️ Interactive Tools
+
+**🎮 [Boolean Logic Emulator](https://tiwas.github.io/HomeyBooleanToolbox/emulator.html)** - Test your expressions interactively with live truth tables!
+
+**🔧 [Formula Builder](https://tiwas.github.io/HomeyBooleanToolbox/formula-builder.html)** - Build and validate formulas with a visual editor!
+
+---
+
 ## 🎉 What's New in v1.1.0
 
 ### 🔥 MAJOR UPDATE - Breaking Changes
@@ -118,6 +126,8 @@ Go to the device settings and add formulas in JSON format:
 ]
 ```
 
+**💡 Tip:** Use the [Formula Builder](https://tiwas.github.io/HomeyBooleanToolbox/formula-builder.html) to create and validate your formulas!
+
 ### 3. Use in Flows
 
 **WHEN:**
@@ -200,6 +210,8 @@ THEN: Turn off living room lights
 
 **Why Reactive?** The lights should respond immediately to changes in both motion and light level.
 
+**💡 Test your logic:** Use the [Emulator](https://tiwas.github.io/HomeyBooleanToolbox/emulator.html) to verify your expressions work as expected!
+
 ### Example 3: Multiple Formulas (Isolated States)
 
 **Scenario:** One device with different logic for day and night.
@@ -257,7 +269,7 @@ THEN: Set input A to [sensor state] for [night_mode]
 | Operator | Symbols | Example | Description |
 |----------|---------|---------|-------------|
 | AND | `AND`, `&`, `*` | `A AND B` | Both must be true |
-| OR | `OR`, `+`, `\|` | `A OR B` | At least one must be true |
+| OR | `OR`, `+`, `|` | `A OR B` | At least one must be true |
 | XOR | `XOR`, `^`, `!=` | `A XOR B` | Exactly one must be true |
 | NOT | `NOT`, `!` | `NOT A` | Inverts the value |
 
@@ -375,7 +387,7 @@ THEN: Set input A to [sensor state] for [night_mode]
 
 ---
 
-## 🐛 Troubleshooting
+## 🛠 Troubleshooting
 
 ### Formula Not Evaluating
 
