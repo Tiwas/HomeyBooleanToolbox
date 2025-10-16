@@ -2,7 +2,7 @@
 
 Create advanced, state-aware logic units with multiple formulas and intelligent input handling.
 
-[![Version](https://img.shields.io/badge/version-1.1.1-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
 [![Homey](https://img.shields.io/badge/Homey-5.0+-green.svg)](https://homey.app)
 
 ## 🛠️ Interactive Tools
@@ -13,97 +13,102 @@ Create advanced, state-aware logic units with multiple formulas and intelligent 
 
 ---
 
-## 🎉 What's New in v1.1.0
-
-### 🔥 MAJOR UPDATE - Breaking Changes
-
-**⚠️ Important:** This is a major upgrade with significant changes. While backwards compatibility is maintained, we **strongly recommend** creating new Logic Units and reconfiguring your flows for the best experience.
+## 🎉 What's New in v1.2.0
 
 ### ✨ New Features
 
-#### 1. **Isolated Input States Per Formula**
-The biggest improvement! Each formula now has its **own separate input state**. 
+#### 1. **Logic Device with Visual Pairing**
+NEW device type with a completely redesigned pairing experience:
 
-- ✅ Formula 1's input `A` is completely independent from Formula 2's input `A`
-- ✅ No more shared state between formulas
-- ✅ More predictable and reliable behavior
+- 🎨 **Visual setup wizard** - Select devices by zone/room
+- 📍 **Browse by location** - Find your devices organized by room
+- 🔗 **Direct device linking** - Connect inputs to real devices during pairing
+- 🎯 **One-click configuration** - Everything set up before you finish pairing
+- 📈 **Dynamic inputs** - Automatically expands to support 2-10 inputs as needed
 
-**Before v1.1.0:** All formulas on a device shared the same inputs (messy!)  
-**After v1.1.0:** Each formula tracks its own inputs (clean!)
-
-#### 2. **"First Impression" Mode** (Default)
-Choose how your formulas handle incoming input values:
-
-**First Impression Mode** (`firstImpression: true` - default):
-- 🔒 Locks each input at its **first received value**
-- ⚡ Evaluates when **all required inputs** have been set
-- 🛡️ Ignores subsequent changes until manual re-evaluation
-- Perfect for: Sequences, one-time triggers, stable conditions
-
-**Reactive Mode** (`firstImpression: false` or `0`):
-- 🔄 Inputs can change continuously
-- ⚡ Re-evaluates on every input change
-- Perfect for: Real-time monitoring, dynamic conditions
-
-#### 3. **Timeout Detection**
-Set a timeout per formula to catch incomplete evaluations:
+#### 2. **Dynamic Input Capacity**
+Your Logic Device automatically adapts to your needs:
 
 ```json
 {
-  "id": "f1",
-  "name": "Security Check",
-  "expression": "A AND B AND C",
-  "timeout": 30,
-  "firstImpression": true
+  "expression": "A AND B AND C AND D AND E"
 }
 ```
 
-- ⏱️ Triggers if not all inputs arrive within the timeout
-- 🎯 New flow trigger: "Formula timed out"
-- 💡 Useful for detecting failed sequences or missing sensors
+Created device with 2 inputs? No problem! The device will automatically expand to support 5 inputs when you save this formula. 🚀
 
-#### 4. **Manual Re-evaluation**
-New flow actions to reset and re-evaluate:
+#### 3. **Auto-Formatting JSON**
+Save time with automatic JSON beautification:
 
-- **"Evaluate formula"** - Reset locks for one specific formula
-- **"Re-evaluate all formulas"** - Reset locks for all formulas on the device
+- ✨ Paste compressed JSON → Get beautifully formatted output
+- 🔄 Edit formulas → Auto-formats on save
+- 📝 Cleaner, more readable configuration
 
-#### 5. **Enhanced Configuration**
-- Supports both `true`/`false` and `1`/`0` for boolean values
-- Cleaner JSON syntax
-- Better error messages
+### 🔧 Improvements
+
+- Event-driven architecture (removed polling)
+- "State changed" trigger with state token
+- Better initial value detection
+- Shared base classes for maintainability
 
 ---
 
-## 📖 What is Boolean Toolbox?
+## 📖 Device Types
 
-Boolean Toolbox lets you create **Logic Units** - virtual devices that evaluate boolean expressions using multiple inputs (A, B, C, etc.). Think of it as programmable logic gates for your smart home!
+### Logic Device (NEW! 🎉)
 
-### Features
+**Perfect for:** Dynamic setups, visual configuration, growing automations
 
-- 🔢 **2-10 inputs** per Logic Unit (choose what you need)
-- 📝 **Multiple formulas** per device (each with isolated state)
-- 🎯 **Boolean operators**: AND (`*`, `&`), OR (`+`, `|`), XOR (`^`, `!=`), NOT (`!`)
-- ⏱️ **Timeout detection** for incomplete sequences
-- 🔒 **First Impression mode** for one-time triggers
-- 🔄 **Reactive mode** for continuous monitoring
-- 🎨 **State-aware** - each formula remembers its inputs
-- 🚀 **Flow integration** - triggers, actions, and conditions
+**Features:**
+- 🎨 Visual pairing wizard with zone/room selection
+- 📈 Dynamic input capacity (2-10 inputs, auto-expands)
+- 🔗 Direct device linking during setup
+- ✨ JSON auto-formatting
+- 🎯 Easier to configure and maintain
+
+**Use when you want:**
+- Easy visual setup
+- Flexibility to add more inputs later
+- Direct device connections
+- A cleaner configuration experience
+
+### Logic Units (2-10 inputs)
+
+**Perfect for:** Fixed configurations, simple setups
+
+**Features:**
+- 🎯 Pre-defined input count (choose 2, 3, 4... up to 10)
+- ⚡ Quick setup for simple cases
+- 🔧 Manual JSON configuration
+
+**Use when you want:**
+- A simple, fixed number of inputs
+- Quick setup for straightforward logic
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Add a Logic Unit
+### Option 1: Logic Device (Recommended for most users)
 
-1. Go to **Devices** → **Add Device**
-2. Search for **Boolean Toolbox**
-3. Choose the number of inputs you need (2-10)
-4. Add the device to your home
+1. **Add Device**
+   - Go to **Devices** → **Add Device**
+   - Select **Boolean Toolbox** → **Logic Device**
 
-### 2. Configure Your Formulas
+2. **Choose Number of Inputs**
+   - Select how many inputs you need (2-10)
+   - Don't worry - this will auto-expand if you need more later!
 
-Go to the device settings and add formulas in JSON format:
+3. **Configure Inputs by Room**
+   - Select a room/zone
+   - Choose a device from that room
+   - Pick which capability to monitor (e.g., onoff, alarm_motion)
+   - Repeat for each input
+   - Give your device a name
+
+4. **Configure Formulas** (after pairing)
+   - Go to device settings
+   - Edit the "Formulas" JSON:
 
 ```json
 [
@@ -113,12 +118,42 @@ Go to the device settings and add formulas in JSON format:
     "expression": "A AND B",
     "enabled": true,
     "timeout": 60,
-    "firstImpression": true
-  },
+    "firstImpression": false
+  }
+]
+```
+
+5. **Done!** Your Logic Device is ready to use in flows.
+
+### Option 2: Logic Unit (For simple, fixed setups)
+
+1. Go to **Devices** → **Add Device**
+2. Select **Boolean Toolbox** → Choose **Logic Unit (X inputs)**
+3. Add device and configure via settings
+
+---
+
+## 🎯 Use Cases & Examples
+
+### Example 1: Security System with Visual Setup
+
+**Using Logic Device:**
+
+**During Pairing:**
+1. Choose 3 inputs
+2. Input A → Living Room → Motion Sensor → alarm_motion
+3. Input B → Front Door → Contact Sensor → alarm_contact  
+4. Input C → Back Door → Contact Sensor → alarm_contact
+5. Name: "Security Monitor"
+
+**After Pairing (Settings):**
+
+```json
+[
   {
-    "id": "formula_2", 
-    "name": "Any Window Open",
-    "expression": "A OR B OR C",
+    "id": "intrusion",
+    "name": "Intrusion Detection",
+    "expression": "A AND (B OR C)",
     "enabled": true,
     "timeout": 0,
     "firstImpression": false
@@ -126,101 +161,47 @@ Go to the device settings and add formulas in JSON format:
 ]
 ```
 
-**💡 Tip:** Use the [Formula Builder](https://tiwas.github.io/HomeyBooleanToolbox/formula-builder.html) to create and validate your formulas!
-
-### 3. Use in Flows
-
-**WHEN:**
-- "Formula result changed to TRUE"
-- "Formula result changed to FALSE"
-- "Formula timed out"
-
-**THEN:**
-- "Set input value for formula"
-- "Evaluate formula"
-- "Re-evaluate all formulas"
-
-**AND:**
-- "Formula result is..."
-- "Formula has timed out"
-
----
-
-## 🎯 Use Cases & Examples
-
-### Example 1: Security Sequence (First Impression Mode)
-
-**Scenario:** Turn on alarm only if all doors are closed within 30 seconds of arming.
-
-```json
-{
-  "id": "security",
-  "name": "All Doors Closed",
-  "expression": "A AND B AND C",
-  "timeout": 30,
-  "firstImpression": true
-}
+**In Flows:**
+```
+WHEN: Formula [intrusion] changed to TRUE
+THEN: Send notification "Motion detected with door open!"
+      Turn on all lights
+      Start recording
 ```
 
-**Flow:**
-```
-WHEN: User arms alarm
-THEN: Set input A to [front door closed] for [security]
-      Set input B to [back door closed] for [security]
-      Set input C to [garage door closed] for [security]
+### Example 2: Smart Lighting - Growing Complexity
 
-IF: Formula [security] is TRUE
-THEN: Activate alarm
-ELSE: Send notification "Close all doors first!"
-
-IF: Formula [security] timed out
-THEN: Send notification "Security check failed - not all doors reported"
-```
-
-**Why First Impression?** Each door's state is locked at the moment of arming. Even if someone opens a door later, the alarm activation decision is based on the initial state.
-
-### Example 2: Living Room Lights (Reactive Mode)
-
-**Scenario:** Turn on lights if motion detected AND it's dark, turn off when either condition changes.
+**Start Simple (2 inputs):**
 
 ```json
 {
   "id": "auto_light",
   "name": "Motion & Dark",
   "expression": "A AND B",
-  "timeout": 0,
-  "firstImpression": false
+  "enabled": true
 }
 ```
 
-**Flow:**
-```
-WHEN: Motion sensor changes
-THEN: Set input A to [motion detected] for [auto_light]
+**Later, Expand (5 inputs) - Just edit and save!**
 
-WHEN: Lux sensor changes
-THEN: Set input B to [is dark] for [auto_light]
-
-WHEN: Formula [auto_light] changed to TRUE
-THEN: Turn on living room lights
-
-WHEN: Formula [auto_light] changed to FALSE
-THEN: Turn off living room lights
+```json
+{
+  "id": "auto_light",
+  "name": "Smart Conditions",
+  "expression": "(A OR B) AND C AND NOT D AND NOT E",
+  "enabled": true
+}
 ```
 
-**Why Reactive?** The lights should respond immediately to changes in both motion and light level.
+The device **automatically expands** from 2 to 5 inputs! 🎉
 
-**💡 Test your logic:** Use the [Emulator](https://tiwas.github.io/HomeyBooleanToolbox/emulator.html) to verify your expressions work as expected!
-
-### Example 3: Multiple Formulas (Isolated States)
-
-**Scenario:** One device with different logic for day and night.
+### Example 3: Multiple Formulas with Isolated States
 
 ```json
 [
   {
     "id": "day_mode",
-    "name": "Daytime Motion",
+    "name": "Daytime Logic",
     "expression": "A AND B AND C",
     "firstImpression": false
   },
@@ -230,24 +211,17 @@ THEN: Turn off living room lights
     "expression": "A OR B OR C",
     "firstImpression": true,
     "timeout": 300
+  },
+  {
+    "id": "away_mode",
+    "name": "Away Detection",
+    "expression": "NOT A AND NOT B",
+    "firstImpression": false
   }
 ]
 ```
 
-**Important:** Input `A` for `day_mode` is completely separate from input `A` for `night_mode`!
-
-**Flows:**
-```
-// Daytime: All sensors must be active (reactive)
-WHEN: Sensor changes
-THEN: Set input A to [sensor state] for [day_mode]
-
-// Nighttime: Any sensor triggers (first impression, 5min timeout)
-WHEN: Night mode activated
-THEN: Set input A to [sensor state] for [night_mode]
-      Set input B to [sensor state] for [night_mode]
-      Set input C to [sensor state] for [night_mode]
-```
+Each formula has **completely independent** input states!
 
 ---
 
@@ -257,12 +231,35 @@ THEN: Set input A to [sensor state] for [night_mode]
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `id` | string | required | Unique identifier for the formula |
-| `name` | string | required | Human-readable name (shown in flows) |
+| `id` | string | required | Unique identifier |
+| `name` | string | required | Display name (shown in flows) |
 | `expression` | string | required | Boolean expression (e.g., "A AND B") |
-| `enabled` | boolean | `true` | Enable/disable the formula |
+| `enabled` | boolean | `true` | Enable/disable formula |
 | `timeout` | number | `0` | Seconds before timeout (0 = infinite) |
-| `firstImpression` | boolean/number | `true` | Lock inputs at first value (`true`/`1`) or reactive mode (`false`/`0`) |
+| `firstImpression` | boolean | `false` | Lock inputs at first value |
+
+### Input Links
+
+The Logic Device stores device connections in `input_links`:
+
+```json
+[
+  {
+    "input": "a",
+    "deviceId": "abc123...",
+    "capability": "onoff",
+    "deviceName": "Living Room Light"
+  },
+  {
+    "input": "b",
+    "deviceId": "def456...",
+    "capability": "alarm_motion",
+    "deviceName": "Motion Sensor"
+  }
+]
+```
+
+These are automatically created during pairing and stored for reference.
 
 ### Supported Operators
 
@@ -276,7 +273,7 @@ THEN: Set input A to [sensor state] for [night_mode]
 ### Expression Examples
 
 ```javascript
-// Simple AND
+// Simple
 "A AND B"
 
 // Complex grouping
@@ -285,164 +282,200 @@ THEN: Set input A to [sensor state] for [night_mode]
 // With NOT
 "A AND NOT B"
 
-// Mixed operators
-"(A AND B) OR (C AND D) OR E"
-
-// XOR for exclusive conditions
-"A XOR B"  // True if only A or only B, not both
+// All 10 inputs
+"A AND B AND C AND D AND E AND F AND G AND H AND I AND J"
 ```
+
+---
+
+## 📊 Dynamic Input Capacity
+
+The Logic Device automatically detects required inputs from:
+
+1. **Formula expressions** - Scans for letters A-J
+2. **Input links** - Checks configured device connections
+
+**Example:**
+
+```json
+// Device created with 2 inputs
+
+// You save this formula:
+{
+  "expression": "A AND B AND C AND D AND E AND F"
+}
+
+// Device automatically expands to 6 inputs! ✨
+```
+
+**Benefits:**
+- ✅ Start small, grow as needed
+- ✅ No need to recreate devices
+- ✅ Handles up to 10 inputs (A-J)
+- ✅ Auto-detects from both formulas and links
 
 ---
 
 ## 🔄 First Impression vs Reactive Mode
 
-### When to Use First Impression Mode
+### First Impression Mode (`firstImpression: true`)
 
-✅ **Sequences** - Actions that should complete in a specific order  
-✅ **One-time triggers** - Events that should only evaluate once  
-✅ **Stable conditions** - Check state at a specific moment  
-✅ **Timeout detection** - Verify all inputs arrive in time
+**How it works:**
+- 🔒 Locks each input at its **first received value**
+- ⚡ Evaluates when **all required inputs** are set
+- 🛡️ Ignores subsequent changes until manual re-evaluation
 
-**Examples:**
-- Alarm arming sequence
-- Startup checks
-- Multi-step automation triggers
-- Garage door close verification
+**Use for:**
+- Sequences that should complete in order
+- One-time trigger evaluations
+- Startup condition checks
+- Timeout-sensitive logic
 
-### When to Use Reactive Mode
-
-✅ **Real-time monitoring** - Continuous evaluation of changing conditions  
-✅ **Dynamic responses** - Immediate reaction to any input change  
-✅ **Live states** - Current status tracking
-
-**Examples:**
-- Automatic lighting based on motion + lux
-- HVAC control based on temperature + occupancy
-- Alert systems with live sensor data
-- Dynamic presence detection
-
----
-
-## 🔧 Migration Guide (v1.0.0 → v1.1.0)
-
-### ⚠️ Breaking Changes
-
-1. **Flow card changes** - Some flow cards now use device picker instead of autocomplete
-2. **Input state isolation** - Formulas no longer share input states
-3. **Default behavior** - First Impression mode is now default
-
-### Recommended Migration Path
-
-**Option 1: Fresh Start (Recommended)**
-
-1. Create **new Logic Units** (don't delete old ones yet)
-2. Configure formulas with new v1.1.0 features
-3. Create **new flows** using the new devices
-4. Test thoroughly
-5. Disable old flows and devices
-6. Delete old Logic Units when confident
-
-**Option 2: Upgrade Existing Devices**
-
-1. Your existing devices should continue working
-2. Add `"firstImpression": false` to all formulas to maintain old behavior
-3. Review and update flows if device picker behaves differently
-4. Test all scenarios
-
-**Migration Example:**
-
-**Old formula (v1.0.0):**
+**Example:**
 ```json
 {
-  "id": "f1",
-  "name": "My Formula",
-  "expression": "A AND B",
-  "enabled": true
-}
-```
-
-**New formula (v1.1.0 - maintaining old behavior):**
-```json
-{
-  "id": "f1",
-  "name": "My Formula",
-  "expression": "A AND B",
-  "enabled": true,
-  "timeout": 0,
-  "firstImpression": false
-}
-```
-
-**New formula (v1.1.0 - using new features):**
-```json
-{
-  "id": "f1",
-  "name": "My Formula",
-  "expression": "A AND B",
-  "enabled": true,
+  "expression": "A AND B AND C",
   "timeout": 30,
   "firstImpression": true
 }
 ```
 
+### Reactive Mode (`firstImpression: false` - default)
+
+**How it works:**
+- 🔄 Inputs can change continuously
+- ⚡ Re-evaluates on every input change
+- 📊 Real-time monitoring
+
+**Use for:**
+- Live sensor monitoring
+- Dynamic conditions
+- Continuous state tracking
+
+**Example:**
+```json
+{
+  "expression": "A AND B",
+  "timeout": 0,
+  "firstImpression": false
+}
+```
+
 ---
 
-## 🛠 Troubleshooting
+## 🎨 JSON Auto-Formatting
+
+The Logic Device automatically formats your JSON when you save:
+
+**Before Save:**
+```json
+[{"id":"f1","name":"Test","expression":"A AND B","enabled":true,"timeout":0,"firstImpression":false}]
+```
+
+**After Save:**
+```json
+[
+  {
+    "id": "f1",
+    "name": "Test",
+    "expression": "A AND B",
+    "enabled": true,
+    "timeout": 0,
+    "firstImpression": false
+  }
+]
+```
+
+Works for both `formulas` and `input_links`! ✨
+
+---
+
+## 🎮 Flow Cards
+
+### Triggers (WHEN)
+
+- **Formula result changed to TRUE** - Specific formula became true
+- **Formula result changed to FALSE** - Specific formula became false
+- **Formula timed out** - Didn't receive all inputs in time
+- **State changed** (Logic Device only) - Any state change with state token
+
+### Actions (THEN)
+
+- **Set input value for formula** - Manually set input for specific formula
+- **Evaluate formula** - Reset locks and re-evaluate one formula
+- **Re-evaluate all formulas** - Reset locks and re-evaluate all
+
+### Conditions (AND)
+
+- **Formula result is...** - Check if true/false
+- **Formula has timed out** - Check timeout status
+
+---
+
+## 🛠️ Troubleshooting
+
+### Device Not Expanding Inputs
+
+**Check:**
+- ✅ Formula syntax is correct (uses A-J)
+- ✅ Input links are properly formatted JSON
+- ✅ Settings were saved successfully
+
+**Logs will show:**
+```
+🔍 Detected max input: E (5 inputs needed)
+📈 Detected 5 inputs needed (originally 2). Expanding capacity!
+```
+
+### JSON Not Auto-Formatting
+
+**Common causes:**
+- ❌ Invalid JSON syntax
+- ❌ Missing quotes or commas
+
+**Look for log message:**
+```
+✨ Auto-formatted formulas JSON
+```
 
 ### Formula Not Evaluating
 
 **Check:**
 - ✅ Formula is `"enabled": true`
-- ✅ All required inputs have been set
+- ✅ All required inputs have values
 - ✅ Expression syntax is correct
-- ✅ Formula hasn't timed out
-
-**First Impression Mode:**
-- Inputs are locked after first value - use "Evaluate formula" action to reset
-
-### Timeout Issues
-
-**If formulas time out unexpectedly:**
-- Increase the `timeout` value
-- Check that all required inputs are being set
-- Use flow triggers to see when inputs arrive
-- Set `timeout: 0` for infinite timeout
-
-### Flows Not Working
-
-**v1.1.0 migration:**
-- Recreate flow cards that use formulas
-- Ensure device is correctly selected in flow card
-- Check formula names match exactly
+- ✅ Device has enough input capacity
 
 ---
 
 ## 📚 Technical Details
 
-### Device Types
+### Device Comparison
 
-| Device | Inputs | Use Case |
-|--------|--------|----------|
-| Logic Unit (2 inputs) | A, B | Simple AND/OR/XOR gates |
-| Logic Unit (3 inputs) | A, B, C | Small automation sequences |
-| Logic Unit (4 inputs) | A, B, C, D | Multi-sensor conditions |
-| Logic Unit (5 inputs) | A, B, C, D, E | Complex room automation |
-| Logic Unit (6-10 inputs) | A-J | Advanced multi-device logic |
+| Feature | Logic Device | Logic Units |
+|---------|-------------|-------------|
+| Pairing | Visual wizard | Simple add |
+| Input Count | Dynamic (2-10) | Fixed (2-10) |
+| Setup | Zone-based | Manual JSON |
+| Expansion | Automatic | Fixed |
+| JSON Format | Auto-format | Manual |
+| Best For | Most users | Simple setups |
 
-### Compatibility
+### System Requirements
 
 - **Homey Pro:** ✅ Fully supported
-- **Homey Cloud:** ✅ Fully supported
-- **Minimum Homey version:** 5.0.0
+- **Homey Cloud:** ✅ Fully supported  
+- **Minimum Version:** Homey 5.0.0
+- **SDK:** 3
 
 ---
 
 ## 🤝 Support & Contribution
 
-- **Community:** [Homey Community Forum](https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906)
+- **Community:** [Homey Forum](https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906)
 - **Issues:** [GitHub Issues](https://github.com/Tiwas/HomeyBooleanToolbox/issues)
-- **Source Code:** [GitHub Repository](https://github.com/Tiwas/HomeyBooleanToolbox)
-- **Documentation:** [GitHub Pages](https://tiwas.github.io/HomeyBooleanToolbox/)
+- **Source:** [GitHub](https://github.com/Tiwas/HomeyBooleanToolbox)
+- **Docs:** [GitHub Pages](https://tiwas.github.io/HomeyBooleanToolbox/)
 
 ### Author
 
@@ -450,32 +483,38 @@ Created by **Lars Kvanum** ([@Tiwas](https://github.com/Tiwas))
 
 ### Support Development
 
-If you find this app useful, consider supporting development:
-
 [![PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/paypalme/tiwasno)
 
 ---
 
 ## 📝 Changelog
 
-### v1.1.1 (Current)
-- 🌍 Added machine-generated translations for multiple languages
-- 📝 Minor documentation updates
+### v1.2.0 (Current)
+- ✨ NEW: Logic Device with visual pairing wizard
+- ✨ NEW: Dynamic input capacity (auto-expands 2-10)
+- ✨ NEW: Zone/room-based device selection during pairing
+- ✨ NEW: JSON auto-formatting for formulas and input links
+- ✨ NEW: "State changed" trigger with state token
+- 🔧 IMPROVED: Event-driven architecture (removed polling)
+- 🔧 IMPROVED: Better initial value detection
+- 🔧 IMPROVED: Shared base classes for code maintainability
+- 📚 IMPROVED: Enhanced documentation
+
+### v1.1.1
+- 🌍 Added machine-generated translations
+- 📚 Documentation updates
 
 ### v1.1.0
-- ✨ Each formula now has isolated input state
-- ✨ New "First Impression" mode (lock inputs at first value)
-- ✨ Timeout detection per formula
+- ✨ Isolated input states per formula
+- ✨ "First Impression" mode
+- ✨ Timeout detection
 - ✨ Manual re-evaluation actions
-- ✨ Support for 0/1 as boolean values
-- 🐛 Fixed device handling in flow cards
-- 🐛 Improved error messages
-- ⚠️ Breaking: Flow cards changed to device type
-- ⚠️ Breaking: Recommended to create new devices
+- ⚠️ Breaking: Flow cards changed
+- ⚠️ Recommended to create new devices
 
 ### v1.0.0
 - ✨ Support for 10 inputs
-- ✨ Advanced flow cards for rapidly changing inputs
+- ✨ Advanced flow cards
 
 ### v0.7.0
 - 🐛 Major stability improvements
@@ -494,4 +533,4 @@ This app is provided as-is. Use at your own risk.
 
 ---
 
-**Boolean Toolbox v1.1.1** - Create smarter automations with advanced boolean logic! 🚀
+**Boolean Toolbox v1.2.0** - Create smarter automations with advanced boolean logic! 🚀
