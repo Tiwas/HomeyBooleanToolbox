@@ -16,5 +16,8 @@
   },
   "1.1.1": {
     "en": "Machine translated languages"
+  },
+  "1.2.0": {
+    "en": "Logic device with visual pairing, dynamic number of inputs, JSON auto-formatting, lots of improvements, rewritten, more efficient code++"
   }
 }
