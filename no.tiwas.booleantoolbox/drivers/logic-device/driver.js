@@ -3,6 +3,35 @@
 const Homey = require('homey');
 
 module.exports = class LogicDeviceDriver extends Homey.Driver {
+  async ensureUniqueDeviceName(name) {
+    try {
+      // Bruk Athom API som appen allerede initialiserer (app.js)
+      if (!this.homey.app.api) return name;
+      const all = await this.homey.app.api.devices.getDevices();
+      const existingNames = new Set(
+        Object.values(all).map(d => (d?.name || '').trim()).filter(Boolean)
+      );
+
+      if (!existingNames.has(name)) return name;
+
+      // Fjern ev. trailing tall for å finne base
+      const base = name.replace(/\s+\d+$/, '').trim();
+      // Hvis det allerede er et tall bakerst, start fra n+1, ellers 2
+      const m = name.match(/\s+(\d+)$/);
+      let n = m ? (parseInt(m[1], 10) + 1) : 2;
+
+      let candidate = `${base} ${n}`;
+      while (existingNames.has(candidate)) {
+        n++;
+        candidate = `${base} ${n}`;
+      }
+      return candidate;
+    } catch (e) {
+      this.error('ensureUniqueDeviceName failed:', e.message);
+      // Fall back til opprinnelig navn ved feil
+      return name;
+    }
+  }
 
   async onInit() {
     this.log('Logic Device Driver has been initialized');
@@ -60,16 +89,19 @@ module.exports = class LogicDeviceDriver extends Homey.Driver {
     });
 
     // Opprett device når bruker klikker Complete
+
     session.setHandler('create_device', async () => {
       this.log('[HANDLER] create_device called');
-      
-      // Valider data
+
       if (!inputLinks || inputLinks.length === 0) {
         throw new Error('No input links configured!');
       }
-      
+
+      // 🔧 Sjekk om navnet finnes – legg på tall/øk ved behov
+      const uniqueName = await this.ensureUniqueDeviceName(deviceName);
+
       const device = {
-        name: deviceName,
+        name: uniqueName,
         data: {
           id: `logic-device-${Date.now()}`,
           numInputs

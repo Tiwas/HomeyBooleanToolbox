@@ -19,5 +19,8 @@
   },
   "1.2.0": {
     "en": "Logic device with visual pairing, dynamic number of inputs, JSON auto-formatting, lots of improvements, rewritten, more efficient code++"
+  },
+  "1.2.1": {
+    "en": "Bug fixes. Mostly regex optimization, but also re-evaluation after changing formulas."
   }
 }
