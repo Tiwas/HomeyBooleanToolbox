@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .description {
+      color: #666;
+      margin: 20px 0 40px 0;
+      line-height: 1.5;
+    }
+    .input-selector {
+      margin: 40px auto;
+    }
+    .input-number {
+      width: 120px;
+      height: 80px;
+      font-size: 32px;
+      text-align: center;
+      border: 2px solid #4CAF50;
+      border-radius: 8px;
+      font-weight: bold;
+      color: #4CAF50;
+    }
+    .input-number:focus {
+      outline: none;
+      border-color: #45a049;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    }
+    .range-info {
+      margin-top: 15px;
+      color: #888;
+      font-size: 14px;
+    }
+    button {
+      padding: 15px 40px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      margin-top: 40px;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Select number of inputs</h2>
+    <p class="description">How many devices do you want to connect to this logic device?</p>
+    
+    <div class="input-selector">
+      <input type="number" id="numInputs" class="input-number" min="2" max="10" value="2">
+      <div class="range-info">Choose between 2 and 10 inputs</div>
+    </div>
+
+    <button id="continue-btn">Next →</button>
+  </div>
+
+  <script>
+    const numInputsEl = document.getElementById('numInputs');
+    
+    async function init() {
+      try {
+        const result = await Homey.emit('get_num_inputs');
+        numInputsEl.value = result.numInputs || 2;
+      } catch (e) {
+        console.error('Init error:', e);
+      }
+    }
+
+    numInputsEl.addEventListener('change', async (e) => {
+      let value = parseInt(e.target.value);
+      if (isNaN(value) || value < 2) value = 2;
+      if (value > 10) value = 10;
+      e.target.value = value;
+      
+      try {
+        await Homey.emit('set_num_inputs', { numInputs: value });
+      } catch (e) {
+        console.error('Error setting num inputs:', e);
+      }
+    });
+
+    document.getElementById('continue-btn').addEventListener('click', () => {
+      Homey.nextView();
+    });
+
+    init();
+  </script>
+</body>
+</html>

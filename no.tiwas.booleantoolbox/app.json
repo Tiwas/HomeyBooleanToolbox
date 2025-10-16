@@ -1,9 +1,12 @@
 {
   "id": "no.tiwas.booleantoolbox",
   "support": "https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
+  "permissions": [
+    "homey:manager:api"
+  ],
   "name": {
     "en": "Boolean Toolbox",
     "no": "Boolean Toolbox",
@@ -53,6 +56,109 @@
     "small": "/assets/images/small.jpeg"
   },
   "drivers": [
+    {
+      "id": "logic-device",
+      "name": {
+        "en": "Logic Device",
+        "no": "Logisk Enhet",
+        "de": "Logikgerät",
+        "nl": "Logisch Apparaat",
+        "fr": "Appareil Logique",
+        "da": "Logisk Enhed",
+        "fi": "Logiikkalaite",
+        "sv": "Logikenhet",
+        "pl": "Urządzenie Logiczne",
+        "it": "Dispositivo Logico",
+        "es": "Dispositivo Lógico"
+      },
+      "class": "other",
+      "capabilities": [
+          "onoff",
+          "alarm_generic"
+        ],
+        "capabilitiesOptions": {
+          "alarm_generic": {
+            "title": {
+              "en": "Logic State",
+              "no": "Logikk-status"
+            },
+            "uiComponent": "sensor",
+            "getable": true,
+            "setable": false,
+            "units": {
+              "en": ""
+            },
+            "icon": "/assets/icon.svg"
+          }
+        },  
+        "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/drivers/logic-device/assets/images/large.png",
+        "small": "/drivers/logic-device/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "select_num_inputs"
+        },
+        {
+          "id": "configure_inputs"
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "no": "Formler (JSON)",
+            "de": "Formeln (JSON)",
+            "nl": "Formules (JSON)",
+            "fr": "Formules (JSON)",
+            "da": "Formler (JSON)",
+            "fi": "Kaavat (JSON)",
+            "sv": "Formler (JSON)",
+            "pl": "Formuły (JSON)",
+            "it": "Formule (JSON)",
+            "es": "Fórmulas (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Main Logic\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Hovedlogikk\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus"
+          },
+          "value": "[]"
+        },
+        {
+          "id": "input_links",
+          "type": "textarea",
+          "label": {
+            "en": "Input Links (JSON)",
+            "no": "Inngangs-koblinger (JSON)",
+            "de": "Eingangsverbindungen (JSON)",
+            "nl": "Ingangskoppelingen (JSON)",
+            "fr": "Liens d'entrée (JSON)",
+            "da": "Indgangsforbindelser (JSON)",
+            "fi": "Tulolinkit (JSON)",
+            "sv": "Ingångslänkar (JSON)",
+            "pl": "Połączenia wejściowe (JSON)",
+            "it": "Collegamenti di ingresso (JSON)",
+            "es": "Enlaces de entrada (JSON)"
+          },
+          "hint": {
+            "en": "Links between inputs and devices. Can be edited manually if needed.\n\nExample:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\"}]",
+            "no": "Koblinger mellom innganger og enheter. Kan redigeres manuelt ved behov.\n\nEksempel:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\"}]"
+          },
+          "value": "[]"
+        }
+      ]
+    },
     {
       "id": "logic-unit-2",
       "name": {
@@ -889,7 +995,36 @@
             }
           }
         ]
-      }
+      },
+      {
+        "id": "device_state_changed",
+        "title": {
+          "en": "State changed",
+          "no": "Tilstand endret"
+        },
+        "hint": {
+          "en": "Triggers when the device state changes (on/off)",
+          "no": "Trigges når enhetens tilstand endres (på/av)"
+        },
+        "tokens": [
+          {
+            "name": "state",
+            "type": "boolean",
+            "title": {
+              "en": "State",
+              "no": "Tilstand"
+            },
+            "example": true
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          }
+        ]
+      }      
     ],
     "actions": [
       {
