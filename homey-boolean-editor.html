@@ -645,36 +645,75 @@
                         if (!this.homey) throw new Error(this.t('errors.noHomey'));
                         
                         console.log('Homey object:', this.homey);
-                        console.log('Homey prototype:', Object.getPrototypeOf(this.homey));
-                        console.log('Homey methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(this.homey)));
+                        console.log('Available on cloudApi:', Object.keys(this.cloudApi));
                         
                         console.log('Authenticating Homey...');
                         await this.homey.authenticate();
                         
                         console.log('Getting Homey API...');
                         
-                        // Wait for HomeyAPI to be ready
-                        await window.HomeyAPIReady;
-                        
-                        // Get the local API for this Homey
-                        console.log('Creating API instance with HomeyAPIApp...');
+                        // Use the makeAPI method from AthomCloudAPI
                         try {
-                            this.api = await HomeyAPIApp.forHomey(this.homey);
-                            console.log('Successfully created API with forHomey()');
+                            console.log('Trying AthomCloudAPI.createAPI()...');
+                            this.api = await this.cloudApi.createAPI(this.homey);
+                            console.log('createAPI succeeded');
                         } catch (e) {
-                            console.error('forHomey() failed:', e);
+                            console.error('createAPI failed:', e);
                             
-                            // Try alternative: create API using the homey's local URL
+                            // Alternative: try to get API manager from authenticated user
                             try {
-                                console.log('Trying to create API from homey local URL...');
-                                const token = await this.homey.delegateToken();
-                                this.api = await HomeyAPIApp.createAppAPI({
-                                    homey: this.homey,
-                                    token: token
-                                });
-                                console.log('Successfully created API with delegateToken');
+                                console.log('Trying to get API from homey directly...');
+                                // The homey object should have a way to create an API instance
+                                if (this.homey._baseUrl) {
+                                    console.log('Homey has _baseUrl:', this.homey._baseUrl);
+                                    // Create a simple API wrapper
+                                    this.api = {
+                                        devices: {
+                                            getDevices: async () => {
+                                                const response = await fetch(`${this.homey._baseUrl}/api/manager/devices/device`, {
+                                                    headers: {
+                                                        'Authorization': `Bearer ${this.homey._token}`
+                                                    }
+                                                });
+                                                return await response.json();
+                                            },
+                                            getDeviceSettings: async ({ id }) => {
+                                                const response = await fetch(`${this.homey._baseUrl}/api/manager/devices/device/${id}/settings`, {
+                                                    headers: {
+                                                        'Authorization': `Bearer ${this.homey._token}`
+                                                    }
+                                                });
+                                                return await response.json();
+                                            },
+                                            updateDeviceSettings: async ({ id, data }) => {
+                                                const response = await fetch(`${this.homey._baseUrl}/api/manager/devices/device/${id}/settings`, {
+                                                    method: 'PUT',
+                                                    headers: {
+                                                        'Authorization': `Bearer ${this.homey._token}`,
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify(data)
+                                                });
+                                                return await response.json();
+                                            }
+                                        },
+                                        zones: {
+                                            getZones: async () => {
+                                                const response = await fetch(`${this.homey._baseUrl}/api/manager/zones/zone`, {
+                                                    headers: {
+                                                        'Authorization': `Bearer ${this.homey._token}`
+                                                    }
+                                                });
+                                                return await response.json();
+                                            }
+                                        }
+                                    };
+                                    console.log('Created custom API wrapper');
+                                } else {
+                                    throw new Error('Cannot create API - homey object missing required properties');
+                                }
                             } catch (e2) {
-                                console.error('delegateToken approach failed:', e2);
+                                console.error('Custom API creation failed:', e2);
                                 throw new Error('Could not create API instance. Please make sure you have granted the required permissions (homey.zone.readonly, homey.device.readonly, homey.device.control) when creating your API client.');
                             }
                         }
