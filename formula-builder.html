@@ -1,372 +1,806 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boolean Toolbox Formula Builder</title>
+    <title>Boolean Editor</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
             background-color: #1a202c;
             color: #e2e8f0;
         }
-
-        .truth-table {
-            width: 100%;
-            border-collapse: collapse;
+        .screen { display: none; }
+        .screen.active { display: block; }
+        .language-selector {
+            position: relative;
         }
-        
-        .truth-table th {
-            background-color: #2d3748;
-            padding: 8px;
+        .language-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 0.5rem;
+            background: #2d3748;
             border: 1px solid #4a5568;
-            font-weight: 600;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            z-index: 50;
+            min-width: 200px;
         }
-        
-        .truth-table td {
-            padding: 8px;
-            border: 1px solid #4a5568;
-            text-align: center;
+        .language-dropdown.active {
+            display: block;
         }
-        
-        .truth-table tr:nth-child(even) {
-            background-color: #2d3748;
+        .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: background 0.2s;
         }
-        
-        .truth-table td.result-true {
-            background-color: #38a169;
-            font-weight: bold;
-            color: white;
-            font-size: 1.2rem;
+        .language-option:hover {
+            background: #4a5568;
         }
-        
-        .truth-table td.result-false {
-            background-color: #e53e3e;
-            font-weight: bold;
-            color: white;
-            font-size: 1.2rem;
+        .language-option:first-child {
+            border-radius: 0.5rem 0.5rem 0 0;
         }
-
-        .expand-button {
-            transition: transform 0.3s ease;
-        }
-        
-        .expand-button.expanded {
-            transform: rotate(180deg);
+        .language-option:last-child {
+            border-radius: 0 0 0.5rem 0.5rem;
         }
     </style>
+    <script src="https://cdn.athom.com/homey-api/3.14.8.js"></script>
+    <script src="https://cdn.athom.com/homey-api-lib/3.14.8.js"></script>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
-
-    <div class="w-full max-w-4xl bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8 space-y-6">
+<body class="h-full">
+    <div id="app" class="p-4 md:p-8 max-w-7xl mx-auto">
         
-        <!-- Header -->
-        <div class="flex flex-col items-center text-center">
-            <img src="https://tiwas.github.io/HomeyBooleanToolbox/no.tiwas.booleantoolbox/assets/icon.svg" alt="Boolean Toolbox Logo" class="w-20 h-20 mb-4 rounded-lg">
-            <h1 class="text-2xl md:text-3xl font-bold text-white">Boolean Toolbox Formula Builder</h1>
-            <p class="text-gray-400 mt-1">Build and test your formulas visually</p>
-        </div>
-
-        <!-- Number of Inputs -->
-        <div class="space-y-2">
-            <label for="numInputs" class="font-semibold text-gray-300">Number of Inputs</label>
-            <select id="numInputs" class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 transition-colors">
-                <option value="2">2 inputs (A, B)</option>
-                <option value="3">3 inputs (A, B, C)</option>
-                <option value="4">4 inputs (A, B, C, D)</option>
-                <option value="5">5 inputs (A, B, C, D, E)</option>
-                <option value="6">6 inputs (A, B, C, D, E, F)</option>
-                <option value="7">7 inputs (A, B, C, D, E, F, G)</option>
-                <option value="8">8 inputs (A, B, C, D, E, F, G, H)</option>
-                <option value="9">9 inputs (A, B, C, D, E, F, G, H, I)</option>
-                <option value="10">10 inputs (A, B, C, D, E, F, G, H, I, J)</option>
-            </select>
-        </div>
-
-        <!-- Formula Details -->
-        <div class="space-y-4 pt-4 border-t border-gray-700">
-            <h2 class="text-xl font-semibold text-white">Formula Details</h2>
-            <div class="space-y-2">
-                <label for="formulaId" class="text-sm font-medium text-gray-300">Formula ID</label>
-                <input type="text" id="formulaId" value="f1" placeholder="e.g., f1, sensor_check" class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 transition-colors">
+        <header class="flex flex-col md:flex-row justify-between items-center pb-6 border-b border-gray-700 mb-6">
+            <div class="flex items-center space-x-4">
+                 <img src="https://tiwas.github.io/HomeyBooleanToolbox/no.tiwas.booleantoolbox/assets/icon.svg" alt="Boolean Toolbox Logo" class="w-16 h-16 rounded-lg">
+                 <div>
+                    <h1 class="text-2xl font-bold text-white">Boolean Editor</h1>
+                    <p class="text-gray-400 mt-1" data-i18n="subtitle">For Homey Boolean Toolbox</p>
+                 </div>
             </div>
-            <div class="space-y-2">
-                <label for="formulaName" class="text-sm font-medium text-gray-300">Formula Name</label>
-                <input type="text" id="formulaName" value="My Formula" placeholder="e.g., Aircon - contact sensors" class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 transition-colors">
-            </div>
-        </div>
-
-        <!-- Build Expression -->
-        <div class="space-y-4 pt-4 border-t border-gray-700">
-            <h2 class="text-xl font-semibold text-white">Boolean Expression</h2>
-            
-            <div class="space-y-2">
-                <label class="text-sm font-medium text-gray-300">Insert Inputs:</label>
-                <div id="inputButtons" class="flex gap-2 flex-wrap"></div>
-            </div>
-
-            <div class="space-y-2">
-                <label class="text-sm font-medium text-gray-300">Insert Operators:</label>
-                <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
-                    <button class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-colors" onclick="insertText(' AND ')">AND</button>
-                    <button class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-colors" onclick="insertText(' OR ')">OR</button>
-                    <button class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-colors" onclick="insertText(' XOR ')">XOR</button>
-                    <button class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-colors" onclick="insertText('NOT ')">NOT</button>
-                    <button class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-colors" onclick="insertText('(')">(</button>
-                    <button class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-colors" onclick="insertText(')')">)</button>
+            <div class="flex items-center gap-4 mt-4 md:mt-0">
+                <div class="language-selector">
+                    <button id="language-button" class="flex items-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                        <span id="current-flag" class="text-xl">🇬🇧</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="language-dropdown" class="language-dropdown">
+                        <div class="language-option" data-lang="en">
+                            <span class="text-xl">🇬🇧</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="no">
+                            <span class="text-xl">🇳🇴</span>
+                            <span>Norsk</span>
+                        </div>
+                        <div class="language-option" data-lang="de">
+                            <span class="text-xl">🇩🇪</span>
+                            <span>Deutsch</span>
+                        </div>
+                        <div class="language-option" data-lang="fr">
+                            <span class="text-xl">🇫🇷</span>
+                            <span>Français</span>
+                        </div>
+                        <div class="language-option" data-lang="nl">
+                            <span class="text-xl">🇳🇱</span>
+                            <span>Nederlands</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="user-info" class="hidden text-right">
+                    <p id="user-name" class="font-semibold"></p>
+                    <p id="homey-name" class="text-sm text-gray-400"></p>
+                    <button id="logout-button" class="text-sm text-red-400 hover:text-red-300" data-i18n="logout">Log out</button>
                 </div>
             </div>
+        </header>
 
-            <div class="space-y-2">
-                <input type="text" id="expression" placeholder="e.g., A OR B OR (C AND D)" class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 transition-colors">
-                <p class="text-xs text-gray-500 mt-2">Operators: AND (*, &, AND), OR (+, |, OR), XOR (^, !=, XOR), NOT (!, NOT)</p>
-                <div id="expressionError" class="text-red-400 text-sm font-semibold min-h-[20px]"></div>
+        <main id="main-content" class="bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8">
+            <div id="login-screen" class="screen active text-center p-16"></div>
+            <div id="main-menu-screen" class="screen">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('edit-devices-screen')">
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="menu.editDevices">Edit existing devices</h3>
+                        <p class="text-gray-400" data-i18n="menu.editDevicesDesc">View and modify settings for devices created with Boolean Toolbox.</p>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('create-expression-step1-screen')">
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="menu.createExpression">Create new expression</h3>
+                        <p class="text-gray-400" data-i18n="menu.createExpressionDesc">Select devices and capabilities to build a new boolean formula.</p>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('json-import-screen')">
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="menu.importJson">Import from JSON</h3>
+                        <p class="text-gray-400" data-i18n="menu.importJsonDesc">Start with an existing expression by pasting JSON data.</p>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <!-- Settings -->
-        <div class="space-y-4 pt-4 border-t border-gray-700">
-            <h2 class="text-xl font-semibold text-white">Settings</h2>
-            <div class="space-y-2">
-                <label for="timeout" class="text-sm font-medium text-gray-300">Timeout (seconds, 0 = infinite)</label>
-                <input type="number" id="timeout" value="0" min="0" class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 transition-colors">
+            <div id="edit-devices-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
+                    <span data-i18n="back">← Back to menu</span>
+                </button>
+                <h2 class="text-xl font-bold mb-4" data-i18n="editDevices.title">Edit Boolean Toolbox Devices</h2>
+                <div id="edit-devices-list" class="space-y-6"></div>
             </div>
-            <div class="space-y-2">
-                <label for="firstImpression" class="text-sm font-medium text-gray-300">First Impression Mode</label>
-                <select id="firstImpression" class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 transition-colors">
-                    <option value="true">true - Lock inputs at first value (default)</option>
-                    <option value="false">false - Reactive mode (re-evaluate on changes)</option>
-                </select>
+            <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center p-4 z-50">
+                <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md shadow-2xl border border-gray-700">
+                    <h3 id="settings-modal-title" class="text-lg font-bold mb-4" data-i18n="settings.title">Settings</h3>
+                    <div id="settings-modal-content" class="space-y-4"></div>
+                    <div class="mt-6 flex justify-end gap-4">
+                        <button id="settings-modal-close" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" data-i18n="close">Close</button>
+                        <button id="settings-modal-save" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg" data-i18n="save">Save</button>
+                    </div>
+                </div>
             </div>
-            <div class="space-y-2">
-                <label for="enabled" class="text-sm font-medium text-gray-300">Enabled</label>
-                <select id="enabled" class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 transition-colors">
-                    <option value="true">true</option>
-                    <option value="false">false</option>
-                </select>
+            <div id="create-expression-step1-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
+                    <span data-i18n="back">← Back to menu</span>
+                </button>
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="flex-grow">
+                        <h2 class="text-xl font-bold mb-4" data-i18n="step1.title">Step 1: Select devices and capabilities</h2>
+                        <p class="text-gray-400 mb-6" data-i18n="step1.description">Select between 2 and 10 capabilities to include in the expression.</p>
+                        <div id="device-capability-list" class="space-y-6"></div>
+                    </div>
+                    <aside class="w-full lg:w-1/3 lg:sticky top-8 self-start bg-gray-900 p-6 rounded-lg border border-gray-700">
+                        <h3 class="text-lg font-semibold mb-4">
+                            <span data-i18n="step1.selected">Selected capabilities</span> (<span id="selected-count">0</span>/10)
+                        </h3>
+                        <ul id="selected-capabilities-list" class="space-y-2 mb-6 h-64 overflow-y-auto"></ul>
+                        <button id="next-step-button" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-opacity disabled:opacity-50 disabled:cursor-not-allowed" disabled data-i18n="next">Next →</button>
+                    </aside>
+                </div>
             </div>
-        </div>
-
-        <!-- Truth Table -->
-        <div class="border-t border-gray-700 pt-4">
-            <button id="truth-table-toggle" class="w-full flex items-center justify-between p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
-                <span class="font-semibold text-gray-300">Truth Table</span>
-                <svg class="expand-button w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            <div id="create-expression-step2-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('create-expression-step1-screen')">
+                    <span data-i18n="backToSelection">← Back to selection</span>
+                </button>
+                <h2 class="text-xl font-bold mb-4" data-i18n="step2.title">Step 2: Build boolean formula</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="step2.yourVariables">Your selected variables:</h3>
+                        <ul id="variable-mapping-list" class="space-y-1 bg-gray-900 p-4 rounded-lg border border-gray-700"></ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="step2.formulaEditor">Formula editor</h3>
+                        <p class="text-sm text-gray-400 mb-2" data-i18n="step2.formulaHelp">Use variables A-J and operators AND, OR, NOT, XOR and parentheses ().</p>
+                        <textarea id="formula-input" class="w-full h-48 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder="(A AND B) OR NOT C"></textarea>
+                        <button class="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg" data-i18n="saveExpression">Save expression</button>
+                    </div>
+                </div>
+            </div>
+            <div id="json-import-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
+                    <span data-i18n="back">← Back to menu</span>
+                </button>
+                <h2 class="text-xl font-bold mb-4" data-i18n="import.title">Import from JSON</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="import.devicesTitle">Devices and capabilities</h3>
+                        <p class="text-sm text-gray-400 mb-2" data-i18n="import.devicesHelp">Paste a JSON array with objects containing 'deviceId' and 'capabilityId'.</p>
+                        <textarea id="json-devices-input" class="w-full h-48 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder='[{"deviceId": "...", "capabilityId": "..."}, ...]'></textarea>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="import.formulaTitle">Formula (optional)</h3>
+                        <p class="text-sm text-gray-400 mb-2" data-i18n="import.formulaHelp">Paste the boolean formula as text.</p>
+                        <textarea id="json-formula-input" class="w-full h-24 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder="(A AND B) OR NOT C"></textarea>
+                    </div>
+                    <button id="json-import-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg" data-i18n="import.button">Import and continue</button>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Loading Modal -->
+        <div id="loader-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+            <div class="bg-gray-800 rounded-lg p-8 flex flex-col items-center gap-4">
+                <svg class="animate-spin h-12 w-12 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-            </button>
-            <div id="truth-table-container" class="hidden mt-4 overflow-x-auto">
-                <table class="truth-table text-sm">
-                    <thead id="truth-table-head"></thead>
-                    <tbody id="truth-table-body"></tbody>
-                </table>
+                <p class="text-white text-lg" id="loader-text">Loading...</p>
             </div>
-        </div>
-
-        <!-- Generated JSON -->
-        <div class="space-y-4 pt-4 border-t border-gray-700">
-            <h2 class="text-xl font-semibold text-white">Generated JSON</h2>
-            <button class="w-full md:w-auto px-6 py-3 bg-green-600 hover:bg-green-500 rounded-lg font-semibold transition-colors" onclick="generateJSON()">✨ Generate JSON</button>
-            <div id="jsonOutput" class="p-3 bg-gray-900 rounded-lg text-gray-400 font-mono text-sm min-h-[40px] whitespace-pre overflow-x-auto">[
-  {
-    "id": "f1",
-    "name": "My Formula",
-    "expression": "A AND B",
-    "enabled": true,
-    "timeout": 0,
-    "firstImpression": true
-  }
-]</div>
-            <button class="w-full md:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition-colors" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
-            <div id="copySuccess" class="text-green-400 font-semibold min-h-[20px]"></div>
-        </div>
-
-        <!-- Footer Links -->
-        <div class="grid grid-cols-[1fr_auto_1fr] items-baseline gap-x-3 pt-4 border-t border-gray-700">
-            <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-sm text-gray-500 hover:text-blue-400 transition-colors justify-self-end">
-                View&nbsp;on&nbsp;GitHub
-            </a>
-            <span class="text-gray-600">|</span>
-            <a href="https://tiwas.github.io/HomeyBooleanToolbox/" class="text-sm text-gray-500 hover:text-blue-400 transition-colors justify-self-start">
-                Homepage
-            </a>
         </div>
     </div>
 
     <script>
-        let currentInputs = ['A', 'B'];
+        const flags = {
+            en: '🇬🇧',
+            no: '🇳🇴',
+            de: '🇩🇪',
+            fr: '🇫🇷',
+            nl: '🇳🇱'
+        };
 
-        function updateInputButtons() {
-            const numInputs = parseInt(document.getElementById('numInputs').value);
-            const allInputs = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-            currentInputs = allInputs.slice(0, numInputs);
+        document.addEventListener('DOMContentLoaded', () => {
             
-            const container = document.getElementById('inputButtons');
-            container.innerHTML = '';
-            
-            currentInputs.forEach(input => {
-                const btn = document.createElement('button');
-                btn.className = 'px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg font-semibold transition-colors';
-                btn.textContent = input;
-                btn.onclick = () => insertText(input);
-                container.appendChild(btn);
-            });
-        }
+            class BooleanToolboxApp {
+                CLIENT_ID = null;
+                cloudApi = null;
+                authenticatedUser = null;
+                homey = null;
+                api = null;
+                allDevices = {};
+                allZones = {};
+                selectedCapabilities = [];
+                processingAuth = false;
+                currentLang = 'en';
+                translations = {};
 
-        function insertText(text) {
-            const input = document.getElementById('expression');
-            const start = input.selectionStart;
-            const end = input.selectionEnd;
-            const value = input.value;
-            
-            input.value = value.substring(0, start) + text + value.substring(end);
-            input.focus();
-            input.selectionStart = input.selectionEnd = start + text.length;
-        }
+                constructor() {
+                    this.currentLang = localStorage.getItem('language') || 'en';
+                    this.init();
+                }
 
-        function validateExpression(expression) {
-            if (!expression || expression.trim() === '') {
-                return { valid: false, error: 'Expression cannot be empty' };
-            }
+                async loadTranslations(lang) {
+                    try {
+                        const response = await fetch(`/resources/lang.${lang}.json`);
+                        if (!response.ok) throw new Error(`Failed to load language: ${lang}`);
+                        this.translations = await response.json();
+                        return true;
+                    } catch (error) {
+                        console.error(`Failed to load ${lang} translations:`, error);
+                        if (lang !== 'en') {
+                            // Fallback to English
+                            return this.loadTranslations('en');
+                        }
+                        return false;
+                    }
+                }
 
-            const validPattern = new RegExp(`^[${currentInputs.join('')}\\s\\(\\)&|\\*\\+\\^!=ANDORXOTandorxot]+$`);
-            if (!validPattern.test(expression)) {
-                return { 
-                    valid: false, 
-                    error: `Expression contains invalid characters. Valid inputs: ${currentInputs.join(', ')}` 
-                };
-            }
+                async initLanguageSelector() {
+                    // Load initial language
+                    await this.loadTranslations(this.currentLang);
+                    
+                    const languageButton = document.getElementById('language-button');
+                    const languageDropdown = document.getElementById('language-dropdown');
+                    const currentFlag = document.getElementById('current-flag');
+                    
+                    languageButton.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        languageDropdown.classList.toggle('active');
+                    });
 
-            let depth = 0;
-            for (const char of expression) {
-                if (char === '(') depth++;
-                if (char === ')') depth--;
-                if (depth < 0) return { valid: false, error: 'Unbalanced parentheses' };
-            }
-            if (depth !== 0) return { valid: false, error: 'Unbalanced parentheses' };
+                    document.addEventListener('click', () => {
+                        languageDropdown.classList.remove('active');
+                    });
 
-            return { valid: true };
-        }
+                    document.querySelectorAll('.language-option').forEach(option => {
+                        option.addEventListener('click', async (e) => {
+                            const lang = e.currentTarget.dataset.lang;
+                            await this.setLanguage(lang);
+                            languageDropdown.classList.remove('active');
+                        });
+                    });
 
-        function evaluateExpression(expression, values) {
-            let evalExpr = expression
-                .replace(/\bAND\b|&|\*/gi, '&&')
-                .replace(/\bOR\b|\||\+/gi, '||')
-                .replace(/\bXOR\b|\^|!=/gi, '!=')
-                .replace(/\bNOT\b/gi, '!');
+                    currentFlag.textContent = flags[this.currentLang];
+                    this.updateTranslations();
+                }
 
-            currentInputs.forEach(input => {
-                const regex = new RegExp(`\\b${input}\\b`, 'g');
-                evalExpr = evalExpr.replace(regex, values[input]);
-            });
+                async setLanguage(lang) {
+                    await this.loadTranslations(lang);
+                    this.currentLang = lang;
+                    localStorage.setItem('language', lang);
+                    document.getElementById('current-flag').textContent = flags[lang];
+                    this.updateTranslations();
+                    
+                    // Re-render dynamic content
+                    if (this.allDevices && Object.keys(this.allDevices).length > 0) {
+                        this.renderAll();
+                    }
+                    this.renderSelectedCapabilities();
+                    this.renderLoginScreen();
+                }
 
-            try {
-                return !!eval(evalExpr);
-            } catch (e) {
-                return null;
-            }
-        }
+                t(key) {
+                    const keys = key.split('.');
+                    let value = this.translations;
+                    for (const k of keys) {
+                        value = value?.[k];
+                    }
+                    return value || key;
+                }
 
-        function generateTruthTable() {
-            const expression = document.getElementById('expression').value;
-            const validation = validateExpression(expression);
-            
-            const errorDiv = document.getElementById('expressionError');
-            if (!validation.valid) {
-                errorDiv.textContent = validation.error;
-                document.getElementById('truth-table-head').innerHTML = '';
-                document.getElementById('truth-table-body').innerHTML = '';
-                return;
-            }
-            errorDiv.textContent = '';
+                updateTranslations() {
+                    document.querySelectorAll('[data-i18n]').forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        element.textContent = this.t(key);
+                    });
+                }
 
-            const numInputs = currentInputs.length;
-            const numRows = Math.pow(2, numInputs);
-            
-            // Generate header
-            let headerHTML = '<tr>';
-            currentInputs.forEach(input => {
-                headerHTML += `<th>${input}</th>`;
-            });
-            headerHTML += '<th>Result</th></tr>';
-            document.getElementById('truth-table-head').innerHTML = headerHTML;
+                async init() {
+                    try {
+                        // Check if running on correct domain
+                        const correctDomain = 'homey-boolean-toolbox.vercel.app';
+                        const currentHostname = window.location.hostname;
+                        
+                        if (currentHostname !== correctDomain && currentHostname !== 'localhost') {
+                            // Not running on Vercel - show error and redirect
+                            const correctUrl = `https://${correctDomain}${window.location.pathname}${window.location.search}`;
+                            this.showError(`
+                                <div class="text-center">
+                                    <h2 class="text-xl font-bold mb-4">⚠️ Wrong Domain</h2>
+                                    <p class="mb-4">This app must be run from the official Vercel deployment.</p>
+                                    <p class="mb-6 text-sm text-gray-400">Current: ${currentHostname}</p>
+                                    <a href="${correctUrl}" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg">
+                                        Go to Official App →
+                                    </a>
+                                    <p class="mt-4 text-xs text-gray-500">Redirecting in 5 seconds...</p>
+                                </div>
+                            `);
+                            setTimeout(() => {
+                                window.location.href = correctUrl;
+                            }, 5000);
+                            return;
+                        }
+                        
+                        if (typeof AthomCloudAPI === 'undefined') {
+                            throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
+                        }
 
-            // Generate body
-            let bodyHTML = '';
-            for (let i = 0; i < numRows; i++) {
-                const values = {};
-                bodyHTML += '<tr>';
+                        this.showLoader('Initializing...');
+                        
+                        const response = await fetch('/api/get-config');
+                        if (!response.ok) throw new Error(`Failed to fetch config: ${response.statusText}`);
+                        
+                        const config = await response.json();
+                        if (!config.clientId) throw new Error('Could not get clientId from config.');
+                        this.CLIENT_ID = config.clientId;
+
+                        this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
+                        this.setupEventListeners();
+                        await this.initLanguageSelector();
+                        this.renderLoginScreen();
+
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const code = urlParams.get('code');
+
+                        if (code) {
+                            await this.handleAuthRedirect(code);
+                        } else if (await this.cloudApi.isLoggedIn()) {
+                            await this.postLogin();
+                        } else {
+                            this.hideLoader();
+                            this.showScreen('login-screen');
+                        }
+                    } catch (error) {
+                        console.error("Initialization failed:", error);
+                        this.hideLoader();
+                        this.showError(this.t('errors.startApp') + ' ' + error.message);
+                    }
+                }
                 
-                currentInputs.forEach((input, idx) => {
-                    const bit = (i >> (numInputs - 1 - idx)) & 1;
-                    values[input] = bit === 1;
-                    bodyHTML += `<td>${bit === 1 ? 'true' : 'false'}</td>`;
-                });
+                setupEventListeners() {
+                    document.getElementById('main-content').addEventListener('click', (event) => {
+                        if (event.target.id === 'login-button') this.login();
+                    });
+                    document.getElementById('logout-button').addEventListener('click', () => this.logout());
+                    document.getElementById('next-step-button').addEventListener('click', () => this.showScreen('create-expression-step2-screen'));
+                    document.getElementById('json-import-button').addEventListener('click', () => this.handleJsonImport());
+                    document.getElementById('settings-modal-close').addEventListener('click', () => this.closeSettingsModal());
+                    document.getElementById('settings-modal-save').addEventListener('click', () => this.saveSettings());
+                }
 
-                const result = evaluateExpression(expression, values);
-                const resultClass = result ? 'result-true' : 'result-false';
-                bodyHTML += `<td class="${resultClass}">${result ? 'TRUE' : 'FALSE'}</td>`;
-                bodyHTML += '</tr>';
+                async login() {
+                    if (!this.CLIENT_ID) return this.showError("Client ID missing. Cannot start login.");
+                    const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
+                    const authorizationUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${this.CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
+                    window.location.href = authorizationUrl;
+                }
+
+                async handleAuthRedirect(code) {
+                    if (this.processingAuth) {
+                        console.log('Already processing auth, skipping...');
+                        return;
+                    }
+                    this.processingAuth = true;
+                    
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    this.showLoader('Authenticating...');
+                    try {
+                        const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
+                        
+                        console.log('Getting token from server...');
+                        const response = await fetch('/api/get-token', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ code: code, redirectUrl: redirectUrl }),
+                        });
+                        
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            throw new Error(`Server responded with ${response.status}: ${errorText}`);
+                        }
+                        
+                        const tokenData = await response.json();
+                        console.log('Token received from server');
+                        
+                        // Set the token directly on the __token property (internal property)
+                        this.cloudApi.__token = tokenData;
+                        console.log('Token set on __token property');
+                        
+                        console.log('Proceeding to postLogin...');
+                        await this.postLogin();
+                    } catch (error) {
+                        console.error('Auth error:', error);
+                        this.hideLoader();
+                        this.showError(this.t('errors.authFailed') + ' ' + error.message);
+                    } finally {
+                        this.processingAuth = false;
+                    }
+                }
+                
+                async logout() {
+                    try { 
+                        await this.cloudApi.logout(); 
+                    } catch(e) { 
+                        console.error("Logout failed, continuing.", e); 
+                    }
+                    
+                    // Clear the token
+                    this.cloudApi.__token = null;
+                    
+                    this.authenticatedUser = null; 
+                    this.homey = null; 
+                    this.api = null;
+                    document.getElementById('user-info').classList.add('hidden');
+                    this.renderLoginScreen();
+                    this.showScreen('login-screen');
+                }
+
+                async postLogin() {
+                    try {
+                        this.showLoader('Loading user data...');
+                        this.authenticatedUser = await this.cloudApi.getAuthenticatedUser();
+                        const homeys = await this.authenticatedUser.getHomeys();
+                        const firstHomey = homeys[0];
+                        if (!firstHomey) throw new Error(this.t('errors.noHomey'));
+                        
+                        console.log('Authenticating Homey...');
+                        // authenticate() returns a new authenticated Homey object
+                        this.homey = await firstHomey.authenticate();
+                        
+                        console.log('Getting Homey API...');
+                        console.log('Homey object after authenticate:', this.homey);
+                        console.log('Homey has getApi:', typeof this.homey.getApi);
+                        
+                        // Get the HomeyAPI instance - this is the documented way
+                        this.api = await this.homey.getApi();
+                        
+                        console.log('HomeyAPI obtained!');
+                        console.log('API:', this.api);
+                        console.log('API.devices:', this.api.devices);
+                        console.log('API.zones:', this.api.zones);
+
+                        document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
+                        document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
+                        document.getElementById('user-info').classList.remove('hidden');
+
+                        await this.fetchData();
+                        this.renderAll();
+                        this.hideLoader();
+                        this.showScreen('main-menu-screen');
+                    } catch (error) {
+                        console.error('postLogin error:', error);
+                        this.hideLoader();
+                        this.showError(this.t('errors.afterLogin') + ' ' + error.message);
+                        await this.logout();
+                    }
+                }
+
+                async fetchData() {
+                    this.showLoader('Loading devices...');
+                    try {
+                        console.log('Fetching devices and zones...');
+                        console.log('API.devices:', this.api.devices);
+                        console.log('API.zones:', this.api.zones);
+                        
+                        const [devices, zones] = await Promise.all([
+                            this.api.devices.getDevices(),
+                            this.api.zones.getZones()
+                        ]);
+                        
+                        this.allDevices = devices;
+                        this.allZones = zones;
+                        
+                        console.log('Devices loaded:', Object.keys(this.allDevices).length);
+                        console.log('Zones loaded:', Object.keys(this.allZones).length);
+                        
+                    } catch (error) { 
+                        this.hideLoader();
+                        console.error('fetchData error:', error);
+                        this.showError(this.t('errors.fetchData') + ' ' + error.message); 
+                    }
+                }
+
+                renderAll() { this.renderEditDevices(); this.renderDeviceCapabilityList(); }
+                
+                renderEditDevices() {
+                    const container = document.getElementById('edit-devices-list');
+                    container.innerHTML = '';
+                    
+                    // Show ALL devices with their driverIds for debugging
+                    const allDevicesList = Object.values(this.allDevices);
+                    
+                    // First, show debug info to find the correct driver ID
+                    const debugInfo = document.createElement('details');
+                    debugInfo.className = 'mb-6 bg-gray-900 p-4 rounded-lg border border-gray-600';
+                    debugInfo.innerHTML = `
+                        <summary class="cursor-pointer font-semibold text-yellow-400">🔍 Debug: All Driver IDs (click to expand)</summary>
+                        <div class="mt-4 space-y-2 max-h-64 overflow-y-auto">
+                            ${[...new Set(allDevicesList.map(d => d.driverId))].sort().map(driverId => 
+                                `<div class="text-sm font-mono text-gray-300">${driverId} (${allDevicesList.filter(d => d.driverId === driverId).length} devices)</div>`
+                            ).join('')}
+                        </div>
+                    `;
+                    container.appendChild(debugInfo);
+                    
+                    // Try multiple possible driver IDs for Boolean Toolbox
+                    const possibleDriverIds = ['booleantoolbox', 'logic', 'boolean', 'toolbox'];
+                    let toolboxDevices = allDevicesList.filter(d => 
+                        possibleDriverIds.some(id => d.driverId.toLowerCase().includes(id))
+                    );
+                    
+                    // If no devices found, show message
+                    if (toolboxDevices.length === 0) {
+                        container.innerHTML += `<div class="bg-yellow-700 p-4 rounded-lg text-center">
+                            <p class="font-semibold mb-2">${this.t('editDevices.noDevices')}</p>
+                            <p class="text-sm">Check the debug info above to find the correct driver ID, or all devices will be shown below.</p>
+                        </div>`;
+                        // Show all devices if no Boolean Toolbox devices found
+                        toolboxDevices = allDevicesList;
+                    }
+                    
+                    const devicesByZone = this.groupDevicesByZone(toolboxDevices);
+                    const sortedZones = this.sortZones(Object.keys(devicesByZone));
+                    
+                    sortedZones.forEach(zoneId => {
+                        if (!devicesByZone[zoneId]) return;
+                        const zone = this.allZones[zoneId];
+                        const zoneDevices = devicesByZone[zoneId];
+                        const zoneEl = document.createElement('div');
+                        zoneEl.className = 'mt-6';
+                        zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${zoneDevices.map(device => `
+                                <div class="bg-gray-700 p-4 rounded-lg">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium">${device.name}</span>
+                                        <button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-xs py-1 px-2 rounded-md">${this.t('editDevices.settings')}</button>
+                                    </div>
+                                    <div class="text-xs text-gray-400 font-mono">${device.driverId}</div>
+                                </div>
+                            `).join('')}</div>`;
+                        container.appendChild(zoneEl);
+                    });
+                    
+                    container.querySelectorAll('.open-settings-button').forEach(button => button.addEventListener('click', (e) => this.openSettingsModal(e.target.dataset.deviceId)));
+                }
+
+                renderDeviceCapabilityList() {
+                    const container = document.getElementById('device-capability-list');
+                    container.innerHTML = '';
+                    
+                    // Show ALL devices, not filtered
+                    const allDevicesList = Object.values(this.allDevices);
+                    const devicesByZone = this.groupDevicesByZone(allDevicesList);
+                    const sortedZones = this.sortZones(Object.keys(devicesByZone));
+                    
+                    sortedZones.forEach(zoneId => {
+                        if (!devicesByZone[zoneId] || !this.allZones[zoneId]) return;
+                        const zone = this.allZones[zoneId];
+                        const zoneDevices = devicesByZone[zoneId];
+                        const zoneEl = document.createElement('div');
+                        zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>`;
+                        const deviceListEl = document.createElement('div');
+                        deviceListEl.className = 'space-y-4';
+                        zoneEl.appendChild(deviceListEl);
+                        
+                        zoneDevices.forEach(device => {
+                            if (!device.capabilitiesObj || Object.keys(device.capabilitiesObj).length === 0) return;
+                            const deviceEl = document.createElement('div');
+                            deviceEl.className = 'bg-gray-700 p-4 rounded-lg';
+                            
+                            // Show device name and driver ID for clarity
+                            deviceEl.innerHTML = `
+                                <div class="mb-3">
+                                    <p class="font-semibold">${device.name}</p>
+                                    <p class="text-xs text-gray-400 font-mono">${device.driverId}</p>
+                                </div>
+                                <div class="space-y-2">${Object.values(device.capabilitiesObj).map(cap => `
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="checkbox" data-device-id="${device.id}" data-capability-id="${cap.id}" class="capability-checkbox form-checkbox h-5 w-5 rounded bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500">
+                                        <span class="text-gray-300">${cap.title} <span class="text-xs text-gray-500">(${cap.id})</span></span>
+                                    </label>
+                                `).join('')}</div>
+                            `;
+                            deviceListEl.appendChild(deviceEl);
+                        });
+                        container.appendChild(zoneEl);
+                    });
+                    
+                    container.querySelectorAll('.capability-checkbox').forEach(checkbox => checkbox.addEventListener('change', (e) => this.handleCapabilitySelection(e.target)));
+                }
+                
+                renderSelectedCapabilities() {
+                    const list = document.getElementById('selected-capabilities-list');
+                    const countEl = document.getElementById('selected-count');
+                    const nextButton = document.getElementById('next-step-button');
+                    list.innerHTML = '';
+                    countEl.textContent = this.selectedCapabilities.length;
+                    if (this.selectedCapabilities.length === 0) list.innerHTML = `<li class="text-gray-500 text-center italic">${this.t('step1.noneSelected')}</li>`;
+                    this.selectedCapabilities.forEach((item, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'bg-gray-700 p-2 rounded-md flex justify-between items-center text-sm';
+                        li.innerHTML = `<span class="truncate"><span class="font-bold">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} - ${item.capabilityTitle}</span><button data-index="${index}" class="remove-capability-btn text-red-400 hover:text-red-300 p-1 font-bold text-lg">&times;</button>`;
+                        list.appendChild(li);
+                    });
+                    list.querySelectorAll('.remove-capability-btn').forEach(btn => btn.addEventListener('click', e => this.removeCapability(parseInt(e.currentTarget.dataset.index))));
+                    const count = this.selectedCapabilities.length;
+                    nextButton.disabled = !(count >= 2 && count <= 10);
+                }
+                
+                renderVariableMapping() {
+                     const list = document.getElementById('variable-mapping-list');
+                     list.innerHTML = '';
+                     this.selectedCapabilities.forEach((item, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'text-gray-300';
+                        li.innerHTML = `<span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} <span class="text-gray-500">(${item.capabilityTitle})</span>`;
+                        list.appendChild(li);
+                     });
+                }
+
+                handleCapabilitySelection(checkbox) {
+                    const { deviceId, capabilityId } = checkbox.dataset;
+                    const device = this.allDevices[deviceId];
+                    const capability = device.capabilitiesObj[capabilityId];
+                    if (checkbox.checked) {
+                        if (this.selectedCapabilities.length < 10) this.selectedCapabilities.push({ deviceId, capabilityId, deviceName: device.name, capabilityTitle: capability.title });
+                        else { checkbox.checked = false; alert(this.t('step1.maxCapabilities')); }
+                    } else {
+                        this.selectedCapabilities = this.selectedCapabilities.filter(item => !(item.deviceId === deviceId && item.capabilityId === capabilityId));
+                    }
+                    this.renderSelectedCapabilities();
+                }
+                
+                removeCapability(index) {
+                    const [removedItem] = this.selectedCapabilities.splice(index, 1);
+                    const checkbox = document.querySelector(`input[data-device-id="${removedItem.deviceId}"][data-capability-id="${removedItem.capabilityId}"]`);
+                    if (checkbox) checkbox.checked = false;
+                    this.renderSelectedCapabilities();
+                }
+                
+                async handleJsonImport() {
+                    const devicesJson = document.getElementById('json-devices-input').value;
+                    const formula = document.getElementById('json-formula-input').value;
+                    if (!devicesJson) return alert(this.t('import.errorEmpty'));
+                    try {
+                        const parsedDevices = JSON.parse(devicesJson);
+                        if (!Array.isArray(parsedDevices) || parsedDevices.length < 2 || parsedDevices.length > 10) return alert(this.t('import.errorRange'));
+                        this.selectedCapabilities = parsedDevices.map(item => {
+                            const device = this.allDevices[item.deviceId];
+                            if (!device) throw new Error(this.t('errors.deviceNotFound').replace('{id}', item.deviceId));
+                            const capability = device.capabilitiesObj[item.capabilityId];
+                            if (!capability) throw new Error(this.t('errors.capabilityNotFound').replace('{cap}', item.capabilityId).replace('{device}', device.name));
+                            return { deviceId: item.deviceId, capabilityId: item.capabilityId, deviceName: device.name, capabilityTitle: capability.title };
+                        });
+                        this.renderSelectedCapabilities();
+                        if (formula) document.getElementById('formula-input').value = formula;
+                        this.showScreen('create-expression-step2-screen');
+                    } catch (error) { alert(this.t('import.errorParsing') + ' ' + error.message); }
+                }
+                
+                async openSettingsModal(deviceId) {
+                    const device = this.allDevices[deviceId];
+                    if (!device) return;
+                    const modal = document.getElementById('settings-modal');
+                    const title = document.getElementById('settings-modal-title');
+                    const content = document.getElementById('settings-modal-content');
+                    const saveBtn = document.getElementById('settings-modal-save');
+                    title.textContent = `${this.t('settings.titleFor')} ${device.name}`;
+                    content.innerHTML = `<p>${this.t('settings.loading')}</p>`;
+                    saveBtn.dataset.deviceId = deviceId;
+                    modal.style.display = 'flex';
+                    
+                    this.showLoader('Loading settings...');
+                    try {
+                        const settings = await this.api.devices.getDeviceSettings({ id: deviceId });
+                        let settingsHtml = '';
+                        for (const key in settings) {
+                            settingsHtml += `<div><label for="setting-${key}" class="block text-sm font-medium text-gray-300">${key}</label><input type="text" id="setting-${key}" data-key="${key}" class="mt-1 block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" value="${settings[key]}"></div>`;
+                        }
+                        content.innerHTML = settingsHtml || `<p>${this.t('settings.noSettings')}</p>`;
+                    } catch(error) { 
+                        content.innerHTML = `<p class="text-red-400">${this.t('settings.error')} ${error.message}</p>`; 
+                    } finally {
+                        this.hideLoader();
+                    }
+                }
+
+                closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
+
+                async saveSettings() {
+                    const deviceId = document.getElementById('settings-modal-save').dataset.deviceId;
+                    const content = document.getElementById('settings-modal-content');
+                    const inputs = content.querySelectorAll('input');
+                    const newSettings = {};
+                    inputs.forEach(input => { newSettings[input.dataset.key] = input.value; });
+                    
+                    this.showLoader('Saving settings...');
+                    try {
+                        await this.api.devices.updateDeviceSettings({ id: deviceId, data: newSettings });
+                        this.hideLoader();
+                        alert(this.t('settings.saved'));
+                        this.closeSettingsModal();
+                    } catch (error) { 
+                        this.hideLoader();
+                        alert(this.t('settings.error') + ' ' + error.message); 
+                    }
+                }
+
+                renderLoginScreen() {
+                     document.getElementById('login-screen').innerHTML = `<h2 class="text-xl font-bold mb-4">${this.t('login.welcome')}</h2><p class="mb-6 text-gray-300">${this.t('login.message')}</p><button id="login-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg transition-colors">${this.t('login.button')}</button>`;
+                }
+
+                showScreen(screenId) {
+                    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                    const screen = document.getElementById(screenId);
+                    if (screen) screen.classList.add('active');
+                    if (screenId === 'create-expression-step2-screen') this.renderVariableMapping();
+                }
+                
+                showLoader(text = 'Loading...') {
+                    const loader = document.getElementById('loader-modal');
+                    const loaderText = document.getElementById('loader-text');
+                    loaderText.textContent = text;
+                    loader.style.display = 'flex';
+                }
+                
+                hideLoader() {
+                    const loader = document.getElementById('loader-modal');
+                    loader.style.display = 'none';
+                }
+                
+                showError(message) {
+                    const loginScreen = document.getElementById('login-screen');
+                    loginScreen.innerHTML = `<p class="text-red-400 p-4 bg-red-900/50 rounded-lg">${message}</p>`;
+                    this.showScreen('login-screen');
+                }
+
+                groupDevicesByZone(deviceList) {
+                    return deviceList.reduce((acc, device) => {
+                        const zone = device.zone;
+                        if (!acc[zone]) acc[zone] = [];
+                        acc[zone].push(device);
+                        return acc;
+                    }, {});
+                }
+
+                sortZones(zoneIds) {
+                    const homeZoneId = Object.keys(this.allZones).find(id => {
+                         if (!this.allZones[id]) return false;
+                         return ['home', 'hjem', 'zuhause', 'maison', 'casa'].includes(this.allZones[id].name.toLowerCase())
+                    });
+                    return zoneIds.sort((a, b) => {
+                        if (a === homeZoneId) return -1;
+                        if (b === homeZoneId) return 1;
+                        if (!this.allZones[a] || !this.allZones[b]) return 0;
+                        return this.allZones[a].name.localeCompare(this.allZones[b].name);
+                    });
+                }
             }
-            document.getElementById('truth-table-body').innerHTML = bodyHTML;
-        }
-
-        function generateJSON() {
-            const formulaId = document.getElementById('formulaId').value;
-            const formulaName = document.getElementById('formulaName').value;
-            const expression = document.getElementById('expression').value;
-            const timeout = parseInt(document.getElementById('timeout').value);
-            const firstImpression = document.getElementById('firstImpression').value === 'true';
-            const enabled = document.getElementById('enabled').value === 'true';
-
-            const validation = validateExpression(expression);
-            const errorDiv = document.getElementById('expressionError');
             
-            if (!validation.valid) {
-                errorDiv.textContent = validation.error;
-                return;
-            }
-            errorDiv.textContent = '';
-
-            const formula = {
-                id: formulaId,
-                name: formulaName,
-                expression: expression,
-                enabled: enabled,
-                timeout: timeout,
-                firstImpression: firstImpression
-            };
-
-            const json = JSON.stringify([formula], null, 2);
-            document.getElementById('jsonOutput').textContent = json;
-        }
-
-        function copyToClipboard() {
-            const json = document.getElementById('jsonOutput').textContent;
-            navigator.clipboard.writeText(json).then(() => {
-                const successDiv = document.getElementById('copySuccess');
-                successDiv.textContent = '✅ Copied to clipboard!';
-                setTimeout(() => {
-                    successDiv.textContent = '';
-                }, 3000);
-            });
-        }
-
-        document.getElementById('truth-table-toggle').addEventListener('click', () => {
-            const container = document.getElementById('truth-table-container');
-            const isHidden = container.classList.contains('hidden');
-            container.classList.toggle('hidden');
-            document.querySelector('.expand-button').classList.toggle('expanded');
-            
-            if (isHidden) {
-                generateTruthTable();
-            }
+            window.app = new BooleanToolboxApp();
         });
-
-        document.getElementById('numInputs').addEventListener('change', updateInputButtons);
-        updateInputButtons();
     </script>
 </body>
 </html>
