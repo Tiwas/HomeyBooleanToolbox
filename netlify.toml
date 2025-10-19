@@ -1,9 +1,0 @@
-[[redirects]]
-  from = "/"
-  to = "/homey-boolean-editor.html"
-  status = 200
-
-[[redirects]]
-  from = "/homey-boolean-editor.html"
-  to = "/homey-boolean-editor.html"
-  status = 200

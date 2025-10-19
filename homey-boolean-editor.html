@@ -84,7 +84,7 @@
                             throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
                         }
 
-                        const response = await fetch('/.netlify/functions/get-config');
+                        const response = await fetch('/api/get-token', {
                         if (!response.ok) throw new Error(`Failed to fetch config: ${response.statusText}`);
                         
                         const config = await response.json();
@@ -124,7 +124,7 @@
 
                 async login() {
                     if (!this.CLIENT_ID) return this.showError("Client ID mangler. Kan ikke starte innlogging.");
-                    const redirectUrl = 'https://booleantoolboxeditor.netlify.app/';
+                    const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
                     const authorizationUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${this.CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
                     window.location.href = authorizationUrl;
                 }
@@ -133,12 +133,8 @@
                     this.showScreen('loader');
                     try {
                         // FIKS: Bygger URL nøyaktig likt som i login() for å garantere samsvar
-                        const redirectUrl = 'https://booleantoolboxeditor.netlify.app/';
-                        const response = await fetch('/.netlify/functions/get-token', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ code: code, redirectUrl: redirectUrl }),
-                        });
+                        const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
+                        const response = await fetch('/api/get-config');
                         
                         const responseText = await response.text();
                         if (!response.ok) {

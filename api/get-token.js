@@ -1,25 +1,28 @@
-// This function runs on Netlify's servers, not in the browser.
+// Vercel Serverless Function
+// This function runs on Vercel's servers, not in the browser.
 // It has secure access to your secret keys.
 
-const fetch = require('node-fetch');
-
-exports.handler = async function(event, context) {
-    if (event.httpMethod !== 'POST') {
-        return { statusCode: 405, body: 'Method Not Allowed' };
+export default async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
     try {
-        const { code, redirectUrl } = JSON.parse(event.body);
+        const { code, redirectUrl } = req.body;
 
         if (!code || !redirectUrl) {
-            return { statusCode: 400, body: JSON.stringify({ error: 'Authorization code or redirectUrl is missing.' }) };
+            return res.status(400).json({ 
+                error: 'Authorization code or redirectUrl is missing.' 
+            });
         }
 
         const CLIENT_ID = process.env.HOMEY_CLIENT_ID;
         const CLIENT_SECRET = process.env.HOMEY_CLIENT_SECRET;
 
         if (!CLIENT_ID || !CLIENT_SECRET) {
-             return { statusCode: 500, body: JSON.stringify({error: 'Server configuration is missing.'}) };
+            return res.status(500).json({ 
+                error: 'Server configuration is missing.' 
+            });
         }
         
         const params = new URLSearchParams();
@@ -41,23 +44,18 @@ exports.handler = async function(event, context) {
 
         if (!response.ok) {
             console.error('Error from Homey API:', response.status, responseBody);
-            return { 
-                statusCode: response.status, 
-                body: responseBody 
-            };
+            return res.status(response.status).send(responseBody);
         }
 
-        return {
-            statusCode: 200,
-            headers: { 'Content-Type': 'application/json' },
-            body: responseBody,
-        };
+        return res.status(200)
+            .setHeader('Content-Type', 'application/json')
+            .send(responseBody);
 
     } catch (error) {
         console.error('Serverless function error:', error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ error: 'An internal server error occurred.', details: error.message }),
-        };
+        return res.status(500).json({ 
+            error: 'An internal server error occurred.', 
+            details: error.message 
+        });
     }
-};
+}

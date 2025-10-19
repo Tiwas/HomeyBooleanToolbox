@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/homey-boolean-editor.html"
+    },
+    {
+      "source": "/homey-boolean-editor.html",
+      "destination": "/homey-boolean-editor.html"
+    }
+  ]
+}
