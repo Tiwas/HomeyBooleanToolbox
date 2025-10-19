@@ -144,7 +144,7 @@
                             throw new Error(`Server responded with ${response.status}: ${errorDetails}`);
                         }
                         
-                        this.cloudApi.setToken(tokenData);
+                        this.cloudApi.setTokenSet(tokenData);
                         window.history.replaceState({}, document.title, window.location.pathname);
                         await this.postLogin();
                     } catch (error) {
