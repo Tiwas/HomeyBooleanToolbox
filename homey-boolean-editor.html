@@ -466,25 +466,49 @@
                         
                         await this.homey.authenticate();
                         
-                        console.log('Homey object methods:', Object.keys(this.homey).filter(k => typeof this.homey[k] === 'function'));
+                        // Deep inspect the homey object
+                        console.log('=== HOMEY OBJECT INSPECTION ===');
+                        console.log('homey object:', this.homey);
+                        console.log('homey keys:', Object.keys(this.homey));
+                        console.log('homey prototype:', Object.getPrototypeOf(this.homey));
+                        console.log('homey prototype keys:', Object.keys(Object.getPrototypeOf(this.homey)));
+                        
+                        // Try to find methods on prototype
+                        const proto = Object.getPrototypeOf(this.homey);
+                        const methods = Object.getOwnPropertyNames(proto).filter(key => {
+                            try {
+                                return typeof proto[key] === 'function' && key !== 'constructor';
+                            } catch (e) {
+                                return false;
+                            }
+                        });
+                        console.log('homey prototype methods:', methods);
+                        
+                        // Check for api-related methods
+                        const apiMethods = methods.filter(m => m.toLowerCase().includes('api'));
+                        console.log('API-related methods:', apiMethods);
                         
                         // Try different methods to get the API
                         if (typeof this.homey.getApi === 'function') {
-                            console.log('Using getApi()');
+                            console.log('Trying getApi()...');
                             this.api = await this.homey.getApi();
                         } else if (typeof this.homey.api !== 'undefined') {
                             console.log('Using homey.api property');
                             this.api = this.homey.api;
+                        } else if (typeof this.homey.getHomeyAPI === 'function') {
+                            console.log('Trying getHomeyAPI()...');
+                            this.api = await this.homey.getHomeyAPI();
+                        } else if (typeof this.homey.createApi === 'function') {
+                            console.log('Trying createApi()...');
+                            this.api = await this.homey.createApi();
                         } else {
-                            console.log('Using homey object itself as API');
+                            console.log('No API method found, using homey object itself');
                             this.api = this.homey;
                         }
                         
-                        console.log('API object structure:', {
-                            hasDevices: !!this.api.devices,
-                            hasZones: !!this.api.zones,
-                            apiKeys: Object.keys(this.api).slice(0, 20)
-                        });
+                        console.log('Final API object:', this.api);
+                        console.log('API keys:', Object.keys(this.api));
+                        console.log('API prototype:', Object.getPrototypeOf(this.api));
 
                         document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
                         document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
