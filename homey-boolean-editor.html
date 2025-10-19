@@ -78,38 +78,38 @@
                     this.init();
                 }
 
-                async init() {
-                    try {
-                        if (typeof AthomCloudAPI === 'undefined') {
-                            throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
-                        }
+				async init() {
+					try {
+						if (typeof AthomCloudAPI === 'undefined') {
+							throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
+						}
 
-                        const response = await fetch('/api/get-token', {
-                        if (!response.ok) throw new Error(`Failed to fetch config: ${response.statusText}`);
-                        
-                        const config = await response.json();
-                        if (!config.clientId) throw new Error('Could not get clientId from config.');
-                        this.CLIENT_ID = config.clientId;
+						const response = await fetch('/api/get-config');
+						if (!response.ok) throw new Error(`Failed to fetch config: ${response.statusText}`);
+						
+						const config = await response.json();
+						if (!config.clientId) throw new Error('Could not get clientId from config.');
+						this.CLIENT_ID = config.clientId;
 
-                        this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
-                        this.setupEventListeners();
-                        this.renderLoginScreen();
+						this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
+						this.setupEventListeners();
+						this.renderLoginScreen();
 
-                        const urlParams = new URLSearchParams(window.location.search);
-                        const code = urlParams.get('code');
+						const urlParams = new URLSearchParams(window.location.search);
+						const code = urlParams.get('code');
 
-                        if (code) {
-                            await this.handleAuthRedirect(code);
-                        } else if (await this.cloudApi.isLoggedIn()) {
-                            await this.postLogin();
-                        } else {
-                            this.showScreen('login-screen');
-                        }
-                    } catch (error) {
-                        console.error("Initialization failed:", error);
-                        this.showError("Klarte ikke å starte appen: " + error.message);
-                    }
-                }
+						if (code) {
+							await this.handleAuthRedirect(code);
+						} else if (await this.cloudApi.isLoggedIn()) {
+							await this.postLogin();
+						} else {
+							this.showScreen('login-screen');
+						}
+					} catch (error) {
+						console.error("Initialization failed:", error);
+						this.showError("Klarte ikke å starte appen: " + error.message);
+					}
+				}
                 
                 setupEventListeners() {
                     document.getElementById('main-content').addEventListener('click', (event) => {
