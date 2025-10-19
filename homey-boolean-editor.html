@@ -54,8 +54,8 @@
             border-radius: 0 0 0.5rem 0.5rem;
         }
     </style>
-    <!-- FIX: Updated Homey API library to the latest version -->
-    <script src="https://cdn.athom.com/homey-api/latest.js"></script>
+    <!-- FIX: Added defer attribute to ensure the script is loaded before the app code runs -->
+    <script src="https://cdn.athom.com/homey-api/latest.js" defer></script>
 </head>
 <body class="h-full">
     <div id="app" class="p-4 md:p-8 max-w-7xl mx-auto">
@@ -243,7 +243,8 @@
 
                 async loadTranslations(lang) {
                     try {
-                        const response = await fetch(`/resources/lang.${lang}.json`);
+                        // FIX: Changed path to be relative
+                        const response = await fetch(`./resources/lang.${lang}.json`);
                         if (!response.ok) throw new Error(`Failed to load language: ${lang}`);
                         this.translations = await response.json();
                         return true;
