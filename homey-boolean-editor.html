@@ -55,7 +55,7 @@
         }
     </style>
     <!-- FIX: Use the onload attribute to reliably trigger app initialization -->
-    <script src="https://cdn.athom.com/homey-api/latest.js" onload="initializeApp()"></script>
+    <script src="https://cdn.athom.com/homey-api/latest.js" onload="initializeApp()" defer></script>
 </head>
 <body class="h-full">
     <div id="app" class="p-4 md:p-8 max-w-7xl mx-auto">
@@ -768,27 +768,6 @@
                 }
             }
             window.app = new BooleanToolboxApp();
-        }
-
-        // Final robust check. This will not run until the DOM is parsed,
-        // and the onload attribute on the script tag will fire initializeApp.
-        // This is a fallback for strange browser behavior.
-        if (document.readyState === 'complete') {
-          if (typeof AthomCloudAPI !== 'undefined') {
-            initializeApp();
-          }
-        } else {
-            window.addEventListener('load', () => {
-                 if (typeof AthomCloudAPI !== 'undefined') {
-                    initializeApp();
-                } else {
-                    console.error('Homey API failed to load by the window.load event.');
-                    const loginScreen = document.getElementById('login-screen');
-                    if(loginScreen) {
-                        loginScreen.innerHTML = `<p class="text-red-400 p-4 bg-red-900/50 rounded-lg">Failed to load Homey API. Check connection and ad-blockers, then refresh.</p>`;
-                    }
-                }
-            });
         }
     </script>
 </body>
