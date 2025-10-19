@@ -317,6 +317,30 @@
 
                 async init() {
                     try {
+                        // Check if running on correct domain
+                        const correctDomain = 'homey-boolean-toolbox.vercel.app';
+                        const currentHostname = window.location.hostname;
+                        
+                        if (currentHostname !== correctDomain && currentHostname !== 'localhost') {
+                            // Not running on Vercel - show error and redirect
+                            const correctUrl = `https://${correctDomain}${window.location.pathname}${window.location.search}`;
+                            this.showError(`
+                                <div class="text-center">
+                                    <h2 class="text-xl font-bold mb-4">⚠️ Wrong Domain</h2>
+                                    <p class="mb-4">This app must be run from the official Vercel deployment.</p>
+                                    <p class="mb-6 text-sm text-gray-400">Current: ${currentHostname}</p>
+                                    <a href="${correctUrl}" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg">
+                                        Go to Official App →
+                                    </a>
+                                    <p class="mt-4 text-xs text-gray-500">Redirecting in 5 seconds...</p>
+                                </div>
+                            `);
+                            setTimeout(() => {
+                                window.location.href = correctUrl;
+                            }, 5000);
+                            return;
+                        }
+                        
                         if (typeof AthomCloudAPI === 'undefined') {
                             throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
                         }
@@ -442,16 +466,25 @@
                         
                         await this.homey.authenticate();
                         
+                        console.log('Homey object methods:', Object.keys(this.homey).filter(k => typeof this.homey[k] === 'function'));
+                        
                         // Try different methods to get the API
                         if (typeof this.homey.getApi === 'function') {
+                            console.log('Using getApi()');
                             this.api = await this.homey.getApi();
                         } else if (typeof this.homey.api !== 'undefined') {
+                            console.log('Using homey.api property');
                             this.api = this.homey.api;
                         } else {
-                            // Fallback: the homey object itself might be the API
-                            console.log('Available methods on homey:', Object.keys(this.homey).filter(k => typeof this.homey[k] === 'function'));
+                            console.log('Using homey object itself as API');
                             this.api = this.homey;
                         }
+                        
+                        console.log('API object structure:', {
+                            hasDevices: !!this.api.devices,
+                            hasZones: !!this.api.zones,
+                            apiKeys: Object.keys(this.api).slice(0, 20)
+                        });
 
                         document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
                         document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
@@ -472,12 +505,49 @@
                 async fetchData() {
                     this.showLoader('Loading devices...');
                     try {
-                        [this.allDevices, this.allZones] = await Promise.all([
-                            this.api.devices.getDevices(),
-                            this.api.zones.getZones()
-                        ]);
+                        console.log('API object:', this.api);
+                        console.log('API.devices:', this.api.devices);
+                        console.log('Available methods on api.devices:', this.api.devices ? Object.keys(this.api.devices).filter(k => typeof this.api.devices[k] === 'function') : 'No devices object');
+                        
+                        // Try different methods to get devices
+                        let devices, zones;
+                        
+                        try {
+                            devices = await this.api.devices.getDevices();
+                            console.log('getDevices() returned:', devices);
+                        } catch (e) {
+                            console.error('getDevices() failed:', e);
+                            // Try alternative method
+                            try {
+                                devices = await this.api.devices.get();
+                                console.log('devices.get() returned:', devices);
+                            } catch (e2) {
+                                console.error('devices.get() failed:', e2);
+                            }
+                        }
+                        
+                        try {
+                            zones = await this.api.zones.getZones();
+                            console.log('getZones() returned:', zones);
+                        } catch (e) {
+                            console.error('getZones() failed:', e);
+                            try {
+                                zones = await this.api.zones.get();
+                                console.log('zones.get() returned:', zones);
+                            } catch (e2) {
+                                console.error('zones.get() failed:', e2);
+                            }
+                        }
+                        
+                        this.allDevices = devices || {};
+                        this.allZones = zones || {};
+                        
+                        console.log('Total devices loaded:', Object.keys(this.allDevices).length);
+                        console.log('Total zones loaded:', Object.keys(this.allZones).length);
+                        
                     } catch (error) { 
                         this.hideLoader();
+                        console.error('fetchData error:', error);
                         this.showError(this.t('errors.fetchData') + ' ' + error.message); 
                     }
                 }
