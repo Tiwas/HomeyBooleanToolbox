@@ -147,7 +147,7 @@
                         }
                         
                         const tokenData = JSON.parse(responseText);
-                        this.cloudApi.token = tokenData;
+                        await this.cloudApi.setToken(tokenData);
 
                         window.history.replaceState({}, document.title, window.location.pathname);
                         await this.postLogin();
