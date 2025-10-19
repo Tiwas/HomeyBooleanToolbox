@@ -17,7 +17,6 @@
         .screen { display: none; }
         .screen.active { display: block; }
     </style>
-    <!-- Using the official CDN URL from Homey's documentation -->
     <script src="https://cdn.athom.com/homey-api/3.14.8.js"></script>
 </head>
 <body class="h-full">
@@ -73,43 +72,44 @@
                 allDevices = {};
                 allZones = {};
                 selectedCapabilities = [];
+                processingAuth = false;
 
                 constructor() {
                     this.init();
                 }
 
-				async init() {
-					try {
-						if (typeof AthomCloudAPI === 'undefined') {
-							throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
-						}
+                async init() {
+                    try {
+                        if (typeof AthomCloudAPI === 'undefined') {
+                            throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
+                        }
 
-						const response = await fetch('/api/get-config');
-						if (!response.ok) throw new Error(`Failed to fetch config: ${response.statusText}`);
-						
-						const config = await response.json();
-						if (!config.clientId) throw new Error('Could not get clientId from config.');
-						this.CLIENT_ID = config.clientId;
+                        const response = await fetch('/api/get-config');
+                        if (!response.ok) throw new Error(`Failed to fetch config: ${response.statusText}`);
+                        
+                        const config = await response.json();
+                        if (!config.clientId) throw new Error('Could not get clientId from config.');
+                        this.CLIENT_ID = config.clientId;
 
-						this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
-						this.setupEventListeners();
-						this.renderLoginScreen();
+                        this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
+                        this.setupEventListeners();
+                        this.renderLoginScreen();
 
-						const urlParams = new URLSearchParams(window.location.search);
-						const code = urlParams.get('code');
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const code = urlParams.get('code');
 
-						if (code) {
-							await this.handleAuthRedirect(code);
-						} else if (await this.cloudApi.isLoggedIn()) {
-							await this.postLogin();
-						} else {
-							this.showScreen('login-screen');
-						}
-					} catch (error) {
-						console.error("Initialization failed:", error);
-						this.showError("Klarte ikke å starte appen: " + error.message);
-					}
-				}
+                        if (code) {
+                            await this.handleAuthRedirect(code);
+                        } else if (await this.cloudApi.isLoggedIn()) {
+                            await this.postLogin();
+                        } else {
+                            this.showScreen('login-screen');
+                        }
+                    } catch (error) {
+                        console.error("Initialization failed:", error);
+                        this.showError("Klarte ikke å starte appen: " + error.message);
+                    }
+                }
                 
                 setupEventListeners() {
                     document.getElementById('main-content').addEventListener('click', (event) => {
@@ -130,29 +130,48 @@
                 }
 
                 async handleAuthRedirect(code) {
+                    if (this.processingAuth) {
+                        console.log('Already processing auth, skipping...');
+                        return;
+                    }
+                    this.processingAuth = true;
+                    
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
                     this.showScreen('loader');
                     try {
-                        // FIKS: Bygger URL nøyaktig likt som i login() for å garantere samsvar
                         const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
-                        const response = await fetch('/api/get-config');
+                        
+                        const response = await fetch('/api/get-token', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ code: code, redirectUrl: redirectUrl }),
+                        });
                         
                         const responseText = await response.text();
                         if (!response.ok) {
                             let errorDetails = responseText;
                             try {
                                 const errorJson = JSON.parse(responseText);
-                                errorDetails = errorJson.error_description || JSON.stringify(errorJson);
+                                errorDetails = errorJson.error_description || errorJson.error || JSON.stringify(errorJson);
                             } catch(e) { /* Ignore parsing error */ }
                             throw new Error(`Server responded with ${response.status}: ${errorDetails}`);
                         }
                         
                         const tokenData = JSON.parse(responseText);
-                        await this.cloudApi.setToken(tokenData);
+                        
+                        // Reinitialize cloudApi with the token
+                        this.cloudApi = new AthomCloudAPI({
+                            clientId: this.CLIENT_ID,
+                            token: tokenData.access_token,
+                            refreshToken: tokenData.refresh_token
+                        });
 
-                        window.history.replaceState({}, document.title, window.location.pathname);
                         await this.postLogin();
                     } catch (error) {
                         this.showError('Authentication failed: ' + error.message);
+                    } finally {
+                        this.processingAuth = false;
                     }
                 }
                 
@@ -397,4 +416,3 @@
     </script>
 </body>
 </html>
-
