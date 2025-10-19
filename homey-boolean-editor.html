@@ -390,48 +390,9 @@
                         const tokenData = await response.json();
                         console.log('Token received from server');
                         
-                        // Create a new AthomCloudAPI instance with the token
-                        // This is a workaround - we'll pass the token through the URL hash
-                        const tokenString = JSON.stringify(tokenData);
-                        const base64Token = btoa(tokenString);
-                        
-                        // Store temporarily for the new instance to pick up
-                        sessionStorage.setItem('homey_temp_token', base64Token);
-                        
-                        // Reinitialize with a trick to make it pick up our token
-                        this.cloudApi = new AthomCloudAPI({ 
-                            clientId: this.CLIENT_ID
-                        });
-                        
-                        // Manually inject the token into the instance
-                        if (this.cloudApi._token !== undefined) {
-                            console.log('Setting token directly on _token property');
-                            this.cloudApi._token = {
-                                access_token: tokenData.access_token,
-                                refresh_token: tokenData.refresh_token,
-                                token_type: tokenData.token_type || 'Bearer',
-                                expires_in: tokenData.expires_in
-                            };
-                        } else if (this.cloudApi.token !== undefined) {
-                            console.log('Setting token directly on token property');
-                            this.cloudApi.token = {
-                                access_token: tokenData.access_token,
-                                refresh_token: tokenData.refresh_token,
-                                token_type: tokenData.token_type || 'Bearer',
-                                expires_in: tokenData.expires_in
-                            };
-                        } else {
-                            // Last resort: try to access internal properties
-                            console.log('Trying to access internal properties...');
-                            console.log('cloudApi properties:', Object.keys(this.cloudApi));
-                            
-                            // Store in the exact format AthomCloudAPI expects
-                            localStorage.setItem(`homey-token-${this.CLIENT_ID}`, JSON.stringify(tokenData));
-                            localStorage.setItem(`com.athom.oauth2.token.${this.CLIENT_ID}`, JSON.stringify(tokenData));
-                            
-                            // Re-create the instance to pick it up
-                            this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
-                        }
+                        // Set the token directly on the __token property (internal property)
+                        this.cloudApi.__token = tokenData;
+                        console.log('Token set on __token property');
                         
                         console.log('Proceeding to postLogin...');
                         await this.postLogin();
@@ -440,7 +401,6 @@
                         this.showError(this.t('errors.authFailed') + ' ' + error.message);
                     } finally {
                         this.processingAuth = false;
-                        sessionStorage.removeItem('homey_temp_token');
                     }
                 }
                 
@@ -451,9 +411,8 @@
                         console.error("Logout failed, continuing.", e); 
                     }
                     
-                    // Clear token from localStorage using the correct key
-                    const tokenKey = `com.athom.cloudapi.token.${this.CLIENT_ID}`;
-                    localStorage.removeItem(tokenKey);
+                    // Clear the token
+                    this.cloudApi.__token = null;
                     
                     this.authenticatedUser = null; 
                     this.homey = null; 
