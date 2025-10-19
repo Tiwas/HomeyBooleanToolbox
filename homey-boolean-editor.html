@@ -675,9 +675,41 @@
                         }
                         
                         console.log('HomeyAPI available, creating API for Homey...');
-                        // Use HomeyAPI.forHomey which properly handles the authentication
-                        this.api = await HomeyAPI.forHomey(this.homey);
-                        console.log('API created successfully via HomeyAPI.forHomey()');
+                        console.log('HomeyAPI object:', HomeyAPI);
+                        console.log('HomeyAPI keys:', Object.keys(HomeyAPI));
+                        console.log('HomeyAPI prototype:', Object.getPrototypeOf(HomeyAPI));
+                        
+                        // Try different approaches to create API
+                        let apiCreated = false;
+                        
+                        // Method 1: Try forHomey static method
+                        if (typeof HomeyAPI.forHomey === 'function') {
+                            console.log('Using HomeyAPI.forHomey()...');
+                            this.api = await HomeyAPI.forHomey(this.homey);
+                            apiCreated = true;
+                        }
+                        // Method 2: Try creating new instance with homey object
+                        else if (typeof HomeyAPI === 'function') {
+                            console.log('Trying new HomeyAPI(homey)...');
+                            try {
+                                this.api = new HomeyAPI(this.homey);
+                                apiCreated = true;
+                            } catch (e) {
+                                console.error('new HomeyAPI(homey) failed:', e);
+                            }
+                        }
+                        // Method 3: Try createFromHomey if it exists
+                        else if (typeof HomeyAPI.createFromHomey === 'function') {
+                            console.log('Using HomeyAPI.createFromHomey()...');
+                            this.api = await HomeyAPI.createFromHomey(this.homey);
+                            apiCreated = true;
+                        }
+                        
+                        if (!apiCreated) {
+                            throw new Error('Could not find a way to create HomeyAPI instance. Available methods: ' + Object.keys(HomeyAPI).join(', '));
+                        }
+                        
+                        console.log('API created successfully');
                         
                         console.log('API object:', this.api);
                         console.log('API has devices?', !!this.api.devices);
