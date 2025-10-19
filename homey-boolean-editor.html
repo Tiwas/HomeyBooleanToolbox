@@ -645,102 +645,105 @@
                         if (!this.homey) throw new Error(this.t('errors.noHomey'));
                         
                         console.log('Homey object:', this.homey);
-                        console.log('Homey properties:', Object.keys(this.homey));
-                        console.log('Homey _id:', this.homey._id);
-                        console.log('Homey name:', this.homey.name);
-                        console.log('Homey platform:', this.homey.platform);
+                        console.log('Homey remoteUrl:', this.homey.remoteUrl);
+                        console.log('Homey localUrl:', this.homey.localUrl);
                         
                         console.log('Authenticating Homey...');
                         await this.homey.authenticate();
                         
-                        console.log('After authenticate - homey properties:', Object.keys(this.homey));
-                        console.log('Checking for API-related properties...');
-                        console.log('homey._api:', this.homey._api);
-                        console.log('homey.api:', this.homey.api);
-                        console.log('homey._baseUrl:', this.homey._baseUrl);
-                        console.log('homey._session:', this.homey._session);
-                        
-                        // Check if we can get API instance from authenticatedUser
-                        console.log('Checking authenticatedUser...');
-                        console.log('authenticatedUser methods:', Object.keys(this.authenticatedUser));
-                        
-                        console.log('Getting Homey API...');
-                        
-                        // Try using the session from homey after authentication
+                        console.log('Getting delegation token...');
+                        // Try to create a delegation token for API access
+                        let token;
                         try {
-                            console.log('Trying to access homey session data...');
-                            
-                            // After authenticate(), the homey object should have session info
-                            // Try to find it in various places
-                            const session = this.homey._session || this.homey.session || this.homey.__session;
-                            console.log('Session:', session);
-                            
-                            if (session && session.token) {
-                                console.log('Found session token, creating custom API...');
-                                const baseUrl = session.baseUrl || session.url || `https://${this.homey._id}.connect.athom.com`;
-                                console.log('Base URL:', baseUrl);
-                                
-                                this.api = {
-                                    devices: {
-                                        getDevices: async () => {
-                                            const response = await fetch(`${baseUrl}/api/manager/devices/device`, {
-                                                headers: {
-                                                    'Authorization': `Bearer ${session.token}`
-                                                }
-                                            });
-                                            if (!response.ok) throw new Error(`Failed to get devices: ${response.statusText}`);
-                                            return await response.json();
-                                        },
-                                        getDeviceSettings: async ({ id }) => {
-                                            const response = await fetch(`${baseUrl}/api/manager/devices/device/${id}/settings`, {
-                                                headers: {
-                                                    'Authorization': `Bearer ${session.token}`
-                                                }
-                                            });
-                                            if (!response.ok) throw new Error(`Failed to get device settings: ${response.statusText}`);
-                                            return await response.json();
-                                        },
-                                        updateDeviceSettings: async ({ id, data }) => {
-                                            const response = await fetch(`${baseUrl}/api/manager/devices/device/${id}/settings`, {
-                                                method: 'PUT',
-                                                headers: {
-                                                    'Authorization': `Bearer ${session.token}`,
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                body: JSON.stringify(data)
-                                            });
-                                            if (!response.ok) throw new Error(`Failed to update device settings: ${response.statusText}`);
-                                            return await response.json();
-                                        }
-                                    },
-                                    zones: {
-                                        getZones: async () => {
-                                            const response = await fetch(`${baseUrl}/api/manager/zones/zone`, {
-                                                headers: {
-                                                    'Authorization': `Bearer ${session.token}`
-                                                }
-                                            });
-                                            if (!response.ok) throw new Error(`Failed to get zones: ${response.statusText}`);
-                                            return await response.json();
-                                        }
-                                    }
-                                };
-                                console.log('Successfully created custom API wrapper');
-                            } else {
-                                throw new Error('No session token found after authentication');
-                            }
+                            // Method 1: Try using cloudApi to create delegation token
+                            console.log('Trying cloudApi.createDelegationToken...');
+                            const delegationToken = await this.cloudApi.createDelegationToken({
+                                audience: this.homey._id
+                            });
+                            token = delegationToken.token;
+                            console.log('Got delegation token via createDelegationToken');
                         } catch (e) {
-                            console.error('Failed to create API:', e);
-                            throw new Error('Could not create API instance. Please make sure you have granted the required permissions (homey.zone.readonly, homey.device.readonly, homey.device.control) when creating your API client.');
+                            console.error('createDelegationToken failed:', e);
+                            
+                            // Method 2: Try getting token from the OAuth flow
+                            try {
+                                console.log('Trying to get token from cloudApi.__token...');
+                                const cloudToken = this.cloudApi.__token;
+                                if (cloudToken && cloudToken.access_token) {
+                                    token = cloudToken.access_token;
+                                    console.log('Using OAuth access token');
+                                } else {
+                                    throw new Error('No access token found');
+                                }
+                            } catch (e2) {
+                                console.error('Failed to get OAuth token:', e2);
+                                throw new Error('Could not obtain API token');
+                            }
                         }
                         
-                        console.log('API object created:', !!this.api);
-                        console.log('API has devices?', !!this.api?.devices);
-                        console.log('API has zones?', !!this.api?.zones);
-
-                        if (!this.api?.devices || !this.api?.zones) {
-                            throw new Error('API object is missing required properties.');
-                        }
+                        console.log('Token obtained, creating API wrapper...');
+                        const baseUrl = this.homey.remoteUrl || this.homey.localUrl;
+                        console.log('Using base URL:', baseUrl);
+                        
+                        this.api = {
+                            devices: {
+                                getDevices: async () => {
+                                    const response = await fetch(`${baseUrl}/api/manager/devices/device`, {
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`
+                                        }
+                                    });
+                                    if (!response.ok) {
+                                        const errorText = await response.text();
+                                        throw new Error(`Failed to get devices: ${response.status} ${errorText}`);
+                                    }
+                                    return await response.json();
+                                },
+                                getDeviceSettings: async ({ id }) => {
+                                    const response = await fetch(`${baseUrl}/api/manager/devices/device/${id}/settings`, {
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`
+                                        }
+                                    });
+                                    if (!response.ok) {
+                                        const errorText = await response.text();
+                                        throw new Error(`Failed to get device settings: ${response.status} ${errorText}`);
+                                    }
+                                    return await response.json();
+                                },
+                                updateDeviceSettings: async ({ id, data }) => {
+                                    const response = await fetch(`${baseUrl}/api/manager/devices/device/${id}/settings`, {
+                                        method: 'PUT',
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(data)
+                                    });
+                                    if (!response.ok) {
+                                        const errorText = await response.text();
+                                        throw new Error(`Failed to update device settings: ${response.status} ${errorText}`);
+                                    }
+                                    return await response.json();
+                                }
+                            },
+                            zones: {
+                                getZones: async () => {
+                                    const response = await fetch(`${baseUrl}/api/manager/zones/zone`, {
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`
+                                        }
+                                    });
+                                    if (!response.ok) {
+                                        const errorText = await response.text();
+                                        throw new Error(`Failed to get zones: ${response.status} ${errorText}`);
+                                    }
+                                    return await response.json();
+                                }
+                            }
+                        };
+                        
+                        console.log('API wrapper created successfully');
 
                         document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
                         document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
