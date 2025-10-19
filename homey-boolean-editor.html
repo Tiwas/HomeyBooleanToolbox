@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/homey-api/dist/homey-api.min.js"></script>
+    <!-- FIKS: Lagt til 'defer' for å sikre at scriptet lastes riktig -->
+    <script src="https://cdn.jsdelivr.net/npm/homey-api/dist/homey-api.min.js" defer></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -165,10 +166,10 @@
 
     <script>
     class BooleanToolboxApp {
-        // CLIENT_ID er nå fjernet herfra og hentes fra serveren.
+        // CLIENT_ID is now removed from here and fetched from the server.
         CLIENT_ID = null;
         
-        // --- Appens tilstand (state) ---
+        // --- App state ---
         cloudApi = null;
         authenticatedUser = null;
         homey = null;
@@ -185,7 +186,7 @@
 
         async init() {
             try {
-                // Hent offentlig Client ID fra vår nye server-funksjon
+                // Fetch public Client ID from our new server function
                 const response = await fetch('/.netlify/functions/get-config');
                 const config = await response.json();
                 if (!response.ok || !config.clientId) {
@@ -238,7 +239,7 @@
         async handleAuthRedirect(code) {
             this.showScreen('loader');
             try {
-                // Kall vår sikre serverless-funksjon for å bytte koden mot et token
+                // Call our secure serverless function to exchange the code for a token
                 const response = await fetch('/.netlify/functions/get-token', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -246,20 +247,20 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`Serverfeil: ${await response.text()}`);
+                    throw new Error(`Server error: ${await response.text()}`);
                 }
 
                 const tokenData = await response.json();
                 
-                // Lagre tokenet i SDK-et
+                // Store the token in the SDK
                 this.cloudApi.setToken(tokenData);
 
-                // Fjern koden fra URL-en og fortsett som normalt
+                // Clean the URL and proceed
                 window.history.replaceState({}, document.title, window.location.pathname);
                 await this.postLogin();
 
             } catch (error) {
-                this.showError('Autentisering feilet: ' + error.message);
+                this.showError('Authentication failed: ' + error.message);
             }
         }
         
@@ -276,17 +277,17 @@
             try {
                 this.authenticatedUser = await this.cloudApi.getAuthenticatedUser();
                 const homeys = await this.authenticatedUser.getHomeys();
-                this.homey = homeys[0]; // Velger den første Homey-en
+                this.homey = homeys[0]; // Select the first Homey
                 
                 if (!this.homey) {
-                    this.showError("Fant ingen Homey knyttet til denne kontoen.");
+                    this.showError("No Homey found for this account.");
                     return;
                 }
 
                 await this.homey.authenticate();
                 this.api = await this.homey.getApi();
 
-                // Oppdaterer UI
+                // Update UI
                 document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
                 document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
                 document.getElementById('user-info').classList.remove('hidden');
@@ -297,7 +298,7 @@
 
             } catch (error) {
                 console.error(error);
-                this.showError('En feil oppstod etter innlogging: ' + error.message);
+                this.showError('An error occurred after login: ' + error.message);
                 this.logout();
             }
         }
@@ -307,8 +308,9 @@
             try {
                 this.allDevices = await this.api.devices.getDevices();
                 this.allZones = await this.api.zones.getZones();
-            } catch (error) {
-                this.showError("Klarte ikke hente data fra Homey: " + error.message);
+            } catch (error)
+            {
+                this.showError("Could not fetch data from Homey: " + error.message);
             }
         }
 
@@ -317,24 +319,24 @@
             this.renderDeviceCapabilityList();
         }
 
-        // --- RENDERINGSFUNKSJONER ---
+        // --- RENDER FUNCTIONS ---
 
         renderEditDevices() {
             const container = document.getElementById('edit-devices-list');
-            container.innerHTML = ''; // Tømmer listen
+            container.innerHTML = ''; // Clear list
 
-            // Filtrerer enheter
+            // Filter devices
             const toolboxDevices = Object.values(this.allDevices).filter(d => d.driverId.startsWith('booleantoolbox'));
             
             if (toolboxDevices.length === 0) {
-                 container.innerHTML = `<div class="bg-gray-700 p-4 rounded-lg text-center text-gray-400">Fant ingen enheter fra Boolean Toolbox.</div>`;
+                 container.innerHTML = `<div class="bg-gray-700 p-4 rounded-lg text-center text-gray-400">No devices found from Boolean Toolbox.</div>`;
                  return;
             }
 
-            // Grupperer per sone
+            // Group by zone
             const devicesByZone = this.groupDevicesByZone(toolboxDevices);
             
-            // Sorterer soner
+            // Sort zones
             const sortedZones = this.sortZones(Object.keys(devicesByZone));
 
             sortedZones.forEach(zoneId => {
@@ -400,7 +402,7 @@
                 container.appendChild(zoneEl);
             });
             
-            // Legg til event listeners for avkrysningsbokser
+            // Add event listeners for checkboxes
             container.querySelectorAll('.capability-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', (e) => this.handleCapabilitySelection(e.target));
             });
@@ -435,7 +437,7 @@
                 btn.addEventListener('click', e => this.removeCapability(parseInt(e.currentTarget.dataset.index)));
             });
 
-            // Sjekk validering for neste-knapp
+            // Validate for next button
             const count = this.selectedCapabilities.length;
             if (count >= 2 && count <= 10) {
                 nextButton.disabled = false;
@@ -455,7 +457,7 @@
              });
         }
 
-        // --- HANDLERS OG LOGIKK ---
+        // --- HANDLERS AND LOGIC ---
         
         handleCapabilitySelection(checkbox) {
             const deviceId = checkbox.dataset.deviceId;
@@ -472,7 +474,7 @@
                         capabilityTitle: capability.title,
                     });
                 } else {
-                    checkbox.checked = false; // Forhindre valg over 10
+                    checkbox.checked = false; // Prevent selecting more than 10
                     alert("Du kan maksimalt velge 10 kapabiliteter.");
                 }
             } else {
@@ -486,7 +488,7 @@
         removeCapability(index) {
             const removedItem = this.selectedCapabilities.splice(index, 1)[0];
             
-            // Fjern avkrysning i hovedlisten
+            // Uncheck in the main list
             const checkbox = document.querySelector(`input[data-device-id="${removedItem.deviceId}"][data-capability-id="${removedItem.capabilityId}"]`);
             if (checkbox) {
                 checkbox.checked = false;
@@ -513,9 +515,9 @@
 
                 this.selectedCapabilities = parsedDevices.map(item => {
                     const device = this.allDevices[item.deviceId];
-                    if (!device) throw new Error(`Fant ikke enhet med ID ${item.deviceId}`);
+                    if (!device) throw new Error(`Device with ID ${item.deviceId} not found`);
                     const capability = device.capabilitiesObj[item.capabilityId];
-                    if (!capability) throw new Error(`Fant ikke kapabilitet ${item.capabilityId} på enhet ${device.name}`);
+                    if (!capability) throw new Error(`Capability ${item.capabilityId} not found on device ${device.name}`);
                     
                     return {
                         deviceId: item.deviceId,
@@ -534,11 +536,11 @@
                 this.showScreen('create-expression-step2-screen');
 
             } catch (error) {
-                alert("Feil ved parsing av JSON: " + error.message);
+                alert("Error parsing JSON: " + error.message);
             }
         }
         
-        // --- INNSTILLINGER MODAL ---
+        // --- SETTINGS MODAL ---
         
         async openSettingsModal(deviceId) {
             const device = this.allDevices[deviceId];
@@ -565,9 +567,9 @@
                     </div>
                     `;
                 }
-                content.innerHTML = settingsHtml || '<p>Denne enheten har ingen innstillinger.</p>';
+                content.innerHTML = settingsHtml || '<p>This device has no settings.</p>';
             } catch(error) {
-                content.innerHTML = `<p class="text-red-400">Kunne ikke hente innstillinger: ${error.message}</p>`;
+                content.innerHTML = `<p class="text-red-400">Could not fetch settings: ${error.message}</p>`;
             }
         }
 
@@ -590,11 +592,11 @@
                 alert('Innstillinger lagret!');
                 this.closeSettingsModal();
             } catch (error) {
-                alert('Kunne ikke lagre innstillinger: ' + error.message);
+                alert('Could not save settings: ' + error.message);
             }
         }
 
-        // --- HJELPEFUNKSJONER ---
+        // --- HELPER FUNCTIONS ---
 
         showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -622,10 +624,10 @@
         }
 
         sortZones(zoneIds) {
-            // Språkuavhengig sjekk for "Home"
+            // Language-independent check for "Home"
             const homeZoneId = Object.keys(this.allZones).find(id => {
                 const name = this.allZones[id].name.toLowerCase();
-                // Dekker noen vanlige språk for "Hjem"
+                // Covers some common languages for "Home"
                 return ['home', 'hjem', 'zuhause', 'maison', 'casa'].includes(name);
             });
 
@@ -637,7 +639,7 @@
         }
     }
 
-    // Starter appen når siden er lastet
+    // Start the app when the page is loaded
     let app;
     window.addEventListener('load', () => {
         app = new BooleanToolboxApp();
@@ -645,4 +647,5 @@
     </script>
 </body>
 </html>
+
 
