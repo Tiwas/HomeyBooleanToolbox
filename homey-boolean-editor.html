@@ -124,7 +124,7 @@
 
                 async login() {
                     if (!this.CLIENT_ID) return this.showError("Client ID mangler. Kan ikke starte innlogging.");
-                    const redirectUrl = window.location.origin + window.location.pathname;
+                    const redirectUrl = `${window.location.origin}${window.location.pathname}`;
                     const authorizationUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${this.CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
                     window.location.href = authorizationUrl;
                 }
@@ -132,8 +132,8 @@
                 async handleAuthRedirect(code) {
                     this.showScreen('loader');
                     try {
-                        // FIKS: Sender med redirectUrl til serverless-funksjonen
-                        const redirectUrl = window.location.origin + window.location.pathname;
+                        // FIKS: Bygger URL nøyaktig likt som i login() for å garantere samsvar
+                        const redirectUrl = `${window.location.origin}${window.location.pathname}`;
                         const response = await fetch('/.netlify/functions/get-token', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -142,12 +142,11 @@
                         
                         const responseText = await response.text();
                         if (!response.ok) {
-                            // Prøv å parse som JSON, hvis ikke, vis som tekst
                             let errorDetails = responseText;
                             try {
                                 const errorJson = JSON.parse(responseText);
                                 errorDetails = errorJson.error_description || JSON.stringify(errorJson);
-                            } catch(e) { /* Ignorer parse-feil, det er bare tekst */ }
+                            } catch(e) { /* Ignore parsing error */ }
                             throw new Error(`Server responded with ${response.status}: ${errorDetails}`);
                         }
                         

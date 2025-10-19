@@ -25,12 +25,16 @@ exports.handler = async function(event, context) {
         const params = new URLSearchParams();
         params.append('grant_type', 'authorization_code');
         params.append('code', code);
-        params.append('redirect_uri', redirectUrl); // Add the redirect_uri for validation
+        params.append('redirect_uri', redirectUrl);
         params.append('client_id', CLIENT_ID);
         params.append('client_secret', CLIENT_SECRET);
 
         const response = await fetch('https://api.athom.com/oauth2/token', {
             method: 'POST',
+            // FIKS: Legger til header for å være 100% sikker på formatet
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
             body: params,
         });
 
