@@ -655,29 +655,41 @@
                         // Try to create a delegation token for API access
                         let token;
                         try {
-                            // Method 1: Try using cloudApi to create delegation token
-                            console.log('Trying cloudApi.createDelegationToken...');
+                            // Create delegation token with session ID
+                            console.log('Trying cloudApi.createDelegationToken with session...');
                             const delegationToken = await this.cloudApi.createDelegationToken({
-                                audience: this.homey._id
+                                audience: this.homey._id,
+                                includeSession: true  // Include session ID in the token
                             });
                             token = delegationToken.token;
-                            console.log('Got delegation token via createDelegationToken');
+                            console.log('Got delegation token with session');
                         } catch (e) {
-                            console.error('createDelegationToken failed:', e);
+                            console.error('createDelegationToken with session failed:', e);
                             
-                            // Method 2: Try getting token from the OAuth flow
+                            // Try without includeSession parameter but log the token structure
                             try {
+                                console.log('Trying createDelegationToken without includeSession...');
+                                const delegationToken = await this.cloudApi.createDelegationToken({
+                                    audience: this.homey._id
+                                });
+                                console.log('Delegation token object:', delegationToken);
+                                
+                                // Check if we need to use a different property
+                                token = delegationToken.token || delegationToken.access_token || delegationToken;
+                                console.log('Using token from delegation');
+                            } catch (e2) {
+                                console.error('createDelegationToken failed:', e2);
+                                
+                                // Fallback: Try getting token from OAuth
                                 console.log('Trying to get token from cloudApi.__token...');
                                 const cloudToken = this.cloudApi.__token;
+                                console.log('Cloud token object:', cloudToken);
                                 if (cloudToken && cloudToken.access_token) {
                                     token = cloudToken.access_token;
                                     console.log('Using OAuth access token');
                                 } else {
-                                    throw new Error('No access token found');
+                                    throw new Error('Could not obtain API token');
                                 }
-                            } catch (e2) {
-                                console.error('Failed to get OAuth token:', e2);
-                                throw new Error('Could not obtain API token');
                             }
                         }
                         
@@ -1035,7 +1047,7 @@
                         return acc;
                     }, {});
                 }
- 
+
                 sortZones(zoneIds) {
                     const homeZoneId = Object.keys(this.allZones).find(id => {
                          if (!this.allZones[id]) return false;
