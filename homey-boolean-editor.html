@@ -106,13 +106,7 @@
         </header>
 
         <main id="main-content" class="bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8">
-            <div id="loader" class="screen active flex justify-center items-center p-16">
-                <svg class="animate-spin h-8 w-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-            </div>
-            <div id="login-screen" class="screen text-center p-16"></div>
+            <div id="login-screen" class="screen active text-center p-16"></div>
             <div id="main-menu-screen" class="screen">
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('edit-devices-screen')">
@@ -203,6 +197,17 @@
                 </div>
             </div>
         </main>
+        
+        <!-- Loading Modal -->
+        <div id="loader-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+            <div class="bg-gray-800 rounded-lg p-8 flex flex-col items-center gap-4">
+                <svg class="animate-spin h-12 w-12 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="text-white text-lg" id="loader-text">Loading...</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -316,6 +321,8 @@
                             throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
                         }
 
+                        this.showLoader('Initializing...');
+                        
                         const response = await fetch('/api/get-config');
                         if (!response.ok) throw new Error(`Failed to fetch config: ${response.statusText}`);
                         
@@ -336,10 +343,12 @@
                         } else if (await this.cloudApi.isLoggedIn()) {
                             await this.postLogin();
                         } else {
+                            this.hideLoader();
                             this.showScreen('login-screen');
                         }
                     } catch (error) {
                         console.error("Initialization failed:", error);
+                        this.hideLoader();
                         this.showError(this.t('errors.startApp') + ' ' + error.message);
                     }
                 }
@@ -371,7 +380,7 @@
                     
                     window.history.replaceState({}, document.title, window.location.pathname);
                     
-                    this.showScreen('loader');
+                    this.showLoader('Authenticating...');
                     try {
                         const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
                         
@@ -398,6 +407,7 @@
                         await this.postLogin();
                     } catch (error) {
                         console.error('Auth error:', error);
+                        this.hideLoader();
                         this.showError(this.t('errors.authFailed') + ' ' + error.message);
                     } finally {
                         this.processingAuth = false;
@@ -424,6 +434,7 @@
 
                 async postLogin() {
                     try {
+                        this.showLoader('Loading user data...');
                         this.authenticatedUser = await this.cloudApi.getAuthenticatedUser();
                         const homeys = await this.authenticatedUser.getHomeys();
                         this.homey = homeys[0];
@@ -448,22 +459,27 @@
 
                         await this.fetchData();
                         this.renderAll();
+                        this.hideLoader();
                         this.showScreen('main-menu-screen');
                     } catch (error) {
                         console.error(error);
+                        this.hideLoader();
                         this.showError(this.t('errors.afterLogin') + ' ' + error.message);
                         await this.logout();
                     }
                 }
 
                 async fetchData() {
-                    this.showScreen('loader');
+                    this.showLoader('Loading devices...');
                     try {
                         [this.allDevices, this.allZones] = await Promise.all([
                             this.api.devices.getDevices(),
                             this.api.zones.getZones()
                         ]);
-                    } catch (error) { this.showError(this.t('errors.fetchData') + ' ' + error.message); }
+                    } catch (error) { 
+                        this.hideLoader();
+                        this.showError(this.t('errors.fetchData') + ' ' + error.message); 
+                    }
                 }
 
                 renderAll() { this.renderEditDevices(); this.renderDeviceCapabilityList(); }
@@ -595,6 +611,8 @@
                     content.innerHTML = `<p>${this.t('settings.loading')}</p>`;
                     saveBtn.dataset.deviceId = deviceId;
                     modal.style.display = 'flex';
+                    
+                    this.showLoader('Loading settings...');
                     try {
                         const settings = await this.api.devices.getDeviceSettings({ id: deviceId });
                         let settingsHtml = '';
@@ -602,7 +620,11 @@
                             settingsHtml += `<div><label for="setting-${key}" class="block text-sm font-medium text-gray-300">${key}</label><input type="text" id="setting-${key}" data-key="${key}" class="mt-1 block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" value="${settings[key]}"></div>`;
                         }
                         content.innerHTML = settingsHtml || `<p>${this.t('settings.noSettings')}</p>`;
-                    } catch(error) { content.innerHTML = `<p class="text-red-400">${this.t('settings.error')} ${error.message}</p>`; }
+                    } catch(error) { 
+                        content.innerHTML = `<p class="text-red-400">${this.t('settings.error')} ${error.message}</p>`; 
+                    } finally {
+                        this.hideLoader();
+                    }
                 }
 
                 closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
@@ -613,11 +635,17 @@
                     const inputs = content.querySelectorAll('input');
                     const newSettings = {};
                     inputs.forEach(input => { newSettings[input.dataset.key] = input.value; });
+                    
+                    this.showLoader('Saving settings...');
                     try {
                         await this.api.devices.updateDeviceSettings({ id: deviceId, data: newSettings });
+                        this.hideLoader();
                         alert(this.t('settings.saved'));
                         this.closeSettingsModal();
-                    } catch (error) { alert(this.t('settings.error') + ' ' + error.message); }
+                    } catch (error) { 
+                        this.hideLoader();
+                        alert(this.t('settings.error') + ' ' + error.message); 
+                    }
                 }
 
                 renderLoginScreen() {
@@ -629,6 +657,18 @@
                     const screen = document.getElementById(screenId);
                     if (screen) screen.classList.add('active');
                     if (screenId === 'create-expression-step2-screen') this.renderVariableMapping();
+                }
+                
+                showLoader(text = 'Loading...') {
+                    const loader = document.getElementById('loader-modal');
+                    const loaderText = document.getElementById('loader-text');
+                    loaderText.textContent = text;
+                    loader.style.display = 'flex';
+                }
+                
+                hideLoader() {
+                    const loader = document.getElementById('loader-modal');
+                    loader.style.display = 'none';
                 }
                 
                 showError(message) {
