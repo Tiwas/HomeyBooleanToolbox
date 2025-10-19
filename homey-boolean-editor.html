@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="no" class="h-full">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,42 @@
         }
         .screen { display: none; }
         .screen.active { display: block; }
+        .language-selector {
+            position: relative;
+        }
+        .language-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 0.5rem;
+            background: #2d3748;
+            border: 1px solid #4a5568;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            z-index: 50;
+            min-width: 200px;
+        }
+        .language-dropdown.active {
+            display: block;
+        }
+        .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: background 0.2s;
+        }
+        .language-option:hover {
+            background: #4a5568;
+        }
+        .language-option:first-child {
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+        .language-option:last-child {
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
     </style>
     <script src="https://cdn.athom.com/homey-api/3.14.8.js"></script>
 </head>
@@ -27,13 +63,45 @@
                  <img src="https://tiwas.github.io/HomeyBooleanToolbox/no.tiwas.booleantoolbox/assets/icon.svg" alt="Boolean Toolbox Logo" class="w-16 h-16 rounded-lg">
                  <div>
                     <h1 class="text-2xl font-bold text-white">Boolean Editor</h1>
-                    <p class="text-gray-400 mt-1">For Homey Boolean Toolbox</p>
+                    <p class="text-gray-400 mt-1" data-i18n="subtitle">For Homey Boolean Toolbox</p>
                  </div>
             </div>
-            <div id="user-info" class="hidden text-right mt-4 md:mt-0">
-                <p id="user-name" class="font-semibold"></p>
-                <p id="homey-name" class="text-sm text-gray-400"></p>
-                <button id="logout-button" class="text-sm text-red-400 hover:text-red-300">Logg ut</button>
+            <div class="flex items-center gap-4 mt-4 md:mt-0">
+                <div class="language-selector">
+                    <button id="language-button" class="flex items-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                        <span id="current-flag" class="text-xl">🇬🇧</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="language-dropdown" class="language-dropdown">
+                        <div class="language-option" data-lang="en">
+                            <span class="text-xl">🇬🇧</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="no">
+                            <span class="text-xl">🇳🇴</span>
+                            <span>Norsk</span>
+                        </div>
+                        <div class="language-option" data-lang="de">
+                            <span class="text-xl">🇩🇪</span>
+                            <span>Deutsch</span>
+                        </div>
+                        <div class="language-option" data-lang="fr">
+                            <span class="text-xl">🇫🇷</span>
+                            <span>Français</span>
+                        </div>
+                        <div class="language-option" data-lang="nl">
+                            <span class="text-xl">🇳🇱</span>
+                            <span>Nederlands</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="user-info" class="hidden text-right">
+                    <p id="user-name" class="font-semibold"></p>
+                    <p id="homey-name" class="text-sm text-gray-400"></p>
+                    <button id="logout-button" class="text-sm text-red-400 hover:text-red-300" data-i18n="logout">Log out</button>
+                </div>
             </div>
         </header>
 
@@ -47,20 +115,453 @@
             <div id="login-screen" class="screen text-center p-16"></div>
             <div id="main-menu-screen" class="screen">
                 <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('edit-devices-screen')"><h3 class="text-lg font-semibold mb-2">Rediger eksisterende enheter</h3><p class="text-gray-400">Se og endre innstillinger for enheter opprettet med Boolean Toolbox.</p></div>
-                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('create-expression-step1-screen')"><h3 class="text-lg font-semibold mb-2">Lag nytt uttrykk</h3><p class="text-gray-400">Velg enheter og kapabiliteter for å bygge en ny boolsk formel.</p></div>
-                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('json-import-screen')"><h3 class="text-lg font-semibold mb-2">Importer fra JSON</h3><p class="text-gray-400">Start med et eksisterende uttrykk ved å lime inn JSON-data.</p></div>
+                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('edit-devices-screen')">
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="menu.editDevices">Edit existing devices</h3>
+                        <p class="text-gray-400" data-i18n="menu.editDevicesDesc">View and modify settings for devices created with Boolean Toolbox.</p>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('create-expression-step1-screen')">
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="menu.createExpression">Create new expression</h3>
+                        <p class="text-gray-400" data-i18n="menu.createExpressionDesc">Select devices and capabilities to build a new boolean formula.</p>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('json-import-screen')">
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="menu.importJson">Import from JSON</h3>
+                        <p class="text-gray-400" data-i18n="menu.importJsonDesc">Start with an existing expression by pasting JSON data.</p>
+                    </div>
                 </div>
             </div>
-            <div id="edit-devices-screen" class="screen"><button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">&larr; Tilbake til meny</button><h2 class="text-xl font-bold mb-4">Rediger Boolean Toolbox Enheter</h2><div id="edit-devices-list" class="space-y-6"></div></div>
-            <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center p-4 z-50"><div class="bg-gray-800 rounded-lg p-6 w-full max-w-md shadow-2xl border border-gray-700"><h3 id="settings-modal-title" class="text-lg font-bold mb-4">Innstillinger</h3><div id="settings-modal-content" class="space-y-4"></div><div class="mt-6 flex justify-end gap-4"><button id="settings-modal-close" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Lukk</button><button id="settings-modal-save" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Lagre</button></div></div></div>
-            <div id="create-expression-step1-screen" class="screen"><button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">&larr; Tilbake til meny</button><div class="flex flex-col lg:flex-row gap-8"><div class="flex-grow"><h2 class="text-xl font-bold mb-4">Steg 1: Velg enheter og kapabiliteter</h2><p class="text-gray-400 mb-6">Velg mellom 2 og 10 kapabiliteter som skal inngå i uttrykket.</p><div id="device-capability-list" class="space-y-6"></div></div><aside class="w-full lg:w-1/3 lg:sticky top-8 self-start bg-gray-900 p-6 rounded-lg border border-gray-700"><h3 class="text-lg font-semibold mb-4">Valgte kapabiliteter (<span id="selected-count">0</span>/10)</h3><ul id="selected-capabilities-list" class="space-y-2 mb-6 h-64 overflow-y-auto"></ul><button id="next-step-button" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-opacity disabled:opacity-50 disabled:cursor-not-allowed" disabled>Neste &rarr;</button></aside></div></div>
-            <div id="create-expression-step2-screen" class="screen"><button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('create-expression-step1-screen')">&larr; Tilbake til valg</button><h2 class="text-xl font-bold mb-4">Steg 2: Bygg boolsk formel</h2><div class="grid md:grid-cols-2 gap-8"><div><h3 class="text-lg font-semibold mb-2">Dine valgte variabler:</h3><ul id="variable-mapping-list" class="space-y-1 bg-gray-900 p-4 rounded-lg border border-gray-700"></ul></div><div><h3 class="text-lg font-semibold mb-2">Formel-editor</h3><p class="text-sm text-gray-400 mb-2">Bruk variablene A-J og operatorene AND, OR, NOT, XOR og parenteser ().</p><textarea id="formula-input" class="w-full h-48 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder="(A AND B) OR NOT C"></textarea><button class="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">Lagre uttrykk</button></div></div></div>
-            <div id="json-import-screen" class="screen"><button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">&larr; Tilbake til meny</button><h2 class="text-xl font-bold mb-4">Importer fra JSON</h2><div class="space-y-6"><div><h3 class="text-lg font-semibold mb-2">Enheter og kapabiliteter</h3><p class="text-sm text-gray-400 mb-2">Lim inn en JSON-array med objekter som har 'deviceId' og 'capabilityId'.</p><textarea id="json-devices-input" class="w-full h-48 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder='[{"deviceId": "...", "capabilityId": "..."}, ...]'></textarea></div><div><h3 class="text-lg font-semibold mb-2">Formel (valgfritt)</h3><p class="text-sm text-gray-400 mb-2">Lim inn den boolske formelen som tekst.</p><textarea id="json-formula-input" class="w-full h-24 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder="(A AND B) OR NOT C"></textarea></div><button id="json-import-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg">Importer og fortsett</button></div></div>
+            <div id="edit-devices-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
+                    <span data-i18n="back">← Back to menu</span>
+                </button>
+                <h2 class="text-xl font-bold mb-4" data-i18n="editDevices.title">Edit Boolean Toolbox Devices</h2>
+                <div id="edit-devices-list" class="space-y-6"></div>
+            </div>
+            <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center p-4 z-50">
+                <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md shadow-2xl border border-gray-700">
+                    <h3 id="settings-modal-title" class="text-lg font-bold mb-4" data-i18n="settings.title">Settings</h3>
+                    <div id="settings-modal-content" class="space-y-4"></div>
+                    <div class="mt-6 flex justify-end gap-4">
+                        <button id="settings-modal-close" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" data-i18n="close">Close</button>
+                        <button id="settings-modal-save" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg" data-i18n="save">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div id="create-expression-step1-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
+                    <span data-i18n="back">← Back to menu</span>
+                </button>
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="flex-grow">
+                        <h2 class="text-xl font-bold mb-4" data-i18n="step1.title">Step 1: Select devices and capabilities</h2>
+                        <p class="text-gray-400 mb-6" data-i18n="step1.description">Select between 2 and 10 capabilities to include in the expression.</p>
+                        <div id="device-capability-list" class="space-y-6"></div>
+                    </div>
+                    <aside class="w-full lg:w-1/3 lg:sticky top-8 self-start bg-gray-900 p-6 rounded-lg border border-gray-700">
+                        <h3 class="text-lg font-semibold mb-4">
+                            <span data-i18n="step1.selected">Selected capabilities</span> (<span id="selected-count">0</span>/10)
+                        </h3>
+                        <ul id="selected-capabilities-list" class="space-y-2 mb-6 h-64 overflow-y-auto"></ul>
+                        <button id="next-step-button" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-opacity disabled:opacity-50 disabled:cursor-not-allowed" disabled data-i18n="next">Next →</button>
+                    </aside>
+                </div>
+            </div>
+            <div id="create-expression-step2-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('create-expression-step1-screen')">
+                    <span data-i18n="backToSelection">← Back to selection</span>
+                </button>
+                <h2 class="text-xl font-bold mb-4" data-i18n="step2.title">Step 2: Build boolean formula</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="step2.yourVariables">Your selected variables:</h3>
+                        <ul id="variable-mapping-list" class="space-y-1 bg-gray-900 p-4 rounded-lg border border-gray-700"></ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="step2.formulaEditor">Formula editor</h3>
+                        <p class="text-sm text-gray-400 mb-2" data-i18n="step2.formulaHelp">Use variables A-J and operators AND, OR, NOT, XOR and parentheses ().</p>
+                        <textarea id="formula-input" class="w-full h-48 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder="(A AND B) OR NOT C"></textarea>
+                        <button class="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg" data-i18n="saveExpression">Save expression</button>
+                    </div>
+                </div>
+            </div>
+            <div id="json-import-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
+                    <span data-i18n="back">← Back to menu</span>
+                </button>
+                <h2 class="text-xl font-bold mb-4" data-i18n="import.title">Import from JSON</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="import.devicesTitle">Devices and capabilities</h3>
+                        <p class="text-sm text-gray-400 mb-2" data-i18n="import.devicesHelp">Paste a JSON array with objects containing 'deviceId' and 'capabilityId'.</p>
+                        <textarea id="json-devices-input" class="w-full h-48 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder='[{"deviceId": "...", "capabilityId": "..."}, ...]'></textarea>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2" data-i18n="import.formulaTitle">Formula (optional)</h3>
+                        <p class="text-sm text-gray-400 mb-2" data-i18n="import.formulaHelp">Paste the boolean formula as text.</p>
+                        <textarea id="json-formula-input" class="w-full h-24 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder="(A AND B) OR NOT C"></textarea>
+                    </div>
+                    <button id="json-import-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg" data-i18n="import.button">Import and continue</button>
+                </div>
+            </div>
         </main>
     </div>
 
     <script>
+        const translations = {
+            en: {
+                subtitle: "For Homey Boolean Toolbox",
+                logout: "Log out",
+                back: "← Back to menu",
+                backToSelection: "← Back to selection",
+                close: "Close",
+                save: "Save",
+                next: "Next →",
+                menu: {
+                    editDevices: "Edit existing devices",
+                    editDevicesDesc: "View and modify settings for devices created with Boolean Toolbox.",
+                    createExpression: "Create new expression",
+                    createExpressionDesc: "Select devices and capabilities to build a new boolean formula.",
+                    importJson: "Import from JSON",
+                    importJsonDesc: "Start with an existing expression by pasting JSON data."
+                },
+                editDevices: {
+                    title: "Edit Boolean Toolbox Devices",
+                    noDevices: "No devices found from Boolean Toolbox.",
+                    settings: "Settings"
+                },
+                settings: {
+                    title: "Settings",
+                    titleFor: "Settings for",
+                    loading: "Loading settings...",
+                    noSettings: "This device has no settings.",
+                    saved: "Settings saved!",
+                    error: "Could not save settings:"
+                },
+                step1: {
+                    title: "Step 1: Select devices and capabilities",
+                    description: "Select between 2 and 10 capabilities to include in the expression.",
+                    selected: "Selected capabilities",
+                    noneSelected: "None selected",
+                    maxCapabilities: "You can select a maximum of 10 capabilities."
+                },
+                step2: {
+                    title: "Step 2: Build boolean formula",
+                    yourVariables: "Your selected variables:",
+                    formulaEditor: "Formula editor",
+                    formulaHelp: "Use variables A-J and operators AND, OR, NOT, XOR and parentheses ().",
+                    saveExpression: "Save expression"
+                },
+                import: {
+                    title: "Import from JSON",
+                    devicesTitle: "Devices and capabilities",
+                    devicesHelp: "Paste a JSON array with objects containing 'deviceId' and 'capabilityId'.",
+                    formulaTitle: "Formula (optional)",
+                    formulaHelp: "Paste the boolean formula as text.",
+                    button: "Import and continue",
+                    errorEmpty: "You must paste JSON for devices.",
+                    errorRange: "JSON must be a list with 2 to 10 devices.",
+                    errorParsing: "Error parsing JSON:"
+                },
+                login: {
+                    welcome: "Welcome!",
+                    message: "To continue, you need to log in with your Homey account.",
+                    button: "Log in with Homey"
+                },
+                errors: {
+                    startApp: "Could not start the app:",
+                    noHomey: "No Homey found for this account.",
+                    afterLogin: "An error occurred after login:",
+                    fetchData: "Could not fetch data from Homey:",
+                    authFailed: "Authentication failed:",
+                    deviceNotFound: "Device with ID {id} not found",
+                    capabilityNotFound: "Capability {cap} not found on device {device}"
+                }
+            },
+            no: {
+                subtitle: "For Homey Boolean Toolbox",
+                logout: "Logg ut",
+                back: "← Tilbake til meny",
+                backToSelection: "← Tilbake til valg",
+                close: "Lukk",
+                save: "Lagre",
+                next: "Neste →",
+                menu: {
+                    editDevices: "Rediger eksisterende enheter",
+                    editDevicesDesc: "Se og endre innstillinger for enheter opprettet med Boolean Toolbox.",
+                    createExpression: "Lag nytt uttrykk",
+                    createExpressionDesc: "Velg enheter og kapabiliteter for å bygge en ny boolsk formel.",
+                    importJson: "Importer fra JSON",
+                    importJsonDesc: "Start med et eksisterende uttrykk ved å lime inn JSON-data."
+                },
+                editDevices: {
+                    title: "Rediger Boolean Toolbox Enheter",
+                    noDevices: "Ingen enheter funnet fra Boolean Toolbox.",
+                    settings: "Innstillinger"
+                },
+                settings: {
+                    title: "Innstillinger",
+                    titleFor: "Innstillinger for",
+                    loading: "Laster innstillinger...",
+                    noSettings: "Denne enheten har ingen innstillinger.",
+                    saved: "Innstillinger lagret!",
+                    error: "Kunne ikke lagre innstillinger:"
+                },
+                step1: {
+                    title: "Steg 1: Velg enheter og kapabiliteter",
+                    description: "Velg mellom 2 og 10 kapabiliteter som skal inngå i uttrykket.",
+                    selected: "Valgte kapabiliteter",
+                    noneSelected: "Ingen valgt",
+                    maxCapabilities: "Du kan maksimalt velge 10 kapabiliteter."
+                },
+                step2: {
+                    title: "Steg 2: Bygg boolsk formel",
+                    yourVariables: "Dine valgte variabler:",
+                    formulaEditor: "Formel-editor",
+                    formulaHelp: "Bruk variablene A-J og operatorene AND, OR, NOT, XOR og parenteser ().",
+                    saveExpression: "Lagre uttrykk"
+                },
+                import: {
+                    title: "Importer fra JSON",
+                    devicesTitle: "Enheter og kapabiliteter",
+                    devicesHelp: "Lim inn en JSON-array med objekter som har 'deviceId' og 'capabilityId'.",
+                    formulaTitle: "Formel (valgfritt)",
+                    formulaHelp: "Lim inn den boolske formelen som tekst.",
+                    button: "Importer og fortsett",
+                    errorEmpty: "Du må lime inn JSON for enheter.",
+                    errorRange: "JSON må være en liste med 2 til 10 enheter.",
+                    errorParsing: "Feil ved parsing av JSON:"
+                },
+                login: {
+                    welcome: "Velkommen!",
+                    message: "For å fortsette må du logge inn med din Homey-konto.",
+                    button: "Logg inn med Homey"
+                },
+                errors: {
+                    startApp: "Klarte ikke å starte appen:",
+                    noHomey: "Ingen Homey funnet for denne kontoen.",
+                    afterLogin: "En feil oppstod etter innlogging:",
+                    fetchData: "Kunne ikke hente data fra Homey:",
+                    authFailed: "Autentisering feilet:",
+                    deviceNotFound: "Enhet med ID {id} ikke funnet",
+                    capabilityNotFound: "Kapabilitet {cap} ikke funnet på enhet {device}"
+                }
+            },
+            de: {
+                subtitle: "Für Homey Boolean Toolbox",
+                logout: "Abmelden",
+                back: "← Zurück zum Menü",
+                backToSelection: "← Zurück zur Auswahl",
+                close: "Schließen",
+                save: "Speichern",
+                next: "Weiter →",
+                menu: {
+                    editDevices: "Vorhandene Geräte bearbeiten",
+                    editDevicesDesc: "Einstellungen für mit Boolean Toolbox erstellte Geräte anzeigen und ändern.",
+                    createExpression: "Neuen Ausdruck erstellen",
+                    createExpressionDesc: "Wählen Sie Geräte und Funktionen aus, um eine neue boolesche Formel zu erstellen.",
+                    importJson: "Aus JSON importieren",
+                    importJsonDesc: "Beginnen Sie mit einem vorhandenen Ausdruck, indem Sie JSON-Daten einfügen."
+                },
+                editDevices: {
+                    title: "Boolean Toolbox Geräte bearbeiten",
+                    noDevices: "Keine Geräte von Boolean Toolbox gefunden.",
+                    settings: "Einstellungen"
+                },
+                settings: {
+                    title: "Einstellungen",
+                    titleFor: "Einstellungen für",
+                    loading: "Lade Einstellungen...",
+                    noSettings: "Dieses Gerät hat keine Einstellungen.",
+                    saved: "Einstellungen gespeichert!",
+                    error: "Einstellungen konnten nicht gespeichert werden:"
+                },
+                step1: {
+                    title: "Schritt 1: Geräte und Funktionen auswählen",
+                    description: "Wählen Sie zwischen 2 und 10 Funktionen aus, die in den Ausdruck aufgenommen werden sollen.",
+                    selected: "Ausgewählte Funktionen",
+                    noneSelected: "Keine ausgewählt",
+                    maxCapabilities: "Sie können maximal 10 Funktionen auswählen."
+                },
+                step2: {
+                    title: "Schritt 2: Boolesche Formel erstellen",
+                    yourVariables: "Ihre ausgewählten Variablen:",
+                    formulaEditor: "Formel-Editor",
+                    formulaHelp: "Verwenden Sie Variablen A-J und Operatoren AND, OR, NOT, XOR sowie Klammern ().",
+                    saveExpression: "Ausdruck speichern"
+                },
+                import: {
+                    title: "Aus JSON importieren",
+                    devicesTitle: "Geräte und Funktionen",
+                    devicesHelp: "Fügen Sie ein JSON-Array mit Objekten ein, die 'deviceId' und 'capabilityId' enthalten.",
+                    formulaTitle: "Formel (optional)",
+                    formulaHelp: "Fügen Sie die boolesche Formel als Text ein.",
+                    button: "Importieren und fortfahren",
+                    errorEmpty: "Sie müssen JSON für Geräte einfügen.",
+                    errorRange: "JSON muss eine Liste mit 2 bis 10 Geräten sein.",
+                    errorParsing: "Fehler beim Parsen von JSON:"
+                },
+                login: {
+                    welcome: "Willkommen!",
+                    message: "Um fortzufahren, müssen Sie sich mit Ihrem Homey-Konto anmelden.",
+                    button: "Mit Homey anmelden"
+                },
+                errors: {
+                    startApp: "App konnte nicht gestartet werden:",
+                    noHomey: "Kein Homey für dieses Konto gefunden.",
+                    afterLogin: "Nach der Anmeldung ist ein Fehler aufgetreten:",
+                    fetchData: "Daten konnten nicht von Homey abgerufen werden:",
+                    authFailed: "Authentifizierung fehlgeschlagen:",
+                    deviceNotFound: "Gerät mit ID {id} nicht gefunden",
+                    capabilityNotFound: "Funktion {cap} auf Gerät {device} nicht gefunden"
+                }
+            },
+            fr: {
+                subtitle: "Pour Homey Boolean Toolbox",
+                logout: "Se déconnecter",
+                back: "← Retour au menu",
+                backToSelection: "← Retour à la sélection",
+                close: "Fermer",
+                save: "Enregistrer",
+                next: "Suivant →",
+                menu: {
+                    editDevices: "Modifier les appareils existants",
+                    editDevicesDesc: "Afficher et modifier les paramètres des appareils créés avec Boolean Toolbox.",
+                    createExpression: "Créer une nouvelle expression",
+                    createExpressionDesc: "Sélectionnez des appareils et des capacités pour créer une nouvelle formule booléenne.",
+                    importJson: "Importer depuis JSON",
+                    importJsonDesc: "Commencez avec une expression existante en collant des données JSON."
+                },
+                editDevices: {
+                    title: "Modifier les appareils Boolean Toolbox",
+                    noDevices: "Aucun appareil trouvé dans Boolean Toolbox.",
+                    settings: "Paramètres"
+                },
+                settings: {
+                    title: "Paramètres",
+                    titleFor: "Paramètres pour",
+                    loading: "Chargement des paramètres...",
+                    noSettings: "Cet appareil n'a pas de paramètres.",
+                    saved: "Paramètres enregistrés!",
+                    error: "Impossible d'enregistrer les paramètres:"
+                },
+                step1: {
+                    title: "Étape 1: Sélectionner les appareils et capacités",
+                    description: "Sélectionnez entre 2 et 10 capacités à inclure dans l'expression.",
+                    selected: "Capacités sélectionnées",
+                    noneSelected: "Aucune sélectionnée",
+                    maxCapabilities: "Vous pouvez sélectionner un maximum de 10 capacités."
+                },
+                step2: {
+                    title: "Étape 2: Créer une formule booléenne",
+                    yourVariables: "Vos variables sélectionnées:",
+                    formulaEditor: "Éditeur de formule",
+                    formulaHelp: "Utilisez les variables A-J et les opérateurs AND, OR, NOT, XOR et les parenthèses ().",
+                    saveExpression: "Enregistrer l'expression"
+                },
+                import: {
+                    title: "Importer depuis JSON",
+                    devicesTitle: "Appareils et capacités",
+                    devicesHelp: "Collez un tableau JSON avec des objets contenant 'deviceId' et 'capabilityId'.",
+                    formulaTitle: "Formule (optionnel)",
+                    formulaHelp: "Collez la formule booléenne sous forme de texte.",
+                    button: "Importer et continuer",
+                    errorEmpty: "Vous devez coller du JSON pour les appareils.",
+                    errorRange: "Le JSON doit être une liste de 2 à 10 appareils.",
+                    errorParsing: "Erreur lors de l'analyse du JSON:"
+                },
+                login: {
+                    welcome: "Bienvenue!",
+                    message: "Pour continuer, vous devez vous connecter avec votre compte Homey.",
+                    button: "Se connecter avec Homey"
+                },
+                errors: {
+                    startApp: "Impossible de démarrer l'application:",
+                    noHomey: "Aucun Homey trouvé pour ce compte.",
+                    afterLogin: "Une erreur s'est produite après la connexion:",
+                    fetchData: "Impossible de récupérer les données de Homey:",
+                    authFailed: "Échec de l'authentification:",
+                    deviceNotFound: "Appareil avec l'ID {id} introuvable",
+                    capabilityNotFound: "Capacité {cap} introuvable sur l'appareil {device}"
+                }
+            },
+            nl: {
+                subtitle: "Voor Homey Boolean Toolbox",
+                logout: "Uitloggen",
+                back: "← Terug naar menu",
+                backToSelection: "← Terug naar selectie",
+                close: "Sluiten",
+                save: "Opslaan",
+                next: "Volgende →",
+                menu: {
+                    editDevices: "Bestaande apparaten bewerken",
+                    editDevicesDesc: "Bekijk en wijzig instellingen voor apparaten gemaakt met Boolean Toolbox.",
+                    createExpression: "Nieuwe expressie maken",
+                    createExpressionDesc: "Selecteer apparaten en mogelijkheden om een nieuwe booleaanse formule te maken.",
+                    importJson: "Importeren vanuit JSON",
+                    importJsonDesc: "Begin met een bestaande expressie door JSON-gegevens te plakken."
+                },
+                editDevices: {
+                    title: "Boolean Toolbox Apparaten bewerken",
+                    noDevices: "Geen apparaten gevonden van Boolean Toolbox.",
+                    settings: "Instellingen"
+                },
+                settings: {
+                    title: "Instellingen",
+                    titleFor: "Instellingen voor",
+                    loading: "Instellingen laden...",
+                    noSettings: "Dit apparaat heeft geen instellingen.",
+                    saved: "Instellingen opgeslagen!",
+                    error: "Kon instellingen niet opslaan:"
+                },
+                step1: {
+                    title: "Stap 1: Selecteer apparaten en mogelijkheden",
+                    description: "Selecteer tussen 2 en 10 mogelijkheden om op te nemen in de expressie.",
+                    selected: "Geselecteerde mogelijkheden",
+                    noneSelected: "Geen geselecteerd",
+                    maxCapabilities: "U kunt maximaal 10 mogelijkheden selecteren."
+                },
+                step2: {
+                    title: "Stap 2: Bouw booleaanse formule",
+                    yourVariables: "Uw geselecteerde variabelen:",
+                    formulaEditor: "Formule-editor",
+                    formulaHelp: "Gebruik variabelen A-J en operatoren AND, OR, NOT, XOR en haakjes ().",
+                    saveExpression: "Expressie opslaan"
+                },
+                import: {
+                    title: "Importeren vanuit JSON",
+                    devicesTitle: "Apparaten en mogelijkheden",
+                    devicesHelp: "Plak een JSON-array met objecten die 'deviceId' en 'capabilityId' bevatten.",
+                    formulaTitle: "Formule (optioneel)",
+                    formulaHelp: "Plak de booleaanse formule als tekst.",
+                    button: "Importeren en doorgaan",
+                    errorEmpty: "U moet JSON voor apparaten plakken.",
+                    errorRange: "JSON moet een lijst zijn met 2 tot 10 apparaten.",
+                    errorParsing: "Fout bij het parseren van JSON:"
+                },
+                login: {
+                    welcome: "Welkom!",
+                    message: "Om door te gaan, moet u inloggen met uw Homey-account.",
+                    button: "Inloggen met Homey"
+                },
+                errors: {
+                    startApp: "Kon de app niet starten:",
+                    noHomey: "Geen Homey gevonden voor dit account.",
+                    afterLogin: "Er is een fout opgetreden na het inloggen:",
+                    fetchData: "Kon geen gegevens ophalen van Homey:",
+                    authFailed: "Authenticatie mislukt:",
+                    deviceNotFound: "Apparaat met ID {id} niet gevonden",
+                    capabilityNotFound: "Mogelijkheid {cap} niet gevonden op apparaat {device}"
+                }
+            }
+        };
+
+        const flags = {
+            en: '🇬🇧',
+            no: '🇳🇴',
+            de: '🇩🇪',
+            fr: '🇫🇷',
+            nl: '🇳🇱'
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             
             class BooleanToolboxApp {
@@ -73,9 +574,68 @@
                 allZones = {};
                 selectedCapabilities = [];
                 processingAuth = false;
+                currentLang = 'en';
 
                 constructor() {
+                    this.currentLang = localStorage.getItem('language') || 'en';
                     this.init();
+                    this.initLanguageSelector();
+                }
+
+                initLanguageSelector() {
+                    const languageButton = document.getElementById('language-button');
+                    const languageDropdown = document.getElementById('language-dropdown');
+                    const currentFlag = document.getElementById('current-flag');
+                    
+                    languageButton.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        languageDropdown.classList.toggle('active');
+                    });
+
+                    document.addEventListener('click', () => {
+                        languageDropdown.classList.remove('active');
+                    });
+
+                    document.querySelectorAll('.language-option').forEach(option => {
+                        option.addEventListener('click', (e) => {
+                            const lang = e.currentTarget.dataset.lang;
+                            this.setLanguage(lang);
+                            languageDropdown.classList.remove('active');
+                        });
+                    });
+
+                    currentFlag.textContent = flags[this.currentLang];
+                    this.updateTranslations();
+                }
+
+                setLanguage(lang) {
+                    this.currentLang = lang;
+                    localStorage.setItem('language', lang);
+                    document.getElementById('current-flag').textContent = flags[lang];
+                    this.updateTranslations();
+                    
+                    // Re-render dynamic content
+                    if (this.allDevices && Object.keys(this.allDevices).length > 0) {
+                        this.renderAll();
+                    }
+                    this.renderSelectedCapabilities();
+                    this.renderLoginScreen();
+                }
+
+                t(key) {
+                    const keys = key.split('.');
+                    let value = translations[this.currentLang];
+                    for (const k of keys) {
+                        value = value?.[k];
+                    }
+                    return value || key;
+                }
+
+                updateTranslations() {
+                    document.querySelectorAll('[data-i18n]').forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        element.textContent = this.t(key);
+                    });
                 }
 
                 async init() {
@@ -107,7 +667,7 @@
                         }
                     } catch (error) {
                         console.error("Initialization failed:", error);
-                        this.showError("Klarte ikke å starte appen: " + error.message);
+                        this.showError(this.t('errors.startApp') + ' ' + error.message);
                     }
                 }
                 
@@ -160,16 +720,16 @@
                         
                         const tokenData = JSON.parse(responseText);
                         
-                        // Store token data in localStorage for AthomCloudAPI to use
-                        const tokenStorageKey = `AthomCloudAPIToken-${this.CLIENT_ID}`;
-                        localStorage.setItem(tokenStorageKey, JSON.stringify(tokenData));
-                        
-                        // Reinitialize AthomCloudAPI so it picks up the token from localStorage
-                        this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
+                        // Use the authenticateWithAuthorizationCode method
+                        await this.cloudApi.authenticateWithAuthorizationCode({
+                            code: code,
+                            redirectUrl: redirectUrl,
+                            tokenData: tokenData
+                        });
 
                         await this.postLogin();
                     } catch (error) {
-                        this.showError('Authentication failed: ' + error.message);
+                        this.showError(this.t('errors.authFailed') + ' ' + error.message);
                     } finally {
                         this.processingAuth = false;
                     }
@@ -181,10 +741,6 @@
                     } catch(e) { 
                         console.error("Logout failed, continuing.", e); 
                     }
-                    
-                    // Clear token from localStorage
-                    const tokenStorageKey = `AthomCloudAPIToken-${this.CLIENT_ID}`;
-                    localStorage.removeItem(tokenStorageKey);
                     
                     this.authenticatedUser = null; 
                     this.homey = null; 
@@ -199,7 +755,7 @@
                         this.authenticatedUser = await this.cloudApi.getAuthenticatedUser();
                         const homeys = await this.authenticatedUser.getHomeys();
                         this.homey = homeys[0];
-                        if (!this.homey) throw new Error("No Homey found for this account.");
+                        if (!this.homey) throw new Error(this.t('errors.noHomey'));
                         
                         await this.homey.authenticate();
                         this.api = await this.homey.getApi();
@@ -213,7 +769,7 @@
                         this.showScreen('main-menu-screen');
                     } catch (error) {
                         console.error(error);
-                        this.showError('An error occurred after login: ' + error.message);
+                        this.showError(this.t('errors.afterLogin') + ' ' + error.message);
                         await this.logout();
                     }
                 }
@@ -225,7 +781,7 @@
                             this.api.devices.getDevices(),
                             this.api.zones.getZones()
                         ]);
-                    } catch (error) { this.showError("Could not fetch data from Homey: " + error.message); }
+                    } catch (error) { this.showError(this.t('errors.fetchData') + ' ' + error.message); }
                 }
 
                 renderAll() { this.renderEditDevices(); this.renderDeviceCapabilityList(); }
@@ -235,7 +791,7 @@
                     container.innerHTML = '';
                     const toolboxDevices = Object.values(this.allDevices).filter(d => d.driverId.startsWith('booleantoolbox'));
                     if (toolboxDevices.length === 0) {
-                         container.innerHTML = `<div class="bg-gray-700 p-4 rounded-lg text-center text-gray-400">No devices found from Boolean Toolbox.</div>`;
+                         container.innerHTML = `<div class="bg-gray-700 p-4 rounded-lg text-center text-gray-400">${this.t('editDevices.noDevices')}</div>`;
                          return;
                     }
                     const devicesByZone = this.groupDevicesByZone(toolboxDevices);
@@ -245,7 +801,7 @@
                         const zone = this.allZones[zoneId];
                         const zoneDevices = devicesByZone[zoneId];
                         const zoneEl = document.createElement('div');
-                        zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${zoneDevices.map(device => `<div class="bg-gray-700 p-4 rounded-lg flex justify-between items-center"><span class="font-medium">${device.name}</span><button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-sm py-1 px-3 rounded-md">Innstillinger</button></div>`).join('')}</div>`;
+                        zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${zoneDevices.map(device => `<div class="bg-gray-700 p-4 rounded-lg flex justify-between items-center"><span class="font-medium">${device.name}</span><button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-sm py-1 px-3 rounded-md">${this.t('editDevices.settings')}</button></div>`).join('')}</div>`;
                         container.appendChild(zoneEl);
                     });
                     container.querySelectorAll('.open-settings-button').forEach(button => button.addEventListener('click', (e) => this.openSettingsModal(e.target.dataset.deviceId)));
@@ -283,7 +839,7 @@
                     const nextButton = document.getElementById('next-step-button');
                     list.innerHTML = '';
                     countEl.textContent = this.selectedCapabilities.length;
-                    if (this.selectedCapabilities.length === 0) list.innerHTML = `<li class="text-gray-500 text-center italic">Ingen valgt</li>`;
+                    if (this.selectedCapabilities.length === 0) list.innerHTML = `<li class="text-gray-500 text-center italic">${this.t('step1.noneSelected')}</li>`;
                     this.selectedCapabilities.forEach((item, index) => {
                         const li = document.createElement('li');
                         li.className = 'bg-gray-700 p-2 rounded-md flex justify-between items-center text-sm';
@@ -312,7 +868,7 @@
                     const capability = device.capabilitiesObj[capabilityId];
                     if (checkbox.checked) {
                         if (this.selectedCapabilities.length < 10) this.selectedCapabilities.push({ deviceId, capabilityId, deviceName: device.name, capabilityTitle: capability.title });
-                        else { checkbox.checked = false; alert("Du kan maksimalt velge 10 kapabiliteter."); }
+                        else { checkbox.checked = false; alert(this.t('step1.maxCapabilities')); }
                     } else {
                         this.selectedCapabilities = this.selectedCapabilities.filter(item => !(item.deviceId === deviceId && item.capabilityId === capabilityId));
                     }
@@ -329,21 +885,21 @@
                 async handleJsonImport() {
                     const devicesJson = document.getElementById('json-devices-input').value;
                     const formula = document.getElementById('json-formula-input').value;
-                    if (!devicesJson) return alert("Du må lime inn JSON for enheter.");
+                    if (!devicesJson) return alert(this.t('import.errorEmpty'));
                     try {
                         const parsedDevices = JSON.parse(devicesJson);
-                        if (!Array.isArray(parsedDevices) || parsedDevices.length < 2 || parsedDevices.length > 10) return alert("JSON må være en liste med 2 til 10 enheter.");
+                        if (!Array.isArray(parsedDevices) || parsedDevices.length < 2 || parsedDevices.length > 10) return alert(this.t('import.errorRange'));
                         this.selectedCapabilities = parsedDevices.map(item => {
                             const device = this.allDevices[item.deviceId];
-                            if (!device) throw new Error(`Device with ID ${item.deviceId} not found`);
+                            if (!device) throw new Error(this.t('errors.deviceNotFound').replace('{id}', item.deviceId));
                             const capability = device.capabilitiesObj[item.capabilityId];
-                            if (!capability) throw new Error(`Capability ${item.capabilityId} not found on device ${device.name}`);
+                            if (!capability) throw new Error(this.t('errors.capabilityNotFound').replace('{cap}', item.capabilityId).replace('{device}', device.name));
                             return { deviceId: item.deviceId, capabilityId: item.capabilityId, deviceName: device.name, capabilityTitle: capability.title };
                         });
                         this.renderSelectedCapabilities();
                         if (formula) document.getElementById('formula-input').value = formula;
                         this.showScreen('create-expression-step2-screen');
-                    } catch (error) { alert("Error parsing JSON: " + error.message); }
+                    } catch (error) { alert(this.t('import.errorParsing') + ' ' + error.message); }
                 }
                 
                 async openSettingsModal(deviceId) {
@@ -353,8 +909,8 @@
                     const title = document.getElementById('settings-modal-title');
                     const content = document.getElementById('settings-modal-content');
                     const saveBtn = document.getElementById('settings-modal-save');
-                    title.textContent = `Innstillinger for ${device.name}`;
-                    content.innerHTML = '<p>Laster innstillinger...</p>';
+                    title.textContent = `${this.t('settings.titleFor')} ${device.name}`;
+                    content.innerHTML = `<p>${this.t('settings.loading')}</p>`;
                     saveBtn.dataset.deviceId = deviceId;
                     modal.style.display = 'flex';
                     try {
@@ -363,8 +919,8 @@
                         for (const key in settings) {
                             settingsHtml += `<div><label for="setting-${key}" class="block text-sm font-medium text-gray-300">${key}</label><input type="text" id="setting-${key}" data-key="${key}" class="mt-1 block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" value="${settings[key]}"></div>`;
                         }
-                        content.innerHTML = settingsHtml || '<p>This device has no settings.</p>';
-                    } catch(error) { content.innerHTML = `<p class="text-red-400">Could not fetch settings: ${error.message}</p>`; }
+                        content.innerHTML = settingsHtml || `<p>${this.t('settings.noSettings')}</p>`;
+                    } catch(error) { content.innerHTML = `<p class="text-red-400">${this.t('settings.error')} ${error.message}</p>`; }
                 }
 
                 closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
@@ -377,13 +933,13 @@
                     inputs.forEach(input => { newSettings[input.dataset.key] = input.value; });
                     try {
                         await this.api.devices.updateDeviceSettings({ id: deviceId, data: newSettings });
-                        alert('Innstillinger lagret!');
+                        alert(this.t('settings.saved'));
                         this.closeSettingsModal();
-                    } catch (error) { alert('Could not save settings: ' + error.message); }
+                    } catch (error) { alert(this.t('settings.error') + ' ' + error.message); }
                 }
 
                 renderLoginScreen() {
-                     document.getElementById('login-screen').innerHTML = `<h2 class="text-xl font-bold mb-4">Velkommen!</h2><p class="mb-6 text-gray-300">For å fortsette må du logge inn med din Homey-konto.</p><button id="login-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg transition-colors">Logg inn med Homey</button>`;
+                     document.getElementById('login-screen').innerHTML = `<h2 class="text-xl font-bold mb-4">${this.t('login.welcome')}</h2><p class="mb-6 text-gray-300">${this.t('login.message')}</p><button id="login-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg transition-colors">${this.t('login.button')}</button>`;
                 }
 
                 showScreen(screenId) {
