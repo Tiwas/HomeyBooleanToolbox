@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boolean Editor</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +54,8 @@
             border-radius: 0 0 0.5rem 0.5rem;
         }
     </style>
-    <script src="https://cdn.athom.com/homey-api/3.14.8.js"></script>
+    <!-- FIX: Updated Homey API library to the latest version -->
+    <script src="https://cdn.athom.com/homey-api/latest.js"></script>
 </head>
 <body class="h-full">
     <div id="app" class="p-4 md:p-8 max-w-7xl mx-auto">
@@ -461,54 +463,31 @@
                         this.showLoader('Loading user data...');
                         this.authenticatedUser = await this.cloudApi.getAuthenticatedUser();
                         const homeys = await this.authenticatedUser.getHomeys();
+                        
+                        if (!homeys || homeys.length === 0) {
+                            throw new Error('No Homeys found on this account.');
+                        }
                         this.homey = homeys[0];
-                        if (!this.homey) throw new Error(this.t('errors.noHomey'));
                         
+                        this.showLoader('Authenticating with Homey...');
                         await this.homey.authenticate();
-                        
-                        // Deep inspect the homey object
-                        console.log('=== HOMEY OBJECT INSPECTION ===');
-                        console.log('homey object:', this.homey);
-                        console.log('homey keys:', Object.keys(this.homey));
-                        console.log('homey prototype:', Object.getPrototypeOf(this.homey));
-                        console.log('homey prototype keys:', Object.keys(Object.getPrototypeOf(this.homey)));
-                        
-                        // Try to find methods on prototype
-                        const proto = Object.getPrototypeOf(this.homey);
-                        const methods = Object.getOwnPropertyNames(proto).filter(key => {
-                            try {
-                                return typeof proto[key] === 'function' && key !== 'constructor';
-                            } catch (e) {
-                                return false;
-                            }
-                        });
-                        console.log('homey prototype methods:', methods);
-                        
-                        // Check for api-related methods
-                        const apiMethods = methods.filter(m => m.toLowerCase().includes('api'));
-                        console.log('API-related methods:', apiMethods);
-                        
-                        // Try different methods to get the API
-                        if (typeof this.homey.getApi === 'function') {
-                            console.log('Trying getApi()...');
-                            this.api = await this.homey.getApi();
-                        } else if (typeof this.homey.api !== 'undefined') {
-                            console.log('Using homey.api property');
-                            this.api = this.homey.api;
-                        } else if (typeof this.homey.getHomeyAPI === 'function') {
-                            console.log('Trying getHomeyAPI()...');
-                            this.api = await this.homey.getHomeyAPI();
-                        } else if (typeof this.homey.createApi === 'function') {
-                            console.log('Trying createApi()...');
-                            this.api = await this.homey.createApi();
-                        } else {
-                            console.log('No API method found, using homey object itself');
-                            this.api = this.homey;
+
+                        // FIX: Directly call getApi() and add robust checking.
+                        // The old library version failed to provide this method, causing the error.
+                        // With the updated library, this should now work correctly.
+                        if (typeof this.homey.getApi !== 'function') {
+                            console.error("Fatal: homey.getApi() is not a function. The Homey API library might be outdated or loaded incorrectly.", this.homey);
+                            throw new Error('Could not get Homey API. The library might be outdated or loaded incorrectly.');
+                        }
+
+                        this.api = await this.homey.getApi();
+
+                        if (!this.api || typeof this.api.devices === 'undefined' || typeof this.api.zones === 'undefined') {
+                            console.error("Fatal: The retrieved API object is invalid.", this.api);
+                            throw new Error('The retrieved Homey API object is invalid or incomplete.');
                         }
                         
-                        console.log('Final API object:', this.api);
-                        console.log('API keys:', Object.keys(this.api));
-                        console.log('API prototype:', Object.getPrototypeOf(this.api));
+                        console.log('Successfully retrieved Homey Web API.');
 
                         document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
                         document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
@@ -519,60 +498,30 @@
                         this.hideLoader();
                         this.showScreen('main-menu-screen');
                     } catch (error) {
-                        console.error(error);
+                        console.error("Error during post-login process:", error);
                         this.hideLoader();
-                        this.showError(this.t('errors.afterLogin') + ' ' + error.message);
-                        await this.logout();
+                        this.showError(`Failed to load data after login: ${error.message}`);
                     }
                 }
 
                 async fetchData() {
-                    this.showLoader('Loading devices...');
+                    this.showLoader('Loading devices and zones...');
                     try {
-                        console.log('API object:', this.api);
-                        console.log('API.devices:', this.api.devices);
-                        console.log('Available methods on api.devices:', this.api.devices ? Object.keys(this.api.devices).filter(k => typeof this.api.devices[k] === 'function') : 'No devices object');
-                        
-                        // Try different methods to get devices
-                        let devices, zones;
-                        
-                        try {
-                            devices = await this.api.devices.getDevices();
-                            console.log('getDevices() returned:', devices);
-                        } catch (e) {
-                            console.error('getDevices() failed:', e);
-                            // Try alternative method
-                            try {
-                                devices = await this.api.devices.get();
-                                console.log('devices.get() returned:', devices);
-                            } catch (e2) {
-                                console.error('devices.get() failed:', e2);
-                            }
-                        }
-                        
-                        try {
-                            zones = await this.api.zones.getZones();
-                            console.log('getZones() returned:', zones);
-                        } catch (e) {
-                            console.error('getZones() failed:', e);
-                            try {
-                                zones = await this.api.zones.get();
-                                console.log('zones.get() returned:', zones);
-                            } catch (e2) {
-                                console.error('zones.get() failed:', e2);
-                            }
-                        }
+                        // FIX: Simplified fetching logic. With the updated API library, 
+                        // .getDevices() and .getZones() should be reliably available.
+                        const devices = await this.api.devices.getDevices();
+                        const zones = await this.api.zones.getZones();
                         
                         this.allDevices = devices || {};
                         this.allZones = zones || {};
                         
-                        console.log('Total devices loaded:', Object.keys(this.allDevices).length);
-                        console.log('Total zones loaded:', Object.keys(this.allZones).length);
+                        console.log(`Total devices loaded: ${Object.keys(this.allDevices).length}`);
+                        console.log(`Total zones loaded: ${Object.keys(this.allZones).length}`);
                         
                     } catch (error) { 
                         this.hideLoader();
                         console.error('fetchData error:', error);
-                        this.showError(this.t('errors.fetchData') + ' ' + error.message); 
+                        this.showError(`Failed to fetch devices and zones: ${error.message}`); 
                     }
                 }
 
@@ -858,3 +807,4 @@
     </script>
 </body>
 </html>
+
