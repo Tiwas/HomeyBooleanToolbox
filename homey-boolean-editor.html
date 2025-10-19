@@ -54,6 +54,16 @@
         }
     </style>
     <script src="https://cdn.athom.com/homey-api/3.14.8.js"></script>
+    <script>
+        // Pre-load HomeyAPIApp for API access
+        window.HomeyAPIReady = new Promise((resolve) => {
+            if (typeof HomeyAPIApp !== 'undefined') {
+                resolve();
+            } else {
+                window.addEventListener('load', () => resolve());
+            }
+        });
+    </script>
 </head>
 <body class="h-full">
     <div id="app" class="p-4 md:p-8 max-w-7xl mx-auto">
@@ -634,36 +644,48 @@
                         this.homey = homeys[0];
                         if (!this.homey) throw new Error(this.t('errors.noHomey'));
                         
+                        console.log('Homey object:', this.homey);
+                        console.log('Homey prototype:', Object.getPrototypeOf(this.homey));
+                        console.log('Homey methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(this.homey)));
+                        
                         console.log('Authenticating Homey...');
                         await this.homey.authenticate();
                         
                         console.log('Getting Homey API...');
-                        // Try multiple methods to get the API
+                        
+                        // Wait for HomeyAPI to be ready
+                        await window.HomeyAPIReady;
+                        
+                        // Get the local API for this Homey
+                        console.log('Creating API instance with HomeyAPIApp...');
                         try {
-                            // Method 1: Try forCurrentHomey (most common)
-                            if (typeof this.homey.forCurrentHomey === 'function') {
-                                console.log('Trying forCurrentHomey()...');
-                                this.api = await this.homey.forCurrentHomey();
+                            this.api = await HomeyAPIApp.forHomey(this.homey);
+                            console.log('Successfully created API with forHomey()');
+                        } catch (e) {
+                            console.error('forHomey() failed:', e);
+                            
+                            // Try alternative: create API using the homey's local URL
+                            try {
+                                console.log('Trying to create API from homey local URL...');
+                                const token = await this.homey.delegateToken();
+                                this.api = await HomeyAPIApp.createAppAPI({
+                                    homey: this.homey,
+                                    token: token
+                                });
+                                console.log('Successfully created API with delegateToken');
+                            } catch (e2) {
+                                console.error('delegateToken approach failed:', e2);
+                                throw new Error('Could not create API instance. Please make sure you have granted the required permissions (homey.zone.readonly, homey.device.readonly, homey.device.control) when creating your API client.');
                             }
-                            // Method 2: Try getting API property
-                            else if (this.homey.api) {
-                                console.log('Using homey.api property');
-                                this.api = this.homey.api;
-                            }
-                            // Method 3: Homey object itself might be the API
-                            else {
-                                console.log('Using homey object as API');
-                                this.api = this.homey;
-                            }
-                        } catch (apiError) {
-                            console.error('Error getting API:', apiError);
-                            // Fallback: use homey object directly
-                            this.api = this.homey;
                         }
                         
                         console.log('API object:', this.api);
                         console.log('API has devices?', !!this.api.devices);
                         console.log('API has zones?', !!this.api.zones);
+
+                        if (!this.api.devices || !this.api.zones) {
+                            throw new Error('API object is missing required properties. Please check that you selected the correct scopes when creating your API client.');
+                        }
 
                         document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
                         document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
@@ -674,7 +696,7 @@
                         this.hideLoader();
                         this.showScreen('main-menu-screen');
                     } catch (error) {
-                        console.error(error);
+                        console.error('postLogin error:', error);
                         this.hideLoader();
                         this.showError(this.t('errors.afterLogin') + ' ' + error.message);
                         await this.logout();
