@@ -124,7 +124,7 @@
 
                 async login() {
                     if (!this.CLIENT_ID) return this.showError("Client ID mangler. Kan ikke starte innlogging.");
-                    const redirectUrl = `${window.location.origin}${window.location.pathname}`;
+                    const redirectUrl = 'https://booleantoolboxeditor.netlify.app/homey-boolean-editor.html';
                     const authorizationUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${this.CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
                     window.location.href = authorizationUrl;
                 }
@@ -133,7 +133,7 @@
                     this.showScreen('loader');
                     try {
                         // FIKS: Bygger URL nøyaktig likt som i login() for å garantere samsvar
-                        const redirectUrl = `${window.location.origin}${window.location.pathname}`;
+                        const redirectUrl = 'https://booleantoolboxeditor.netlify.app/homey-boolean-editor.html';
                         const response = await fetch('/.netlify/functions/get-token', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },

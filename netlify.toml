@@ -1,4 +1,9 @@
-# This file tells Netlify where to find your serverless functions.
-[functions]
-  directory = "netlify/functions/"
+[[redirects]]
+  from = "/"
+  to = "/homey-boolean-editor.html"
+  status = 200
 
+[[redirects]]
+  from = "/homey-boolean-editor.html"
+  to = "/homey-boolean-editor.html"
+  status = 200
