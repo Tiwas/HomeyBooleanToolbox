@@ -11,6 +11,10 @@ exports.handler = async function(event, context) {
     try {
         const { code, redirectUrl } = JSON.parse(event.body);
 
+        console.log('=== TOKEN REQUEST DEBUG ===');
+        console.log('Received code:', code);
+        console.log('Received redirectUrl:', redirectUrl);
+
         if (!code || !redirectUrl) {
             return { statusCode: 400, body: JSON.stringify({ error: 'Authorization code or redirectUrl is missing.' }) };
         }
@@ -29,9 +33,11 @@ exports.handler = async function(event, context) {
         params.append('client_id', CLIENT_ID);
         params.append('client_secret', CLIENT_SECRET);
 
+        console.log('Sending to Homey API...');
+        console.log('redirect_uri:', redirectUrl);
+
         const response = await fetch('https://api.athom.com/oauth2/token', {
             method: 'POST',
-            // FIKS: Legger til header for å være 100% sikker på formatet
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
@@ -39,6 +45,9 @@ exports.handler = async function(event, context) {
         });
 
         const responseBody = await response.text();
+
+        console.log('Homey API response status:', response.status);
+        console.log('Homey API response body:', responseBody);
 
         if (!response.ok) {
             console.error('Error from Homey API:', responseBody);
@@ -48,6 +57,7 @@ exports.handler = async function(event, context) {
             };
         }
 
+        console.log('Token exchange successful!');
         return {
             statusCode: 200,
             headers: { 'Content-Type': 'application/json' },
@@ -62,4 +72,3 @@ exports.handler = async function(event, context) {
         };
     }
 };
-
