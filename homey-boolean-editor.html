@@ -8,8 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FIKS: Lagt til 'defer' for å sikre at scriptet lastes riktig -->
-    <script src="https://cdn.jsdelivr.net/npm/homey-api/dist/homey-api.min.js" defer></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -164,6 +162,8 @@
         </main>
     </div>
 
+    <!-- FIKS: Flyttet scripts til slutten av body for å garantere riktig rekkefølge -->
+    <script src="https://cdn.jsdelivr.net/npm/homey-api/dist/homey-api.min.js"></script>
     <script>
     class BooleanToolboxApp {
         // CLIENT_ID is now removed from here and fetched from the server.
@@ -639,13 +639,10 @@
         }
     }
 
-    // Start the app when the page is loaded
-    let app;
-    window.addEventListener('load', () => {
-        app = new BooleanToolboxApp();
-    });
+    // FIKS: Flyttet app-initialisering til slutten av body for å sikre at alt er lastet.
+    const app = new BooleanToolboxApp();
+
     </script>
 </body>
 </html>
-
 
