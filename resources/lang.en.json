@@ -6,6 +6,7 @@
   "close": "Close",
   "save": "Save",
   "next": "Next →",
+  "apiSettings": "⚙️ API Settings",
   "menu": {
     "editDevices": "Edit existing devices",
     "editDevicesDesc": "View and modify settings for devices created with Boolean Toolbox.",
@@ -14,10 +15,32 @@
     "importJson": "Import from JSON",
     "importJsonDesc": "Start with an existing expression by pasting JSON data."
   },
+  "apiSetup": {
+    "title": "🔧 API Setup Required",
+    "instructionsTitle": "📋 How to get your API credentials:",
+    "step1": "Go to",
+    "step1Link": "Homey API Clients",
+    "step2": "Click \"Add client\" or \"Create new client\"",
+    "step3": "Fill in any name (e.g., \"Boolean Editor\")",
+    "step4": "Add your Redirect URL (see below)",
+    "step5": "Click \"Create\" and copy the Client ID and Client Secret",
+    "redirectUrlTitle": "🌐 Your Redirect URL",
+    "redirectUrlHelp": "Use this exact URL when creating your Cloud App:",
+    "copyButton": "Copy",
+    "clientIdLabel": "Client ID",
+    "clientIdPlaceholder": "Enter your Client ID",
+    "clientSecretLabel": "Client Secret",
+    "clientSecretPlaceholder": "Enter your Client Secret",
+    "saveButton": "Save and Continue",
+    "changeConfirm": "Do you want to change your API credentials? This will log you out.",
+    "copiedToClipboard": "Redirect URL copied to clipboard!"
+  },
   "editDevices": {
     "title": "Edit Boolean Toolbox Devices",
     "noDevices": "No devices found from Boolean Toolbox.",
-    "settings": "Settings"
+    "settings": "Settings",
+    "debugTitle": "🔍 Debug: All Driver IDs (click to expand)",
+    "debugHelp": "Check the debug info above to find the correct driver ID, or all devices will be shown below."
   },
   "settings": {
     "title": "Settings",

@@ -6,6 +6,7 @@
   "close": "Schließen",
   "save": "Speichern",
   "next": "Weiter →",
+  "apiSettings": "⚙️ API-Einstellungen",
   "menu": {
     "editDevices": "Vorhandene Geräte bearbeiten",
     "editDevicesDesc": "Einstellungen für mit Boolean Toolbox erstellte Geräte anzeigen und ändern.",
@@ -14,10 +15,32 @@
     "importJson": "Aus JSON importieren",
     "importJsonDesc": "Beginnen Sie mit einem vorhandenen Ausdruck, indem Sie JSON-Daten einfügen."
   },
+  "apiSetup": {
+    "title": "🔧 API-Einrichtung erforderlich",
+    "instructionsTitle": "📋 So erhalten Sie Ihre API-Zugangsdaten:",
+    "step1": "Gehen Sie zu",
+    "step1Link": "Homey API-Clients",
+    "step2": "Klicken Sie auf \"Client hinzufügen\" oder \"Neuen Client erstellen\"",
+    "step3": "Geben Sie einen Namen ein (z.B. \"Boolean Editor\")",
+    "step4": "Fügen Sie Ihre Redirect-URL hinzu (siehe unten)",
+    "step5": "Klicken Sie auf \"Erstellen\" und kopieren Sie die Client-ID und das Client-Secret",
+    "redirectUrlTitle": "🌐 Ihre Redirect-URL",
+    "redirectUrlHelp": "Verwenden Sie diese exakte URL beim Erstellen Ihrer Cloud-App:",
+    "copyButton": "Kopieren",
+    "clientIdLabel": "Client-ID",
+    "clientIdPlaceholder": "Geben Sie Ihre Client-ID ein",
+    "clientSecretLabel": "Client-Secret",
+    "clientSecretPlaceholder": "Geben Sie Ihr Client-Secret ein",
+    "saveButton": "Speichern und fortfahren",
+    "changeConfirm": "Möchten Sie Ihre API-Zugangsdaten ändern? Sie werden dadurch abgemeldet.",
+    "copiedToClipboard": "Redirect-URL in die Zwischenablage kopiert!"
+  },
   "editDevices": {
     "title": "Boolean Toolbox Geräte bearbeiten",
     "noDevices": "Keine Geräte von Boolean Toolbox gefunden.",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "debugTitle": "🔍 Debug: Alle Treiber-IDs (zum Erweitern klicken)",
+    "debugHelp": "Überprüfen Sie die Debug-Informationen oben, um die richtige Treiber-ID zu finden, oder alle Geräte werden unten angezeigt."
   },
   "settings": {
     "title": "Einstellungen",

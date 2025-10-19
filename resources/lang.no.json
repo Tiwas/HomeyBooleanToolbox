@@ -6,6 +6,7 @@
   "close": "Lukk",
   "save": "Lagre",
   "next": "Neste →",
+  "apiSettings": "⚙️ API-innstillinger",
   "menu": {
     "editDevices": "Rediger eksisterende enheter",
     "editDevicesDesc": "Se og endre innstillinger for enheter opprettet med Boolean Toolbox.",
@@ -14,10 +15,32 @@
     "importJson": "Importer fra JSON",
     "importJsonDesc": "Start med et eksisterende uttrykk ved å lime inn JSON-data."
   },
+  "apiSetup": {
+    "title": "🔧 API-oppsett kreves",
+    "instructionsTitle": "📋 Slik får du API-legitimasjon:",
+    "step1": "Gå til",
+    "step1Link": "Homey API-klienter",
+    "step2": "Klikk \"Legg til klient\" eller \"Opprett ny klient\"",
+    "step3": "Fyll inn et navn (f.eks. \"Boolean Editor\")",
+    "step4": "Legg til din Redirect URL (se nedenfor)",
+    "step5": "Klikk \"Opprett\" og kopier Client ID og Client Secret",
+    "redirectUrlTitle": "🌐 Din Redirect URL",
+    "redirectUrlHelp": "Bruk denne nøyaktige URL-en når du oppretter Cloud App:",
+    "copyButton": "Kopier",
+    "clientIdLabel": "Client ID",
+    "clientIdPlaceholder": "Skriv inn din Client ID",
+    "clientSecretLabel": "Client Secret",
+    "clientSecretPlaceholder": "Skriv inn din Client Secret",
+    "saveButton": "Lagre og fortsett",
+    "changeConfirm": "Vil du endre API-legitimasjonen? Dette vil logge deg ut.",
+    "copiedToClipboard": "Redirect URL kopiert til utklippstavle!"
+  },
   "editDevices": {
     "title": "Rediger Boolean Toolbox Enheter",
     "noDevices": "Ingen enheter funnet fra Boolean Toolbox.",
-    "settings": "Innstillinger"
+    "settings": "Innstillinger",
+    "debugTitle": "🔍 Debug: Alle driver-ID-er (klikk for å utvide)",
+    "debugHelp": "Sjekk debug-informasjonen ovenfor for å finne riktig driver-ID, eller alle enheter vil vises nedenfor."
   },
   "settings": {
     "title": "Innstillinger",

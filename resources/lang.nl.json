@@ -6,6 +6,7 @@
   "close": "Sluiten",
   "save": "Opslaan",
   "next": "Volgende →",
+  "apiSettings": "⚙️ API-instellingen",
   "menu": {
     "editDevices": "Bestaande apparaten bewerken",
     "editDevicesDesc": "Bekijk en wijzig instellingen voor apparaten gemaakt met Boolean Toolbox.",
@@ -14,10 +15,32 @@
     "importJson": "Importeren vanuit JSON",
     "importJsonDesc": "Begin met een bestaande expressie door JSON-gegevens te plakken."
   },
+  "apiSetup": {
+    "title": "🔧 API-instelling vereist",
+    "instructionsTitle": "📋 Hoe verkrijg je jouw API-gegevens:",
+    "step1": "Ga naar",
+    "step1Link": "Homey API-clients",
+    "step2": "Klik op \"Client toevoegen\" of \"Nieuwe client aanmaken\"",
+    "step3": "Vul een naam in (bijv. \"Boolean Editor\")",
+    "step4": "Voeg je Redirect-URL toe (zie hieronder)",
+    "step5": "Klik op \"Aanmaken\" en kopieer de Client-ID en Client-Secret",
+    "redirectUrlTitle": "🌐 Jouw Redirect-URL",
+    "redirectUrlHelp": "Gebruik deze exacte URL bij het aanmaken van je Cloud App:",
+    "copyButton": "Kopiëren",
+    "clientIdLabel": "Client-ID",
+    "clientIdPlaceholder": "Voer je Client-ID in",
+    "clientSecretLabel": "Client-Secret",
+    "clientSecretPlaceholder": "Voer je Client-Secret in",
+    "saveButton": "Opslaan en doorgaan",
+    "changeConfirm": "Wilt u uw API-gegevens wijzigen? Dit zal u uitloggen.",
+    "copiedToClipboard": "Redirect-URL gekopieerd naar klembord!"
+  },
   "editDevices": {
     "title": "Boolean Toolbox Apparaten bewerken",
     "noDevices": "Geen apparaten gevonden van Boolean Toolbox.",
-    "settings": "Instellingen"
+    "settings": "Instellingen",
+    "debugTitle": "🔍 Debug: Alle driver-ID's (klik om uit te vouwen)",
+    "debugHelp": "Controleer de debug-informatie hierboven om de juiste driver-ID te vinden, of alle apparaten worden hieronder weergegeven."
   },
   "settings": {
     "title": "Instellingen",

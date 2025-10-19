@@ -63,10 +63,13 @@
                  <img src="https://tiwas.github.io/HomeyBooleanToolbox/no.tiwas.booleantoolbox/assets/icon.svg" alt="Boolean Toolbox Logo" class="w-16 h-16 rounded-lg">
                  <div>
                     <h1 class="text-2xl font-bold text-white">Boolean Editor</h1>
-                    <p class="text-gray-400 mt-1" data-i18n="subtitle">For Homey Boolean Toolbox</p>
+                    <p class="text-gray-400 mt-1" data-i18n="subtitle">For Homey Boolean Toolbox (Self-hosted)</p>
                  </div>
             </div>
             <div class="flex items-center gap-4 mt-4 md:mt-0">
+                <button id="api-settings-button" class="hidden px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm" data-i18n="apiSettings">
+                    ⚙️ API Settings
+                </button>
                 <div class="language-selector">
                     <button id="language-button" class="flex items-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
                         <span id="current-flag" class="text-xl">🇬🇧</span>
@@ -106,7 +109,63 @@
         </header>
 
         <main id="main-content" class="bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8">
-            <div id="login-screen" class="screen active text-center p-16"></div>
+            <!-- API Setup Screen -->
+            <div id="api-setup-screen" class="screen active">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6" data-i18n="apiSetup.title">🔧 API Setup Required</h2>
+                    
+                    <div class="bg-blue-900/30 border border-blue-500 rounded-lg p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4" data-i18n="apiSetup.instructionsTitle">📋 How to get your API credentials:</h3>
+                        <ol class="space-y-3 text-sm">
+                            <li class="flex gap-3">
+                                <span class="font-bold">1.</span>
+                                <span><span data-i18n="apiSetup.step1">Go to</span> <a href="https://tools.developer.homey.app/api/clients" target="_blank" class="text-blue-400 hover:text-blue-300 underline" data-i18n="apiSetup.step1Link">Homey API Clients</a></span>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="font-bold">2.</span>
+                                <span data-i18n="apiSetup.step2">Click "Add client" or "Create new client"</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="font-bold">3.</span>
+                                <span data-i18n="apiSetup.step3">Fill in any name (e.g., "Boolean Editor")</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="font-bold">4.</span>
+                                <span data-i18n="apiSetup.step4">Add your <strong>Redirect URL</strong> (see below)</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="font-bold">5.</span>
+                                <span data-i18n="apiSetup.step5">Click "Create" and copy the Client ID and Client Secret</span>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-gray-700 rounded-lg p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-3" data-i18n="apiSetup.redirectUrlTitle">🌐 Your Redirect URL</h3>
+                        <p class="text-sm text-gray-400 mb-2" data-i18n="apiSetup.redirectUrlHelp">Use this exact URL when creating your Cloud App:</p>
+                        <div class="flex gap-2">
+                            <input type="text" id="redirect-url-display" readonly class="flex-grow p-2 bg-gray-800 border border-gray-600 rounded font-mono text-sm" value="">
+                            <button onclick="app.copyRedirectUrl()" class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded" data-i18n="apiSetup.copyButton">Copy</button>
+                        </div>
+                    </div>
+
+                    <form id="api-setup-form" class="space-y-4">
+                        <div>
+                            <label for="client-id-input" class="block text-sm font-medium mb-2" data-i18n="apiSetup.clientIdLabel">Client ID</label>
+                            <input type="text" id="client-id-input" required class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="client-secret-input" class="block text-sm font-medium mb-2" data-i18n="apiSetup.clientSecretLabel">Client Secret</label>
+                            <input type="password" id="client-secret-input" required class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500">
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg" data-i18n="apiSetup.saveButton">
+                            Save and Continue
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="login-screen" class="screen text-center p-16"></div>
             <div id="main-menu-screen" class="screen">
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('edit-devices-screen')">
@@ -219,10 +278,107 @@
             nl: '🇳🇱'
         };
 
+        // Simple translations fallback (will be replaced by loaded files)
+        const defaultTranslations = {
+            en: {
+                subtitle: "For Homey Boolean Toolbox (Self-hosted)",
+                logout: "Log out",
+                back: "← Back to menu",
+                close: "Close",
+                save: "Save",
+                next: "Next →",
+                apiSettings: "⚙️ API Settings",
+                apiSetup: {
+                    title: "🔧 API Setup Required",
+                    instructionsTitle: "📋 How to get your API credentials:",
+                    step1: "Go to",
+                    step1Link: "Homey API Clients",
+                    step2: "Click \"Add client\" or \"Create new client\"",
+                    step3: "Fill in any name (e.g., \"Boolean Editor\")",
+                    step4: "Add your Redirect URL (see below)",
+                    step5: "Click \"Create\" and copy the Client ID and Client Secret",
+                    redirectUrlTitle: "🌐 Your Redirect URL",
+                    redirectUrlHelp: "Use this exact URL when creating your Cloud App:",
+                    copyButton: "Copy",
+                    clientIdLabel: "Client ID",
+                    clientIdPlaceholder: "Enter your Client ID",
+                    clientSecretLabel: "Client Secret",
+                    clientSecretPlaceholder: "Enter your Client Secret",
+                    saveButton: "Save and Continue",
+                    changeConfirm: "Do you want to change your API credentials? This will log you out.",
+                    copiedToClipboard: "Redirect URL copied to clipboard!"
+                },
+                login: {
+                    welcome: "Welcome to Boolean Editor",
+                    message: "Log in with your Athom account to get started.",
+                    button: "Log in with Athom"
+                },
+                errors: {
+                    startApp: "Failed to start application:",
+                    authFailed: "Authentication failed:",
+                    noHomey: "No Homey found on your account.",
+                    afterLogin: "Error after login:",
+                    fetchData: "Failed to fetch data:",
+                    deviceNotFound: "Device not found: {id}",
+                    capabilityNotFound: "Capability {cap} not found on device {device}"
+                },
+                menu: {
+                    editDevices: "Edit existing devices",
+                    editDevicesDesc: "View and modify settings for devices created with Boolean Toolbox.",
+                    createExpression: "Create new expression",
+                    createExpressionDesc: "Select devices and capabilities to build a new boolean formula.",
+                    importJson: "Import from JSON",
+                    importJsonDesc: "Start with an existing expression by pasting JSON data."
+                },
+                editDevices: {
+                    title: "Edit Boolean Toolbox Devices",
+                    noDevices: "No Boolean Toolbox devices found",
+                    settings: "Settings",
+                    debugTitle: "🔍 Debug: All Driver IDs (click to expand)",
+                    debugHelp: "Check the debug info above to find the correct driver ID, or all devices will be shown below."
+                },
+                settings: {
+                    title: "Settings",
+                    titleFor: "Settings for",
+                    loading: "Loading settings...",
+                    noSettings: "No settings available",
+                    error: "Error:",
+                    saved: "Settings saved successfully!"
+                },
+                step1: {
+                    title: "Step 1: Select devices and capabilities",
+                    description: "Select between 2 and 10 capabilities to include in the expression.",
+                    selected: "Selected capabilities",
+                    noneSelected: "No capabilities selected yet",
+                    maxCapabilities: "Maximum 10 capabilities allowed"
+                },
+                step2: {
+                    title: "Step 2: Build boolean formula",
+                    yourVariables: "Your selected variables:",
+                    formulaEditor: "Formula editor",
+                    formulaHelp: "Use variables A-J and operators AND, OR, NOT, XOR and parentheses ()."
+                },
+                import: {
+                    title: "Import from JSON",
+                    devicesTitle: "Devices and capabilities",
+                    devicesHelp: "Paste a JSON array with objects containing 'deviceId' and 'capabilityId'.",
+                    formulaTitle: "Formula (optional)",
+                    formulaHelp: "Paste the boolean formula as text.",
+                    button: "Import and continue",
+                    errorEmpty: "Please enter device and capability data",
+                    errorRange: "Please select between 2 and 10 capabilities",
+                    errorParsing: "Failed to parse JSON:"
+                },
+                saveExpression: "Save expression",
+                backToSelection: "← Back to selection"
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             
             class BooleanToolboxApp {
                 CLIENT_ID = null;
+                CLIENT_SECRET = null;
                 cloudApi = null;
                 authenticatedUser = null;
                 homey = null;
@@ -239,24 +395,31 @@
                     this.init();
                 }
 
+                getRedirectUrl() {
+                    return window.location.origin + window.location.pathname;
+                }
+
+                copyRedirectUrl() {
+                    const input = document.getElementById('redirect-url-display');
+                    input.select();
+                    document.execCommand('copy');
+                    alert(this.t('apiSetup.copiedToClipboard'));
+                }
+
                 async loadTranslations(lang) {
                     try {
-                        const response = await fetch(`/resources/lang.${lang}.json`);
+                        const response = await fetch(`resources/lang.${lang}.json`);
                         if (!response.ok) throw new Error(`Failed to load language: ${lang}`);
                         this.translations = await response.json();
                         return true;
                     } catch (error) {
-                        console.error(`Failed to load ${lang} translations:`, error);
-                        if (lang !== 'en') {
-                            // Fallback to English
-                            return this.loadTranslations('en');
-                        }
+                        console.warn(`Failed to load ${lang} translations, using fallback:`, error);
+                        this.translations = defaultTranslations[lang] || defaultTranslations.en;
                         return false;
                     }
                 }
 
                 async initLanguageSelector() {
-                    // Load initial language
                     await this.loadTranslations(this.currentLang);
                     
                     const languageButton = document.getElementById('language-button');
@@ -291,7 +454,6 @@
                     document.getElementById('current-flag').textContent = flags[lang];
                     this.updateTranslations();
                     
-                    // Re-render dynamic content
                     if (this.allDevices && Object.keys(this.allDevices).length > 0) {
                         this.renderAll();
                     }
@@ -313,50 +475,40 @@
                         const key = element.getAttribute('data-i18n');
                         element.textContent = this.t(key);
                     });
+                    
+                    // Update placeholders
+                    const clientIdInput = document.getElementById('client-id-input');
+                    const clientSecretInput = document.getElementById('client-secret-input');
+                    if (clientIdInput) clientIdInput.placeholder = this.t('apiSetup.clientIdPlaceholder');
+                    if (clientSecretInput) clientSecretInput.placeholder = this.t('apiSetup.clientSecretPlaceholder');
                 }
 
                 async init() {
                     try {
-                        // Check if running on correct domain
-                        const correctDomain = 'homey-boolean-toolbox.vercel.app';
-                        const currentHostname = window.location.hostname;
-                        
-                        if (currentHostname !== correctDomain && currentHostname !== 'localhost') {
-                            // Not running on Vercel - show error and redirect
-                            const correctUrl = `https://${correctDomain}${window.location.pathname}${window.location.search}`;
-                            this.showError(`
-                                <div class="text-center">
-                                    <h2 class="text-xl font-bold mb-4">⚠️ Wrong Domain</h2>
-                                    <p class="mb-4">This app must be run from the official Vercel deployment.</p>
-                                    <p class="mb-6 text-sm text-gray-400">Current: ${currentHostname}</p>
-                                    <a href="${correctUrl}" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg">
-                                        Go to Official App →
-                                    </a>
-                                    <p class="mt-4 text-xs text-gray-500">Redirecting in 5 seconds...</p>
-                                </div>
-                            `);
-                            setTimeout(() => {
-                                window.location.href = correctUrl;
-                            }, 5000);
-                            return;
-                        }
-                        
                         if (typeof AthomCloudAPI === 'undefined') {
                             throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
                         }
 
-                        this.showLoader('Initializing...');
+                        // Set redirect URL display
+                        document.getElementById('redirect-url-display').value = this.getRedirectUrl();
                         
-                        const response = await fetch('/api/get-config');
-                        if (!response.ok) throw new Error(`Failed to fetch config: ${response.statusText}`);
-                        
-                        const config = await response.json();
-                        if (!config.clientId) throw new Error('Could not get clientId from config.');
-                        this.CLIENT_ID = config.clientId;
-
-                        this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
-                        this.setupEventListeners();
                         await this.initLanguageSelector();
+
+                        // Check if API credentials are saved
+                        this.CLIENT_ID = localStorage.getItem('homey_client_id');
+                        this.CLIENT_SECRET = localStorage.getItem('homey_client_secret');
+
+                        if (!this.CLIENT_ID || !this.CLIENT_SECRET) {
+                            // Show API setup screen
+                            this.showScreen('api-setup-screen');
+                            this.setupApiForm();
+                            return;
+                        }
+
+                        // Initialize CloudAPI
+                        this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID, clientSecret: this.CLIENT_SECRET });
+                        
+                        this.setupEventListeners();
                         this.renderLoginScreen();
 
                         const urlParams = new URLSearchParams(window.location.search);
@@ -367,14 +519,34 @@
                         } else if (await this.cloudApi.isLoggedIn()) {
                             await this.postLogin();
                         } else {
-                            this.hideLoader();
                             this.showScreen('login-screen');
                         }
+
+                        // Show API settings button
+                        document.getElementById('api-settings-button').classList.remove('hidden');
                     } catch (error) {
                         console.error("Initialization failed:", error);
-                        this.hideLoader();
-                        this.showError(this.t('errors.startApp') + ' ' + error.message);
+                        this.showError('Failed to start application: ' + error.message);
                     }
+                }
+
+                setupApiForm() {
+                    const form = document.getElementById('api-setup-form');
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        const clientId = document.getElementById('client-id-input').value.trim();
+                        const clientSecret = document.getElementById('client-secret-input').value.trim();
+                        
+                        if (clientId && clientSecret) {
+                            localStorage.setItem('homey_client_id', clientId);
+                            localStorage.setItem('homey_client_secret', clientSecret);
+                            this.CLIENT_ID = clientId;
+                            this.CLIENT_SECRET = clientSecret;
+                            
+                            // Reload to apply new settings
+                            window.location.reload();
+                        }
+                    });
                 }
                 
                 setupEventListeners() {
@@ -386,11 +558,23 @@
                     document.getElementById('json-import-button').addEventListener('click', () => this.handleJsonImport());
                     document.getElementById('settings-modal-close').addEventListener('click', () => this.closeSettingsModal());
                     document.getElementById('settings-modal-save').addEventListener('click', () => this.saveSettings());
+                    document.getElementById('api-settings-button').addEventListener('click', () => this.showApiSettings());
+                }
+
+                showApiSettings() {
+                    const currentId = localStorage.getItem('homey_client_id') || '';
+                    const currentSecret = localStorage.getItem('homey_client_secret') || '';
+                    
+                    if (confirm(this.t('apiSetup.changeConfirm'))) {
+                        document.getElementById('client-id-input').value = currentId;
+                        document.getElementById('client-secret-input').value = currentSecret;
+                        this.showScreen('api-setup-screen');
+                    }
                 }
 
                 async login() {
                     if (!this.CLIENT_ID) return this.showError("Client ID missing. Cannot start login.");
-                    const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
+                    const redirectUrl = this.getRedirectUrl();
                     const authorizationUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${this.CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
                     window.location.href = authorizationUrl;
                 }
@@ -406,28 +590,13 @@
                     
                     this.showLoader('Authenticating...');
                     try {
-                        const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
-                        
-                        console.log('Getting token from server...');
-                        const response = await fetch('/api/get-token', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ code: code, redirectUrl: redirectUrl }),
+                        // Exchange code for token using the CloudAPI
+                        await this.cloudApi.authenticateWithAuthorizationCode({
+                            code: code,
+                            redirectUrl: this.getRedirectUrl()
                         });
                         
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            throw new Error(`Server responded with ${response.status}: ${errorText}`);
-                        }
-                        
-                        const tokenData = await response.json();
-                        console.log('Token received from server');
-                        
-                        // Set the token directly on the __token property (internal property)
-                        this.cloudApi.__token = tokenData;
-                        console.log('Token set on __token property');
-                        
-                        console.log('Proceeding to postLogin...');
+                        console.log('Authentication successful');
                         await this.postLogin();
                     } catch (error) {
                         console.error('Auth error:', error);
@@ -444,9 +613,6 @@
                     } catch(e) { 
                         console.error("Logout failed, continuing.", e); 
                     }
-                    
-                    // Clear the token
-                    this.cloudApi.__token = null;
                     
                     this.authenticatedUser = null; 
                     this.homey = null; 
@@ -466,49 +632,13 @@
                         
                         await this.homey.authenticate();
                         
-                        // Deep inspect the homey object
-                        console.log('=== HOMEY OBJECT INSPECTION ===');
-                        console.log('homey object:', this.homey);
-                        console.log('homey keys:', Object.keys(this.homey));
-                        console.log('homey prototype:', Object.getPrototypeOf(this.homey));
-                        console.log('homey prototype keys:', Object.keys(Object.getPrototypeOf(this.homey)));
-                        
-                        // Try to find methods on prototype
-                        const proto = Object.getPrototypeOf(this.homey);
-                        const methods = Object.getOwnPropertyNames(proto).filter(key => {
-                            try {
-                                return typeof proto[key] === 'function' && key !== 'constructor';
-                            } catch (e) {
-                                return false;
-                            }
-                        });
-                        console.log('homey prototype methods:', methods);
-                        
-                        // Check for api-related methods
-                        const apiMethods = methods.filter(m => m.toLowerCase().includes('api'));
-                        console.log('API-related methods:', apiMethods);
-                        
-                        // Try different methods to get the API
-                        if (typeof this.homey.getApi === 'function') {
-                            console.log('Trying getApi()...');
-                            this.api = await this.homey.getApi();
-                        } else if (typeof this.homey.api !== 'undefined') {
-                            console.log('Using homey.api property');
+                        // Try to get the API using the homey's built-in methods
+                        if (typeof this.homey.api !== 'undefined') {
                             this.api = this.homey.api;
-                        } else if (typeof this.homey.getHomeyAPI === 'function') {
-                            console.log('Trying getHomeyAPI()...');
-                            this.api = await this.homey.getHomeyAPI();
-                        } else if (typeof this.homey.createApi === 'function') {
-                            console.log('Trying createApi()...');
-                            this.api = await this.homey.createApi();
                         } else {
-                            console.log('No API method found, using homey object itself');
+                            // The homey object itself should have the API methods
                             this.api = this.homey;
                         }
-                        
-                        console.log('Final API object:', this.api);
-                        console.log('API keys:', Object.keys(this.api));
-                        console.log('API prototype:', Object.getPrototypeOf(this.api));
 
                         document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
                         document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
@@ -529,39 +659,8 @@
                 async fetchData() {
                     this.showLoader('Loading devices...');
                     try {
-                        console.log('API object:', this.api);
-                        console.log('API.devices:', this.api.devices);
-                        console.log('Available methods on api.devices:', this.api.devices ? Object.keys(this.api.devices).filter(k => typeof this.api.devices[k] === 'function') : 'No devices object');
-                        
-                        // Try different methods to get devices
-                        let devices, zones;
-                        
-                        try {
-                            devices = await this.api.devices.getDevices();
-                            console.log('getDevices() returned:', devices);
-                        } catch (e) {
-                            console.error('getDevices() failed:', e);
-                            // Try alternative method
-                            try {
-                                devices = await this.api.devices.get();
-                                console.log('devices.get() returned:', devices);
-                            } catch (e2) {
-                                console.error('devices.get() failed:', e2);
-                            }
-                        }
-                        
-                        try {
-                            zones = await this.api.zones.getZones();
-                            console.log('getZones() returned:', zones);
-                        } catch (e) {
-                            console.error('getZones() failed:', e);
-                            try {
-                                zones = await this.api.zones.get();
-                                console.log('zones.get() returned:', zones);
-                            } catch (e2) {
-                                console.error('zones.get() failed:', e2);
-                            }
-                        }
+                        const devices = await this.api.devices.getDevices();
+                        const zones = await this.api.zones.getZones();
                         
                         this.allDevices = devices || {};
                         this.allZones = zones || {};
@@ -582,14 +681,12 @@
                     const container = document.getElementById('edit-devices-list');
                     container.innerHTML = '';
                     
-                    // Show ALL devices with their driverIds for debugging
                     const allDevicesList = Object.values(this.allDevices);
                     
-                    // First, show debug info to find the correct driver ID
                     const debugInfo = document.createElement('details');
                     debugInfo.className = 'mb-6 bg-gray-900 p-4 rounded-lg border border-gray-600';
                     debugInfo.innerHTML = `
-                        <summary class="cursor-pointer font-semibold text-yellow-400">🔍 Debug: All Driver IDs (click to expand)</summary>
+                        <summary class="cursor-pointer font-semibold text-yellow-400">${this.t('editDevices.debugTitle')}</summary>
                         <div class="mt-4 space-y-2 max-h-64 overflow-y-auto">
                             ${[...new Set(allDevicesList.map(d => d.driverId))].sort().map(driverId => 
                                 `<div class="text-sm font-mono text-gray-300">${driverId} (${allDevicesList.filter(d => d.driverId === driverId).length} devices)</div>`
@@ -598,19 +695,16 @@
                     `;
                     container.appendChild(debugInfo);
                     
-                    // Try multiple possible driver IDs for Boolean Toolbox
                     const possibleDriverIds = ['booleantoolbox', 'logic', 'boolean', 'toolbox'];
                     let toolboxDevices = allDevicesList.filter(d => 
                         possibleDriverIds.some(id => d.driverId.toLowerCase().includes(id))
                     );
                     
-                    // If no devices found, show message
                     if (toolboxDevices.length === 0) {
                         container.innerHTML += `<div class="bg-yellow-700 p-4 rounded-lg text-center">
                             <p class="font-semibold mb-2">${this.t('editDevices.noDevices')}</p>
-                            <p class="text-sm">Check the debug info above to find the correct driver ID, or all devices will be shown below.</p>
+                            <p class="text-sm">${this.t('editDevices.debugHelp')}</p>
                         </div>`;
-                        // Show all devices if no Boolean Toolbox devices found
                         toolboxDevices = allDevicesList;
                     }
                     
@@ -643,7 +737,6 @@
                     const container = document.getElementById('device-capability-list');
                     container.innerHTML = '';
                     
-                    // Show ALL devices, not filtered
                     const allDevicesList = Object.values(this.allDevices);
                     const devicesByZone = this.groupDevicesByZone(allDevicesList);
                     const sortedZones = this.sortZones(Object.keys(devicesByZone));
@@ -663,7 +756,6 @@
                             const deviceEl = document.createElement('div');
                             deviceEl.className = 'bg-gray-700 p-4 rounded-lg';
                             
-                            // Show device name and driver ID for clarity
                             deviceEl.innerHTML = `
                                 <div class="mb-3">
                                     <p class="font-semibold">${device.name}</p>

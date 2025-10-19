@@ -6,6 +6,7 @@
   "close": "Fermer",
   "save": "Enregistrer",
   "next": "Suivant →",
+  "apiSettings": "⚙️ Paramètres API",
   "menu": {
     "editDevices": "Modifier les appareils existants",
     "editDevicesDesc": "Afficher et modifier les paramètres des appareils créés avec Boolean Toolbox.",
@@ -14,10 +15,32 @@
     "importJson": "Importer depuis JSON",
     "importJsonDesc": "Commencez avec une expression existante en collant des données JSON."
   },
+  "apiSetup": {
+    "title": "🔧 Configuration API requise",
+    "instructionsTitle": "📋 Comment obtenir vos identifiants API:",
+    "step1": "Allez sur",
+    "step1Link": "Clients API Homey",
+    "step2": "Cliquez sur \"Ajouter un client\" ou \"Créer un nouveau client\"",
+    "step3": "Remplissez un nom (par exemple \"Boolean Editor\")",
+    "step4": "Ajoutez votre URL de redirection (voir ci-dessous)",
+    "step5": "Cliquez sur \"Créer\" et copiez l'ID client et le secret client",
+    "redirectUrlTitle": "🌐 Votre URL de redirection",
+    "redirectUrlHelp": "Utilisez cette URL exacte lors de la création de votre application Cloud:",
+    "copyButton": "Copier",
+    "clientIdLabel": "ID Client",
+    "clientIdPlaceholder": "Entrez votre ID client",
+    "clientSecretLabel": "Secret Client",
+    "clientSecretPlaceholder": "Entrez votre secret client",
+    "saveButton": "Enregistrer et continuer",
+    "changeConfirm": "Voulez-vous modifier vos identifiants API? Cela vous déconnectera.",
+    "copiedToClipboard": "URL de redirection copiée dans le presse-papiers!"
+  },
   "editDevices": {
     "title": "Modifier les appareils Boolean Toolbox",
     "noDevices": "Aucun appareil trouvé dans Boolean Toolbox.",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "debugTitle": "🔍 Debug: Tous les ID de pilote (cliquez pour développer)",
+    "debugHelp": "Vérifiez les informations de débogage ci-dessus pour trouver l'ID de pilote correct, ou tous les appareils seront affichés ci-dessous."
   },
   "settings": {
     "title": "Paramètres",
