@@ -162,7 +162,6 @@
         </main>
     </div>
 
-    <!-- FIKS: Flyttet scripts til slutten av body for å garantere riktig rekkefølge -->
     <script src="https://cdn.jsdelivr.net/npm/homey-api/dist/homey-api.min.js"></script>
     <script>
     class BooleanToolboxApp {
@@ -181,7 +180,7 @@
         selectedCapabilities = []; // Format: { deviceId, capabilityId, deviceName, capabilityTitle }
 
         constructor() {
-            this.init();
+            // init() is now called by the event listener
         }
 
         async init() {

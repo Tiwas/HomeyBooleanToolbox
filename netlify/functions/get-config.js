@@ -15,3 +15,4 @@ exports.handler = async function(event, context) {
         body: JSON.stringify({ clientId: CLIENT_ID }),
     };
 };
+

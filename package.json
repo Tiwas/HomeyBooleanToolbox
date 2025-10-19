@@ -1,5 +1,8 @@
 {
+  "name": "booleantoolbox-editor",
+  "version": "1.0.0",
+  "description": "Netlify functions for Boolean Toolbox Editor",
   "dependencies": {
-    "homey": "^3.9.4"
+    "node-fetch": "^2.6.7"
   }
 }
