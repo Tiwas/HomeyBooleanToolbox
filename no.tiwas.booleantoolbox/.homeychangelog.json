@@ -22,5 +22,8 @@
   },
   "1.2.1": {
     "en": "Bug fixes. Mostly regex optimization, but also re-evaluation after changing formulas."
+  },
+  "1.2.2": {
+    "en": "Added a couple of cards for evaluation and error control."
   }
 }

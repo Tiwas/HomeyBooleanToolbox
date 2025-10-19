@@ -2,7 +2,17 @@
 
 const Homey = require('homey');
 
-module.exports = class BooleanToolboxApp extends Homey.App {
+function evaluateCondition(inputValue, operator, ruleValue) {
+  switch (operator) {
+    case 'gt': return inputValue > ruleValue;
+    case 'gte': return inputValue >= ruleValue;
+    case 'lt': return inputValue < ruleValue;
+    case 'lte': return inputValue <= ruleValue;
+    default: return false;
+  }
+}
+
+ module.exports = class BooleanToolboxApp extends Homey.App {
 
   async onInit() {
     this.log('Boolean Toolbox has been initialized');
@@ -29,7 +39,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
       this.error('Error stack:', e.stack);
     }
     
-    this.registerFlowCards();
+    await this.registerFlowCards();
   }
 
   async getAvailableZones() {
@@ -98,7 +108,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
     return deviceList;
   }
 
-  registerFlowCards() {
+  async registerFlowCards() {
     // Register STATE CHANGED trigger (NYTT)
     const stateChangedCard = this.homey.flow.getDeviceTriggerCard('device_state_changed');
     
@@ -327,5 +337,79 @@ module.exports = class BooleanToolboxApp extends Homey.App {
       
       return device.hasFormulaTimedOut(formulaId);
     });
+
+    // --- Registrer handlingskortet ---
+    const evaluateActionCard = this.homey.flow.getActionCard('evaluate_expression');
+    
+    evaluateActionCard.registerRunListener(async (args, state) => {
+        const { input, rules, op1, op2, logical_op } = args;
+        
+        // Nullstill verdier ved start for en ren kjøring hver gang
+        await evaluateActionCard.setTokenValue('outputValue', 0);
+        await evaluateActionCard.setTokenValue('errorMessage', '');
+
+        try {
+            this.log(`Running evaluation. Input: ${input}, Rules: '${rules}'`);
+            let output = null;
+
+            if (!rules || rules.trim() === '') {
+              throw new Error("Regel-strengen kan ikke være tom.");
+            }
+            
+            const ruleSets = rules.split(';').map(set => set.trim()).filter(set => set.length > 0);
+
+            for (const ruleSet of ruleSets) {
+                const parts = ruleSet.split(',');
+                if (parts.length !== 3) {
+                  throw new Error(`Ugyldig format i regelen '${ruleSet}'. Forventet 'min,maks,utgang'.`);
+                }
+
+                const min = parseFloat(parts[0]);
+                const max = parseFloat(parts[1]);
+                const resultValue = parseInt(parts[2], 10);
+
+                if (isNaN(min) || isNaN(max) || isNaN(resultValue)) {
+                  throw new Error(`Ugyldig tallverdi i regelen '${ruleSet}'.`);
+                }
+
+                const condition1 = evaluateCondition(input, op1, min);
+                const condition2 = evaluateCondition(input, op2, max);
+
+                let ruleMatched = (logical_op === 'AND')
+                    ? (condition1 && condition2)
+                    : (condition1 || condition2);
+
+                if (ruleMatched) {
+                    output = resultValue;
+                    break;
+                }
+            }
+
+            if (output !== null) {
+                this.log(`Evaluation finished. Output: ${output}`);
+                await evaluateActionCard.setTokenValue('outputValue', output);
+            } else {
+                const logicalErrorMsg = `Verdien ${input} er utenfor definert logikk.`;
+                this.log(logicalErrorMsg);
+                await evaluateActionCard.setTokenValue('errorMessage', logicalErrorMsg);
+            }
+
+        } catch (e) {
+            this.log(`Configuration error caught: ${e.message}`);
+            await evaluateActionCard.setTokenValue('errorMessage', `Feil i konfigurasjon: ${e.message}`);
+        }
+        
+        return true;
+    });
+
+    // --- Registrer betingelseskortet ---
+    const hasErrorConditionCard = this.homey.flow.getConditionCard('has_error');
+    hasErrorConditionCard.registerRunListener(async (args, state) => {
+      const textInput = args.text_input;
+      const hasError = !!textInput && textInput.length > 0;
+      this.log(`Checking for error. Input: '${textInput}', Has error: ${hasError}`);
+      return hasError;
+    });
   }
 };
+

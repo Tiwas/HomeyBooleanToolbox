@@ -1,7 +1,7 @@
 {
   "id": "no.tiwas.booleantoolbox",
   "support": "https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "permissions": [
@@ -1300,6 +1300,160 @@
             "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
           }
         ]
+      },
+      {
+        "id": "evaluate_expression",
+        "title": {
+          "en": "Evaluate expression",
+          "no": "Evaluer uttrykk",
+          "de": "Ausdruck auswerten",
+          "nl": "Expressie evalueren",
+          "fr": "Évaluer l'expression",
+          "da": "Evaluer udtryk",
+          "fi": "Arvioi lauseke",
+          "sv": "Utvärdera uttryck",
+          "pl": "Oceń wyrażenie",
+          "it": "Valuta espressione",
+          "es": "Evaluar expresión"
+        },
+        "hint": {
+          "en": "Example for rules: 0,10,1;10,20,2;20,30,3",
+          "no": "Eksempel for regler: 0,10,1;10,20,2;20,30,3",
+          "de": "Beispiel für Regeln: 0,10,1;10,20,2;20,30,3",
+          "nl": "Voorbeeld voor regels: 0,10,1;10,20,2;20,30,3",
+          "fr": "Exemple pour les règles: 0,10,1;10,20,2;20,30,3",
+          "da": "Eksempel for regler: 0,10,1;10,20,2;20,30,3",
+          "fi": "Esimerkki säännöille: 0,10,1;10,20,2;20,30,3",
+          "sv": "Exempel för regler: 0,10,1;10,20,2;20,30,3",
+          "pl": "Przykład dla zasad: 0,10,1;10,20,2;20,30,3",
+          "it": "Esempio per le regole: 0,10,1;10,20,2;20,30,3",
+          "es": "Ejemplo de reglas: 0,10,1;10,20,2;20,30,3"
+        },
+        "titleFormatted": {
+            "en": "Evaluate [[input]] with rules `[[rules]]` (op1: [[op1]], op2: [[op2]], logic: [[logical_op]])",
+            "no": "Evaluer [[input]] med regler `[[rules]]` (op1: [[op1]], op2: [[op2]], logikk: [[logical_op]])",
+            "de": "Werte [[input]] mit Regeln `[[rules]]` aus (op1: [[op1]], op2: [[op2]], Logik: [[logical_op]])",
+            "nl": "Evalueer [[input]] met regels `[[rules]]` (op1: [[op1]], op2: [[op2]], logica: [[logical_op]])",
+            "fr": "Évaluer [[input]] avec les règles `[[rules]]` (op1: [[op1]], op2: [[op2]], logique: [[logical_op]])",
+            "da": "Evaluer [[input]] med regler `[[rules]]` (op1: [[op1]], op2: [[op2]], logik: [[logical_op]])",
+            "fi": "Arvioi [[input]] säännöillä `[[rules]]` (op1: [[op1]], op2: [[op2]], logiikka: [[logical_op]])",
+            "sv": "Utvärdera [[input]] med regler `[[rules]]` (op1: [[op1]], op2: [[op2]], logik: [[logical_op]])",
+            "pl": "Oceń [[input]] według zasad `[[rules]]` (op1: [[op1]], op2: [[op2]], logika: [[logical_op]])",
+            "it": "Valuta [[input]] con le regole `[[rules]]` (op1: [[op1]], op2: [[op2]], logica: [[logical_op]])",
+            "es": "Evaluar [[input]] con reglas `[[rules]]` (op1: [[op1]], op2: [[op2]], lógica: [[logical_op]])"
+        },
+        "args": [
+          {
+            "name": "input",
+            "type": "number",
+            "title": {
+              "en": "Input value",
+              "no": "Inngangsverdi",
+              "de": "Eingabewert",
+              "nl": "Invoerwaarde",
+              "fr": "Valeur d'entrée",
+              "da": "Indtastningsværdi",
+              "fi": "Syöttöarvo",
+              "sv": "Inmatningsvärde",
+              "pl": "Wartość wejściowa",
+              "it": "Valore di input",
+              "es": "Valor de entrada"
+            }
+          },
+          {
+            "name": "rules",
+            "type": "text",
+            "title": {
+                "en": "Rule string (min,max,output;...)",
+                "no": "Regel-streng (min,maks,utgang;...)",
+                "de": "Regel-Zeichenfolge (min,max,ausgabe;...)",
+                "nl": "Regel-string (min,max,uitvoer;...)",
+                "fr": "Chaîne de règles (min,max,sortie;...)",
+                "da": "Regel-streng (min,max,output;...)",
+                "fi": "Sääntö-merkkijono (min,max,ulos;...)",
+                "sv": "Regel-sträng (min,max,utdata;...)",
+                "pl": "Ciąg reguł (min,maks,wyjście;...)",
+                "it": "Stringa regola (min,max,output;...)",
+                "es": "Cadena de reglas (mín,máx,salida;...)"
+            },
+            "placeholder": "e.g. 0,10,1;10,20,2"
+          },
+          {
+            "name": "op1",
+            "type": "dropdown",
+            "title": {
+              "en": "Operator 1 (for min value)",
+              "no": "Operator 1 (for min-verdi)",
+              "de": "Operator 1 (für Mindestwert)",
+              "nl": "Operator 1 (voor min waarde)",
+              "fr": "Opérateur 1 (pour valeur min)",
+              "da": "Operator 1 (for min-værdi)",
+              "fi": "Operaattori 1 (min-arvolle)",
+              "sv": "Operator 1 (för min-värde)",
+              "pl": "Operator 1 (dla wartości min)",
+              "it": "Operatore 1 (per valore min)",
+              "es": "Operador 1 (para valor mín)"
+            },
+            "values": [
+              { "id": "gt", "label": { "en": "is greater than (>)", "no": "er større enn (>)", "de": "ist größer als (>)", "nl": "is groter dan (>)", "fr": "est supérieur à (>)", "da": "er større end (>)", "fi": "on suurempi kuin (>)", "sv": "är större än (>)", "pl": "jest większy niż (>)", "it": "è maggiore di (>)", "es": "es mayor que (>)" } },
+              { "id": "gte", "label": { "en": "is greater than or equal to (>=)", "no": "er større enn eller lik (>=)", "de": "ist größer oder gleich (>=)", "nl": "is groter dan of gelijk aan (>=)", "fr": "est supérieur ou égal à (>=)", "da": "er større end eller lig med (>=)", "fi": "on suurempi tai yhtä suuri kuin (>=)", "sv": "är större än eller lika med (>=)", "pl": "jest większy lub równy (>=)", "it": "è maggiore o uguale a (>=)", "es": "es mayor o igual que (>=)" } }
+            ]
+          },
+          {
+            "name": "op2",
+            "type": "dropdown",
+            "title": {
+              "en": "Operator 2 (for max value)",
+              "no": "Operator 2 (for maks-verdi)",
+              "de": "Operator 2 (für Höchstwert)",
+              "nl": "Operator 2 (voor max waarde)",
+              "fr": "Opérateur 2 (pour valeur max)",
+              "da": "Operator 2 (for max-værdi)",
+              "fi": "Operaattori 2 (max-arvolle)",
+              "sv": "Operator 2 (för max-värde)",
+              "pl": "Operator 2 (dla wartości max)",
+              "it": "Operatore 2 (per valore max)",
+              "es": "Operador 2 (para valor máx)"
+            },
+            "values": [
+                { "id": "lt", "label": { "en": "is less than (<)", "no": "er mindre enn (<)", "de": "ist kleiner als (<)", "nl": "is kleiner dan (<)", "fr": "est inférieur à (<)", "da": "er mindre end (<)", "fi": "on pienempi kuin (<)", "sv": "är mindre än (<)", "pl": "jest mniejszy niż (<)", "it": "è minore di (<)", "es": "es menor que (<)" } },
+                { "id": "lte", "label": { "en": "is less than or equal to (<=)", "no": "er mindre enn eller lik (<=)", "de": "ist kleiner oder gleich (<=)", "nl": "is kleiner dan of gelijk aan (<=)", "fr": "est inférieur ou égal à (<=)", "da": "er mindre end eller lig med (<=)", "fi": "on pienempi tai yhtä suuri kuin (<=)", "sv": "är mindre än eller lika med (<=)", "pl": "jest mniejszy lub równy (<=)", "it": "è minore o uguale a (<=)", "es": "es menor o igual que (<=)" } }
+            ]
+          },
+          {
+            "name": "logical_op",
+            "type": "dropdown",
+            "title": {
+              "en": "Logical operator",
+              "no": "Logisk operator",
+              "de": "Logischer Operator",
+              "nl": "Logische operator",
+              "fr": "Opérateur logique",
+              "da": "Logisk operator",
+              "fi": "Looginen operaattori",
+              "sv": "Logisk operator",
+              "pl": "Operator logiczny",
+              "it": "Operatore logico",
+              "es": "Operador lógico"
+            },
+            "values": [
+              { "id": "AND", "label": { "en": "AND", "no": "OG", "de": "UND", "nl": "EN", "fr": "ET", "da": "OG", "fi": "JA", "sv": "OCH", "pl": "I", "it": "E", "es": "Y" } },
+              { "id": "OR", "label": { "en": "OR", "no": "ELLER", "de": "ODER", "nl": "OF", "fr": "OU", "da": "ELLER", "fi": "TAI", "sv": "ELLER", "pl": "LUB", "it": "O", "es": "O" } }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "outputValue",
+            "type": "number",
+            "title": { "en": "Result", "no": "Resultat", "de": "Ergebnis", "nl": "Resultaat", "fr": "Résultat", "da": "Resultat", "fi": "Tulos", "sv": "Resultat", "pl": "Wynik", "it": "Risultato", "es": "Resultado" }
+          },
+          {
+            "name": "errorMessage",
+            "type": "string",
+            "title": { "en": "Error message", "no": "Feilmelding", "de": "Fehlermeldung", "nl": "Foutbericht", "fr": "Message d'erreur", "da": "Fejlmeddelelse", "fi": "Virheilmoitus", "sv": "Felmeddelande", "pl": "Komunikat o błędzie", "it": "Messaggio di errore", "es": "Mensaje de error" }
+          }
+        ]
       }
     ],
     "conditions": [
@@ -1446,7 +1600,56 @@
             }
           }
         ]
+      },
+      {
+  "id": "has_error",
+  "title": {
+    "en": "Has error message",
+    "no": "Har feilmelding",
+    "de": "Hat Fehlermeldung",
+    "nl": "Heeft foutbericht",
+    "fr": "A un message d'erreur",
+    "da": "Har fejlmeddelelse",
+    "fi": "Sisältää virheilmoituksen",
+    "sv": "Har felmeddelande",
+    "pl": "Posiada komunikat o błędzie",
+    "it": "Ha un messaggio di errore",
+    "es": "Tiene mensaje de error"
+  },
+  "titleFormatted": {
+    "en": "[[text_input]] has a value",
+    "no": "[[text_input]] har en verdi",
+    "de": "[[text_input]] hat einen Wert",
+    "nl": "[[text_input]] heeft een waarde",
+    "fr": "[[text_input]] a une valeur",
+    "da": "[[text_input]] har en værdi",
+    "fi": "[[text_input]] on arvo",
+    "sv": "[[text_input]] har ett värde",
+    "pl": "[[text_input]] ma wartość",
+    "it": "[[text_input]] ha un valore",
+    "es": "[[text_input]] tiene un valor"
+  },
+  "args": [
+    {
+      "name": "text_input",
+      "type": "text",
+      "title": {
+        "en": "Error message token",
+        "no": "Feilmelding-tag",
+        "de": "Fehlermeldungs-Token",
+        "nl": "Foutbericht-token",
+        "fr": "Jeton du message d'erreur",
+        "da": "Fejlmeddelelses-tag",
+        "fi": "Virheilmoitus-tunniste",
+        "sv": "Felmeddelande-tagg",
+        "pl": "Token komunikatu o błędzie",
+        "it": "Token del messaggio di errore",
+        "es": "Token de mensaje de error"
       }
+    }
+  ]
+}
     ]
   }
 }
+

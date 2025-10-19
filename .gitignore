@@ -11,5 +11,6 @@ no.tiwas.booleantoolbox.old/
 extra_images/
 
 codebase.*
+codebase-manifest.*
 .codebaseignore
 *.rar
