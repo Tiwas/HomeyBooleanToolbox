@@ -135,6 +135,10 @@
                             </li>
                             <li class="flex gap-3">
                                 <span class="font-bold">5.</span>
+                                <span><strong>Select scopes:</strong> Check ✅ <code class="bg-gray-700 px-1 rounded">homey.zone.readonly</code>, <code class="bg-gray-700 px-1 rounded">homey.device.readonly</code>, and <code class="bg-gray-700 px-1 rounded">homey.device.control</code></span>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="font-bold">6.</span>
                                 <span data-i18n="apiSetup.step5">Click "Create" and copy the Client ID and Client Secret</span>
                             </li>
                         </ol>
@@ -630,15 +634,36 @@
                         this.homey = homeys[0];
                         if (!this.homey) throw new Error(this.t('errors.noHomey'));
                         
+                        console.log('Authenticating Homey...');
                         await this.homey.authenticate();
                         
-                        // Try to get the API using the homey's built-in methods
-                        if (typeof this.homey.api !== 'undefined') {
-                            this.api = this.homey.api;
-                        } else {
-                            // The homey object itself should have the API methods
+                        console.log('Getting Homey API...');
+                        // Try multiple methods to get the API
+                        try {
+                            // Method 1: Try forCurrentHomey (most common)
+                            if (typeof this.homey.forCurrentHomey === 'function') {
+                                console.log('Trying forCurrentHomey()...');
+                                this.api = await this.homey.forCurrentHomey();
+                            }
+                            // Method 2: Try getting API property
+                            else if (this.homey.api) {
+                                console.log('Using homey.api property');
+                                this.api = this.homey.api;
+                            }
+                            // Method 3: Homey object itself might be the API
+                            else {
+                                console.log('Using homey object as API');
+                                this.api = this.homey;
+                            }
+                        } catch (apiError) {
+                            console.error('Error getting API:', apiError);
+                            // Fallback: use homey object directly
                             this.api = this.homey;
                         }
+                        
+                        console.log('API object:', this.api);
+                        console.log('API has devices?', !!this.api.devices);
+                        console.log('API has zones?', !!this.api.zones);
 
                         document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
                         document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
@@ -930,7 +955,7 @@
                         return acc;
                     }, {});
                 }
- 
+
                 sortZones(zoneIds) {
                     const homeZoneId = Object.keys(this.allZones).find(id => {
                          if (!this.allZones[id]) return false;
