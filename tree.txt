@@ -1,0 +1,229 @@
+Folder PATH listing for volume Windows
+Volume serial number is BA90-987F
+C:.
+¦   codebase.manifest.part01.txt
+¦   CONTRIBUTING.md
+¦   emulator.html
+¦   formula-builder.html
+¦   homey-boolean-editor.html
+¦   netlify.toml
+¦   no.tiwas.booleantoolbox 16,10,25 2108 - publish.rar
+¦   no.tiwas.booleantoolbox 16.10.25 01226.rar
+¦   no.tiwas.booleantoolbox 16.10.25 1207.rar
+¦   no.tiwas.booleantoolbox 16.10.25 1325.rar
+¦   no.tiwas.booleantoolbox 16.10.25 1932.rar
+¦   package.json
+¦   README.md
+¦   tree.txt
+¦   
++---extra_images
+¦       a-photo-of-a-3d-logical-gate-or-a-silico 1000x700.jpeg
+¦       a-photo-of-a-silicon-brick-with-text 1000x700.jpeg
+¦       a-photo-of-a-silicon-chip 650x650.jpeg
+¦       a-photo-of-a-silicon-chip-with-text 1000x700.jpeg
+¦       a-photo-of-a-silicon-chip-with-the-text-_7-HCahvWQg24d7DYTyDDuA_GM7kYzVgS5iYwmG5x4HFyw.jpeg
+¦       
++---netlify
+¦   +---functions
+¦           get-config.js
+¦           get-token.js
+¦           
++---no.tiwas.booleantoolbox
+¦   ¦   app.js
+¦   ¦   app.json
+¦   ¦   package-lock.json
+¦   ¦   package.json
+¦   ¦   README.txt
+¦   ¦   
+¦   +---assets
+¦   ¦   ¦   icon.old.svg
+¦   ¦   ¦   icon.svg
+¦   ¦   ¦   
+¦   ¦   +---images
+¦   ¦           large.jpeg
+¦   ¦           small.jpeg
+¦   ¦           xlarge.jpeg
+¦   ¦           
+¦   +---drivers
+¦   ¦   +---logic-device
+¦   ¦   ¦   ¦   device.js
+¦   ¦   ¦   ¦   driver.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---assets
+¦   ¦   ¦   ¦   ¦   icon.svg
+¦   ¦   ¦   ¦   ¦   
+¦   ¦   ¦   ¦   +---images
+¦   ¦   ¦   ¦           large.png
+¦   ¦   ¦   ¦           small.png
+¦   ¦   ¦   ¦           
+¦   ¦   ¦   +---pair
+¦   ¦   ¦           configure_inputs.html
+¦   ¦   ¦           select_num_inputs.html
+¦   ¦   ¦           
+¦   ¦   +---logic-unit-10
+¦   ¦   ¦   ¦   device.js
+¦   ¦   ¦   ¦   driver.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---assets
+¦   ¦   ¦       ¦   icon.svg
+¦   ¦   ¦       ¦   
+¦   ¦   ¦       +---images
+¦   ¦   ¦               large.png
+¦   ¦   ¦               small.png
+¦   ¦   ¦               
+¦   ¦   +---logic-unit-2
+¦   ¦   ¦   ¦   device.js
+¦   ¦   ¦   ¦   driver.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---assets
+¦   ¦   ¦       ¦   icon.svg
+¦   ¦   ¦       ¦   
+¦   ¦   ¦       +---images
+¦   ¦   ¦               large.png
+¦   ¦   ¦               small.png
+¦   ¦   ¦               
+¦   ¦   +---logic-unit-3
+¦   ¦   ¦   ¦   device.js
+¦   ¦   ¦   ¦   driver.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---assets
+¦   ¦   ¦       ¦   icon.svg
+¦   ¦   ¦       ¦   
+¦   ¦   ¦       +---images
+¦   ¦   ¦               large.png
+¦   ¦   ¦               small.png
+¦   ¦   ¦               
+¦   ¦   +---logic-unit-4
+¦   ¦   ¦   ¦   device.js
+¦   ¦   ¦   ¦   driver.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---assets
+¦   ¦   ¦       ¦   icon.svg
+¦   ¦   ¦       ¦   
+¦   ¦   ¦       +---images
+¦   ¦   ¦               large.png
+¦   ¦   ¦               small.png
+¦   ¦   ¦               
+¦   ¦   +---logic-unit-5
+¦   ¦   ¦   ¦   device.js
+¦   ¦   ¦   ¦   driver.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---assets
+¦   ¦   ¦       ¦   icon.svg
+¦   ¦   ¦       ¦   
+¦   ¦   ¦       +---images
+¦   ¦   ¦               large.png
+¦   ¦   ¦               small.png
+¦   ¦   ¦               
+¦   ¦   +---logic-unit-6
+¦   ¦   ¦   ¦   device.js
+¦   ¦   ¦   ¦   driver.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---assets
+¦   ¦   ¦       ¦   icon.svg
+¦   ¦   ¦       ¦   
+¦   ¦   ¦       +---images
+¦   ¦   ¦               large.png
+¦   ¦   ¦               small.png
+¦   ¦   ¦               
+¦   ¦   +---logic-unit-7
+¦   ¦   ¦   ¦   device.js
+¦   ¦   ¦   ¦   driver.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---assets
+¦   ¦   ¦       ¦   icon.svg
+¦   ¦   ¦       ¦   
+¦   ¦   ¦       +---images
+¦   ¦   ¦               large.png
+¦   ¦   ¦               small.png
+¦   ¦   ¦               
+¦   ¦   +---logic-unit-8
+¦   ¦   ¦   ¦   device.js
+¦   ¦   ¦   ¦   driver.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---assets
+¦   ¦   ¦       ¦   icon.svg
+¦   ¦   ¦       ¦   
+¦   ¦   ¦       +---images
+¦   ¦   ¦               large.png
+¦   ¦   ¦               small.png
+¦   ¦   ¦               
+¦   ¦   +---logic-unit-9
+¦   ¦       ¦   device.js
+¦   ¦       ¦   driver.js
+¦   ¦       ¦   
+¦   ¦       +---assets
+¦   ¦           ¦   icon.svg
+¦   ¦           ¦   
+¦   ¦           +---images
+¦   ¦                   large.png
+¦   ¦                   small.png
+¦   ¦                   
+¦   +---lib
+¦   ¦       BaseLogicDriver.js
+¦   ¦       BaseLogicUnit.js
+¦   ¦       
+¦   +---node_modules
+¦       +---athom-api
+¦           ¦   CONTRIBUTING.md
+¦           ¦   index.exports.d.ts
+¦           ¦   index.mjs
+¦           ¦   LICENSE
+¦           ¦   package.json
+¦           ¦   README.md
+¦           ¦   
+¦           +---dist
+¦           ¦       index.js
+¦           ¦       types.d.ts
+¦           ¦       
+¦           +---specs
+¦           ¦   +---homey-client
+¦           ¦           alarms.json
+¦           ¦           apps.json
+¦           ¦           audio.json
+¦           ¦           backup.json
+¦           ¦           ble.json
+¦           ¦           cloud.json
+¦           ¦           coprocessor.json
+¦           ¦           dashboards.json
+¦           ¦           database.json
+¦           ¦           devices.json
+¦           ¦           devkit.json
+¦           ¦           drivers.json
+¦           ¦           energy.json
+¦           ¦           experiments.json
+¦           ¦           flow.json
+¦           ¦           flowtoken.json
+¦           ¦           geolocation.json
+¦           ¦           google-assistant.json
+¦           ¦           i18n.json
+¦           ¦           images.json
+¦           ¦           index.json
+¦           ¦           insights.json
+¦           ¦           ledring.json
+¦           ¦           logic.json
+¦           ¦           mobile.json
+¦           ¦           moods.json
+¦           ¦           notifications.json
+¦           ¦           presence.json
+¦           ¦           reminder.json
+¦           ¦           reports.json
+¦           ¦           rf.json
+¦           ¦           sessions.json
+¦           ¦           speech-output.json
+¦           ¦           system.json
+¦           ¦           updates.json
+¦           ¦           users.json
+¦           ¦           weather.json
+¦           ¦           zigbee.json
+¦           ¦           zones.json
+¦           ¦           zwave.json
+¦           ¦           
+¦           +---tutorial
+¦                   Introduction.md
+¦                   
++---web
+        advanced_settings.png
+        homey std.png
+        logic unit.jpg
+        

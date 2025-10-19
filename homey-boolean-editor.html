@@ -16,7 +16,6 @@
         }
         .screen { display: none; }
         .screen.active { display: block; }
-        [v-cloak] { display: none; }
     </style>
 </head>
 <body class="h-full">
@@ -164,483 +163,401 @@
 
     <script src="https://cdn.jsdelivr.net/npm/homey-api/dist/homey-api.min.js"></script>
     <script>
-    class BooleanToolboxApp {
-        // CLIENT_ID is now removed from here and fetched from the server.
-        CLIENT_ID = null;
-        
-        // --- App state ---
-        cloudApi = null;
-        authenticatedUser = null;
-        homey = null;
-        api = null;
-        
-        allDevices = {};
-        allZones = {};
+    document.addEventListener('DOMContentLoaded', () => {
+        class BooleanToolboxApp {
+            CLIENT_ID = null;
+            cloudApi = null;
+            authenticatedUser = null;
+            homey = null;
+            api = null;
+            allDevices = {};
+            allZones = {};
+            selectedCapabilities = []; // Format: { deviceId, capabilityId, deviceName, capabilityTitle }
 
-        selectedCapabilities = []; // Format: { deviceId, capabilityId, deviceName, capabilityTitle }
-
-        constructor() {
-            // init() is now called by the event listener
-        }
-
-        async init() {
-            try {
-                // Fetch public Client ID from our new server function
-                const response = await fetch('/.netlify/functions/get-config');
-                const config = await response.json();
-                if (!response.ok || !config.clientId) {
-                    throw new Error('Could not fetch app configuration.');
-                }
-                this.CLIENT_ID = config.clientId;
-
-                this.cloudApi = new AthomCloudAPI({
-                    clientId: this.CLIENT_ID,
-                });
-
-                this.setupEventListeners();
-
-                const urlParams = new URLSearchParams(window.location.search);
-                const code = urlParams.get('code');
-
-                if (code) {
-                    await this.handleAuthRedirect(code);
-                } else if (await this.cloudApi.isLoggedIn()) {
-                    await this.postLogin();
-                } else {
-                    this.showScreen('login-screen');
-                }
-            } catch (error) {
-                this.showError("Klarte ikke å starte appen: " + error.message);
+            constructor() {
+                this.init();
             }
-        }
 
-        setupEventListeners() {
-            document.getElementById('login-button').addEventListener('click', () => this.login());
-            document.getElementById('logout-button').addEventListener('click', () => this.logout());
-            document.getElementById('next-step-button').addEventListener('click', () => this.showScreen('create-expression-step2-screen'));
-            document.getElementById('json-import-button').addEventListener('click', () => this.handleJsonImport());
+            async init() {
+                try {
+                    const response = await fetch('/.netlify/functions/get-config');
+                    if (!response.ok) throw new Error(`Failed to fetch config: ${response.statusText}`);
+                    const config = await response.json();
+                    if (!config.clientId) throw new Error('Could not get clientId from config.');
+                    this.CLIENT_ID = config.clientId;
+
+                    this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
+                    this.setupEventListeners();
+
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const code = urlParams.get('code');
+
+                    if (code) {
+                        await this.handleAuthRedirect(code);
+                    } else if (await this.cloudApi.isLoggedIn()) {
+                        await this.postLogin();
+                    } else {
+                        this.showScreen('login-screen');
+                    }
+                } catch (error) {
+                    this.showError("Klarte ikke å starte appen: " + error.message);
+                }
+            }
             
-            // Modal event listeners
-            document.getElementById('settings-modal-close').addEventListener('click', () => this.closeSettingsModal());
-            document.getElementById('settings-modal-save').addEventListener('click', () => this.saveSettings());
-        }
-
-        async login() {
-            if (!this.CLIENT_ID) {
-                this.showError("Client ID mangler. Kan ikke starte innlogging.");
-                return;
-            }
-            const redirectUrl = window.location.origin + window.location.pathname;
-            const authorizationUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${this.CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
-            window.location.href = authorizationUrl;
-        }
-
-        async handleAuthRedirect(code) {
-            this.showScreen('loader');
-            try {
-                // Call our secure serverless function to exchange the code for a token
-                const response = await fetch('/.netlify/functions/get-token', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code: code }),
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Server error: ${await response.text()}`);
-                }
-
-                const tokenData = await response.json();
+            setupEventListeners() {
+                document.getElementById('login-button').addEventListener('click', () => this.login());
+                document.getElementById('logout-button').addEventListener('click', () => this.logout());
+                document.getElementById('next-step-button').addEventListener('click', () => this.showScreen('create-expression-step2-screen'));
+                document.getElementById('json-import-button').addEventListener('click', () => this.handleJsonImport());
                 
-                // Store the token in the SDK
-                this.cloudApi.setToken(tokenData);
-
-                // Clean the URL and proceed
-                window.history.replaceState({}, document.title, window.location.pathname);
-                await this.postLogin();
-
-            } catch (error) {
-                this.showError('Authentication failed: ' + error.message);
+                document.getElementById('settings-modal-close').addEventListener('click', () => this.closeSettingsModal());
+                document.getElementById('settings-modal-save').addEventListener('click', () => this.saveSettings());
             }
-        }
-        
-        async logout() {
-            await this.cloudApi.logout();
-            this.authenticatedUser = null;
-            this.homey = null;
-            this.api = null;
-            document.getElementById('user-info').classList.add('hidden');
-            this.showScreen('login-screen');
-        }
 
-        async postLogin() {
-            try {
-                this.authenticatedUser = await this.cloudApi.getAuthenticatedUser();
-                const homeys = await this.authenticatedUser.getHomeys();
-                this.homey = homeys[0]; // Select the first Homey
-                
-                if (!this.homey) {
-                    this.showError("No Homey found for this account.");
+            async login() {
+                if (!this.CLIENT_ID) {
+                    this.showError("Client ID mangler. Kan ikke starte innlogging.");
                     return;
                 }
-
-                await this.homey.authenticate();
-                this.api = await this.homey.getApi();
-
-                // Update UI
-                document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
-                document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
-                document.getElementById('user-info').classList.remove('hidden');
-
-                await this.fetchData();
-                this.renderAll();
-                this.showScreen('main-menu-screen');
-
-            } catch (error) {
-                console.error(error);
-                this.showError('An error occurred after login: ' + error.message);
-                this.logout();
-            }
-        }
-
-        async fetchData() {
-            this.showScreen('loader');
-            try {
-                this.allDevices = await this.api.devices.getDevices();
-                this.allZones = await this.api.zones.getZones();
-            } catch (error)
-            {
-                this.showError("Could not fetch data from Homey: " + error.message);
-            }
-        }
-
-        renderAll() {
-            this.renderEditDevices();
-            this.renderDeviceCapabilityList();
-        }
-
-        // --- RENDER FUNCTIONS ---
-
-        renderEditDevices() {
-            const container = document.getElementById('edit-devices-list');
-            container.innerHTML = ''; // Clear list
-
-            // Filter devices
-            const toolboxDevices = Object.values(this.allDevices).filter(d => d.driverId.startsWith('booleantoolbox'));
-            
-            if (toolboxDevices.length === 0) {
-                 container.innerHTML = `<div class="bg-gray-700 p-4 rounded-lg text-center text-gray-400">No devices found from Boolean Toolbox.</div>`;
-                 return;
+                const redirectUrl = window.location.origin + window.location.pathname;
+                const authorizationUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${this.CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
+                window.location.href = authorizationUrl;
             }
 
-            // Group by zone
-            const devicesByZone = this.groupDevicesByZone(toolboxDevices);
-            
-            // Sort zones
-            const sortedZones = this.sortZones(Object.keys(devicesByZone));
-
-            sortedZones.forEach(zoneId => {
-                const zone = this.allZones[zoneId];
-                const zoneDevices = devicesByZone[zoneId];
-                
-                const zoneEl = document.createElement('div');
-                zoneEl.innerHTML = `
-                    <h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        ${zoneDevices.map(device => `
-                            <div class="bg-gray-700 p-4 rounded-lg flex justify-between items-center">
-                                <span class="font-medium">${device.name}</span>
-                                <button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-sm py-1 px-3 rounded-md">Innstillinger</button>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(zoneEl);
-            });
-            
-            container.querySelectorAll('.open-settings-button').forEach(button => {
-                button.addEventListener('click', (e) => this.openSettingsModal(e.target.dataset.deviceId));
-            });
-        }
-
-        renderDeviceCapabilityList() {
-            const container = document.getElementById('device-capability-list');
-            container.innerHTML = '';
-            
-            const devicesByZone = this.groupDevicesByZone(Object.values(this.allDevices));
-            const sortedZones = this.sortZones(Object.keys(devicesByZone));
-
-            sortedZones.forEach(zoneId => {
-                const zone = this.allZones[zoneId];
-                const zoneDevices = devicesByZone[zoneId];
-
-                const zoneEl = document.createElement('div');
-                zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>`;
-                
-                const deviceListEl = document.createElement('div');
-                deviceListEl.className = 'space-y-4';
-                zoneEl.appendChild(deviceListEl);
-
-                zoneDevices.forEach(device => {
-                    if (Object.keys(device.capabilitiesObj).length === 0) return;
-                    
-                    const deviceEl = document.createElement('div');
-                    deviceEl.className = 'bg-gray-700 p-4 rounded-lg';
-                    deviceEl.innerHTML = `
-                        <p class="font-semibold mb-3">${device.name}</p>
-                        <div class="space-y-2">
-                            ${Object.values(device.capabilitiesObj).map(cap => `
-                                <label class="flex items-center space-x-3 cursor-pointer">
-                                    <input type="checkbox" data-device-id="${device.id}" data-capability-id="${cap.id}" class="capability-checkbox form-checkbox h-5 w-5 rounded bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500">
-                                    <span class="text-gray-300">${cap.title}</span>
-                                </label>
-                            `).join('')}
-                        </div>
-                    `;
-                    deviceListEl.appendChild(deviceEl);
-                });
-                container.appendChild(zoneEl);
-            });
-            
-            // Add event listeners for checkboxes
-            container.querySelectorAll('.capability-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', (e) => this.handleCapabilitySelection(e.target));
-            });
-        }
-        
-        renderSelectedCapabilities() {
-            const list = document.getElementById('selected-capabilities-list');
-            const countEl = document.getElementById('selected-count');
-            const nextButton = document.getElementById('next-step-button');
-
-            list.innerHTML = '';
-            countEl.textContent = this.selectedCapabilities.length;
-            
-            if (this.selectedCapabilities.length === 0) {
-                 list.innerHTML = `<li class="text-gray-500 text-center italic">Ingen valgt</li>`;
-            }
-
-            this.selectedCapabilities.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.className = 'bg-gray-700 p-2 rounded-md flex justify-between items-center text-sm';
-                li.innerHTML = `
-                    <span class="truncate">
-                        <span class="font-bold">${String.fromCharCode(65 + index)}:</span>
-                        ${item.deviceName} - ${item.capabilityTitle}
-                    </span>
-                    <button data-index="${index}" class="remove-capability-btn text-red-400 hover:text-red-300 p-1 font-bold text-lg">&times;</button>
-                `;
-                list.appendChild(li);
-            });
-            
-            list.querySelectorAll('.remove-capability-btn').forEach(btn => {
-                btn.addEventListener('click', e => this.removeCapability(parseInt(e.currentTarget.dataset.index)));
-            });
-
-            // Validate for next button
-            const count = this.selectedCapabilities.length;
-            if (count >= 2 && count <= 10) {
-                nextButton.disabled = false;
-            } else {
-                nextButton.disabled = true;
-            }
-        }
-        
-        renderVariableMapping() {
-             const list = document.getElementById('variable-mapping-list');
-             list.innerHTML = '';
-             this.selectedCapabilities.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.className = 'text-gray-300';
-                li.innerHTML = `<span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} <span class="text-gray-500">(${item.capabilityTitle})</span>`;
-                list.appendChild(li);
-             });
-        }
-
-        // --- HANDLERS AND LOGIC ---
-        
-        handleCapabilitySelection(checkbox) {
-            const deviceId = checkbox.dataset.deviceId;
-            const capabilityId = checkbox.dataset.capabilityId;
-            const device = this.allDevices[deviceId];
-            const capability = device.capabilitiesObj[capabilityId];
-
-            if (checkbox.checked) {
-                if (this.selectedCapabilities.length < 10) {
-                    this.selectedCapabilities.push({
-                        deviceId: deviceId,
-                        capabilityId: capabilityId,
-                        deviceName: device.name,
-                        capabilityTitle: capability.title,
+            async handleAuthRedirect(code) {
+                this.showScreen('loader');
+                try {
+                    const response = await fetch('/.netlify/functions/get-token', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ code: code }),
                     });
-                } else {
-                    checkbox.checked = false; // Prevent selecting more than 10
-                    alert("Du kan maksimalt velge 10 kapabiliteter.");
-                }
-            } else {
-                this.selectedCapabilities = this.selectedCapabilities.filter(
-                    item => !(item.deviceId === deviceId && item.capabilityId === capabilityId)
-                );
-            }
-            this.renderSelectedCapabilities();
-        }
-        
-        removeCapability(index) {
-            const removedItem = this.selectedCapabilities.splice(index, 1)[0];
-            
-            // Uncheck in the main list
-            const checkbox = document.querySelector(`input[data-device-id="${removedItem.deviceId}"][data-capability-id="${removedItem.capabilityId}"]`);
-            if (checkbox) {
-                checkbox.checked = false;
-            }
-            
-            this.renderSelectedCapabilities();
-        }
-        
-        async handleJsonImport() {
-            const devicesJson = document.getElementById('json-devices-input').value;
-            const formula = document.getElementById('json-formula-input').value;
-
-            if (!devicesJson) {
-                alert("Du må lime inn JSON for enheter.");
-                return;
-            }
-
-            try {
-                const parsedDevices = JSON.parse(devicesJson);
-                if (!Array.isArray(parsedDevices) || parsedDevices.length < 2 || parsedDevices.length > 10) {
-                    alert("JSON må være en liste med 2 til 10 enheter.");
-                    return;
-                }
-
-                this.selectedCapabilities = parsedDevices.map(item => {
-                    const device = this.allDevices[item.deviceId];
-                    if (!device) throw new Error(`Device with ID ${item.deviceId} not found`);
-                    const capability = device.capabilitiesObj[item.capabilityId];
-                    if (!capability) throw new Error(`Capability ${item.capabilityId} not found on device ${device.name}`);
                     
-                    return {
-                        deviceId: item.deviceId,
-                        capabilityId: item.capabilityId,
-                        deviceName: device.name,
-                        capabilityTitle: capability.title,
-                    };
+                    const tokenData = await response.json();
+                    if (!response.ok) {
+                        throw new Error(tokenData.error || `Server responded with ${response.status}`);
+                    }
+                    
+                    this.cloudApi.setToken(tokenData);
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    await this.postLogin();
+                } catch (error) {
+                    this.showError('Authentication failed: ' + error.message);
+                }
+            }
+            
+            async logout() {
+                await this.cloudApi.logout();
+                this.authenticatedUser = null;
+                this.homey = null;
+                this.api = null;
+                document.getElementById('user-info').classList.add('hidden');
+                this.showScreen('login-screen');
+            }
+
+            async postLogin() {
+                try {
+                    this.authenticatedUser = await this.cloudApi.getAuthenticatedUser();
+                    const homeys = await this.authenticatedUser.getHomeys();
+                    this.homey = homeys[0];
+                    if (!this.homey) throw new Error("No Homey found for this account.");
+                    
+                    await this.homey.authenticate();
+                    this.api = await this.homey.getApi();
+
+                    document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
+                    document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
+                    document.getElementById('user-info').classList.remove('hidden');
+
+                    await this.fetchData();
+                    this.renderAll();
+                    this.showScreen('main-menu-screen');
+                } catch (error) {
+                    console.error(error);
+                    this.showError('An error occurred after login: ' + error.message);
+                    await this.logout();
+                }
+            }
+
+            async fetchData() {
+                this.showScreen('loader');
+                try {
+                    [this.allDevices, this.allZones] = await Promise.all([
+                        this.api.devices.getDevices(),
+                        this.api.zones.getZones()
+                    ]);
+                } catch (error) {
+                    this.showError("Could not fetch data from Homey: " + error.message);
+                }
+            }
+
+            renderAll() {
+                this.renderEditDevices();
+                this.renderDeviceCapabilityList();
+            }
+            
+            renderEditDevices() {
+                const container = document.getElementById('edit-devices-list');
+                container.innerHTML = '';
+                const toolboxDevices = Object.values(this.allDevices).filter(d => d.driverId.startsWith('booleantoolbox'));
+                
+                if (toolboxDevices.length === 0) {
+                     container.innerHTML = `<div class="bg-gray-700 p-4 rounded-lg text-center text-gray-400">No devices found from Boolean Toolbox.</div>`;
+                     return;
+                }
+
+                const devicesByZone = this.groupDevicesByZone(toolboxDevices);
+                const sortedZones = this.sortZones(Object.keys(devicesByZone));
+
+                sortedZones.forEach(zoneId => {
+                    if (!devicesByZone[zoneId]) return;
+                    const zone = this.allZones[zoneId];
+                    const zoneDevices = devicesByZone[zoneId];
+                    
+                    const zoneEl = document.createElement('div');
+                    zoneEl.innerHTML = `
+                        <h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${zoneDevices.map(device => `
+                                <div class="bg-gray-700 p-4 rounded-lg flex justify-between items-center">
+                                    <span class="font-medium">${device.name}</span>
+                                    <button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-sm py-1 px-3 rounded-md">Innstillinger</button>
+                                </div>
+                            `).join('')}
+                        </div>`;
+                    container.appendChild(zoneEl);
                 });
                 
-                this.renderSelectedCapabilities();
-                
-                if (formula) {
-                    document.getElementById('formula-input').value = formula;
-                }
-                
-                this.showScreen('create-expression-step2-screen');
-
-            } catch (error) {
-                alert("Error parsing JSON: " + error.message);
+                container.querySelectorAll('.open-settings-button').forEach(button => {
+                    button.addEventListener('click', (e) => this.openSettingsModal(e.target.dataset.deviceId));
+                });
             }
-        }
-        
-        // --- SETTINGS MODAL ---
-        
-        async openSettingsModal(deviceId) {
-            const device = this.allDevices[deviceId];
-            if (!device) return;
 
-            const modal = document.getElementById('settings-modal');
-            const title = document.getElementById('settings-modal-title');
-            const content = document.getElementById('settings-modal-content');
-            const saveBtn = document.getElementById('settings-modal-save');
+            renderDeviceCapabilityList() {
+                const container = document.getElementById('device-capability-list');
+                container.innerHTML = '';
+                const devicesByZone = this.groupDevicesByZone(Object.values(this.allDevices));
+                const sortedZones = this.sortZones(Object.keys(devicesByZone));
+
+                sortedZones.forEach(zoneId => {
+                    if (!devicesByZone[zoneId]) return;
+                    const zone = this.allZones[zoneId];
+                    const zoneDevices = devicesByZone[zoneId];
+
+                    const zoneEl = document.createElement('div');
+                    zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>`;
+                    const deviceListEl = document.createElement('div');
+                    deviceListEl.className = 'space-y-4';
+                    zoneEl.appendChild(deviceListEl);
+
+                    zoneDevices.forEach(device => {
+                        if (!device.capabilitiesObj || Object.keys(device.capabilitiesObj).length === 0) return;
+                        const deviceEl = document.createElement('div');
+                        deviceEl.className = 'bg-gray-700 p-4 rounded-lg';
+                        deviceEl.innerHTML = `
+                            <p class="font-semibold mb-3">${device.name}</p>
+                            <div class="space-y-2">
+                                ${Object.values(device.capabilitiesObj).map(cap => `
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="checkbox" data-device-id="${device.id}" data-capability-id="${cap.id}" class="capability-checkbox form-checkbox h-5 w-5 rounded bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500">
+                                        <span class="text-gray-300">${cap.title}</span>
+                                    </label>
+                                `).join('')}
+                            </div>`;
+                        deviceListEl.appendChild(deviceEl);
+                    });
+                    container.appendChild(zoneEl);
+                });
+                
+                container.querySelectorAll('.capability-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', (e) => this.handleCapabilitySelection(e.target));
+                });
+            }
             
-            title.textContent = `Innstillinger for ${device.name}`;
-            content.innerHTML = '<p>Laster innstillinger...</p>';
-            saveBtn.dataset.deviceId = deviceId;
-            modal.style.display = 'flex';
-            
-            try {
-                const settings = await this.api.devices.getDeviceSettings({ id: deviceId });
-                let settingsHtml = '';
-                for (const key in settings) {
-                    settingsHtml += `
-                    <div>
-                        <label for="setting-${key}" class="block text-sm font-medium text-gray-300">${key}</label>
-                        <input type="text" id="setting-${key}" data-key="${key}" class="mt-1 block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 transition-colors" value="${settings[key]}">
-                    </div>
+            renderSelectedCapabilities() {
+                const list = document.getElementById('selected-capabilities-list');
+                const countEl = document.getElementById('selected-count');
+                const nextButton = document.getElementById('next-step-button');
+
+                list.innerHTML = '';
+                countEl.textContent = this.selectedCapabilities.length;
+                
+                if (this.selectedCapabilities.length === 0) {
+                     list.innerHTML = `<li class="text-gray-500 text-center italic">Ingen valgt</li>`;
+                }
+
+                this.selectedCapabilities.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'bg-gray-700 p-2 rounded-md flex justify-between items-center text-sm';
+                    li.innerHTML = `
+                        <span class="truncate">
+                            <span class="font-bold">${String.fromCharCode(65 + index)}:</span>
+                            ${item.deviceName} - ${item.capabilityTitle}
+                        </span>
+                        <button data-index="${index}" class="remove-capability-btn text-red-400 hover:text-red-300 p-1 font-bold text-lg">&times;</button>
                     `;
-                }
-                content.innerHTML = settingsHtml || '<p>This device has no settings.</p>';
-            } catch(error) {
-                content.innerHTML = `<p class="text-red-400">Could not fetch settings: ${error.message}</p>`;
+                    list.appendChild(li);
+                });
+                
+                list.querySelectorAll('.remove-capability-btn').forEach(btn => {
+                    btn.addEventListener('click', e => this.removeCapability(parseInt(e.currentTarget.dataset.index)));
+                });
+
+                const count = this.selectedCapabilities.length;
+                nextButton.disabled = !(count >= 2 && count <= 10);
             }
-        }
-
-        closeSettingsModal() {
-            document.getElementById('settings-modal').style.display = 'none';
-        }
-
-        async saveSettings() {
-            const deviceId = document.getElementById('settings-modal-save').dataset.deviceId;
-            const content = document.getElementById('settings-modal-content');
-            const inputs = content.querySelectorAll('input');
-            const newSettings = {};
-
-            inputs.forEach(input => {
-                newSettings[input.dataset.key] = input.value;
-            });
-
-            try {
-                await this.api.devices.updateDeviceSettings({ id: deviceId, data: newSettings });
-                alert('Innstillinger lagret!');
-                this.closeSettingsModal();
-            } catch (error) {
-                alert('Could not save settings: ' + error.message);
-            }
-        }
-
-        // --- HELPER FUNCTIONS ---
-
-        showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
             
-            if (screenId === 'create-expression-step2-screen') {
-                this.renderVariableMapping();
+            renderVariableMapping() {
+                 const list = document.getElementById('variable-mapping-list');
+                 list.innerHTML = '';
+                 this.selectedCapabilities.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'text-gray-300';
+                    li.innerHTML = `<span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} <span class="text-gray-500">(${item.capabilityTitle})</span>`;
+                    list.appendChild(li);
+                 });
+            }
+
+            handleCapabilitySelection(checkbox) {
+                const { deviceId, capabilityId } = checkbox.dataset;
+                const device = this.allDevices[deviceId];
+                const capability = device.capabilitiesObj[capabilityId];
+
+                if (checkbox.checked) {
+                    if (this.selectedCapabilities.length < 10) {
+                        this.selectedCapabilities.push({ deviceId, capabilityId, deviceName: device.name, capabilityTitle: capability.title });
+                    } else {
+                        checkbox.checked = false;
+                        alert("Du kan maksimalt velge 10 kapabiliteter.");
+                    }
+                } else {
+                    this.selectedCapabilities = this.selectedCapabilities.filter(
+                        item => !(item.deviceId === deviceId && item.capabilityId === capabilityId)
+                    );
+                }
+                this.renderSelectedCapabilities();
+            }
+            
+            removeCapability(index) {
+                const [removedItem] = this.selectedCapabilities.splice(index, 1);
+                const checkbox = document.querySelector(`input[data-device-id="${removedItem.deviceId}"][data-capability-id="${removedItem.capabilityId}"]`);
+                if (checkbox) checkbox.checked = false;
+                this.renderSelectedCapabilities();
+            }
+            
+            async handleJsonImport() {
+                const devicesJson = document.getElementById('json-devices-input').value;
+                const formula = document.getElementById('json-formula-input').value;
+                if (!devicesJson) return alert("Du må lime inn JSON for enheter.");
+
+                try {
+                    const parsedDevices = JSON.parse(devicesJson);
+                    if (!Array.isArray(parsedDevices) || parsedDevices.length < 2 || parsedDevices.length > 10) {
+                        return alert("JSON må være en liste med 2 til 10 enheter.");
+                    }
+                    this.selectedCapabilities = parsedDevices.map(item => {
+                        const device = this.allDevices[item.deviceId];
+                        if (!device) throw new Error(`Device with ID ${item.deviceId} not found`);
+                        const capability = device.capabilitiesObj[item.capabilityId];
+                        if (!capability) throw new Error(`Capability ${item.capabilityId} not found on device ${device.name}`);
+                        return { deviceId: item.deviceId, capabilityId: item.capabilityId, deviceName: device.name, capabilityTitle: capability.title };
+                    });
+                    this.renderSelectedCapabilities();
+                    if (formula) document.getElementById('formula-input').value = formula;
+                    this.showScreen('create-expression-step2-screen');
+                } catch (error) {
+                    alert("Error parsing JSON: " + error.message);
+                }
+            }
+            
+            async openSettingsModal(deviceId) {
+                const device = this.allDevices[deviceId];
+                if (!device) return;
+
+                const modal = document.getElementById('settings-modal');
+                const title = document.getElementById('settings-modal-title');
+                const content = document.getElementById('settings-modal-content');
+                const saveBtn = document.getElementById('settings-modal-save');
+                
+                title.textContent = `Innstillinger for ${device.name}`;
+                content.innerHTML = '<p>Laster innstillinger...</p>';
+                saveBtn.dataset.deviceId = deviceId;
+                modal.style.display = 'flex';
+                
+                try {
+                    const settings = await this.api.devices.getDeviceSettings({ id: deviceId });
+                    let settingsHtml = '';
+                    for (const key in settings) {
+                        settingsHtml += `
+                        <div>
+                            <label for="setting-${key}" class="block text-sm font-medium text-gray-300">${key}</label>
+                            <input type="text" id="setting-${key}" data-key="${key}" class="mt-1 block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" value="${settings[key]}">
+                        </div>`;
+                    }
+                    content.innerHTML = settingsHtml || '<p>This device has no settings.</p>';
+                } catch(error) {
+                    content.innerHTML = `<p class="text-red-400">Could not fetch settings: ${error.message}</p>`;
+                }
+            }
+
+            closeSettingsModal() {
+                document.getElementById('settings-modal').style.display = 'none';
+            }
+
+            async saveSettings() {
+                const deviceId = document.getElementById('settings-modal-save').dataset.deviceId;
+                const content = document.getElementById('settings-modal-content');
+                const inputs = content.querySelectorAll('input');
+                const newSettings = {};
+                inputs.forEach(input => { newSettings[input.dataset.key] = input.value; });
+
+                try {
+                    await this.api.devices.updateDeviceSettings({ id: deviceId, data: newSettings });
+                    alert('Innstillinger lagret!');
+                    this.closeSettingsModal();
+                } catch (error) {
+                    alert('Could not save settings: ' + error.message);
+                }
+            }
+
+            showScreen(screenId) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById(screenId).classList.add('active');
+                if (screenId === 'create-expression-step2-screen') {
+                    this.renderVariableMapping();
+                }
+            }
+            
+            showError(message) {
+                this.showScreen('login-screen');
+                const loginScreen = document.getElementById('login-screen');
+                loginScreen.innerHTML = `<p class="text-red-400 p-4 bg-red-900/50 rounded-lg">${message}</p>`;
+            }
+
+            groupDevicesByZone(deviceList) {
+                return deviceList.reduce((acc, device) => {
+                    const zone = device.zone;
+                    if (!acc[zone]) acc[zone] = [];
+                    acc[zone].push(device);
+                    return acc;
+                }, {});
+            }
+
+            sortZones(zoneIds) {
+                const homeZoneId = Object.keys(this.allZones).find(id => 
+                    ['home', 'hjem', 'zuhause', 'maison', 'casa'].includes(this.allZones[id].name.toLowerCase())
+                );
+                return zoneIds.sort((a, b) => {
+                    if (a === homeZoneId) return -1;
+                    if (b === homeZoneId) return 1;
+                    if (!this.allZones[a] || !this.allZones[b]) return 0;
+                    return this.allZones[a].name.localeCompare(this.allZones[b].name);
+                });
             }
         }
         
-        showError(message) {
-            this.showScreen('login-screen');
-            const loginScreen = document.getElementById('login-screen');
-            loginScreen.innerHTML = `<p class="text-red-400 p-4 bg-red-900/50 rounded-lg">${message}</p>`;
-        }
-
-        groupDevicesByZone(deviceList) {
-            return deviceList.reduce((acc, device) => {
-                if (!acc[device.zone]) {
-                    acc[device.zone] = [];
-                }
-                acc[device.zone].push(device);
-                return acc;
-            }, {});
-        }
-
-        sortZones(zoneIds) {
-            // Language-independent check for "Home"
-            const homeZoneId = Object.keys(this.allZones).find(id => {
-                const name = this.allZones[id].name.toLowerCase();
-                // Covers some common languages for "Home"
-                return ['home', 'hjem', 'zuhause', 'maison', 'casa'].includes(name);
-            });
-
-            return zoneIds.sort((a, b) => {
-                if (a === homeZoneId) return -1;
-                if (b === homeZoneId) return 1;
-                return this.allZones[a].name.localeCompare(this.allZones[b].name);
-            });
-        }
-    }
-
-    // FIKS: Flyttet app-initialisering til slutten av body for å sikre at alt er lastet.
-    const app = new BooleanToolboxApp();
-
+        let app = new BooleanToolboxApp();
+    });
     </script>
 </body>
 </html>

@@ -21,7 +21,7 @@ exports.handler = async function(event, context) {
         const CLIENT_SECRET = process.env.HOMEY_CLIENT_SECRET;
 
         if (!CLIENT_ID || !CLIENT_SECRET) {
-             return { statusCode: 500, body: 'Server configuration is missing.' };
+             return { statusCode: 500, body: JSON.stringify({error: 'Server configuration is missing.'}) };
         }
 
         const response = await fetch('https://api.athom.com/oauth2/token', {
@@ -37,18 +37,16 @@ exports.handler = async function(event, context) {
             }),
         });
 
+        const responseBody = await response.text();
         if (!response.ok) {
-            const errorBody = await response.text();
-            console.error('Error from Homey API:', errorBody);
-            return { statusCode: response.status, body: `Error fetching token: ${errorBody}` };
+            console.error('Error from Homey API:', responseBody);
+            return { statusCode: response.status, body: `Error fetching token: ${responseBody}` };
         }
-
-        const tokenData = await response.json();
 
         // Send the secure token data back to the browser
         return {
             statusCode: 200,
-            body: JSON.stringify(tokenData),
+            body: responseBody,
         };
 
     } catch (error) {
