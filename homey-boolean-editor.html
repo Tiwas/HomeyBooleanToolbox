@@ -487,29 +487,73 @@
                 renderEditDevices() {
                     const container = document.getElementById('edit-devices-list');
                     container.innerHTML = '';
-                    const toolboxDevices = Object.values(this.allDevices).filter(d => d.driverId.startsWith('booleantoolbox'));
+                    
+                    // Show ALL devices with their driverIds for debugging
+                    const allDevicesList = Object.values(this.allDevices);
+                    
+                    // First, show debug info to find the correct driver ID
+                    const debugInfo = document.createElement('details');
+                    debugInfo.className = 'mb-6 bg-gray-900 p-4 rounded-lg border border-gray-600';
+                    debugInfo.innerHTML = `
+                        <summary class="cursor-pointer font-semibold text-yellow-400">🔍 Debug: All Driver IDs (click to expand)</summary>
+                        <div class="mt-4 space-y-2 max-h-64 overflow-y-auto">
+                            ${[...new Set(allDevicesList.map(d => d.driverId))].sort().map(driverId => 
+                                `<div class="text-sm font-mono text-gray-300">${driverId} (${allDevicesList.filter(d => d.driverId === driverId).length} devices)</div>`
+                            ).join('')}
+                        </div>
+                    `;
+                    container.appendChild(debugInfo);
+                    
+                    // Try multiple possible driver IDs for Boolean Toolbox
+                    const possibleDriverIds = ['booleantoolbox', 'logic', 'boolean', 'toolbox'];
+                    let toolboxDevices = allDevicesList.filter(d => 
+                        possibleDriverIds.some(id => d.driverId.toLowerCase().includes(id))
+                    );
+                    
+                    // If no devices found, show message
                     if (toolboxDevices.length === 0) {
-                         container.innerHTML = `<div class="bg-gray-700 p-4 rounded-lg text-center text-gray-400">${this.t('editDevices.noDevices')}</div>`;
-                         return;
+                        container.innerHTML += `<div class="bg-yellow-700 p-4 rounded-lg text-center">
+                            <p class="font-semibold mb-2">${this.t('editDevices.noDevices')}</p>
+                            <p class="text-sm">Check the debug info above to find the correct driver ID, or all devices will be shown below.</p>
+                        </div>`;
+                        // Show all devices if no Boolean Toolbox devices found
+                        toolboxDevices = allDevicesList;
                     }
+                    
                     const devicesByZone = this.groupDevicesByZone(toolboxDevices);
                     const sortedZones = this.sortZones(Object.keys(devicesByZone));
+                    
                     sortedZones.forEach(zoneId => {
                         if (!devicesByZone[zoneId]) return;
                         const zone = this.allZones[zoneId];
                         const zoneDevices = devicesByZone[zoneId];
                         const zoneEl = document.createElement('div');
-                        zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${zoneDevices.map(device => `<div class="bg-gray-700 p-4 rounded-lg flex justify-between items-center"><span class="font-medium">${device.name}</span><button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-sm py-1 px-3 rounded-md">${this.t('editDevices.settings')}</button></div>`).join('')}</div>`;
+                        zoneEl.className = 'mt-6';
+                        zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${zoneDevices.map(device => `
+                                <div class="bg-gray-700 p-4 rounded-lg">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium">${device.name}</span>
+                                        <button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-xs py-1 px-2 rounded-md">${this.t('editDevices.settings')}</button>
+                                    </div>
+                                    <div class="text-xs text-gray-400 font-mono">${device.driverId}</div>
+                                </div>
+                            `).join('')}</div>`;
                         container.appendChild(zoneEl);
                     });
+                    
                     container.querySelectorAll('.open-settings-button').forEach(button => button.addEventListener('click', (e) => this.openSettingsModal(e.target.dataset.deviceId)));
                 }
 
                 renderDeviceCapabilityList() {
                     const container = document.getElementById('device-capability-list');
                     container.innerHTML = '';
-                    const devicesByZone = this.groupDevicesByZone(Object.values(this.allDevices));
+                    
+                    // Show ALL devices, not filtered
+                    const allDevicesList = Object.values(this.allDevices);
+                    const devicesByZone = this.groupDevicesByZone(allDevicesList);
                     const sortedZones = this.sortZones(Object.keys(devicesByZone));
+                    
                     sortedZones.forEach(zoneId => {
                         if (!devicesByZone[zoneId] || !this.allZones[zoneId]) return;
                         const zone = this.allZones[zoneId];
@@ -519,15 +563,30 @@
                         const deviceListEl = document.createElement('div');
                         deviceListEl.className = 'space-y-4';
                         zoneEl.appendChild(deviceListEl);
+                        
                         zoneDevices.forEach(device => {
                             if (!device.capabilitiesObj || Object.keys(device.capabilitiesObj).length === 0) return;
                             const deviceEl = document.createElement('div');
                             deviceEl.className = 'bg-gray-700 p-4 rounded-lg';
-                            deviceEl.innerHTML = `<p class="font-semibold mb-3">${device.name}</p><div class="space-y-2">${Object.values(device.capabilitiesObj).map(cap => `<label class="flex items-center space-x-3 cursor-pointer"><input type="checkbox" data-device-id="${device.id}" data-capability-id="${cap.id}" class="capability-checkbox form-checkbox h-5 w-5 rounded bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500"><span class="text-gray-300">${cap.title}</span></label>`).join('')}</div>`;
+                            
+                            // Show device name and driver ID for clarity
+                            deviceEl.innerHTML = `
+                                <div class="mb-3">
+                                    <p class="font-semibold">${device.name}</p>
+                                    <p class="text-xs text-gray-400 font-mono">${device.driverId}</p>
+                                </div>
+                                <div class="space-y-2">${Object.values(device.capabilitiesObj).map(cap => `
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="checkbox" data-device-id="${device.id}" data-capability-id="${cap.id}" class="capability-checkbox form-checkbox h-5 w-5 rounded bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500">
+                                        <span class="text-gray-300">${cap.title} <span class="text-xs text-gray-500">(${cap.id})</span></span>
+                                    </label>
+                                `).join('')}</div>
+                            `;
                             deviceListEl.appendChild(deviceEl);
                         });
                         container.appendChild(zoneEl);
                     });
+                    
                     container.querySelectorAll('.capability-checkbox').forEach(checkbox => checkbox.addEventListener('change', (e) => this.handleCapabilitySelection(e.target)));
                 }
                 
