@@ -54,7 +54,8 @@
             border-radius: 0 0 0.5rem 0.5rem;
         }
     </style>
-    <script src="https://cdn.athom.com/homey-api/latest.js" defer></script>
+    <!-- FIX: Use the onload attribute to reliably trigger app initialization -->
+    <script src="https://cdn.athom.com/homey-api/latest.js" onload="initializeApp()"></script>
 </head>
 <body class="h-full">
     <div id="app" class="p-4 md:p-8 max-w-7xl mx-auto">
@@ -212,10 +213,7 @@
     </div>
 
     <script>
-        // FIX: Encapsulate all app logic and initialization in a single function
-        // that is called only when the window is fully loaded. This prevents all
-        // race conditions and syntax errors related to script loading order.
-        function main() {
+        function initializeApp() {
             const flags = {
                 en: '🇬🇧',
                 no: '🇳🇴',
@@ -769,27 +767,21 @@
                     });
                 }
             }
-
-            const maxAttempts = 50; // 5 seconds total
-            let attempts = 0;
-            const intervalId = setInterval(() => {
-                if (typeof AthomCloudAPI !== 'undefined') {
-                    clearInterval(intervalId);
-                    window.app = new BooleanToolboxApp();
-                } else if (attempts >= maxAttempts) {
-                    clearInterval(intervalId);
-                    console.error('Homey API failed to load after 5 seconds.');
-                    const loginScreen = document.getElementById('login-screen');
-                    if(loginScreen) {
-                        loginScreen.innerHTML = `<p class="text-red-400 p-4 bg-red-900/50 rounded-lg">Failed to load Homey API. Check connection and ad-blockers, then refresh.</p>`;
-                    }
-                }
-                attempts++;
-            }, 100);
+            window.app = new BooleanToolboxApp();
         }
 
         // Wait for the entire window to load before trying to start the app
-        window.addEventListener('load', main);
+        window.addEventListener('load', () => {
+             if (typeof AthomCloudAPI !== 'undefined') {
+                main();
+            } else {
+                console.error('Homey API failed to load.');
+                const loginScreen = document.getElementById('login-screen');
+                if(loginScreen) {
+                    loginScreen.innerHTML = `<p class="text-red-400 p-4 bg-red-900/50 rounded-lg">Failed to load Homey API. Check connection and ad-blockers, then refresh.</p>`;
+                }
+            }
+        });
     </script>
 </body>
 </html>
