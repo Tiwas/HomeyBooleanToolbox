@@ -693,8 +693,23 @@
                         });
                         
                         console.log('HomeyAPI instance created, connecting...');
-                        await this.api.connect();
-                        console.log('Connected to HomeyAPI');
+                        console.log('API object:', this.api);
+                        console.log('API keys:', Object.keys(this.api));
+                        console.log('API has devices?', !!this.api.devices);
+                        console.log('API has zones?', !!this.api.zones);
+                        
+                        // Check if API needs initialization
+                        if (typeof this.api.connect === 'function') {
+                            console.log('Calling api.connect()...');
+                            await this.api.connect();
+                            console.log('Connected to HomeyAPI');
+                        } else if (typeof this.api.init === 'function') {
+                            console.log('Calling api.init()...');
+                            await this.api.init();
+                            console.log('Initialized HomeyAPI');
+                        } else {
+                            console.log('API does not need explicit connection/init');
+                        }
                         
                         console.log('API object:', this.api);
                         console.log('API has devices?', !!this.api.devices);
