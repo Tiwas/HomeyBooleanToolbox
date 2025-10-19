@@ -430,7 +430,17 @@
                         if (!this.homey) throw new Error(this.t('errors.noHomey'));
                         
                         await this.homey.authenticate();
-                        this.api = await this.homey.getApi();
+                        
+                        // Try different methods to get the API
+                        if (typeof this.homey.getApi === 'function') {
+                            this.api = await this.homey.getApi();
+                        } else if (typeof this.homey.api !== 'undefined') {
+                            this.api = this.homey.api;
+                        } else {
+                            // Fallback: the homey object itself might be the API
+                            console.log('Available methods on homey:', Object.keys(this.homey).filter(k => typeof this.homey[k] === 'function'));
+                            this.api = this.homey;
+                        }
 
                         document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
                         document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
