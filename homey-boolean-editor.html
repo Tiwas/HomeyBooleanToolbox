@@ -702,6 +702,7 @@
                     try {
                         const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
                         
+                        console.log('Fetching token from server...');
                         const response = await fetch('/api/get-token', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -709,6 +710,8 @@
                         });
                         
                         const responseText = await response.text();
+                        console.log('Token response:', response.status);
+                        
                         if (!response.ok) {
                             let errorDetails = responseText;
                             try {
@@ -719,16 +722,26 @@
                         }
                         
                         const tokenData = JSON.parse(responseText);
+                        console.log('Token received, has access_token:', !!tokenData.access_token);
                         
-                        // Use the authenticateWithAuthorizationCode method
-                        await this.cloudApi.authenticateWithAuthorizationCode({
-                            code: code,
-                            redirectUrl: redirectUrl,
-                            tokenData: tokenData
-                        });
-
+                        // Store token in the format AthomCloudAPI expects
+                        const tokenKey = `com.athom.cloudapi.token.${this.CLIENT_ID}`;
+                        localStorage.setItem(tokenKey, JSON.stringify({
+                            access_token: tokenData.access_token,
+                            refresh_token: tokenData.refresh_token,
+                            expires_in: tokenData.expires_in,
+                            token_type: tokenData.token_type || 'Bearer'
+                        }));
+                        
+                        console.log('Token stored in localStorage');
+                        
+                        // Reinitialize AthomCloudAPI so it picks up the token
+                        this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
+                        
+                        console.log('Proceeding to postLogin...');
                         await this.postLogin();
                     } catch (error) {
+                        console.error('Auth error:', error);
                         this.showError(this.t('errors.authFailed') + ' ' + error.message);
                     } finally {
                         this.processingAuth = false;
@@ -741,6 +754,10 @@
                     } catch(e) { 
                         console.error("Logout failed, continuing.", e); 
                     }
+                    
+                    // Clear token from localStorage using the correct key
+                    const tokenKey = `com.athom.cloudapi.token.${this.CLIENT_ID}`;
+                    localStorage.removeItem(tokenKey);
                     
                     this.authenticatedUser = null; 
                     this.homey = null; 
