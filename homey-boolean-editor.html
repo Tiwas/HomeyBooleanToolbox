@@ -212,16 +212,15 @@
     </div>
 
     <script>
-        const flags = {
-            en: '🇬🇧',
-            no: '🇳🇴',
-            de: '🇩🇪',
-            fr: '🇫🇷',
-            nl: '🇳🇱'
-        };
+        document.addEventListener('DOMContentLoaded', () => {
+            const flags = {
+                en: '🇬🇧',
+                no: '🇳🇴',
+                de: '🇩🇪',
+                fr: '🇫🇷',
+                nl: '🇳🇱'
+            };
 
-        // FIX: Robustly wait for the AthomCloudAPI to be available before initializing.
-        function startApp() {
             class BooleanToolboxApp {
                 CLIENT_ID = null;
                 cloudApi = null;
@@ -335,11 +334,6 @@
                                 window.location.href = correctUrl;
                             }, 5000);
                             return;
-                        }
-                        
-                        // This check is now redundant because of the startup logic, but kept for safety.
-                        if (typeof AthomCloudAPI === 'undefined') {
-                            throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
                         }
 
                         this.showLoader('Initializing...');
@@ -773,7 +767,23 @@
                 }
             }
             
-            window.app = new BooleanToolboxApp();
+            // FIX: More robust startup logic with polling
+            const maxAttempts = 50; // 5 seconds total
+            let attempts = 0;
+            const intervalId = setInterval(() => {
+                if (typeof AthomCloudAPI !== 'undefined') {
+                    clearInterval(intervalId);
+                    window.app = new BooleanToolboxApp();
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(intervalId);
+                    console.error('Homey API failed to load after 5 seconds.');
+                    const loginScreen = document.getElementById('login-screen');
+                    if(loginScreen) {
+                        loginScreen.innerHTML = `<p class="text-red-400 p-4 bg-red-900/50 rounded-lg">Failed to load Homey API. Check connection and ad-blockers, then refresh.</p>`;
+                    }
+                }
+                attempts++;
+            }, 100);
         });
     </script>
 </body>
