@@ -160,12 +160,12 @@
                         
                         const tokenData = JSON.parse(responseText);
                         
-                        // Reinitialize cloudApi with the token
-                        this.cloudApi = new AthomCloudAPI({
-                            clientId: this.CLIENT_ID,
-                            token: tokenData.access_token,
-                            refreshToken: tokenData.refresh_token
-                        });
+                        // Store token data in localStorage for AthomCloudAPI to use
+                        const tokenStorageKey = `AthomCloudAPIToken-${this.CLIENT_ID}`;
+                        localStorage.setItem(tokenStorageKey, JSON.stringify(tokenData));
+                        
+                        // Reinitialize AthomCloudAPI so it picks up the token from localStorage
+                        this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
 
                         await this.postLogin();
                     } catch (error) {
@@ -176,8 +176,19 @@
                 }
                 
                 async logout() {
-                    try { await this.cloudApi.logout(); } catch(e) { console.error("Logout failed, continuing.", e); }
-                    this.authenticatedUser = null; this.homey = null; this.api = null;
+                    try { 
+                        await this.cloudApi.logout(); 
+                    } catch(e) { 
+                        console.error("Logout failed, continuing.", e); 
+                    }
+                    
+                    // Clear token from localStorage
+                    const tokenStorageKey = `AthomCloudAPIToken-${this.CLIENT_ID}`;
+                    localStorage.removeItem(tokenStorageKey);
+                    
+                    this.authenticatedUser = null; 
+                    this.homey = null; 
+                    this.api = null;
                     document.getElementById('user-info').classList.add('hidden');
                     this.renderLoginScreen();
                     this.showScreen('login-screen');
