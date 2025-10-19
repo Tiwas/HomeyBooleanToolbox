@@ -1,0 +1,69 @@
+{
+  "subtitle": "Voor Homey Boolean Toolbox",
+  "logout": "Uitloggen",
+  "back": "← Terug naar menu",
+  "backToSelection": "← Terug naar selectie",
+  "close": "Sluiten",
+  "save": "Opslaan",
+  "next": "Volgende →",
+  "menu": {
+    "editDevices": "Bestaande apparaten bewerken",
+    "editDevicesDesc": "Bekijk en wijzig instellingen voor apparaten gemaakt met Boolean Toolbox.",
+    "createExpression": "Nieuwe expressie maken",
+    "createExpressionDesc": "Selecteer apparaten en mogelijkheden om een nieuwe booleaanse formule te maken.",
+    "importJson": "Importeren vanuit JSON",
+    "importJsonDesc": "Begin met een bestaande expressie door JSON-gegevens te plakken."
+  },
+  "editDevices": {
+    "title": "Boolean Toolbox Apparaten bewerken",
+    "noDevices": "Geen apparaten gevonden van Boolean Toolbox.",
+    "settings": "Instellingen"
+  },
+  "settings": {
+    "title": "Instellingen",
+    "titleFor": "Instellingen voor",
+    "loading": "Instellingen laden...",
+    "noSettings": "Dit apparaat heeft geen instellingen.",
+    "saved": "Instellingen opgeslagen!",
+    "error": "Kon instellingen niet opslaan:"
+  },
+  "step1": {
+    "title": "Stap 1: Selecteer apparaten en mogelijkheden",
+    "description": "Selecteer tussen 2 en 10 mogelijkheden om op te nemen in de expressie.",
+    "selected": "Geselecteerde mogelijkheden",
+    "noneSelected": "Geen geselecteerd",
+    "maxCapabilities": "U kunt maximaal 10 mogelijkheden selecteren."
+  },
+  "step2": {
+    "title": "Stap 2: Bouw booleaanse formule",
+    "yourVariables": "Uw geselecteerde variabelen:",
+    "formulaEditor": "Formule-editor",
+    "formulaHelp": "Gebruik variabelen A-J en operatoren AND, OR, NOT, XOR en haakjes ().",
+    "saveExpression": "Expressie opslaan"
+  },
+  "import": {
+    "title": "Importeren vanuit JSON",
+    "devicesTitle": "Apparaten en mogelijkheden",
+    "devicesHelp": "Plak een JSON-array met objecten die 'deviceId' en 'capabilityId' bevatten.",
+    "formulaTitle": "Formule (optioneel)",
+    "formulaHelp": "Plak de booleaanse formule als tekst.",
+    "button": "Importeren en doorgaan",
+    "errorEmpty": "U moet JSON voor apparaten plakken.",
+    "errorRange": "JSON moet een lijst zijn met 2 tot 10 apparaten.",
+    "errorParsing": "Fout bij het parseren van JSON:"
+  },
+  "login": {
+    "welcome": "Welkom!",
+    "message": "Om door te gaan, moet u inloggen met uw Homey-account.",
+    "button": "Inloggen met Homey"
+  },
+  "errors": {
+    "startApp": "Kon de app niet starten:",
+    "noHomey": "Geen Homey gevonden voor dit account.",
+    "afterLogin": "Er is een fout opgetreden na het inloggen:",
+    "fetchData": "Kon geen gegevens ophalen van Homey:",
+    "authFailed": "Authenticatie mislukt:",
+    "deviceNotFound": "Apparaat met ID {id} niet gevonden",
+    "capabilityNotFound": "Mogelijkheid {cap} niet gevonden op apparaat {device}"
+  }
+}

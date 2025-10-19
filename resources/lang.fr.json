@@ -1,0 +1,69 @@
+{
+  "subtitle": "Pour Homey Boolean Toolbox",
+  "logout": "Se déconnecter",
+  "back": "← Retour au menu",
+  "backToSelection": "← Retour à la sélection",
+  "close": "Fermer",
+  "save": "Enregistrer",
+  "next": "Suivant →",
+  "menu": {
+    "editDevices": "Modifier les appareils existants",
+    "editDevicesDesc": "Afficher et modifier les paramètres des appareils créés avec Boolean Toolbox.",
+    "createExpression": "Créer une nouvelle expression",
+    "createExpressionDesc": "Sélectionnez des appareils et des capacités pour créer une nouvelle formule booléenne.",
+    "importJson": "Importer depuis JSON",
+    "importJsonDesc": "Commencez avec une expression existante en collant des données JSON."
+  },
+  "editDevices": {
+    "title": "Modifier les appareils Boolean Toolbox",
+    "noDevices": "Aucun appareil trouvé dans Boolean Toolbox.",
+    "settings": "Paramètres"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "titleFor": "Paramètres pour",
+    "loading": "Chargement des paramètres...",
+    "noSettings": "Cet appareil n'a pas de paramètres.",
+    "saved": "Paramètres enregistrés!",
+    "error": "Impossible d'enregistrer les paramètres:"
+  },
+  "step1": {
+    "title": "Étape 1: Sélectionner les appareils et capacités",
+    "description": "Sélectionnez entre 2 et 10 capacités à inclure dans l'expression.",
+    "selected": "Capacités sélectionnées",
+    "noneSelected": "Aucune sélectionnée",
+    "maxCapabilities": "Vous pouvez sélectionner un maximum de 10 capacités."
+  },
+  "step2": {
+    "title": "Étape 2: Créer une formule booléenne",
+    "yourVariables": "Vos variables sélectionnées:",
+    "formulaEditor": "Éditeur de formule",
+    "formulaHelp": "Utilisez les variables A-J et les opérateurs AND, OR, NOT, XOR et les parenthèses ().",
+    "saveExpression": "Enregistrer l'expression"
+  },
+  "import": {
+    "title": "Importer depuis JSON",
+    "devicesTitle": "Appareils et capacités",
+    "devicesHelp": "Collez un tableau JSON avec des objets contenant 'deviceId' et 'capabilityId'.",
+    "formulaTitle": "Formule (optionnel)",
+    "formulaHelp": "Collez la formule booléenne sous forme de texte.",
+    "button": "Importer et continuer",
+    "errorEmpty": "Vous devez coller du JSON pour les appareils.",
+    "errorRange": "Le JSON doit être une liste de 2 à 10 appareils.",
+    "errorParsing": "Erreur lors de l'analyse du JSON:"
+  },
+  "login": {
+    "welcome": "Bienvenue!",
+    "message": "Pour continuer, vous devez vous connecter avec votre compte Homey.",
+    "button": "Se connecter avec Homey"
+  },
+  "errors": {
+    "startApp": "Impossible de démarrer l'application:",
+    "noHomey": "Aucun Homey trouvé pour ce compte.",
+    "afterLogin": "Une erreur s'est produite après la connexion:",
+    "fetchData": "Impossible de récupérer les données de Homey:",
+    "authFailed": "Échec de l'authentification:",
+    "deviceNotFound": "Appareil avec l'ID {id} introuvable",
+    "capabilityNotFound": "Capacité {cap} introuvable sur l'appareil {device}"
+  }
+}

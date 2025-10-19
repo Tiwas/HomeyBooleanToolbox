@@ -1,0 +1,69 @@
+{
+  "subtitle": "Für Homey Boolean Toolbox",
+  "logout": "Abmelden",
+  "back": "← Zurück zum Menü",
+  "backToSelection": "← Zurück zur Auswahl",
+  "close": "Schließen",
+  "save": "Speichern",
+  "next": "Weiter →",
+  "menu": {
+    "editDevices": "Vorhandene Geräte bearbeiten",
+    "editDevicesDesc": "Einstellungen für mit Boolean Toolbox erstellte Geräte anzeigen und ändern.",
+    "createExpression": "Neuen Ausdruck erstellen",
+    "createExpressionDesc": "Wählen Sie Geräte und Funktionen aus, um eine neue boolesche Formel zu erstellen.",
+    "importJson": "Aus JSON importieren",
+    "importJsonDesc": "Beginnen Sie mit einem vorhandenen Ausdruck, indem Sie JSON-Daten einfügen."
+  },
+  "editDevices": {
+    "title": "Boolean Toolbox Geräte bearbeiten",
+    "noDevices": "Keine Geräte von Boolean Toolbox gefunden.",
+    "settings": "Einstellungen"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "titleFor": "Einstellungen für",
+    "loading": "Lade Einstellungen...",
+    "noSettings": "Dieses Gerät hat keine Einstellungen.",
+    "saved": "Einstellungen gespeichert!",
+    "error": "Einstellungen konnten nicht gespeichert werden:"
+  },
+  "step1": {
+    "title": "Schritt 1: Geräte und Funktionen auswählen",
+    "description": "Wählen Sie zwischen 2 und 10 Funktionen aus, die in den Ausdruck aufgenommen werden sollen.",
+    "selected": "Ausgewählte Funktionen",
+    "noneSelected": "Keine ausgewählt",
+    "maxCapabilities": "Sie können maximal 10 Funktionen auswählen."
+  },
+  "step2": {
+    "title": "Schritt 2: Boolesche Formel erstellen",
+    "yourVariables": "Ihre ausgewählten Variablen:",
+    "formulaEditor": "Formel-Editor",
+    "formulaHelp": "Verwenden Sie Variablen A-J und Operatoren AND, OR, NOT, XOR sowie Klammern ().",
+    "saveExpression": "Ausdruck speichern"
+  },
+  "import": {
+    "title": "Aus JSON importieren",
+    "devicesTitle": "Geräte und Funktionen",
+    "devicesHelp": "Fügen Sie ein JSON-Array mit Objekten ein, die 'deviceId' und 'capabilityId' enthalten.",
+    "formulaTitle": "Formel (optional)",
+    "formulaHelp": "Fügen Sie die boolesche Formel als Text ein.",
+    "button": "Importieren und fortfahren",
+    "errorEmpty": "Sie müssen JSON für Geräte einfügen.",
+    "errorRange": "JSON muss eine Liste mit 2 bis 10 Geräten sein.",
+    "errorParsing": "Fehler beim Parsen von JSON:"
+  },
+  "login": {
+    "welcome": "Willkommen!",
+    "message": "Um fortzufahren, müssen Sie sich mit Ihrem Homey-Konto anmelden.",
+    "button": "Mit Homey anmelden"
+  },
+  "errors": {
+    "startApp": "App konnte nicht gestartet werden:",
+    "noHomey": "Kein Homey für dieses Konto gefunden.",
+    "afterLogin": "Nach der Anmeldung ist ein Fehler aufgetreten:",
+    "fetchData": "Daten konnten nicht von Homey abgerufen werden:",
+    "authFailed": "Authentifizierung fehlgeschlagen:",
+    "deviceNotFound": "Gerät mit ID {id} nicht gefunden",
+    "capabilityNotFound": "Funktion {cap} auf Gerät {device} nicht gefunden"
+  }
+}

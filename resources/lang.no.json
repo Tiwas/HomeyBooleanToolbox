@@ -1,0 +1,69 @@
+{
+  "subtitle": "For Homey Boolean Toolbox",
+  "logout": "Logg ut",
+  "back": "← Tilbake til meny",
+  "backToSelection": "← Tilbake til valg",
+  "close": "Lukk",
+  "save": "Lagre",
+  "next": "Neste →",
+  "menu": {
+    "editDevices": "Rediger eksisterende enheter",
+    "editDevicesDesc": "Se og endre innstillinger for enheter opprettet med Boolean Toolbox.",
+    "createExpression": "Lag nytt uttrykk",
+    "createExpressionDesc": "Velg enheter og kapabiliteter for å bygge en ny boolsk formel.",
+    "importJson": "Importer fra JSON",
+    "importJsonDesc": "Start med et eksisterende uttrykk ved å lime inn JSON-data."
+  },
+  "editDevices": {
+    "title": "Rediger Boolean Toolbox Enheter",
+    "noDevices": "Ingen enheter funnet fra Boolean Toolbox.",
+    "settings": "Innstillinger"
+  },
+  "settings": {
+    "title": "Innstillinger",
+    "titleFor": "Innstillinger for",
+    "loading": "Laster innstillinger...",
+    "noSettings": "Denne enheten har ingen innstillinger.",
+    "saved": "Innstillinger lagret!",
+    "error": "Kunne ikke lagre innstillinger:"
+  },
+  "step1": {
+    "title": "Steg 1: Velg enheter og kapabiliteter",
+    "description": "Velg mellom 2 og 10 kapabiliteter som skal inngå i uttrykket.",
+    "selected": "Valgte kapabiliteter",
+    "noneSelected": "Ingen valgt",
+    "maxCapabilities": "Du kan maksimalt velge 10 kapabiliteter."
+  },
+  "step2": {
+    "title": "Steg 2: Bygg boolsk formel",
+    "yourVariables": "Dine valgte variabler:",
+    "formulaEditor": "Formel-editor",
+    "formulaHelp": "Bruk variablene A-J og operatorene AND, OR, NOT, XOR og parenteser ().",
+    "saveExpression": "Lagre uttrykk"
+  },
+  "import": {
+    "title": "Importer fra JSON",
+    "devicesTitle": "Enheter og kapabiliteter",
+    "devicesHelp": "Lim inn en JSON-array med objekter som har 'deviceId' og 'capabilityId'.",
+    "formulaTitle": "Formel (valgfritt)",
+    "formulaHelp": "Lim inn den boolske formelen som tekst.",
+    "button": "Importer og fortsett",
+    "errorEmpty": "Du må lime inn JSON for enheter.",
+    "errorRange": "JSON må være en liste med 2 til 10 enheter.",
+    "errorParsing": "Feil ved parsing av JSON:"
+  },
+  "login": {
+    "welcome": "Velkommen!",
+    "message": "For å fortsette må du logge inn med din Homey-konto.",
+    "button": "Logg inn med Homey"
+  },
+  "errors": {
+    "startApp": "Klarte ikke å starte appen:",
+    "noHomey": "Ingen Homey funnet for denne kontoen.",
+    "afterLogin": "En feil oppstod etter innlogging:",
+    "fetchData": "Kunne ikke hente data fra Homey:",
+    "authFailed": "Autentisering feilet:",
+    "deviceNotFound": "Enhet med ID {id} ikke funnet",
+    "capabilityNotFound": "Kapabilitet {cap} ikke funnet på enhet {device}"
+  }
+}

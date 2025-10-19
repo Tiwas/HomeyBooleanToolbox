@@ -206,354 +206,6 @@
     </div>
 
     <script>
-        const translations = {
-            en: {
-                subtitle: "For Homey Boolean Toolbox",
-                logout: "Log out",
-                back: "← Back to menu",
-                backToSelection: "← Back to selection",
-                close: "Close",
-                save: "Save",
-                next: "Next →",
-                menu: {
-                    editDevices: "Edit existing devices",
-                    editDevicesDesc: "View and modify settings for devices created with Boolean Toolbox.",
-                    createExpression: "Create new expression",
-                    createExpressionDesc: "Select devices and capabilities to build a new boolean formula.",
-                    importJson: "Import from JSON",
-                    importJsonDesc: "Start with an existing expression by pasting JSON data."
-                },
-                editDevices: {
-                    title: "Edit Boolean Toolbox Devices",
-                    noDevices: "No devices found from Boolean Toolbox.",
-                    settings: "Settings"
-                },
-                settings: {
-                    title: "Settings",
-                    titleFor: "Settings for",
-                    loading: "Loading settings...",
-                    noSettings: "This device has no settings.",
-                    saved: "Settings saved!",
-                    error: "Could not save settings:"
-                },
-                step1: {
-                    title: "Step 1: Select devices and capabilities",
-                    description: "Select between 2 and 10 capabilities to include in the expression.",
-                    selected: "Selected capabilities",
-                    noneSelected: "None selected",
-                    maxCapabilities: "You can select a maximum of 10 capabilities."
-                },
-                step2: {
-                    title: "Step 2: Build boolean formula",
-                    yourVariables: "Your selected variables:",
-                    formulaEditor: "Formula editor",
-                    formulaHelp: "Use variables A-J and operators AND, OR, NOT, XOR and parentheses ().",
-                    saveExpression: "Save expression"
-                },
-                import: {
-                    title: "Import from JSON",
-                    devicesTitle: "Devices and capabilities",
-                    devicesHelp: "Paste a JSON array with objects containing 'deviceId' and 'capabilityId'.",
-                    formulaTitle: "Formula (optional)",
-                    formulaHelp: "Paste the boolean formula as text.",
-                    button: "Import and continue",
-                    errorEmpty: "You must paste JSON for devices.",
-                    errorRange: "JSON must be a list with 2 to 10 devices.",
-                    errorParsing: "Error parsing JSON:"
-                },
-                login: {
-                    welcome: "Welcome!",
-                    message: "To continue, you need to log in with your Homey account.",
-                    button: "Log in with Homey"
-                },
-                errors: {
-                    startApp: "Could not start the app:",
-                    noHomey: "No Homey found for this account.",
-                    afterLogin: "An error occurred after login:",
-                    fetchData: "Could not fetch data from Homey:",
-                    authFailed: "Authentication failed:",
-                    deviceNotFound: "Device with ID {id} not found",
-                    capabilityNotFound: "Capability {cap} not found on device {device}"
-                }
-            },
-            no: {
-                subtitle: "For Homey Boolean Toolbox",
-                logout: "Logg ut",
-                back: "← Tilbake til meny",
-                backToSelection: "← Tilbake til valg",
-                close: "Lukk",
-                save: "Lagre",
-                next: "Neste →",
-                menu: {
-                    editDevices: "Rediger eksisterende enheter",
-                    editDevicesDesc: "Se og endre innstillinger for enheter opprettet med Boolean Toolbox.",
-                    createExpression: "Lag nytt uttrykk",
-                    createExpressionDesc: "Velg enheter og kapabiliteter for å bygge en ny boolsk formel.",
-                    importJson: "Importer fra JSON",
-                    importJsonDesc: "Start med et eksisterende uttrykk ved å lime inn JSON-data."
-                },
-                editDevices: {
-                    title: "Rediger Boolean Toolbox Enheter",
-                    noDevices: "Ingen enheter funnet fra Boolean Toolbox.",
-                    settings: "Innstillinger"
-                },
-                settings: {
-                    title: "Innstillinger",
-                    titleFor: "Innstillinger for",
-                    loading: "Laster innstillinger...",
-                    noSettings: "Denne enheten har ingen innstillinger.",
-                    saved: "Innstillinger lagret!",
-                    error: "Kunne ikke lagre innstillinger:"
-                },
-                step1: {
-                    title: "Steg 1: Velg enheter og kapabiliteter",
-                    description: "Velg mellom 2 og 10 kapabiliteter som skal inngå i uttrykket.",
-                    selected: "Valgte kapabiliteter",
-                    noneSelected: "Ingen valgt",
-                    maxCapabilities: "Du kan maksimalt velge 10 kapabiliteter."
-                },
-                step2: {
-                    title: "Steg 2: Bygg boolsk formel",
-                    yourVariables: "Dine valgte variabler:",
-                    formulaEditor: "Formel-editor",
-                    formulaHelp: "Bruk variablene A-J og operatorene AND, OR, NOT, XOR og parenteser ().",
-                    saveExpression: "Lagre uttrykk"
-                },
-                import: {
-                    title: "Importer fra JSON",
-                    devicesTitle: "Enheter og kapabiliteter",
-                    devicesHelp: "Lim inn en JSON-array med objekter som har 'deviceId' og 'capabilityId'.",
-                    formulaTitle: "Formel (valgfritt)",
-                    formulaHelp: "Lim inn den boolske formelen som tekst.",
-                    button: "Importer og fortsett",
-                    errorEmpty: "Du må lime inn JSON for enheter.",
-                    errorRange: "JSON må være en liste med 2 til 10 enheter.",
-                    errorParsing: "Feil ved parsing av JSON:"
-                },
-                login: {
-                    welcome: "Velkommen!",
-                    message: "For å fortsette må du logge inn med din Homey-konto.",
-                    button: "Logg inn med Homey"
-                },
-                errors: {
-                    startApp: "Klarte ikke å starte appen:",
-                    noHomey: "Ingen Homey funnet for denne kontoen.",
-                    afterLogin: "En feil oppstod etter innlogging:",
-                    fetchData: "Kunne ikke hente data fra Homey:",
-                    authFailed: "Autentisering feilet:",
-                    deviceNotFound: "Enhet med ID {id} ikke funnet",
-                    capabilityNotFound: "Kapabilitet {cap} ikke funnet på enhet {device}"
-                }
-            },
-            de: {
-                subtitle: "Für Homey Boolean Toolbox",
-                logout: "Abmelden",
-                back: "← Zurück zum Menü",
-                backToSelection: "← Zurück zur Auswahl",
-                close: "Schließen",
-                save: "Speichern",
-                next: "Weiter →",
-                menu: {
-                    editDevices: "Vorhandene Geräte bearbeiten",
-                    editDevicesDesc: "Einstellungen für mit Boolean Toolbox erstellte Geräte anzeigen und ändern.",
-                    createExpression: "Neuen Ausdruck erstellen",
-                    createExpressionDesc: "Wählen Sie Geräte und Funktionen aus, um eine neue boolesche Formel zu erstellen.",
-                    importJson: "Aus JSON importieren",
-                    importJsonDesc: "Beginnen Sie mit einem vorhandenen Ausdruck, indem Sie JSON-Daten einfügen."
-                },
-                editDevices: {
-                    title: "Boolean Toolbox Geräte bearbeiten",
-                    noDevices: "Keine Geräte von Boolean Toolbox gefunden.",
-                    settings: "Einstellungen"
-                },
-                settings: {
-                    title: "Einstellungen",
-                    titleFor: "Einstellungen für",
-                    loading: "Lade Einstellungen...",
-                    noSettings: "Dieses Gerät hat keine Einstellungen.",
-                    saved: "Einstellungen gespeichert!",
-                    error: "Einstellungen konnten nicht gespeichert werden:"
-                },
-                step1: {
-                    title: "Schritt 1: Geräte und Funktionen auswählen",
-                    description: "Wählen Sie zwischen 2 und 10 Funktionen aus, die in den Ausdruck aufgenommen werden sollen.",
-                    selected: "Ausgewählte Funktionen",
-                    noneSelected: "Keine ausgewählt",
-                    maxCapabilities: "Sie können maximal 10 Funktionen auswählen."
-                },
-                step2: {
-                    title: "Schritt 2: Boolesche Formel erstellen",
-                    yourVariables: "Ihre ausgewählten Variablen:",
-                    formulaEditor: "Formel-Editor",
-                    formulaHelp: "Verwenden Sie Variablen A-J und Operatoren AND, OR, NOT, XOR sowie Klammern ().",
-                    saveExpression: "Ausdruck speichern"
-                },
-                import: {
-                    title: "Aus JSON importieren",
-                    devicesTitle: "Geräte und Funktionen",
-                    devicesHelp: "Fügen Sie ein JSON-Array mit Objekten ein, die 'deviceId' und 'capabilityId' enthalten.",
-                    formulaTitle: "Formel (optional)",
-                    formulaHelp: "Fügen Sie die boolesche Formel als Text ein.",
-                    button: "Importieren und fortfahren",
-                    errorEmpty: "Sie müssen JSON für Geräte einfügen.",
-                    errorRange: "JSON muss eine Liste mit 2 bis 10 Geräten sein.",
-                    errorParsing: "Fehler beim Parsen von JSON:"
-                },
-                login: {
-                    welcome: "Willkommen!",
-                    message: "Um fortzufahren, müssen Sie sich mit Ihrem Homey-Konto anmelden.",
-                    button: "Mit Homey anmelden"
-                },
-                errors: {
-                    startApp: "App konnte nicht gestartet werden:",
-                    noHomey: "Kein Homey für dieses Konto gefunden.",
-                    afterLogin: "Nach der Anmeldung ist ein Fehler aufgetreten:",
-                    fetchData: "Daten konnten nicht von Homey abgerufen werden:",
-                    authFailed: "Authentifizierung fehlgeschlagen:",
-                    deviceNotFound: "Gerät mit ID {id} nicht gefunden",
-                    capabilityNotFound: "Funktion {cap} auf Gerät {device} nicht gefunden"
-                }
-            },
-            fr: {
-                subtitle: "Pour Homey Boolean Toolbox",
-                logout: "Se déconnecter",
-                back: "← Retour au menu",
-                backToSelection: "← Retour à la sélection",
-                close: "Fermer",
-                save: "Enregistrer",
-                next: "Suivant →",
-                menu: {
-                    editDevices: "Modifier les appareils existants",
-                    editDevicesDesc: "Afficher et modifier les paramètres des appareils créés avec Boolean Toolbox.",
-                    createExpression: "Créer une nouvelle expression",
-                    createExpressionDesc: "Sélectionnez des appareils et des capacités pour créer une nouvelle formule booléenne.",
-                    importJson: "Importer depuis JSON",
-                    importJsonDesc: "Commencez avec une expression existante en collant des données JSON."
-                },
-                editDevices: {
-                    title: "Modifier les appareils Boolean Toolbox",
-                    noDevices: "Aucun appareil trouvé dans Boolean Toolbox.",
-                    settings: "Paramètres"
-                },
-                settings: {
-                    title: "Paramètres",
-                    titleFor: "Paramètres pour",
-                    loading: "Chargement des paramètres...",
-                    noSettings: "Cet appareil n'a pas de paramètres.",
-                    saved: "Paramètres enregistrés!",
-                    error: "Impossible d'enregistrer les paramètres:"
-                },
-                step1: {
-                    title: "Étape 1: Sélectionner les appareils et capacités",
-                    description: "Sélectionnez entre 2 et 10 capacités à inclure dans l'expression.",
-                    selected: "Capacités sélectionnées",
-                    noneSelected: "Aucune sélectionnée",
-                    maxCapabilities: "Vous pouvez sélectionner un maximum de 10 capacités."
-                },
-                step2: {
-                    title: "Étape 2: Créer une formule booléenne",
-                    yourVariables: "Vos variables sélectionnées:",
-                    formulaEditor: "Éditeur de formule",
-                    formulaHelp: "Utilisez les variables A-J et les opérateurs AND, OR, NOT, XOR et les parenthèses ().",
-                    saveExpression: "Enregistrer l'expression"
-                },
-                import: {
-                    title: "Importer depuis JSON",
-                    devicesTitle: "Appareils et capacités",
-                    devicesHelp: "Collez un tableau JSON avec des objets contenant 'deviceId' et 'capabilityId'.",
-                    formulaTitle: "Formule (optionnel)",
-                    formulaHelp: "Collez la formule booléenne sous forme de texte.",
-                    button: "Importer et continuer",
-                    errorEmpty: "Vous devez coller du JSON pour les appareils.",
-                    errorRange: "Le JSON doit être une liste de 2 à 10 appareils.",
-                    errorParsing: "Erreur lors de l'analyse du JSON:"
-                },
-                login: {
-                    welcome: "Bienvenue!",
-                    message: "Pour continuer, vous devez vous connecter avec votre compte Homey.",
-                    button: "Se connecter avec Homey"
-                },
-                errors: {
-                    startApp: "Impossible de démarrer l'application:",
-                    noHomey: "Aucun Homey trouvé pour ce compte.",
-                    afterLogin: "Une erreur s'est produite après la connexion:",
-                    fetchData: "Impossible de récupérer les données de Homey:",
-                    authFailed: "Échec de l'authentification:",
-                    deviceNotFound: "Appareil avec l'ID {id} introuvable",
-                    capabilityNotFound: "Capacité {cap} introuvable sur l'appareil {device}"
-                }
-            },
-            nl: {
-                subtitle: "Voor Homey Boolean Toolbox",
-                logout: "Uitloggen",
-                back: "← Terug naar menu",
-                backToSelection: "← Terug naar selectie",
-                close: "Sluiten",
-                save: "Opslaan",
-                next: "Volgende →",
-                menu: {
-                    editDevices: "Bestaande apparaten bewerken",
-                    editDevicesDesc: "Bekijk en wijzig instellingen voor apparaten gemaakt met Boolean Toolbox.",
-                    createExpression: "Nieuwe expressie maken",
-                    createExpressionDesc: "Selecteer apparaten en mogelijkheden om een nieuwe booleaanse formule te maken.",
-                    importJson: "Importeren vanuit JSON",
-                    importJsonDesc: "Begin met een bestaande expressie door JSON-gegevens te plakken."
-                },
-                editDevices: {
-                    title: "Boolean Toolbox Apparaten bewerken",
-                    noDevices: "Geen apparaten gevonden van Boolean Toolbox.",
-                    settings: "Instellingen"
-                },
-                settings: {
-                    title: "Instellingen",
-                    titleFor: "Instellingen voor",
-                    loading: "Instellingen laden...",
-                    noSettings: "Dit apparaat heeft geen instellingen.",
-                    saved: "Instellingen opgeslagen!",
-                    error: "Kon instellingen niet opslaan:"
-                },
-                step1: {
-                    title: "Stap 1: Selecteer apparaten en mogelijkheden",
-                    description: "Selecteer tussen 2 en 10 mogelijkheden om op te nemen in de expressie.",
-                    selected: "Geselecteerde mogelijkheden",
-                    noneSelected: "Geen geselecteerd",
-                    maxCapabilities: "U kunt maximaal 10 mogelijkheden selecteren."
-                },
-                step2: {
-                    title: "Stap 2: Bouw booleaanse formule",
-                    yourVariables: "Uw geselecteerde variabelen:",
-                    formulaEditor: "Formule-editor",
-                    formulaHelp: "Gebruik variabelen A-J en operatoren AND, OR, NOT, XOR en haakjes ().",
-                    saveExpression: "Expressie opslaan"
-                },
-                import: {
-                    title: "Importeren vanuit JSON",
-                    devicesTitle: "Apparaten en mogelijkheden",
-                    devicesHelp: "Plak een JSON-array met objecten die 'deviceId' en 'capabilityId' bevatten.",
-                    formulaTitle: "Formule (optioneel)",
-                    formulaHelp: "Plak de booleaanse formule als tekst.",
-                    button: "Importeren en doorgaan",
-                    errorEmpty: "U moet JSON voor apparaten plakken.",
-                    errorRange: "JSON moet een lijst zijn met 2 tot 10 apparaten.",
-                    errorParsing: "Fout bij het parseren van JSON:"
-                },
-                login: {
-                    welcome: "Welkom!",
-                    message: "Om door te gaan, moet u inloggen met uw Homey-account.",
-                    button: "Inloggen met Homey"
-                },
-                errors: {
-                    startApp: "Kon de app niet starten:",
-                    noHomey: "Geen Homey gevonden voor dit account.",
-                    afterLogin: "Er is een fout opgetreden na het inloggen:",
-                    fetchData: "Kon geen gegevens ophalen van Homey:",
-                    authFailed: "Authenticatie mislukt:",
-                    deviceNotFound: "Apparaat met ID {id} niet gevonden",
-                    capabilityNotFound: "Mogelijkheid {cap} niet gevonden op apparaat {device}"
-                }
-            }
-        };
-
         const flags = {
             en: '🇬🇧',
             no: '🇳🇴',
@@ -575,14 +227,33 @@
                 selectedCapabilities = [];
                 processingAuth = false;
                 currentLang = 'en';
+                translations = {};
 
                 constructor() {
                     this.currentLang = localStorage.getItem('language') || 'en';
                     this.init();
-                    this.initLanguageSelector();
                 }
 
-                initLanguageSelector() {
+                async loadTranslations(lang) {
+                    try {
+                        const response = await fetch(`/resources/lang.${lang}.json`);
+                        if (!response.ok) throw new Error(`Failed to load language: ${lang}`);
+                        this.translations = await response.json();
+                        return true;
+                    } catch (error) {
+                        console.error(`Failed to load ${lang} translations:`, error);
+                        if (lang !== 'en') {
+                            // Fallback to English
+                            return this.loadTranslations('en');
+                        }
+                        return false;
+                    }
+                }
+
+                async initLanguageSelector() {
+                    // Load initial language
+                    await this.loadTranslations(this.currentLang);
+                    
                     const languageButton = document.getElementById('language-button');
                     const languageDropdown = document.getElementById('language-dropdown');
                     const currentFlag = document.getElementById('current-flag');
@@ -597,9 +268,9 @@
                     });
 
                     document.querySelectorAll('.language-option').forEach(option => {
-                        option.addEventListener('click', (e) => {
+                        option.addEventListener('click', async (e) => {
                             const lang = e.currentTarget.dataset.lang;
-                            this.setLanguage(lang);
+                            await this.setLanguage(lang);
                             languageDropdown.classList.remove('active');
                         });
                     });
@@ -608,7 +279,8 @@
                     this.updateTranslations();
                 }
 
-                setLanguage(lang) {
+                async setLanguage(lang) {
+                    await this.loadTranslations(lang);
                     this.currentLang = lang;
                     localStorage.setItem('language', lang);
                     document.getElementById('current-flag').textContent = flags[lang];
@@ -624,7 +296,7 @@
 
                 t(key) {
                     const keys = key.split('.');
-                    let value = translations[this.currentLang];
+                    let value = this.translations;
                     for (const k of keys) {
                         value = value?.[k];
                     }
@@ -653,6 +325,7 @@
 
                         this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
                         this.setupEventListeners();
+                        await this.initLanguageSelector();
                         this.renderLoginScreen();
 
                         const urlParams = new URLSearchParams(window.location.search);
@@ -702,41 +375,63 @@
                     try {
                         const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
                         
-                        console.log('Fetching token from server...');
+                        console.log('Getting token from server...');
                         const response = await fetch('/api/get-token', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ code: code, redirectUrl: redirectUrl }),
                         });
                         
-                        const responseText = await response.text();
-                        console.log('Token response:', response.status);
-                        
                         if (!response.ok) {
-                            let errorDetails = responseText;
-                            try {
-                                const errorJson = JSON.parse(responseText);
-                                errorDetails = errorJson.error_description || errorJson.error || JSON.stringify(errorJson);
-                            } catch(e) { /* Ignore parsing error */ }
-                            throw new Error(`Server responded with ${response.status}: ${errorDetails}`);
+                            const errorText = await response.text();
+                            throw new Error(`Server responded with ${response.status}: ${errorText}`);
                         }
                         
-                        const tokenData = JSON.parse(responseText);
-                        console.log('Token received, has access_token:', !!tokenData.access_token);
+                        const tokenData = await response.json();
+                        console.log('Token received from server');
                         
-                        // Store token in the format AthomCloudAPI expects
-                        const tokenKey = `com.athom.cloudapi.token.${this.CLIENT_ID}`;
-                        localStorage.setItem(tokenKey, JSON.stringify({
-                            access_token: tokenData.access_token,
-                            refresh_token: tokenData.refresh_token,
-                            expires_in: tokenData.expires_in,
-                            token_type: tokenData.token_type || 'Bearer'
-                        }));
+                        // Create a new AthomCloudAPI instance with the token
+                        // This is a workaround - we'll pass the token through the URL hash
+                        const tokenString = JSON.stringify(tokenData);
+                        const base64Token = btoa(tokenString);
                         
-                        console.log('Token stored in localStorage');
+                        // Store temporarily for the new instance to pick up
+                        sessionStorage.setItem('homey_temp_token', base64Token);
                         
-                        // Reinitialize AthomCloudAPI so it picks up the token
-                        this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
+                        // Reinitialize with a trick to make it pick up our token
+                        this.cloudApi = new AthomCloudAPI({ 
+                            clientId: this.CLIENT_ID
+                        });
+                        
+                        // Manually inject the token into the instance
+                        if (this.cloudApi._token !== undefined) {
+                            console.log('Setting token directly on _token property');
+                            this.cloudApi._token = {
+                                access_token: tokenData.access_token,
+                                refresh_token: tokenData.refresh_token,
+                                token_type: tokenData.token_type || 'Bearer',
+                                expires_in: tokenData.expires_in
+                            };
+                        } else if (this.cloudApi.token !== undefined) {
+                            console.log('Setting token directly on token property');
+                            this.cloudApi.token = {
+                                access_token: tokenData.access_token,
+                                refresh_token: tokenData.refresh_token,
+                                token_type: tokenData.token_type || 'Bearer',
+                                expires_in: tokenData.expires_in
+                            };
+                        } else {
+                            // Last resort: try to access internal properties
+                            console.log('Trying to access internal properties...');
+                            console.log('cloudApi properties:', Object.keys(this.cloudApi));
+                            
+                            // Store in the exact format AthomCloudAPI expects
+                            localStorage.setItem(`homey-token-${this.CLIENT_ID}`, JSON.stringify(tokenData));
+                            localStorage.setItem(`com.athom.oauth2.token.${this.CLIENT_ID}`, JSON.stringify(tokenData));
+                            
+                            // Re-create the instance to pick it up
+                            this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
+                        }
                         
                         console.log('Proceeding to postLogin...');
                         await this.postLogin();
@@ -745,6 +440,7 @@
                         this.showError(this.t('errors.authFailed') + ' ' + error.message);
                     } finally {
                         this.processingAuth = false;
+                        sessionStorage.removeItem('homey_temp_token');
                     }
                 }
                 

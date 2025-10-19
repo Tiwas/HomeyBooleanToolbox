@@ -1,0 +1,69 @@
+{
+  "subtitle": "For Homey Boolean Toolbox",
+  "logout": "Log out",
+  "back": "← Back to menu",
+  "backToSelection": "← Back to selection",
+  "close": "Close",
+  "save": "Save",
+  "next": "Next →",
+  "menu": {
+    "editDevices": "Edit existing devices",
+    "editDevicesDesc": "View and modify settings for devices created with Boolean Toolbox.",
+    "createExpression": "Create new expression",
+    "createExpressionDesc": "Select devices and capabilities to build a new boolean formula.",
+    "importJson": "Import from JSON",
+    "importJsonDesc": "Start with an existing expression by pasting JSON data."
+  },
+  "editDevices": {
+    "title": "Edit Boolean Toolbox Devices",
+    "noDevices": "No devices found from Boolean Toolbox.",
+    "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "titleFor": "Settings for",
+    "loading": "Loading settings...",
+    "noSettings": "This device has no settings.",
+    "saved": "Settings saved!",
+    "error": "Could not save settings:"
+  },
+  "step1": {
+    "title": "Step 1: Select devices and capabilities",
+    "description": "Select between 2 and 10 capabilities to include in the expression.",
+    "selected": "Selected capabilities",
+    "noneSelected": "None selected",
+    "maxCapabilities": "You can select a maximum of 10 capabilities."
+  },
+  "step2": {
+    "title": "Step 2: Build boolean formula",
+    "yourVariables": "Your selected variables:",
+    "formulaEditor": "Formula editor",
+    "formulaHelp": "Use variables A-J and operators AND, OR, NOT, XOR and parentheses ().",
+    "saveExpression": "Save expression"
+  },
+  "import": {
+    "title": "Import from JSON",
+    "devicesTitle": "Devices and capabilities",
+    "devicesHelp": "Paste a JSON array with objects containing 'deviceId' and 'capabilityId'.",
+    "formulaTitle": "Formula (optional)",
+    "formulaHelp": "Paste the boolean formula as text.",
+    "button": "Import and continue",
+    "errorEmpty": "You must paste JSON for devices.",
+    "errorRange": "JSON must be a list with 2 to 10 devices.",
+    "errorParsing": "Error parsing JSON:"
+  },
+  "login": {
+    "welcome": "Welcome!",
+    "message": "To continue, you need to log in with your Homey account.",
+    "button": "Log in with Homey"
+  },
+  "errors": {
+    "startApp": "Could not start the app:",
+    "noHomey": "No Homey found for this account.",
+    "afterLogin": "An error occurred after login:",
+    "fetchData": "Could not fetch data from Homey:",
+    "authFailed": "Authentication failed:",
+    "deviceNotFound": "Device with ID {id} not found",
+    "capabilityNotFound": "Capability {cap} not found on device {device}"
+  }
+}
