@@ -221,7 +221,8 @@
             nl: '🇳🇱'
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
+        // FIX: Use 'load' event to ensure all scripts are ready before initializing the app
+        window.addEventListener('load', () => {
             
             class BooleanToolboxApp {
                 CLIENT_ID = null;
