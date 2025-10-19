@@ -1,10 +1,11 @@
 // This function runs on Netlify's servers, not in the browser.
 // It has secure access to your secret keys.
 
-// Import 'fetch' to make network requests
-const fetch = require('node-fetch');
+// Using dynamic import for node-fetch as it's an ES Module
+// This is a more modern and robust approach for Netlify Functions.
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-exports.handler = async function(event, context) {
+exports.handler = async (event, context) => {
     // We only accept POST requests
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
@@ -23,29 +24,35 @@ exports.handler = async function(event, context) {
         if (!CLIENT_ID || !CLIENT_SECRET) {
              return { statusCode: 500, body: JSON.stringify({error: 'Server configuration is missing.'}) };
         }
+        
+        const params = new URLSearchParams();
+        params.append('grant_type', 'authorization_code');
+        params.append('code', code);
+        params.append('client_id', CLIENT_ID);
+        params.append('client_secret', CLIENT_SECRET);
 
         const response = await fetch('https://api.athom.com/oauth2/token', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams({
-                grant_type: 'authorization_code',
-                code: code,
-                client_id: CLIENT_ID,
-                client_secret: CLIENT_SECRET,
-            }),
+            body: params,
         });
 
         const responseBody = await response.text();
         if (!response.ok) {
             console.error('Error from Homey API:', responseBody);
-            return { statusCode: response.status, body: `Error fetching token: ${responseBody}` };
+            // Return the actual error from Homey API for better debugging
+            return { 
+                statusCode: response.status, 
+                body: JSON.stringify({ error: 'Error fetching token from Homey.', details: responseBody })
+            };
         }
 
         // Send the secure token data back to the browser
         return {
             statusCode: 200,
+            headers: { 'Content-Type': 'application/json' },
             body: responseBody,
         };
 
@@ -53,7 +60,7 @@ exports.handler = async function(event, context) {
         console.error('Serverless function error:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: 'An internal server error occurred.' }),
+            body: JSON.stringify({ error: 'An internal server error occurred.', details: error.message }),
         };
     }
 };
