@@ -17,7 +17,7 @@
         .screen { display: none; }
         .screen.active { display: block; }
     </style>
-    <!-- FIKS: Bytter til den offisielle og korrekte CDN-URLen fra Homey-dokumentasjonen -->
+    <!-- Using the official CDN URL from Homey's documentation -->
     <script src="https://cdn.athom.com/homey-api/3.14.8.js"></script>
 </head>
 <body class="h-full">
@@ -132,19 +132,28 @@
                 async handleAuthRedirect(code) {
                     this.showScreen('loader');
                     try {
+                        // FIKS: Sender med redirectUrl til serverless-funksjonen
+                        const redirectUrl = window.location.origin + window.location.pathname;
                         const response = await fetch('/.netlify/functions/get-token', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ code: code }),
+                            body: JSON.stringify({ code: code, redirectUrl: redirectUrl }),
                         });
                         
-                        const tokenData = await response.json();
+                        const responseText = await response.text();
                         if (!response.ok) {
-                            const errorDetails = tokenData.details || JSON.stringify(tokenData);
+                            // Prøv å parse som JSON, hvis ikke, vis som tekst
+                            let errorDetails = responseText;
+                            try {
+                                const errorJson = JSON.parse(responseText);
+                                errorDetails = errorJson.error_description || JSON.stringify(errorJson);
+                            } catch(e) { /* Ignorer parse-feil, det er bare tekst */ }
                             throw new Error(`Server responded with ${response.status}: ${errorDetails}`);
                         }
                         
+                        const tokenData = JSON.parse(responseText);
                         this.cloudApi.setTokenSet(tokenData);
+
                         window.history.replaceState({}, document.title, window.location.pathname);
                         await this.postLogin();
                     } catch (error) {
