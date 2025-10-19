@@ -212,7 +212,10 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        // FIX: Encapsulate all app logic and initialization in a single function
+        // that is called only when the window is fully loaded. This prevents all
+        // race conditions and syntax errors related to script loading order.
+        function main() {
             const flags = {
                 en: '🇬🇧',
                 no: '🇳🇴',
@@ -766,8 +769,7 @@
                     });
                 }
             }
-            
-            // FIX: More robust startup logic with polling
+
             const maxAttempts = 50; // 5 seconds total
             let attempts = 0;
             const intervalId = setInterval(() => {
@@ -784,7 +786,10 @@
                 }
                 attempts++;
             }, 100);
-        });
+        }
+
+        // Wait for the entire window to load before trying to start the app
+        window.addEventListener('load', main);
     </script>
 </body>
 </html>
