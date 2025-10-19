@@ -17,8 +17,8 @@
         .screen { display: none; }
         .screen.active { display: block; }
     </style>
-    <!-- FIKS: Inkluderer scriptet direkte i <head> som anbefalt av Homey -->
-    <script src="https://cdn.jsdelivr.net/npm/homey-api/dist/homey-api.min.js"></script>
+    <!-- FIKS: Bytter til den offisielle og korrekte CDN-URLen fra Homey-dokumentasjonen -->
+    <script src="https://cdn.athom.com/homey-api/3.14.8.js"></script>
 </head>
 <body class="h-full">
     <div id="app" class="p-4 md:p-8 max-w-7xl mx-auto">
@@ -62,12 +62,9 @@
     </div>
 
     <script>
-        // FIKS: Bruker DOMContentLoaded for å vente på at HTML er klar, og SÅ starte appen.
-        // Dette er den mest robuste metoden.
         document.addEventListener('DOMContentLoaded', () => {
             
             class BooleanToolboxApp {
-                // ... (hele klassen er lik som før)
                 CLIENT_ID = null;
                 cloudApi = null;
                 authenticatedUser = null;
@@ -83,9 +80,8 @@
 
                 async init() {
                     try {
-                        // Sjekk om AthomCloudAPI-biblioteket er lastet FØRST
                         if (typeof AthomCloudAPI === 'undefined') {
-                            throw new Error("AthomCloudAPI script did not load correctly.");
+                            throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
                         }
 
                         const response = await fetch('/.netlify/functions/get-config');
@@ -160,6 +156,7 @@
                     try { await this.cloudApi.logout(); } catch(e) { console.error("Logout failed, continuing.", e); }
                     this.authenticatedUser = null; this.homey = null; this.api = null;
                     document.getElementById('user-info').classList.add('hidden');
+                    this.renderLoginScreen();
                     this.showScreen('login-screen');
                 }
 
@@ -226,7 +223,7 @@
                     const devicesByZone = this.groupDevicesByZone(Object.values(this.allDevices));
                     const sortedZones = this.sortZones(Object.keys(devicesByZone));
                     sortedZones.forEach(zoneId => {
-                        if (!devicesByZone[zoneId]) return;
+                        if (!devicesByZone[zoneId] || !this.allZones[zoneId]) return;
                         const zone = this.allZones[zoneId];
                         const zoneDevices = devicesByZone[zoneId];
                         const zoneEl = document.createElement('div');
@@ -391,7 +388,6 @@
                 }
             }
             
-            // Starter appen når DOM er klar.
             window.app = new BooleanToolboxApp();
         });
     </script>
