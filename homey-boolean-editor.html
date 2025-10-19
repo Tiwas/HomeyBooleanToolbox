@@ -683,7 +683,7 @@
                 }
 
                 async login() {
-                    if (!this.CLIENT_ID) return this.showError("Client ID mangler. Kan ikke starte innlogging.");
+                    if (!this.CLIENT_ID) return this.showError("Client ID missing. Cannot start login.");
                     const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
                     const authorizationUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${this.CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
                     window.location.href = authorizationUrl;
