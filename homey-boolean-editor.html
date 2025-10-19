@@ -165,8 +165,8 @@
 
     <script>
     class BooleanToolboxApp {
-        // VIKTIG: Erstatt med din egen Client ID. Secret er fjernet.
-        CLIENT_ID = '68f4e7ffe34e830eaadf147d';
+        // CLIENT_ID er nå fjernet herfra og hentes fra serveren.
+        CLIENT_ID = null;
         
         // --- Appens tilstand (state) ---
         cloudApi = null;
@@ -184,28 +184,33 @@
         }
 
         async init() {
-            if (this.CLIENT_ID === 'YOUR_CLIENT_ID') {
-                this.showError("Konfigurasjon mangler. Vennligst legg inn din Client ID i kildekoden.");
-                return;
-            }
+            try {
+                // Hent offentlig Client ID fra vår nye server-funksjon
+                const response = await fetch('/.netlify/functions/get-config');
+                const config = await response.json();
+                if (!response.ok || !config.clientId) {
+                    throw new Error('Could not fetch app configuration.');
+                }
+                this.CLIENT_ID = config.clientId;
 
-            this.cloudApi = new AthomCloudAPI({
-                clientId: this.CLIENT_ID,
-                // Client Secret er fjernet herfra for sikkerhet
-            });
+                this.cloudApi = new AthomCloudAPI({
+                    clientId: this.CLIENT_ID,
+                });
 
-            this.setupEventListeners();
+                this.setupEventListeners();
 
-            // Sjekker for auth-kode i URL-en først
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
+                const urlParams = new URLSearchParams(window.location.search);
+                const code = urlParams.get('code');
 
-            if (code) {
-                await this.handleAuthRedirect(code);
-            } else if (await this.cloudApi.isLoggedIn()) {
-                await this.postLogin();
-            } else {
-                this.showScreen('login-screen');
+                if (code) {
+                    await this.handleAuthRedirect(code);
+                } else if (await this.cloudApi.isLoggedIn()) {
+                    await this.postLogin();
+                } else {
+                    this.showScreen('login-screen');
+                }
+            } catch (error) {
+                this.showError("Klarte ikke å starte appen: " + error.message);
             }
         }
 
@@ -221,8 +226,10 @@
         }
 
         async login() {
-            // Sender brukeren til Homey for innlogging
-            // Redirect URI settes i Homey Developer Console til din Netlify URL
+            if (!this.CLIENT_ID) {
+                this.showError("Client ID mangler. Kan ikke starte innlogging.");
+                return;
+            }
             const redirectUrl = window.location.origin + window.location.pathname;
             const authorizationUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${this.CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
             window.location.href = authorizationUrl;
@@ -638,3 +645,4 @@
     </script>
 </body>
 </html>
+
