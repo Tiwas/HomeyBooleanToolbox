@@ -770,18 +770,26 @@
             window.app = new BooleanToolboxApp();
         }
 
-        // Wait for the entire window to load before trying to start the app
-        window.addEventListener('load', () => {
-             if (typeof AthomCloudAPI !== 'undefined') {
-                main();
-            } else {
-                console.error('Homey API failed to load.');
-                const loginScreen = document.getElementById('login-screen');
-                if(loginScreen) {
-                    loginScreen.innerHTML = `<p class="text-red-400 p-4 bg-red-900/50 rounded-lg">Failed to load Homey API. Check connection and ad-blockers, then refresh.</p>`;
+        // Final robust check. This will not run until the DOM is parsed,
+        // and the onload attribute on the script tag will fire initializeApp.
+        // This is a fallback for strange browser behavior.
+        if (document.readyState === 'complete') {
+          if (typeof AthomCloudAPI !== 'undefined') {
+            initializeApp();
+          }
+        } else {
+            window.addEventListener('load', () => {
+                 if (typeof AthomCloudAPI !== 'undefined') {
+                    initializeApp();
+                } else {
+                    console.error('Homey API failed to load by the window.load event.');
+                    const loginScreen = document.getElementById('login-screen');
+                    if(loginScreen) {
+                        loginScreen.innerHTML = `<p class="text-red-400 p-4 bg-red-900/50 rounded-lg">Failed to load Homey API. Check connection and ad-blockers, then refresh.</p>`;
+                    }
                 }
-            }
-        });
+            });
+        }
     </script>
 </body>
 </html>
