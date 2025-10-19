@@ -54,6 +54,7 @@
         }
     </style>
     <script src="https://cdn.athom.com/homey-api/3.14.8.js"></script>
+    <script src="https://cdn.athom.com/homey-api-lib/3.14.8.js"></script>
 </head>
 <body class="h-full">
     <div id="app" class="p-4 md:p-8 max-w-7xl mx-auto">
@@ -466,49 +467,20 @@
                         
                         await this.homey.authenticate();
                         
-                        // Deep inspect the homey object
-                        console.log('=== HOMEY OBJECT INSPECTION ===');
-                        console.log('homey object:', this.homey);
-                        console.log('homey keys:', Object.keys(this.homey));
-                        console.log('homey prototype:', Object.getPrototypeOf(this.homey));
-                        console.log('homey prototype keys:', Object.keys(Object.getPrototypeOf(this.homey)));
+                        console.log('Creating HomeyAPI connection...');
                         
-                        // Try to find methods on prototype
-                        const proto = Object.getPrototypeOf(this.homey);
-                        const methods = Object.getOwnPropertyNames(proto).filter(key => {
-                            try {
-                                return typeof proto[key] === 'function' && key !== 'constructor';
-                            } catch (e) {
-                                return false;
-                            }
-                        });
-                        console.log('homey prototype methods:', methods);
-                        
-                        // Check for api-related methods
-                        const apiMethods = methods.filter(m => m.toLowerCase().includes('api'));
-                        console.log('API-related methods:', apiMethods);
-                        
-                        // Try different methods to get the API
-                        if (typeof this.homey.getApi === 'function') {
-                            console.log('Trying getApi()...');
-                            this.api = await this.homey.getApi();
-                        } else if (typeof this.homey.api !== 'undefined') {
-                            console.log('Using homey.api property');
-                            this.api = this.homey.api;
-                        } else if (typeof this.homey.getHomeyAPI === 'function') {
-                            console.log('Trying getHomeyAPI()...');
-                            this.api = await this.homey.getHomeyAPI();
-                        } else if (typeof this.homey.createApi === 'function') {
-                            console.log('Trying createApi()...');
-                            this.api = await this.homey.createApi();
-                        } else {
-                            console.log('No API method found, using homey object itself');
-                            this.api = this.homey;
+                        // Use HomeyAPI to connect to the actual Homey device
+                        if (typeof HomeyAPI === 'undefined') {
+                            throw new Error('HomeyAPI library not loaded');
                         }
                         
-                        console.log('Final API object:', this.api);
-                        console.log('API keys:', Object.keys(this.api));
-                        console.log('API prototype:', Object.getPrototypeOf(this.api));
+                        // Create HomeyAPI instance - this gives us access to devices, zones, etc.
+                        this.api = await HomeyAPI.forCurrentHomey(this.cloudApi);
+                        
+                        console.log('HomeyAPI connected!');
+                        console.log('API object:', this.api);
+                        console.log('API has devices:', !!this.api.devices);
+                        console.log('API has zones:', !!this.api.zones);
 
                         document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
                         document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
