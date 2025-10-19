@@ -54,7 +54,6 @@
             border-radius: 0 0 0.5rem 0.5rem;
         }
     </style>
-    <!-- FIX: Added defer attribute to ensure the script is loaded before the app code runs -->
     <script src="https://cdn.athom.com/homey-api/latest.js" defer></script>
 </head>
 <body class="h-full">
@@ -221,592 +220,559 @@
             nl: '🇳🇱'
         };
 
-        // FIX: Use 'load' event to ensure all scripts are ready before initializing the app
-        window.addEventListener('load', () => {
-            
-            class BooleanToolboxApp {
-                CLIENT_ID = null;
-                cloudApi = null;
-                authenticatedUser = null;
-                homey = null;
-                api = null;
-                allDevices = {};
-                allZones = {};
-                selectedCapabilities = [];
-                processingAuth = false;
-                currentLang = 'en';
-                translations = {};
+        class BooleanToolboxApp {
+            CLIENT_ID = null;
+            cloudApi = null;
+            authenticatedUser = null;
+            homey = null;
+            api = null;
+            allDevices = {};
+            allZones = {};
+            selectedCapabilities = [];
+            processingAuth = false;
+            currentLang = 'en';
+            translations = {};
 
-                constructor() {
-                    this.currentLang = localStorage.getItem('language') || 'en';
-                    this.init();
-                }
+            constructor() {
+                this.currentLang = localStorage.getItem('language') || 'en';
+                this.init();
+            }
 
-                async loadTranslations(lang) {
-                    try {
-                        // FIX: Changed path to be relative
-                        const response = await fetch(`./resources/lang.${lang}.json`);
-                        if (!response.ok) throw new Error(`Failed to load language: ${lang}`);
-                        this.translations = await response.json();
-                        return true;
-                    } catch (error) {
-                        console.error(`Failed to load ${lang} translations:`, error);
-                        if (lang !== 'en') {
-                            // Fallback to English
-                            return this.loadTranslations('en');
-                        }
-                        return false;
+            async loadTranslations(lang) {
+                try {
+                    const response = await fetch(`./resources/lang.${lang}.json`);
+                    if (!response.ok) throw new Error(`Failed to load language: ${lang}`);
+                    this.translations = await response.json();
+                    return true;
+                } catch (error) {
+                    console.error(`Failed to load ${lang} translations:`, error);
+                    if (lang !== 'en') {
+                        return this.loadTranslations('en');
                     }
+                    return false;
                 }
+            }
 
-                async initLanguageSelector() {
-                    // Load initial language
-                    await this.loadTranslations(this.currentLang);
-                    
-                    const languageButton = document.getElementById('language-button');
-                    const languageDropdown = document.getElementById('language-dropdown');
-                    const currentFlag = document.getElementById('current-flag');
-                    
-                    languageButton.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        languageDropdown.classList.toggle('active');
-                    });
+            async initLanguageSelector() {
+                await this.loadTranslations(this.currentLang);
+                
+                const languageButton = document.getElementById('language-button');
+                const languageDropdown = document.getElementById('language-dropdown');
+                const currentFlag = document.getElementById('current-flag');
+                
+                languageButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    languageDropdown.classList.toggle('active');
+                });
 
-                    document.addEventListener('click', () => {
+                document.addEventListener('click', () => {
+                    languageDropdown.classList.remove('active');
+                });
+
+                document.querySelectorAll('.language-option').forEach(option => {
+                    option.addEventListener('click', async (e) => {
+                        const lang = e.currentTarget.dataset.lang;
+                        await this.setLanguage(lang);
                         languageDropdown.classList.remove('active');
                     });
+                });
 
-                    document.querySelectorAll('.language-option').forEach(option => {
-                        option.addEventListener('click', async (e) => {
-                            const lang = e.currentTarget.dataset.lang;
-                            await this.setLanguage(lang);
-                            languageDropdown.classList.remove('active');
-                        });
-                    });
+                currentFlag.textContent = flags[this.currentLang];
+                this.updateTranslations();
+            }
 
-                    currentFlag.textContent = flags[this.currentLang];
-                    this.updateTranslations();
-                }
-
-                async setLanguage(lang) {
-                    await this.loadTranslations(lang);
-                    this.currentLang = lang;
-                    localStorage.setItem('language', lang);
-                    document.getElementById('current-flag').textContent = flags[lang];
-                    this.updateTranslations();
-                    
-                    // Re-render dynamic content
-                    if (this.allDevices && Object.keys(this.allDevices).length > 0) {
-                        this.renderAll();
-                    }
-                    this.renderSelectedCapabilities();
-                    this.renderLoginScreen();
-                }
-
-                t(key) {
-                    const keys = key.split('.');
-                    let value = this.translations;
-                    for (const k of keys) {
-                        value = value?.[k];
-                    }
-                    return value || key;
-                }
-
-                updateTranslations() {
-                    document.querySelectorAll('[data-i18n]').forEach(element => {
-                        const key = element.getAttribute('data-i18n');
-                        element.textContent = this.t(key);
-                    });
-                }
-
-                async init() {
-                    try {
-                        // Check if running on correct domain
-                        const correctDomain = 'homey-boolean-toolbox.vercel.app';
-                        const currentHostname = window.location.hostname;
-                        
-                        if (currentHostname !== correctDomain && currentHostname !== 'localhost') {
-                            // Not running on Vercel - show error and redirect
-                            const correctUrl = `https://${correctDomain}${window.location.pathname}${window.location.search}`;
-                            this.showError(`
-                                <div class="text-center">
-                                    <h2 class="text-xl font-bold mb-4">⚠️ Wrong Domain</h2>
-                                    <p class="mb-4">This app must be run from the official Vercel deployment.</p>
-                                    <p class="mb-6 text-sm text-gray-400">Current: ${currentHostname}</p>
-                                    <a href="${correctUrl}" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg">
-                                        Go to Official App →
-                                    </a>
-                                    <p class="mt-4 text-xs text-gray-500">Redirecting in 5 seconds...</p>
-                                </div>
-                            `);
-                            setTimeout(() => {
-                                window.location.href = correctUrl;
-                            }, 5000);
-                            return;
-                        }
-                        
-                        if (typeof AthomCloudAPI === 'undefined') {
-                            throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
-                        }
-
-                        this.showLoader('Initializing...');
-                        
-                        const response = await fetch('/api/get-config');
-                        if (!response.ok) throw new Error(`Failed to fetch config: ${response.statusText}`);
-                        
-                        const config = await response.json();
-                        if (!config.clientId) throw new Error('Could not get clientId from config.');
-                        this.CLIENT_ID = config.clientId;
-
-                        this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
-                        this.setupEventListeners();
-                        await this.initLanguageSelector();
-                        this.renderLoginScreen();
-
-                        const urlParams = new URLSearchParams(window.location.search);
-                        const code = urlParams.get('code');
-
-                        if (code) {
-                            await this.handleAuthRedirect(code);
-                        } else if (await this.cloudApi.isLoggedIn()) {
-                            await this.postLogin();
-                        } else {
-                            this.hideLoader();
-                            this.showScreen('login-screen');
-                        }
-                    } catch (error) {
-                        console.error("Initialization failed:", error);
-                        this.hideLoader();
-                        this.showError(this.t('errors.startApp') + ' ' + error.message);
-                    }
-                }
+            async setLanguage(lang) {
+                await this.loadTranslations(lang);
+                this.currentLang = lang;
+                localStorage.setItem('language', lang);
+                document.getElementById('current-flag').textContent = flags[lang];
+                this.updateTranslations();
                 
-                setupEventListeners() {
-                    document.getElementById('main-content').addEventListener('click', (event) => {
-                        if (event.target.id === 'login-button') this.login();
-                    });
-                    document.getElementById('logout-button').addEventListener('click', () => this.logout());
-                    document.getElementById('next-step-button').addEventListener('click', () => this.showScreen('create-expression-step2-screen'));
-                    document.getElementById('json-import-button').addEventListener('click', () => this.handleJsonImport());
-                    document.getElementById('settings-modal-close').addEventListener('click', () => this.closeSettingsModal());
-                    document.getElementById('settings-modal-save').addEventListener('click', () => this.saveSettings());
+                if (this.allDevices && Object.keys(this.allDevices).length > 0) {
+                    this.renderAll();
                 }
+                this.renderSelectedCapabilities();
+                this.renderLoginScreen();
+            }
 
-                async login() {
-                    if (!this.CLIENT_ID) return this.showError("Client ID missing. Cannot start login.");
-                    const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
-                    const authorizationUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${this.CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
-                    window.location.href = authorizationUrl;
+            t(key) {
+                const keys = key.split('.');
+                let value = this.translations;
+                for (const k of keys) {
+                    value = value?.[k];
                 }
+                return value || key;
+            }
 
-                async handleAuthRedirect(code) {
-                    if (this.processingAuth) {
-                        console.log('Already processing auth, skipping...');
+            updateTranslations() {
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    element.textContent = this.t(key);
+                });
+            }
+
+            async init() {
+                try {
+                    const correctDomain = 'homey-boolean-toolbox.vercel.app';
+                    const currentHostname = window.location.hostname;
+                    
+                    if (currentHostname !== correctDomain && currentHostname !== 'localhost') {
+                        const correctUrl = `https://${correctDomain}${window.location.pathname}${window.location.search}`;
+                        this.showError(`
+                            <div class="text-center">
+                                <h2 class="text-xl font-bold mb-4">⚠️ Wrong Domain</h2>
+                                <p class="mb-4">This app must be run from the official Vercel deployment.</p>
+                                <p class="mb-6 text-sm text-gray-400">Current: ${currentHostname}</p>
+                                <a href="${correctUrl}" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg">
+                                    Go to Official App →
+                                </a>
+                                <p class="mt-4 text-xs text-gray-500">Redirecting in 5 seconds...</p>
+                            </div>
+                        `);
+                        setTimeout(() => {
+                            window.location.href = correctUrl;
+                        }, 5000);
                         return;
                     }
-                    this.processingAuth = true;
                     
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    
-                    this.showLoader('Authenticating...');
-                    try {
-                        const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
-                        
-                        console.log('Getting token from server...');
-                        const response = await fetch('/api/get-token', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ code: code, redirectUrl: redirectUrl }),
-                        });
-                        
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            throw new Error(`Server responded with ${response.status}: ${errorText}`);
-                        }
-                        
-                        const tokenData = await response.json();
-                        console.log('Token received from server');
-                        
-                        // Set the token directly on the __token property (internal property)
-                        this.cloudApi.__token = tokenData;
-                        console.log('Token set on __token property');
-                        
-                        console.log('Proceeding to postLogin...');
-                        await this.postLogin();
-                    } catch (error) {
-                        console.error('Auth error:', error);
-                        this.hideLoader();
-                        this.showError(this.t('errors.authFailed') + ' ' + error.message);
-                    } finally {
-                        this.processingAuth = false;
+                    if (typeof AthomCloudAPI === 'undefined') {
+                        throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
                     }
-                }
-                
-                async logout() {
-                    try { 
-                        await this.cloudApi.logout(); 
-                    } catch(e) { 
-                        console.error("Logout failed, continuing.", e); 
-                    }
+
+                    this.showLoader('Initializing...');
                     
-                    // Clear the token
-                    this.cloudApi.__token = null;
+                    const response = await fetch('/api/get-config');
+                    if (!response.ok) throw new Error(`Failed to fetch config: ${response.statusText}`);
                     
-                    this.authenticatedUser = null; 
-                    this.homey = null; 
-                    this.api = null;
-                    document.getElementById('user-info').classList.add('hidden');
+                    const config = await response.json();
+                    if (!config.clientId) throw new Error('Could not get clientId from config.');
+                    this.CLIENT_ID = config.clientId;
+
+                    this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID });
+                    this.setupEventListeners();
+                    await this.initLanguageSelector();
                     this.renderLoginScreen();
-                    this.showScreen('login-screen');
-                }
 
-                async postLogin() {
-                    try {
-                        this.showLoader('Loading user data...');
-                        this.authenticatedUser = await this.cloudApi.getAuthenticatedUser();
-                        const homeys = await this.authenticatedUser.getHomeys();
-                        
-                        if (!homeys || homeys.length === 0) {
-                            throw new Error('No Homeys found on this account.');
-                        }
-                        this.homey = homeys[0];
-                        
-                        this.showLoader('Authenticating with Homey...');
-                        await this.homey.authenticate();
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const code = urlParams.get('code');
 
-                        // FIX: Directly call getApi() and add robust checking.
-                        // The old library version failed to provide this method, causing the error.
-                        // With the updated library, this should now work correctly.
-                        if (typeof this.homey.getApi !== 'function') {
-                            console.error("Fatal: homey.getApi() is not a function. The Homey API library might be outdated or loaded incorrectly.", this.homey);
-                            throw new Error('Could not get Homey API. The library might be outdated or loaded incorrectly.');
-                        }
-
-                        this.api = await this.homey.getApi();
-
-                        if (!this.api || typeof this.api.devices === 'undefined' || typeof this.api.zones === 'undefined') {
-                            console.error("Fatal: The retrieved API object is invalid.", this.api);
-                            throw new Error('The retrieved Homey API object is invalid or incomplete.');
-                        }
-                        
-                        console.log('Successfully retrieved Homey Web API.');
-
-                        document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
-                        document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
-                        document.getElementById('user-info').classList.remove('hidden');
-
-                        await this.fetchData();
-                        this.renderAll();
-                        this.hideLoader();
-                        this.showScreen('main-menu-screen');
-                    } catch (error) {
-                        console.error("Error during post-login process:", error);
-                        this.hideLoader();
-                        this.showError(`Failed to load data after login: ${error.message}`);
-                    }
-                }
-
-                async fetchData() {
-                    this.showLoader('Loading devices and zones...');
-                    try {
-                        // FIX: Simplified fetching logic. With the updated API library, 
-                        // .getDevices() and .getZones() should be reliably available.
-                        const devices = await this.api.devices.getDevices();
-                        const zones = await this.api.zones.getZones();
-                        
-                        this.allDevices = devices || {};
-                        this.allZones = zones || {};
-                        
-                        console.log(`Total devices loaded: ${Object.keys(this.allDevices).length}`);
-                        console.log(`Total zones loaded: ${Object.keys(this.allZones).length}`);
-                        
-                    } catch (error) { 
-                        this.hideLoader();
-                        console.error('fetchData error:', error);
-                        this.showError(`Failed to fetch devices and zones: ${error.message}`); 
-                    }
-                }
-
-                renderAll() { this.renderEditDevices(); this.renderDeviceCapabilityList(); }
-                
-                renderEditDevices() {
-                    const container = document.getElementById('edit-devices-list');
-                    container.innerHTML = '';
-                    
-                    // Show ALL devices with their driverIds for debugging
-                    const allDevicesList = Object.values(this.allDevices);
-                    
-                    // First, show debug info to find the correct driver ID
-                    const debugInfo = document.createElement('details');
-                    debugInfo.className = 'mb-6 bg-gray-900 p-4 rounded-lg border border-gray-600';
-                    debugInfo.innerHTML = `
-                        <summary class="cursor-pointer font-semibold text-yellow-400">🔍 Debug: All Driver IDs (click to expand)</summary>
-                        <div class="mt-4 space-y-2 max-h-64 overflow-y-auto">
-                            ${[...new Set(allDevicesList.map(d => d.driverId))].sort().map(driverId => 
-                                `<div class="text-sm font-mono text-gray-300">${driverId} (${allDevicesList.filter(d => d.driverId === driverId).length} devices)</div>`
-                            ).join('')}
-                        </div>
-                    `;
-                    container.appendChild(debugInfo);
-                    
-                    // Try multiple possible driver IDs for Boolean Toolbox
-                    const possibleDriverIds = ['booleantoolbox', 'logic', 'boolean', 'toolbox'];
-                    let toolboxDevices = allDevicesList.filter(d => 
-                        possibleDriverIds.some(id => d.driverId.toLowerCase().includes(id))
-                    );
-                    
-                    // If no devices found, show message
-                    if (toolboxDevices.length === 0) {
-                        container.innerHTML += `<div class="bg-yellow-700 p-4 rounded-lg text-center">
-                            <p class="font-semibold mb-2">${this.t('editDevices.noDevices')}</p>
-                            <p class="text-sm">Check the debug info above to find the correct driver ID, or all devices will be shown below.</p>
-                        </div>`;
-                        // Show all devices if no Boolean Toolbox devices found
-                        toolboxDevices = allDevicesList;
-                    }
-                    
-                    const devicesByZone = this.groupDevicesByZone(toolboxDevices);
-                    const sortedZones = this.sortZones(Object.keys(devicesByZone));
-                    
-                    sortedZones.forEach(zoneId => {
-                        if (!devicesByZone[zoneId]) return;
-                        const zone = this.allZones[zoneId];
-                        const zoneDevices = devicesByZone[zoneId];
-                        const zoneEl = document.createElement('div');
-                        zoneEl.className = 'mt-6';
-                        zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${zoneDevices.map(device => `
-                                <div class="bg-gray-700 p-4 rounded-lg">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <span class="font-medium">${device.name}</span>
-                                        <button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-xs py-1 px-2 rounded-md">${this.t('editDevices.settings')}</button>
-                                    </div>
-                                    <div class="text-xs text-gray-400 font-mono">${device.driverId}</div>
-                                </div>
-                            `).join('')}</div>`;
-                        container.appendChild(zoneEl);
-                    });
-                    
-                    container.querySelectorAll('.open-settings-button').forEach(button => button.addEventListener('click', (e) => this.openSettingsModal(e.target.dataset.deviceId)));
-                }
-
-                renderDeviceCapabilityList() {
-                    const container = document.getElementById('device-capability-list');
-                    container.innerHTML = '';
-                    
-                    // Show ALL devices, not filtered
-                    const allDevicesList = Object.values(this.allDevices);
-                    const devicesByZone = this.groupDevicesByZone(allDevicesList);
-                    const sortedZones = this.sortZones(Object.keys(devicesByZone));
-                    
-                    sortedZones.forEach(zoneId => {
-                        if (!devicesByZone[zoneId] || !this.allZones[zoneId]) return;
-                        const zone = this.allZones[zoneId];
-                        const zoneDevices = devicesByZone[zoneId];
-                        const zoneEl = document.createElement('div');
-                        zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>`;
-                        const deviceListEl = document.createElement('div');
-                        deviceListEl.className = 'space-y-4';
-                        zoneEl.appendChild(deviceListEl);
-                        
-                        zoneDevices.forEach(device => {
-                            if (!device.capabilitiesObj || Object.keys(device.capabilitiesObj).length === 0) return;
-                            const deviceEl = document.createElement('div');
-                            deviceEl.className = 'bg-gray-700 p-4 rounded-lg';
-                            
-                            // Show device name and driver ID for clarity
-                            deviceEl.innerHTML = `
-                                <div class="mb-3">
-                                    <p class="font-semibold">${device.name}</p>
-                                    <p class="text-xs text-gray-400 font-mono">${device.driverId}</p>
-                                </div>
-                                <div class="space-y-2">${Object.values(device.capabilitiesObj).map(cap => `
-                                    <label class="flex items-center space-x-3 cursor-pointer">
-                                        <input type="checkbox" data-device-id="${device.id}" data-capability-id="${cap.id}" class="capability-checkbox form-checkbox h-5 w-5 rounded bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500">
-                                        <span class="text-gray-300">${cap.title} <span class="text-xs text-gray-500">(${cap.id})</span></span>
-                                    </label>
-                                `).join('')}</div>
-                            `;
-                            deviceListEl.appendChild(deviceEl);
-                        });
-                        container.appendChild(zoneEl);
-                    });
-                    
-                    container.querySelectorAll('.capability-checkbox').forEach(checkbox => checkbox.addEventListener('change', (e) => this.handleCapabilitySelection(e.target)));
-                }
-                
-                renderSelectedCapabilities() {
-                    const list = document.getElementById('selected-capabilities-list');
-                    const countEl = document.getElementById('selected-count');
-                    const nextButton = document.getElementById('next-step-button');
-                    list.innerHTML = '';
-                    countEl.textContent = this.selectedCapabilities.length;
-                    if (this.selectedCapabilities.length === 0) list.innerHTML = `<li class="text-gray-500 text-center italic">${this.t('step1.noneSelected')}</li>`;
-                    this.selectedCapabilities.forEach((item, index) => {
-                        const li = document.createElement('li');
-                        li.className = 'bg-gray-700 p-2 rounded-md flex justify-between items-center text-sm';
-                        li.innerHTML = `<span class="truncate"><span class="font-bold">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} - ${item.capabilityTitle}</span><button data-index="${index}" class="remove-capability-btn text-red-400 hover:text-red-300 p-1 font-bold text-lg">&times;</button>`;
-                        list.appendChild(li);
-                    });
-                    list.querySelectorAll('.remove-capability-btn').forEach(btn => btn.addEventListener('click', e => this.removeCapability(parseInt(e.currentTarget.dataset.index))));
-                    const count = this.selectedCapabilities.length;
-                    nextButton.disabled = !(count >= 2 && count <= 10);
-                }
-                
-                renderVariableMapping() {
-                     const list = document.getElementById('variable-mapping-list');
-                     list.innerHTML = '';
-                     this.selectedCapabilities.forEach((item, index) => {
-                        const li = document.createElement('li');
-                        li.className = 'text-gray-300';
-                        li.innerHTML = `<span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} <span class="text-gray-500">(${item.capabilityTitle})</span>`;
-                        list.appendChild(li);
-                     });
-                }
-
-                handleCapabilitySelection(checkbox) {
-                    const { deviceId, capabilityId } = checkbox.dataset;
-                    const device = this.allDevices[deviceId];
-                    const capability = device.capabilitiesObj[capabilityId];
-                    if (checkbox.checked) {
-                        if (this.selectedCapabilities.length < 10) this.selectedCapabilities.push({ deviceId, capabilityId, deviceName: device.name, capabilityTitle: capability.title });
-                        else { checkbox.checked = false; alert(this.t('step1.maxCapabilities')); }
+                    if (code) {
+                        await this.handleAuthRedirect(code);
+                    } else if (await this.cloudApi.isLoggedIn()) {
+                        await this.postLogin();
                     } else {
-                        this.selectedCapabilities = this.selectedCapabilities.filter(item => !(item.deviceId === deviceId && item.capabilityId === capabilityId));
-                    }
-                    this.renderSelectedCapabilities();
-                }
-                
-                removeCapability(index) {
-                    const [removedItem] = this.selectedCapabilities.splice(index, 1);
-                    const checkbox = document.querySelector(`input[data-device-id="${removedItem.deviceId}"][data-capability-id="${removedItem.capabilityId}"]`);
-                    if (checkbox) checkbox.checked = false;
-                    this.renderSelectedCapabilities();
-                }
-                
-                async handleJsonImport() {
-                    const devicesJson = document.getElementById('json-devices-input').value;
-                    const formula = document.getElementById('json-formula-input').value;
-                    if (!devicesJson) return alert(this.t('import.errorEmpty'));
-                    try {
-                        const parsedDevices = JSON.parse(devicesJson);
-                        if (!Array.isArray(parsedDevices) || parsedDevices.length < 2 || parsedDevices.length > 10) return alert(this.t('import.errorRange'));
-                        this.selectedCapabilities = parsedDevices.map(item => {
-                            const device = this.allDevices[item.deviceId];
-                            if (!device) throw new Error(this.t('errors.deviceNotFound').replace('{id}', item.deviceId));
-                            const capability = device.capabilitiesObj[item.capabilityId];
-                            if (!capability) throw new Error(this.t('errors.capabilityNotFound').replace('{cap}', item.capabilityId).replace('{device}', device.name));
-                            return { deviceId: item.deviceId, capabilityId: item.capabilityId, deviceName: device.name, capabilityTitle: capability.title };
-                        });
-                        this.renderSelectedCapabilities();
-                        if (formula) document.getElementById('formula-input').value = formula;
-                        this.showScreen('create-expression-step2-screen');
-                    } catch (error) { alert(this.t('import.errorParsing') + ' ' + error.message); }
-                }
-                
-                async openSettingsModal(deviceId) {
-                    const device = this.allDevices[deviceId];
-                    if (!device) return;
-                    const modal = document.getElementById('settings-modal');
-                    const title = document.getElementById('settings-modal-title');
-                    const content = document.getElementById('settings-modal-content');
-                    const saveBtn = document.getElementById('settings-modal-save');
-                    title.textContent = `${this.t('settings.titleFor')} ${device.name}`;
-                    content.innerHTML = `<p>${this.t('settings.loading')}</p>`;
-                    saveBtn.dataset.deviceId = deviceId;
-                    modal.style.display = 'flex';
-                    
-                    this.showLoader('Loading settings...');
-                    try {
-                        const settings = await this.api.devices.getDeviceSettings({ id: deviceId });
-                        let settingsHtml = '';
-                        for (const key in settings) {
-                            settingsHtml += `<div><label for="setting-${key}" class="block text-sm font-medium text-gray-300">${key}</label><input type="text" id="setting-${key}" data-key="${key}" class="mt-1 block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" value="${settings[key]}"></div>`;
-                        }
-                        content.innerHTML = settingsHtml || `<p>${this.t('settings.noSettings')}</p>`;
-                    } catch(error) { 
-                        content.innerHTML = `<p class="text-red-400">${this.t('settings.error')} ${error.message}</p>`; 
-                    } finally {
                         this.hideLoader();
+                        this.showScreen('login-screen');
                     }
-                }
-
-                closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
-
-                async saveSettings() {
-                    const deviceId = document.getElementById('settings-modal-save').dataset.deviceId;
-                    const content = document.getElementById('settings-modal-content');
-                    const inputs = content.querySelectorAll('input');
-                    const newSettings = {};
-                    inputs.forEach(input => { newSettings[input.dataset.key] = input.value; });
-                    
-                    this.showLoader('Saving settings...');
-                    try {
-                        await this.api.devices.updateDeviceSettings({ id: deviceId, data: newSettings });
-                        this.hideLoader();
-                        alert(this.t('settings.saved'));
-                        this.closeSettingsModal();
-                    } catch (error) { 
-                        this.hideLoader();
-                        alert(this.t('settings.error') + ' ' + error.message); 
-                    }
-                }
-
-                renderLoginScreen() {
-                     document.getElementById('login-screen').innerHTML = `<h2 class="text-xl font-bold mb-4">${this.t('login.welcome')}</h2><p class="mb-6 text-gray-300">${this.t('login.message')}</p><button id="login-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg transition-colors">${this.t('login.button')}</button>`;
-                }
-
-                showScreen(screenId) {
-                    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-                    const screen = document.getElementById(screenId);
-                    if (screen) screen.classList.add('active');
-                    if (screenId === 'create-expression-step2-screen') this.renderVariableMapping();
-                }
-                
-                showLoader(text = 'Loading...') {
-                    const loader = document.getElementById('loader-modal');
-                    const loaderText = document.getElementById('loader-text');
-                    loaderText.textContent = text;
-                    loader.style.display = 'flex';
-                }
-                
-                hideLoader() {
-                    const loader = document.getElementById('loader-modal');
-                    loader.style.display = 'none';
-                }
-                
-                showError(message) {
-                    const loginScreen = document.getElementById('login-screen');
-                    loginScreen.innerHTML = `<p class="text-red-400 p-4 bg-red-900/50 rounded-lg">${message}</p>`;
-                    this.showScreen('login-screen');
-                }
-
-                groupDevicesByZone(deviceList) {
-                    return deviceList.reduce((acc, device) => {
-                        const zone = device.zone;
-                        if (!acc[zone]) acc[zone] = [];
-                        acc[zone].push(device);
-                        return acc;
-                    }, {});
-                }
-
-                sortZones(zoneIds) {
-                    const homeZoneId = Object.keys(this.allZones).find(id => {
-                         if (!this.allZones[id]) return false;
-                         return ['home', 'hjem', 'zuhause', 'maison', 'casa'].includes(this.allZones[id].name.toLowerCase())
-                    });
-                    return zoneIds.sort((a, b) => {
-                        if (a === homeZoneId) return -1;
-                        if (b === homeZoneId) return 1;
-                        if (!this.allZones[a] || !this.allZones[b]) return 0;
-                        return this.allZones[a].name.localeCompare(this.allZones[b].name);
-                    });
+                } catch (error) {
+                    console.error("Initialization failed:", error);
+                    this.hideLoader();
+                    this.showError(this.t('errors.startApp') + ' ' + error.message);
                 }
             }
             
-            window.app = new BooleanToolboxApp();
-        });
-    </script>
+            setupEventListeners() {
+                document.getElementById('main-content').addEventListener('click', (event) => {
+                    if (event.target.id === 'login-button') this.login();
+                });
+                document.getElementById('logout-button').addEventListener('click', () => this.logout());
+                document.getElementById('next-step-button').addEventListener('click', () => this.showScreen('create-expression-step2-screen'));
+                document.getElementById('json-import-button').addEventListener('click', () => this.handleJsonImport());
+                document.getElementById('settings-modal-close').addEventListener('click', () => this.closeSettingsModal());
+                document.getElementById('settings-modal-save').addEventListener('click', () => this.saveSettings());
+            }
+
+            async login() {
+                if (!this.CLIENT_ID) return this.showError("Client ID missing. Cannot start login.");
+                const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
+                const authorizationUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${this.CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}`;
+                window.location.href = authorizationUrl;
+            }
+
+            async handleAuthRedirect(code) {
+                if (this.processingAuth) return;
+                this.processingAuth = true;
+                
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                this.showLoader('Authenticating...');
+                try {
+                    const redirectUrl = 'https://homey-boolean-toolbox.vercel.app/';
+                    
+                    const response = await fetch('/api/get-token', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ code: code, redirectUrl: redirectUrl }),
+                    });
+                    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Server responded with ${response.status}: ${errorText}`);
+                    }
+                    
+                    const tokenData = await response.json();
+                    this.cloudApi.__token = tokenData;
+                    
+                    await this.postLogin();
+                } catch (error) {
+                    console.error('Auth error:', error);
+                    this.hideLoader();
+                    this.showError(this.t('errors.authFailed') + ' ' + error.message);
+                } finally {
+                    this.processingAuth = false;
+                }
+            }
+            
+            async logout() {
+                try { 
+                    await this.cloudApi.logout(); 
+                } catch(e) { 
+                    console.error("Logout failed, continuing.", e); 
+                }
+                
+                this.cloudApi.__token = null;
+                this.authenticatedUser = null; 
+                this.homey = null; 
+                this.api = null;
+                document.getElementById('user-info').classList.add('hidden');
+                this.renderLoginScreen();
+                this.showScreen('login-screen');
+            }
+
+            async postLogin() {
+                try {
+                    this.showLoader('Loading user data...');
+                    this.authenticatedUser = await this.cloudApi.getAuthenticatedUser();
+                    const homeys = await this.authenticatedUser.getHomeys();
+                    
+                    if (!homeys || homeys.length === 0) {
+                        throw new Error('No Homeys found on this account.');
+                    }
+                    this.homey = homeys[0];
+                    
+                    this.showLoader('Authenticating with Homey...');
+                    await this.homey.authenticate();
+
+                    if (typeof this.homey.getApi !== 'function') {
+                        console.error("Fatal: homey.getApi() is not a function.", this.homey);
+                        throw new Error('Could not get Homey API. The library might be outdated or loaded incorrectly.');
+                    }
+                    this.api = await this.homey.getApi();
+
+                    if (!this.api || typeof this.api.devices === 'undefined' || typeof this.api.zones === 'undefined') {
+                        console.error("Fatal: The retrieved API object is invalid.", this.api);
+                        throw new Error('The retrieved Homey API object is invalid or incomplete.');
+                    }
+                    
+                    console.log('Successfully retrieved Homey Web API.');
+
+                    document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
+                    document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
+                    document.getElementById('user-info').classList.remove('hidden');
+
+                    await this.fetchData();
+                    this.renderAll();
+                    this.hideLoader();
+                    this.showScreen('main-menu-screen');
+                } catch (error) {
+                    console.error("Error during post-login process:", error);
+                    this.hideLoader();
+                    this.showError(`Failed to load data after login: ${error.message}`);
+                }
+            }
+
+            async fetchData() {
+                this.showLoader('Loading devices and zones...');
+                try {
+                    const devices = await this.api.devices.getDevices();
+                    const zones = await this.api.zones.getZones();
+                    
+                    this.allDevices = devices || {};
+                    this.allZones = zones || {};
+                    
+                    console.log(`Total devices loaded: ${Object.keys(this.allDevices).length}`);
+                    console.log(`Total zones loaded: ${Object.keys(this.allZones).length}`);
+                    
+                } catch (error) { 
+                    this.hideLoader();
+                    console.error('fetchData error:', error);
+                    this.showError(`Failed to fetch devices and zones: ${error.message}`); 
+                }
+            }
+
+            renderAll() { this.renderEditDevices(); this.renderDeviceCapabilityList(); }
+            
+            renderEditDevices() {
+                const container = document.getElementById('edit-devices-list');
+                container.innerHTML = '';
+                
+                const allDevicesList = Object.values(this.allDevices);
+                
+                const debugInfo = document.createElement('details');
+                debugInfo.className = 'mb-6 bg-gray-900 p-4 rounded-lg border border-gray-600';
+                debugInfo.innerHTML = `
+                    <summary class="cursor-pointer font-semibold text-yellow-400">🔍 Debug: All Driver IDs (click to expand)</summary>
+                    <div class="mt-4 space-y-2 max-h-64 overflow-y-auto">
+                        ${[...new Set(allDevicesList.map(d => d.driverId))].sort().map(driverId => 
+                            `<div class="text-sm font-mono text-gray-300">${driverId} (${allDevicesList.filter(d => d.driverId === driverId).length} devices)</div>`
+                        ).join('')}
+                    </div>
+                `;
+                container.appendChild(debugInfo);
+                
+                const possibleDriverIds = ['booleantoolbox', 'logic', 'boolean', 'toolbox'];
+                let toolboxDevices = allDevicesList.filter(d => 
+                    possibleDriverIds.some(id => d.driverId.toLowerCase().includes(id))
+                );
+                
+                if (toolboxDevices.length === 0) {
+                    container.innerHTML += `<div class="bg-yellow-700 p-4 rounded-lg text-center">
+                        <p class="font-semibold mb-2">${this.t('editDevices.noDevices')}</p>
+                        <p class="text-sm">Check the debug info above to find the correct driver ID, or all devices will be shown below.</p>
+                    </div>`;
+                    toolboxDevices = allDevicesList;
+                }
+                
+                const devicesByZone = this.groupDevicesByZone(toolboxDevices);
+                const sortedZones = this.sortZones(Object.keys(devicesByZone));
+                
+                sortedZones.forEach(zoneId => {
+                    if (!devicesByZone[zoneId]) return;
+                    const zone = this.allZones[zoneId];
+                    const zoneDevices = devicesByZone[zoneId];
+                    const zoneEl = document.createElement('div');
+                    zoneEl.className = 'mt-6';
+                    zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${zoneDevices.map(device => `
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="font-medium">${device.name}</span>
+                                    <button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-xs py-1 px-2 rounded-md">${this.t('editDevices.settings')}</button>
+                                </div>
+                                <div class="text-xs text-gray-400 font-mono">${device.driverId}</div>
+                            </div>
+                        `).join('')}</div>`;
+                    container.appendChild(zoneEl);
+                });
+                
+                container.querySelectorAll('.open-settings-button').forEach(button => button.addEventListener('click', (e) => this.openSettingsModal(e.target.dataset.deviceId)));
+            }
+
+            renderDeviceCapabilityList() {
+                const container = document.getElementById('device-capability-list');
+                container.innerHTML = '';
+                
+                const allDevicesList = Object.values(this.allDevices);
+                const devicesByZone = this.groupDevicesByZone(allDevicesList);
+                const sortedZones = this.sortZones(Object.keys(devicesByZone));
+                
+                sortedZones.forEach(zoneId => {
+                    if (!devicesByZone[zoneId] || !this.allZones[zoneId]) return;
+                    const zone = this.allZones[zoneId];
+                    const zoneDevices = devicesByZone[zoneId];
+                    const zoneEl = document.createElement('div');
+                    zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>`;
+                    const deviceListEl = document.createElement('div');
+                    deviceListEl.className = 'space-y-4';
+                    zoneEl.appendChild(deviceListEl);
+                    
+                    zoneDevices.forEach(device => {
+                        if (!device.capabilitiesObj || Object.keys(device.capabilitiesObj).length === 0) return;
+                        const deviceEl = document.createElement('div');
+                        deviceEl.className = 'bg-gray-700 p-4 rounded-lg';
+                        
+                        deviceEl.innerHTML = `
+                            <div class="mb-3">
+                                <p class="font-semibold">${device.name}</p>
+                                <p class="text-xs text-gray-400 font-mono">${device.driverId}</p>
+                            </div>
+                            <div class="space-y-2">${Object.values(device.capabilitiesObj).map(cap => `
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="checkbox" data-device-id="${device.id}" data-capability-id="${cap.id}" class="capability-checkbox form-checkbox h-5 w-5 rounded bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500">
+                                    <span class="text-gray-300">${cap.title} <span class="text-xs text-gray-500">(${cap.id})</span></span>
+                                </label>
+                            `).join('')}</div>
+                        `;
+                        deviceListEl.appendChild(deviceEl);
+                    });
+                    container.appendChild(zoneEl);
+                });
+                
+                container.querySelectorAll('.capability-checkbox').forEach(checkbox => checkbox.addEventListener('change', (e) => this.handleCapabilitySelection(e.target)));
+            }
+            
+            renderSelectedCapabilities() {
+                const list = document.getElementById('selected-capabilities-list');
+                const countEl = document.getElementById('selected-count');
+                const nextButton = document.getElementById('next-step-button');
+                list.innerHTML = '';
+                countEl.textContent = this.selectedCapabilities.length;
+                if (this.selectedCapabilities.length === 0) list.innerHTML = `<li class="text-gray-500 text-center italic">${this.t('step1.noneSelected')}</li>`;
+                this.selectedCapabilities.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'bg-gray-700 p-2 rounded-md flex justify-between items-center text-sm';
+                    li.innerHTML = `<span class="truncate"><span class="font-bold">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} - ${item.capabilityTitle}</span><button data-index="${index}" class="remove-capability-btn text-red-400 hover:text-red-300 p-1 font-bold text-lg">&times;</button>`;
+                    list.appendChild(li);
+                });
+                list.querySelectorAll('.remove-capability-btn').forEach(btn => btn.addEventListener('click', e => this.removeCapability(parseInt(e.currentTarget.dataset.index))));
+                const count = this.selectedCapabilities.length;
+                nextButton.disabled = !(count >= 2 && count <= 10);
+            }
+            
+            renderVariableMapping() {
+                 const list = document.getElementById('variable-mapping-list');
+                 list.innerHTML = '';
+                 this.selectedCapabilities.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'text-gray-300';
+                    li.innerHTML = `<span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} <span class="text-gray-500">(${item.capabilityTitle})</span>`;
+                    list.appendChild(li);
+                 });
+            }
+
+            handleCapabilitySelection(checkbox) {
+                const { deviceId, capabilityId } = checkbox.dataset;
+                const device = this.allDevices[deviceId];
+                const capability = device.capabilitiesObj[capabilityId];
+                if (checkbox.checked) {
+                    if (this.selectedCapabilities.length < 10) this.selectedCapabilities.push({ deviceId, capabilityId, deviceName: device.name, capabilityTitle: capability.title });
+                    else { checkbox.checked = false; alert(this.t('step1.maxCapabilities')); }
+                } else {
+                    this.selectedCapabilities = this.selectedCapabilities.filter(item => !(item.deviceId === deviceId && item.capabilityId === capabilityId));
+                }
+                this.renderSelectedCapabilities();
+            }
+            
+            removeCapability(index) {
+                const [removedItem] = this.selectedCapabilities.splice(index, 1);
+                const checkbox = document.querySelector(`input[data-device-id="${removedItem.deviceId}"][data-capability-id="${removedItem.capabilityId}"]`);
+                if (checkbox) checkbox.checked = false;
+                this.renderSelectedCapabilities();
+            }
+            
+            async handleJsonImport() {
+                const devicesJson = document.getElementById('json-devices-input').value;
+                const formula = document.getElementById('json-formula-input').value;
+                if (!devicesJson) return alert(this.t('import.errorEmpty'));
+                try {
+                    const parsedDevices = JSON.parse(devicesJson);
+                    if (!Array.isArray(parsedDevices) || parsedDevices.length < 2 || parsedDevices.length > 10) return alert(this.t('import.errorRange'));
+                    this.selectedCapabilities = parsedDevices.map(item => {
+                        const device = this.allDevices[item.deviceId];
+                        if (!device) throw new Error(this.t('errors.deviceNotFound').replace('{id}', item.deviceId));
+                        const capability = device.capabilitiesObj[item.capabilityId];
+                        if (!capability) throw new Error(this.t('errors.capabilityNotFound').replace('{cap}', item.capabilityId).replace('{device}', device.name));
+                        return { deviceId: item.deviceId, capabilityId: item.capabilityId, deviceName: device.name, capabilityTitle: capability.title };
+                    });
+                    this.renderSelectedCapabilities();
+                    if (formula) document.getElementById('formula-input').value = formula;
+                    this.showScreen('create-expression-step2-screen');
+                } catch (error) { alert(this.t('import.errorParsing') + ' ' + error.message); }
+            }
+            
+            async openSettingsModal(deviceId) {
+                const device = this.allDevices[deviceId];
+                if (!device) return;
+                const modal = document.getElementById('settings-modal');
+                const title = document.getElementById('settings-modal-title');
+                const content = document.getElementById('settings-modal-content');
+                const saveBtn = document.getElementById('settings-modal-save');
+                title.textContent = `${this.t('settings.titleFor')} ${device.name}`;
+                content.innerHTML = `<p>${this.t('settings.loading')}</p>`;
+                saveBtn.dataset.deviceId = deviceId;
+                modal.style.display = 'flex';
+                
+                this.showLoader('Loading settings...');
+                try {
+                    const settings = await this.api.devices.getDeviceSettings({ id: deviceId });
+                    let settingsHtml = '';
+                    for (const key in settings) {
+                        settingsHtml += `<div><label for="setting-${key}" class="block text-sm font-medium text-gray-300">${key}</label><input type="text" id="setting-${key}" data-key="${key}" class="mt-1 block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" value="${settings[key]}"></div>`;
+                    }
+                    content.innerHTML = settingsHtml || `<p>${this.t('settings.noSettings')}</p>`;
+                } catch(error) { 
+                    content.innerHTML = `<p class="text-red-400">${this.t('settings.error')} ${error.message}</p>`; 
+                } finally {
+                    this.hideLoader();
+                }
+            }
+
+            closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
+
+            async saveSettings() {
+                const deviceId = document.getElementById('settings-modal-save').dataset.deviceId;
+                const content = document.getElementById('settings-modal-content');
+                const inputs = content.querySelectorAll('input');
+                const newSettings = {};
+                inputs.forEach(input => { newSettings[input.dataset.key] = input.value; });
+                
+                this.showLoader('Saving settings...');
+                try {
+                    await this.api.devices.updateDeviceSettings({ id: deviceId, data: newSettings });
+                    this.hideLoader();
+                    alert(this.t('settings.saved'));
+                    this.closeSettingsModal();
+                } catch (error) { 
+                    this.hideLoader();
+                    alert(this.t('settings.error') + ' ' + error.message); 
+                }
+            }
+
+            renderLoginScreen() {
+                 document.getElementById('login-screen').innerHTML = `<h2 class="text-xl font-bold mb-4">${this.t('login.welcome')}</h2><p class="mb-6 text-gray-300">${this.t('login.message')}</p><button id="login-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg transition-colors">${this.t('login.button')}</button>`;
+            }
+
+            showScreen(screenId) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                const screen = document.getElementById(screenId);
+                if (screen) screen.classList.add('active');
+                if (screenId === 'create-expression-step2-screen') this.renderVariableMapping();
+            }
+            
+            showLoader(text = 'Loading...') {
+                const loader = document.getElementById('loader-modal');
+                const loaderText = document.getElementById('loader-text');
+                loaderText.textContent = text;
+                loader.style.display = 'flex';
+            }
+            
+            hideLoader() {
+                const loader = document.getElementById('loader-modal');
+                loader.style.display = 'none';
+            }
+            
+            showError(message) {
+                const loginScreen = document.getElementById('login-screen');
+                loginScreen.innerHTML = `<p class="text-red-400 p-4 bg-red-900/50 rounded-lg">${message}</p>`;
+                this.showScreen('login-screen');
+            }
+
+            groupDevicesByZone(deviceList) {
+                return deviceList.reduce((acc, device) => {
+                    const zone = device.zone;
+                    if (!acc[zone]) acc[zone] = [];
+                    acc[zone].push(device);
+                    return acc;
+                }, {});
+            }
+
+            sortZones(zoneIds) {
+                const homeZoneId = Object.keys(this.allZones).find(id => {
+                     if (!this.allZones[id]) return false;
+                     return ['home', 'hjem', 'zuhause', 'maison', 'casa'].includes(this.allZones[id].name.toLowerCase())
+                });
+                return zoneIds.sort((a, b) => {
+                    if (a === homeZoneId) return -1;
+                    if (b === homeZoneId) return 1;
+                    if (!this.allZones[a] || !this.allZones[b]) return 0;
+                    return this.allZones[a].name.localeCompare(this.allZones[b].name);
+                });
+            }
+        }
+        
+        window.app = new BooleanToolboxApp();
+    });
+</script>
 </body>
 </html>
 
