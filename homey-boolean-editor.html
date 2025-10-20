@@ -53,7 +53,7 @@
             border-radius: 0 0 0.5rem 0.5rem;
         }
     </style>
-    <script src="https://cdn.athom.com/homey-api/3.14.8.js" data-script="homey-api"></script>
+    <script src="https://cdn.athom.com/homey-api/3.14.8.js"></script>
     <script>
         // Ensure both libraries are loaded
         window.HomeyLibrariesReady = Promise.all([
@@ -216,10 +216,10 @@
                 <div id="edit-devices-list" class="space-y-6"></div>
             </div>
             <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center p-4 z-50">
-                <div class="bg-gray-800 rounded-lg p-6 w-full max-w-md shadow-2xl border border-gray-700">
+                <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-700">
                     <h3 id="settings-modal-title" class="text-lg font-bold mb-4" data-i18n="settings.title">Settings</h3>
                     <div id="settings-modal-content" class="space-y-4"></div>
-                    <div class="mt-6 flex justify-end gap-4">
+                    <div class="mt-6 flex justify-end gap-4 sticky bottom-0 bg-gray-800 pt-4 border-t border-gray-700">
                         <button id="settings-modal-close" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" data-i18n="close">Close</button>
                         <button id="settings-modal-save" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg" data-i18n="save">Save</button>
                     </div>
@@ -588,6 +588,14 @@
                     document.getElementById('settings-modal-close').addEventListener('click', () => this.closeSettingsModal());
                     document.getElementById('settings-modal-save').addEventListener('click', () => this.saveSettings());
                     document.getElementById('api-settings-button').addEventListener('click', () => this.showApiSettings());
+                    
+                    // Add event listener to save expression button (using event delegation)
+                    document.getElementById('main-content').addEventListener('click', (event) => {
+                        if (event.target.closest('button')?.textContent.includes('Save expression') || 
+                            event.target.closest('button')?.dataset.i18n === 'saveExpression') {
+                            this.showExpressionOutput();
+                        }
+                    });
                 }
 
                 showApiSettings() {
@@ -659,64 +667,15 @@
                         this.homey = homeys[0];
                         if (!this.homey) throw new Error(this.t('errors.noHomey'));
                         
-                        console.log('Homey object:', this.homey);
-                        console.log('Homey remoteUrl:', this.homey.remoteUrl);
-                        console.log('Homey localUrl:', this.homey.localUrl);
-                        
                         console.log('Authenticating Homey...');
-                        await this.homey.authenticate();
+                        this.api = await this.homey.authenticate();
                         
-                        console.log('Waiting for HomeyAPI library...');
-                        await window.HomeyLibrariesReady;
-                        
-                        console.log('Creating HomeyAPI instance...');
-                        if (typeof HomeyAPI === 'undefined') {
-                            throw new Error('HomeyAPI library not loaded');
-                        }
-                        
-                        console.log('HomeyAPI available, creating API for Homey...');
-                        
-                        // Create HomeyAPI instance with the homey's URL and a bearer token
-                        console.log('Creating delegation token...');
-                        const token = await this.cloudApi.createDelegationToken({
-                            audience: this.homey._id
-                        });
-                        console.log('Got delegation token');
-                        
-                        const apiUrl = this.homey.remoteUrl || this.homey.localUrl;
-                        console.log('Creating HomeyAPI with URL:', apiUrl);
-                        
-                        // Create HomeyAPI instance with proper config
-                        this.api = new HomeyAPI({
-                            url: apiUrl,
-                            token: token.token
-                        });
-                        
-                        console.log('HomeyAPI instance created, connecting...');
-                        console.log('API object:', this.api);
-                        console.log('API keys:', Object.keys(this.api));
+                        console.log('✅ API created successfully');
                         console.log('API has devices?', !!this.api.devices);
                         console.log('API has zones?', !!this.api.zones);
                         
-                        // Check if API needs initialization
-                        if (typeof this.api.connect === 'function') {
-                            console.log('Calling api.connect()...');
-                            await this.api.connect();
-                            console.log('Connected to HomeyAPI');
-                        } else if (typeof this.api.init === 'function') {
-                            console.log('Calling api.init()...');
-                            await this.api.init();
-                            console.log('Initialized HomeyAPI');
-                        } else {
-                            console.log('API does not need explicit connection/init');
-                        }
-                        
-                        console.log('API object:', this.api);
-                        console.log('API has devices?', !!this.api.devices);
-                        console.log('API has zones?', !!this.api.zones);
-
                         if (!this.api.devices || !this.api.zones) {
-                            throw new Error('API object is missing required properties. Please check that you selected the correct scopes when creating your API client.');
+                            throw new Error('API missing required properties (devices or zones)');
                         }
 
                         document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
@@ -738,14 +697,15 @@
                 async fetchData() {
                     this.showLoader('Loading devices...');
                     try {
+                        console.log('Fetching devices and zones...');
+                        
                         const devices = await this.api.devices.getDevices();
                         const zones = await this.api.zones.getZones();
                         
                         this.allDevices = devices || {};
                         this.allZones = zones || {};
                         
-                        console.log('Total devices loaded:', Object.keys(this.allDevices).length);
-                        console.log('Total zones loaded:', Object.keys(this.allZones).length);
+                        console.log(`✅ Loaded ${Object.keys(this.allDevices).length} devices and ${Object.keys(this.allZones).length} zones`);
                         
                     } catch (error) { 
                         this.hideLoader();
@@ -762,29 +722,16 @@
                     
                     const allDevicesList = Object.values(this.allDevices);
                     
-                    const debugInfo = document.createElement('details');
-                    debugInfo.className = 'mb-6 bg-gray-900 p-4 rounded-lg border border-gray-600';
-                    debugInfo.innerHTML = `
-                        <summary class="cursor-pointer font-semibold text-yellow-400">${this.t('editDevices.debugTitle')}</summary>
-                        <div class="mt-4 space-y-2 max-h-64 overflow-y-auto">
-                            ${[...new Set(allDevicesList.map(d => d.driverId))].sort().map(driverId => 
-                                `<div class="text-sm font-mono text-gray-300">${driverId} (${allDevicesList.filter(d => d.driverId === driverId).length} devices)</div>`
-                            ).join('')}
-                        </div>
-                    `;
-                    container.appendChild(debugInfo);
-                    
                     const possibleDriverIds = ['booleantoolbox', 'logic', 'boolean', 'toolbox'];
                     let toolboxDevices = allDevicesList.filter(d => 
                         possibleDriverIds.some(id => d.driverId.toLowerCase().includes(id))
                     );
                     
                     if (toolboxDevices.length === 0) {
-                        container.innerHTML += `<div class="bg-yellow-700 p-4 rounded-lg text-center">
+                        container.innerHTML = `<div class="bg-yellow-700 p-4 rounded-lg text-center">
                             <p class="font-semibold mb-2">${this.t('editDevices.noDevices')}</p>
-                            <p class="text-sm">${this.t('editDevices.debugHelp')}</p>
                         </div>`;
-                        toolboxDevices = allDevicesList;
+                        return;
                     }
                     
                     const devicesByZone = this.groupDevicesByZone(toolboxDevices);
@@ -801,7 +748,10 @@
                                 <div class="bg-gray-700 p-4 rounded-lg">
                                     <div class="flex justify-between items-start mb-2">
                                         <span class="font-medium">${device.name}</span>
-                                        <button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-xs py-1 px-2 rounded-md">${this.t('editDevices.settings')}</button>
+                                        <div class="flex gap-2">
+                                            <button data-device-id="${device.id}" class="edit-expression-button bg-green-600 hover:bg-green-500 text-white text-xs py-1 px-2 rounded-md">Edit Expression</button>
+                                            <button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-xs py-1 px-2 rounded-md">${this.t('editDevices.settings')}</button>
+                                        </div>
                                     </div>
                                     <div class="text-xs text-gray-400 font-mono">${device.driverId}</div>
                                 </div>
@@ -810,6 +760,7 @@
                     });
                     
                     container.querySelectorAll('.open-settings-button').forEach(button => button.addEventListener('click', (e) => this.openSettingsModal(e.target.dataset.deviceId)));
+                    container.querySelectorAll('.edit-expression-button').forEach(button => button.addEventListener('click', (e) => this.editDeviceExpression(e.target.dataset.deviceId)));
                 }
 
                 renderDeviceCapabilityList() {
@@ -824,35 +775,97 @@
                         if (!devicesByZone[zoneId] || !this.allZones[zoneId]) return;
                         const zone = this.allZones[zoneId];
                         const zoneDevices = devicesByZone[zoneId];
-                        const zoneEl = document.createElement('div');
-                        zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>`;
-                        const deviceListEl = document.createElement('div');
-                        deviceListEl.className = 'space-y-4';
-                        zoneEl.appendChild(deviceListEl);
+                        
+                        // Zone wrapper
+                        const zoneWrapper = document.createElement('div');
+                        zoneWrapper.className = 'mb-4 border border-gray-600 rounded-lg overflow-hidden';
+                        
+                        // Zone header (collapsible)
+                        const zoneHeader = document.createElement('div');
+                        zoneHeader.className = 'bg-gray-700 p-4 cursor-pointer hover:bg-gray-650 transition-colors flex justify-between items-center';
+                        zoneHeader.innerHTML = `
+                            <h3 class="text-lg font-semibold">${zone.name}</h3>
+                            <svg class="zone-chevron w-5 h-5 transition-transform transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        `;
+                        
+                        // Zone content (devices)
+                        const zoneContent = document.createElement('div');
+                        zoneContent.className = 'zone-content hidden bg-gray-750 p-4 space-y-3';
                         
                         zoneDevices.forEach(device => {
                             if (!device.capabilitiesObj || Object.keys(device.capabilitiesObj).length === 0) return;
-                            const deviceEl = document.createElement('div');
-                            deviceEl.className = 'bg-gray-700 p-4 rounded-lg';
                             
-                            deviceEl.innerHTML = `
-                                <div class="mb-3">
+                            // Device wrapper
+                            const deviceWrapper = document.createElement('div');
+                            deviceWrapper.className = 'border border-gray-600 rounded-lg overflow-hidden';
+                            
+                            // Device header (collapsible)
+                            const deviceHeader = document.createElement('div');
+                            deviceHeader.className = 'bg-gray-700 p-3 cursor-pointer hover:bg-gray-650 transition-colors flex justify-between items-center';
+                            deviceHeader.innerHTML = `
+                                <div>
                                     <p class="font-semibold">${device.name}</p>
                                     <p class="text-xs text-gray-400 font-mono">${device.driverId}</p>
                                 </div>
-                                <div class="space-y-2">${Object.values(device.capabilitiesObj).map(cap => `
-                                    <label class="flex items-center space-x-3 cursor-pointer">
-                                        <input type="checkbox" data-device-id="${device.id}" data-capability-id="${cap.id}" class="capability-checkbox form-checkbox h-5 w-5 rounded bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500">
-                                        <span class="text-gray-300">${cap.title} <span class="text-xs text-gray-500">(${cap.id})</span></span>
-                                    </label>
-                                `).join('')}</div>
+                                <svg class="device-chevron w-5 h-5 transition-transform transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
                             `;
-                            deviceListEl.appendChild(deviceEl);
+                            
+                            // Device content (capabilities)
+                            const deviceContent = document.createElement('div');
+                            deviceContent.className = 'device-content hidden bg-gray-800 p-3 space-y-2';
+                            
+                            Object.values(device.capabilitiesObj).forEach(cap => {
+                                const label = document.createElement('label');
+                                label.className = 'flex items-center space-x-3 cursor-pointer hover:bg-gray-700 p-2 rounded';
+                                label.innerHTML = `
+                                    <input type="checkbox" data-device-id="${device.id}" data-capability-id="${cap.id}" class="capability-checkbox form-checkbox h-5 w-5 rounded bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500">
+                                    <span class="text-gray-300">${cap.title} <span class="text-xs text-gray-500">(${cap.id})</span></span>
+                                `;
+                                deviceContent.appendChild(label);
+                            });
+                            
+                            // Device click handler
+                            deviceHeader.addEventListener('click', () => {
+                                const isHidden = deviceContent.classList.contains('hidden');
+                                deviceContent.classList.toggle('hidden');
+                                const chevron = deviceHeader.querySelector('.device-chevron');
+                                if (isHidden) {
+                                    chevron.style.transform = 'rotate(90deg)';
+                                } else {
+                                    chevron.style.transform = 'rotate(0deg)';
+                                }
+                            });
+                            
+                            deviceWrapper.appendChild(deviceHeader);
+                            deviceWrapper.appendChild(deviceContent);
+                            zoneContent.appendChild(deviceWrapper);
                         });
-                        container.appendChild(zoneEl);
+                        
+                        // Zone click handler
+                        zoneHeader.addEventListener('click', () => {
+                            const isHidden = zoneContent.classList.contains('hidden');
+                            zoneContent.classList.toggle('hidden');
+                            const chevron = zoneHeader.querySelector('.zone-chevron');
+                            if (isHidden) {
+                                chevron.style.transform = 'rotate(90deg)';
+                            } else {
+                                chevron.style.transform = 'rotate(0deg)';
+                            }
+                        });
+                        
+                        zoneWrapper.appendChild(zoneHeader);
+                        zoneWrapper.appendChild(zoneContent);
+                        container.appendChild(zoneWrapper);
                     });
                     
-                    container.querySelectorAll('.capability-checkbox').forEach(checkbox => checkbox.addEventListener('change', (e) => this.handleCapabilitySelection(e.target)));
+                    // Add event listeners to all checkboxes
+                    container.querySelectorAll('.capability-checkbox').forEach(checkbox => {
+                        checkbox.addEventListener('change', (e) => this.handleCapabilitySelection(e.target));
+                    });
                 }
                 
                 renderSelectedCapabilities() {
@@ -873,6 +886,65 @@
                     nextButton.disabled = !(count >= 2 && count <= 10);
                 }
                 
+                showExpressionOutput() {
+                    const formula = document.getElementById('formula-input').value.trim();
+                    
+                    if (!formula) {
+                        alert('Please enter a formula');
+                        return;
+                    }
+                    
+                    // Build the output objects
+                    const devices = this.selectedCapabilities.map(cap => ({
+                        deviceId: cap.deviceId,
+                        capabilityId: cap.capabilityId
+                    }));
+                    
+                    // Show output in a modal or alert
+                    const output = {
+                        devices: devices,
+                        formula: formula
+                    };
+                    
+                    const outputJson = JSON.stringify(output, null, 2);
+                    
+                    // Create a nice modal for output
+                    const modal = document.createElement('div');
+                    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50';
+                    modal.innerHTML = `
+                        <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-700">
+                            <h3 class="text-lg font-bold mb-4">Expression Output</h3>
+                            <p class="text-sm text-gray-400 mb-4">Copy this JSON and use it in your Boolean Toolbox device settings:</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-md font-semibold mb-2">Devices JSON:</h4>
+                                <textarea readonly class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg font-mono text-sm" rows="8">${JSON.stringify(devices, null, 2)}</textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-md font-semibold mb-2">Formula:</h4>
+                                <textarea readonly class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg font-mono text-sm" rows="2">${formula}</textarea>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="text-md font-semibold mb-2">Variable Mapping:</h4>
+                                <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                                    ${this.selectedCapabilities.map((cap, index) => 
+                                        `<div class="text-sm text-gray-300"><span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + index)}:</span> ${cap.deviceName} - ${cap.capabilityTitle}</div>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end gap-4">
+                                <button onclick="this.closest('.fixed').remove()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Close</button>
+                                <button onclick="navigator.clipboard.writeText(${JSON.stringify(outputJson).replace(/'/g, "\\'")}); alert('Copied to clipboard!')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Copy All</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(modal);
+                }
+
                 renderVariableMapping() {
                      const list = document.getElementById('variable-mapping-list');
                      list.innerHTML = '';
@@ -938,17 +1010,204 @@
                     
                     this.showLoader('Loading settings...');
                     try {
-                        const settings = await this.api.devices.getDeviceSettings({ id: deviceId });
+                        // Get settings schema (structure with types, hints, etc.)
+                        const settingsSchema = await this.api.devices.getDeviceSettingsObj({ id: deviceId });
+                        console.log('Settings schema received:', settingsSchema);
+                        console.log('Device settings values:', device.settings);
+                        
+                        // Merge schema with actual values from device
+                        const mergeValues = (schema, values) => {
+                            if (Array.isArray(schema)) {
+                                return schema.map(item => {
+                                    if (item.type === 'group' && item.children) {
+                                        return {
+                                            ...item,
+                                            children: item.children.map(child => ({
+                                                ...child,
+                                                value: values?.[child.id] !== undefined ? values[child.id] : child.value
+                                            }))
+                                        };
+                                    } else if (item.id) {
+                                        return {
+                                            ...item,
+                                            value: values?.[item.id] !== undefined ? values[item.id] : item.value
+                                        };
+                                    }
+                                    return item;
+                                });
+                            }
+                            return schema;
+                        };
+                        
+                        const settingsWithValues = mergeValues(settingsSchema, device.settings);
+                        console.log('Merged settings:', settingsWithValues);
+                        
                         let settingsHtml = '';
-                        for (const key in settings) {
-                            settingsHtml += `<div><label for="setting-${key}" class="block text-sm font-medium text-gray-300">${key}</label><input type="text" id="setting-${key}" data-key="${key}" class="mt-1 block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" value="${settings[key]}"></div>`;
+                        
+                        // Check if settings is an array (Homey settings structure)
+                        if (Array.isArray(settingsWithValues)) {
+                            settingsWithValues.forEach(group => {
+                                if (group.type === 'group' && group.children) {
+                                    // Render group title
+                                    settingsHtml += `<div class="mb-4"><h4 class="text-md font-semibold text-gray-200 mb-3">${group.title || 'Settings'}</h4>`;
+                                    
+                                    // Render children
+                                    group.children.forEach(setting => {
+                                        settingsHtml += this.renderSettingField(setting);
+                                    });
+                                    
+                                    settingsHtml += `</div>`;
+                                } else {
+                                    // Single setting (not in a group)
+                                    settingsHtml += this.renderSettingField(group);
+                                }
+                            });
+                        } else {
+                            // Fallback for simple key-value settings
+                            for (const key in settingsWithValues) {
+                                const value = settingsWithValues[key];
+                                settingsHtml += this.renderSettingField({ id: key, title: key, value: value });
+                            }
                         }
+                        
                         content.innerHTML = settingsHtml || `<p>${this.t('settings.noSettings')}</p>`;
                     } catch(error) { 
+                        console.error('Error loading settings:', error);
                         content.innerHTML = `<p class="text-red-400">${this.t('settings.error')} ${error.message}</p>`; 
                     } finally {
                         this.hideLoader();
                     }
+                }
+
+                async editDeviceExpression(deviceId) {
+                    const device = this.allDevices[deviceId];
+                    if (!device || !device.settings) {
+                        alert('Could not load device settings');
+                        return;
+                    }
+                    
+                    this.showLoader('Loading expression...');
+                    
+                    try {
+                        const settings = device.settings;
+                        console.log('Editing expression for device:', device.name, settings);
+                        
+                        // Parse input_links to get selected capabilities
+                        const inputLinks = settings.input_links || [];
+                        
+                        if (!Array.isArray(inputLinks) || inputLinks.length === 0) {
+                            alert('No input links found on this device');
+                            this.hideLoader();
+                            return;
+                        }
+                        
+                        // Build selectedCapabilities array
+                        this.selectedCapabilities = [];
+                        
+                        for (const link of inputLinks) {
+                            const linkedDevice = this.allDevices[link.deviceId];
+                            if (!linkedDevice) {
+                                console.warn(`Device not found: ${link.deviceId}`);
+                                continue;
+                            }
+                            
+                            const capability = linkedDevice.capabilitiesObj?.[link.capability];
+                            if (!capability) {
+                                console.warn(`Capability not found: ${link.capability} on device ${linkedDevice.name}`);
+                                continue;
+                            }
+                            
+                            this.selectedCapabilities.push({
+                                deviceId: link.deviceId,
+                                capabilityId: link.capability,
+                                deviceName: link.deviceName || linkedDevice.name,
+                                capabilityTitle: capability.title
+                            });
+                        }
+                        
+                        console.log('Loaded capabilities:', this.selectedCapabilities);
+                        
+                        // Get the first enabled formula
+                        const formulas = settings.formulas || [];
+                        let formulaText = '';
+                        
+                        if (Array.isArray(formulas) && formulas.length > 0) {
+                            const enabledFormula = formulas.find(f => f.enabled !== false);
+                            if (enabledFormula) {
+                                formulaText = enabledFormula.expression || '';
+                            }
+                        }
+                        
+                        console.log('Loaded formula:', formulaText);
+                        
+                        // Navigate to step 2
+                        this.hideLoader();
+                        this.showScreen('create-expression-step2-screen');
+                        
+                        // Set formula in textarea
+                        document.getElementById('formula-input').value = formulaText;
+                        
+                        // Re-render the variable mapping
+                        this.renderVariableMapping();
+                        
+                    } catch (error) {
+                        console.error('Error loading expression:', error);
+                        this.hideLoader();
+                        alert('Failed to load expression: ' + error.message);
+                    }
+                }
+
+                renderSettingField(setting) {
+                    const { id, title, value, type, hint, min, max, units } = setting;
+                    const displayValue = typeof value === 'object' ? JSON.stringify(value, null, 2) : value;
+                    const isObject = typeof value === 'object';
+                    
+                    let fieldHtml = `<div class="mb-4">`;
+                    fieldHtml += `<label for="setting-${id}" class="block text-sm font-medium text-gray-300 mb-1">${title || id}</label>`;
+                    
+                    if (hint) {
+                        fieldHtml += `<p class="text-xs text-gray-500 mb-2">${hint}</p>`;
+                    }
+                    
+                    // Determine field type
+                    if (type === 'textarea' || isObject) {
+                        const rows = isObject ? Math.min(10, displayValue.split('\n').length + 1) : 4;
+                        fieldHtml += `
+                            <textarea 
+                                id="setting-${id}" 
+                                data-setting-id="${id}" 
+                                data-is-object="${isObject}"
+                                class="block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm"
+                                rows="${rows}"
+                            >${displayValue}</textarea>`;
+                    } else if (type === 'number') {
+                        fieldHtml += `
+                            <div class="flex gap-2 items-center">
+                                <input 
+                                    type="number" 
+                                    id="setting-${id}" 
+                                    data-setting-id="${id}"
+                                    ${min !== undefined ? `min="${min}"` : ''}
+                                    ${max !== undefined ? `max="${max}"` : ''}
+                                    class="flex-grow p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500"
+                                    value="${value}"
+                                >
+                                ${units ? `<span class="text-gray-400 text-sm">${units.en || units}</span>` : ''}
+                            </div>`;
+                    } else {
+                        // Default text input
+                        fieldHtml += `
+                            <input 
+                                type="text" 
+                                id="setting-${id}" 
+                                data-setting-id="${id}"
+                                class="block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500"
+                                value="${displayValue}"
+                            >`;
+                    }
+                    
+                    fieldHtml += `</div>`;
+                    return fieldHtml;
                 }
 
                 closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
@@ -956,13 +1215,34 @@
                 async saveSettings() {
                     const deviceId = document.getElementById('settings-modal-save').dataset.deviceId;
                     const content = document.getElementById('settings-modal-content');
-                    const inputs = content.querySelectorAll('input');
+                    const fields = content.querySelectorAll('[data-setting-id]');
                     const newSettings = {};
-                    inputs.forEach(input => { newSettings[input.dataset.key] = input.value; });
                     
-                    this.showLoader('Saving settings...');
                     try {
-                        await this.api.devices.updateDeviceSettings({ id: deviceId, data: newSettings });
+                        fields.forEach(field => {
+                            const id = field.dataset.settingId;
+                            const isObject = field.dataset.isObject === 'true';
+                            const value = field.value.trim();
+                            
+                            if (isObject) {
+                                // Parse JSON back to object
+                                try {
+                                    newSettings[id] = JSON.parse(value);
+                                } catch (e) {
+                                    throw new Error(`Invalid JSON for field "${id}": ${e.message}`);
+                                }
+                            } else if (field.type === 'number') {
+                                // Convert to number
+                                newSettings[id] = parseFloat(value);
+                            } else {
+                                newSettings[id] = value;
+                            }
+                        });
+                        
+                        console.log('Saving settings:', newSettings);
+                        
+                        this.showLoader('Saving settings...');
+                        await this.api.devices.setDeviceSettings({ id: deviceId, settings: newSettings });
                         this.hideLoader();
                         alert(this.t('settings.saved'));
                         this.closeSettingsModal();
