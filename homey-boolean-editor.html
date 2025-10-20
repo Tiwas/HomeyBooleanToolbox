@@ -193,18 +193,21 @@
 
             <div id="login-screen" class="screen text-center p-16"></div>
             <div id="main-menu-screen" class="screen">
-                <div class="grid md:grid-cols-2 gap-6">
+                <h2 class="text-xl font-bold mb-6 text-center">What would you like to work with?</h2>
+                <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                     <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('edit-devices-screen')">
-                        <h3 class="text-lg font-semibold mb-2" data-i18n="menu.editDevices">Edit existing devices</h3>
-                        <p class="text-gray-400" data-i18n="menu.editDevicesDesc">View and modify settings for devices created with Boolean Toolbox.</p>
+                        <h3 class="text-lg font-semibold mb-2">⚙️ Manage Existing Devices</h3>
+                        <p class="text-gray-400 text-sm">View and modify settings for existing Boolean Toolbox devices.</p>
                     </div>
-                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('create-expression-step1-screen')">
-                        <h3 class="text-lg font-semibold mb-2" data-i18n="menu.createExpression">Create new expression</h3>
-                        <p class="text-gray-400" data-i18n="menu.createExpressionDesc">Select devices and capabilities to build a new boolean formula.</p>
+                    <div class="bg-gradient-to-br from-blue-600 to-blue-700 p-6 rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all cursor-pointer shadow-lg" onclick="app.startLogicUnitFlow()">
+                        <h3 class="text-lg font-semibold mb-2">🔢 Logic Unit</h3>
+                        <p class="text-gray-200 text-sm">Create or edit formulas with predefined inputs (A, B, C...).</p>
+                        <p class="text-xs text-blue-200 mt-2">• Multiple formulas supported</p>
                     </div>
-                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('json-import-screen')">
-                        <h3 class="text-lg font-semibold mb-2" data-i18n="menu.importJson">Import from JSON</h3>
-                        <p class="text-gray-400" data-i18n="menu.importJsonDesc">Start with an existing expression by pasting JSON data.</p>
+                    <div class="bg-gradient-to-br from-green-600 to-green-700 p-6 rounded-lg hover:from-green-500 hover:to-green-600 transition-all cursor-pointer shadow-lg" onclick="app.startLogicDeviceFlow()">
+                        <h3 class="text-lg font-semibold mb-2">🔗 Logic Device</h3>
+                        <p class="text-gray-200 text-sm">Connect device capabilities and create boolean expressions.</p>
+                        <p class="text-xs text-green-200 mt-2">• Single formula with device inputs</p>
                     </div>
                 </div>
             </div>
@@ -225,61 +228,112 @@
                     </div>
                 </div>
             </div>
-            <div id="create-expression-step1-screen" class="screen">
+            <div id="logic-unit-select-screen" class="screen">
                 <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
-                    <span data-i18n="back">← Back to menu</span>
+                    <span>← Back to menu</span>
+                </button>
+                <h2 class="text-xl font-bold mb-6">Logic Unit</h2>
+                <div class="grid md:grid-cols-2 gap-6 max-w-4xl">
+                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('logic-unit-port-screen')">
+                        <h3 class="text-lg font-semibold mb-2">➕ Create New</h3>
+                        <p class="text-gray-400">Create a new Logic Unit with custom formulas.</p>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.selectExistingLogicUnit()">
+                        <h3 class="text-lg font-semibold mb-2">✏️ Edit Existing</h3>
+                        <p class="text-gray-400">Modify an existing Logic Unit device.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="logic-unit-port-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('logic-unit-select-screen')">
+                    <span>← Back</span>
+                </button>
+                <h2 class="text-xl font-bold mb-6">How many inputs?</h2>
+                <p class="text-gray-400 mb-6">Select the number of inputs (A, B, C...) for your Logic Unit.</p>
+                <div class="grid grid-cols-3 md:grid-cols-5 gap-4 max-w-4xl">
+                    ${[2,3,4,5,6,7,8,9,10].map(num => `
+                        <button onclick="app.setLogicUnitPorts(${num})" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">
+                            ${num}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div id="logic-unit-editor-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('logic-unit-select-screen')">
+                    <span>← Back</span>
+                </button>
+                <h2 class="text-xl font-bold mb-4">Logic Unit Formula Editor</h2>
+                <div id="logic-unit-inputs-info" class="bg-gray-700 p-4 rounded-lg mb-6"></div>
+                
+                <div class="space-y-6" id="logic-unit-formulas-container"></div>
+                
+                <button onclick="app.addLogicUnitFormula()" class="mt-4 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">
+                    ➕ Add Formula
+                </button>
+                
+                <button onclick="app.saveLogicUnit()" class="mt-6 w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg">
+                    💾 Save Logic Unit
+                </button>
+            </div>
+            
+            <div id="logic-device-select-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
+                    <span>← Back to menu</span>
+                </button>
+                <h2 class="text-xl font-bold mb-6">Logic Device</h2>
+                <div class="grid md:grid-cols-2 gap-6 max-w-4xl">
+                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('logic-device-editor-screen')">
+                        <h3 class="text-lg font-semibold mb-2">➕ Create New</h3>
+                        <p class="text-gray-400">Create a new Logic Device with device capabilities.</p>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.selectExistingLogicDevice()">
+                        <h3 class="text-lg font-semibold mb-2">✏️ Edit Existing</h3>
+                        <p class="text-gray-400">Modify an existing Logic Device.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="logic-device-editor-screen" class="screen">
+                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('logic-device-select-screen')">
+                    <span>← Back</span>
                 </button>
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="flex-grow">
-                        <h2 class="text-xl font-bold mb-4" data-i18n="step1.title">Step 1: Select devices and capabilities</h2>
-                        <p class="text-gray-400 mb-6" data-i18n="step1.description">Select between 2 and 10 capabilities to include in the expression.</p>
-                        <div id="device-capability-list" class="space-y-6"></div>
+                        <h2 class="text-xl font-bold mb-4">Select Devices and Capabilities</h2>
+                        <p class="text-gray-400 mb-6">Select between 2 and 10 capabilities (A-J).</p>
+                        <div id="logic-device-capability-list" class="space-y-4"></div>
                     </div>
-                    <aside class="w-full lg:w-1/3 lg:sticky top-8 self-start bg-gray-900 p-6 rounded-lg border border-gray-700">
-                        <h3 class="text-lg font-semibold mb-4">
-                            <span data-i18n="step1.selected">Selected capabilities</span> (<span id="selected-count">0</span>/10)
-                        </h3>
-                        <ul id="selected-capabilities-list" class="space-y-2 mb-6 h-64 overflow-y-auto"></ul>
-                        <button id="next-step-button" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-opacity disabled:opacity-50 disabled:cursor-not-allowed" disabled data-i18n="next">Next →</button>
+                    <aside class="w-full lg:w-2/5 lg:sticky top-8 self-start space-y-6">
+                        <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
+                            <h3 class="text-lg font-semibold mb-4">
+                                Selected (<span id="logic-device-count">0</span>/10)
+                            </h3>
+                            <ul id="logic-device-selected-list" class="space-y-2 mb-4 max-h-64 overflow-y-auto"></ul>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
+                            <h3 class="text-lg font-semibold mb-2">Formula</h3>
+                            <p class="text-xs text-gray-400 mb-2">Use A-J and operators AND, OR, NOT, XOR, ().</p>
+                            <textarea id="logic-device-formula" class="w-full h-32 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm" placeholder="(A AND B) OR NOT C"></textarea>
+                            
+                            <div id="logic-device-truth-table" class="mt-4"></div>
+                        </div>
+                        
+                        <button onclick="app.saveLogicDevice()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg">
+                            💾 Save Logic Device
+                        </button>
                     </aside>
                 </div>
             </div>
-            <div id="create-expression-step2-screen" class="screen">
-                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('create-expression-step1-screen')">
-                    <span data-i18n="backToSelection">← Back to selection</span>
-                </button>
-                <h2 class="text-xl font-bold mb-4" data-i18n="step2.title">Step 2: Build boolean formula</h2>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="text-lg font-semibold mb-2" data-i18n="step2.yourVariables">Your selected variables:</h3>
-                        <ul id="variable-mapping-list" class="space-y-1 bg-gray-900 p-4 rounded-lg border border-gray-700"></ul>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold mb-2" data-i18n="step2.formulaEditor">Formula editor</h3>
-                        <p class="text-sm text-gray-400 mb-2" data-i18n="step2.formulaHelp">Use variables A-J and operators AND, OR, NOT, XOR and parentheses ().</p>
-                        <textarea id="formula-input" class="w-full h-48 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder="(A AND B) OR NOT C"></textarea>
-                        <button class="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg" data-i18n="saveExpression">Save expression</button>
-                    </div>
-                </div>
-            </div>
+            
             <div id="json-import-screen" class="screen">
                 <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
-                    <span data-i18n="back">← Back to menu</span>
+                    <span>← Back to menu</span>
                 </button>
-                <h2 class="text-xl font-bold mb-4" data-i18n="import.title">Import from JSON</h2>
-                <div class="space-y-6">
-                    <div>
-                        <h3 class="text-lg font-semibold mb-2" data-i18n="import.devicesTitle">Devices and capabilities</h3>
-                        <p class="text-sm text-gray-400 mb-2" data-i18n="import.devicesHelp">Paste a JSON array with objects containing 'deviceId' and 'capabilityId'.</p>
-                        <textarea id="json-devices-input" class="w-full h-48 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder='[{"deviceId": "...", "capabilityId": "..."}, ...]'></textarea>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold mb-2" data-i18n="import.formulaTitle">Formula (optional)</h3>
-                        <p class="text-sm text-gray-400 mb-2" data-i18n="import.formulaHelp">Paste the boolean formula as text.</p>
-                        <textarea id="json-formula-input" class="w-full h-24 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono" placeholder="(A AND B) OR NOT C"></textarea>
-                    </div>
-                    <button id="json-import-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg" data-i18n="import.button">Import and continue</button>
-                </div>
+                <h2 class="text-xl font-bold mb-4">This feature has been redesigned</h2>
+                <p class="text-gray-400 mb-6">Please use the new Logic Unit or Logic Device flows from the main menu.</p>
             </div>
         </main>
         
@@ -584,19 +638,9 @@
                         if (event.target.id === 'login-button') this.login();
                     });
                     document.getElementById('logout-button').addEventListener('click', () => this.logout());
-                    document.getElementById('next-step-button').addEventListener('click', () => this.showScreen('create-expression-step2-screen'));
-                    document.getElementById('json-import-button').addEventListener('click', () => this.handleJsonImport());
                     document.getElementById('settings-modal-close').addEventListener('click', () => this.closeSettingsModal());
                     document.getElementById('settings-modal-save').addEventListener('click', () => this.saveSettings());
                     document.getElementById('api-settings-button').addEventListener('click', () => this.showApiSettings());
-                    
-                    // Add event listener to save expression button (using event delegation)
-                    document.getElementById('main-content').addEventListener('click', (event) => {
-                        if (event.target.closest('button')?.textContent.includes('Save expression') || 
-                            event.target.closest('button')?.dataset.i18n === 'saveExpression') {
-                            this.showExpressionOutput();
-                        }
-                    });
                 }
 
                 showApiSettings() {
@@ -1086,6 +1130,217 @@
                     } finally {
                         this.hideLoader();
                     }
+                }
+
+                renderLogicDeviceCapabilityList() {
+                    const container = document.getElementById('logic-device-capability-list');
+                    if (!container) return;
+                    
+                    container.innerHTML = '';
+                    
+                    const allDevicesList = Object.values(this.allDevices);
+                    const devicesByZone = this.groupDevicesByZone(allDevicesList);
+                    const sortedZones = this.sortZones(Object.keys(devicesByZone));
+                    
+                    sortedZones.forEach(zoneId => {
+                        if (!devicesByZone[zoneId] || !this.allZones[zoneId]) return;
+                        const zone = this.allZones[zoneId];
+                        const zoneDevices = devicesByZone[zoneId];
+                        
+                        const zoneWrapper = document.createElement('div');
+                        zoneWrapper.className = 'mb-4 border border-gray-600 rounded-lg overflow-hidden';
+                        
+                        const zoneHeader = document.createElement('div');
+                        zoneHeader.className = 'bg-gray-700 p-3 cursor-pointer hover:bg-gray-650 flex justify-between items-center';
+                        zoneHeader.innerHTML = `
+                            <h3 class="font-semibold">${zone.name}</h3>
+                            <svg class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        `;
+                        
+                        const zoneContent = document.createElement('div');
+                        zoneContent.className = 'hidden bg-gray-750 p-3 space-y-2';
+                        
+                        zoneDevices.forEach(device => {
+                            if (!device.capabilitiesObj || Object.keys(device.capabilitiesObj).length === 0) return;
+                            
+                            const deviceEl = document.createElement('div');
+                            deviceEl.className = 'bg-gray-700 p-2 rounded';
+                            deviceEl.innerHTML = `<div class="font-medium text-sm mb-2">${device.name}</div>`;
+                            
+                            const capsEl = document.createElement('div');
+                            capsEl.className = 'space-y-1 pl-2';
+                            
+                            Object.values(device.capabilitiesObj).forEach(cap => {
+                                const isSelected = this.logicDeviceCapabilities.some(
+                                    c => c.deviceId === device.id && c.capabilityId === cap.id
+                                );
+                                
+                                const label = document.createElement('label');
+                                label.className = 'flex items-center gap-2 text-sm cursor-pointer hover:bg-gray-600 p-1 rounded';
+                                label.innerHTML = `
+                                    <input type="checkbox" 
+                                        ${isSelected ? 'checked' : ''}
+                                        data-device-id="${device.id}" 
+                                        data-capability-id="${cap.id}"
+                                        data-device-name="${device.name}"
+                                        data-capability-title="${cap.title}"
+                                        class="form-checkbox h-4 w-4">
+                                    <span>${cap.title}</span>
+                                `;
+                                
+                                const checkbox = label.querySelector('input');
+                                checkbox.addEventListener('change', (e) => this.handleLogicDeviceCapabilityChange(e.target));
+                                
+                                capsEl.appendChild(label);
+                            });
+                            
+                            deviceEl.appendChild(capsEl);
+                            zoneContent.appendChild(deviceEl);
+                        });
+                        
+                        zoneHeader.addEventListener('click', () => {
+                            zoneContent.classList.toggle('hidden');
+                            zoneHeader.querySelector('svg').style.transform = 
+                                zoneContent.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
+                        });
+                        
+                        zoneWrapper.appendChild(zoneHeader);
+                        zoneWrapper.appendChild(zoneContent);
+                        container.appendChild(zoneWrapper);
+                    });
+                    
+                    this.updateLogicDeviceSelectedList();
+                }
+
+                handleLogicDeviceCapabilityChange(checkbox) {
+                    const {deviceId, capabilityId, deviceName, capabilityTitle} = checkbox.dataset;
+                    
+                    if (checkbox.checked) {
+                        if (this.logicDeviceCapabilities.length < 10) {
+                            this.logicDeviceCapabilities.push({deviceId, capabilityId, deviceName, capabilityTitle});
+                        } else {
+                            checkbox.checked = false;
+                            alert('Maximum 10 capabilities allowed');
+                        }
+                    } else {
+                        this.logicDeviceCapabilities = this.logicDeviceCapabilities.filter(
+                            c => !(c.deviceId === deviceId && c.capabilityId === capabilityId)
+                        );
+                    }
+                    
+                    this.updateLogicDeviceSelectedList();
+                }
+
+                updateLogicDeviceSelectedList() {
+                    const list = document.getElementById('logic-device-selected-list');
+                    const count = document.getElementById('logic-device-count');
+                    
+                    count.textContent = this.logicDeviceCapabilities.length;
+                    
+                    list.innerHTML = this.logicDeviceCapabilities.length === 0 
+                        ? '<li class="text-gray-500 text-sm italic">No capabilities selected</li>'
+                        : this.logicDeviceCapabilities.map((cap, idx) => `
+                            <li class="bg-gray-700 p-2 rounded text-sm">
+                                <span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + idx)}:</span>
+                                ${cap.deviceName} - ${cap.capabilityTitle}
+                            </li>
+                        `).join('');
+                    
+                    // Update truth table when formula changes
+                    const formulaInput = document.getElementById('logic-device-formula');
+                    if (formulaInput) {
+                        formulaInput.addEventListener('keyup', () => {
+                            const formula = formulaInput.value;
+                            if (formula && this.logicDeviceCapabilities.length > 0) {
+                                this.renderTruthTable(formula, this.logicDeviceCapabilities.length, 'logic-device-truth-table');
+                            }
+                        });
+                    }
+                }
+
+                saveLogicUnit() {
+                    if (this.logicUnitFormulas.length === 0 || !this.logicUnitFormulas[0].expression) {
+                        alert('Please add at least one formula');
+                        return;
+                    }
+                    
+                    const output = {
+                        formulas: this.logicUnitFormulas.map(f => ({
+                            id: f.id,
+                            name: f.name,
+                            expression: f.expression,
+                            enabled: f.enabled !== false,
+                            timeout: 30,
+                            firstImpression: false
+                        }))
+                    };
+                    
+                    this.showOutputModal('Logic Unit Output', output, 
+                        'Copy this JSON and paste it in the "Formulas (JSON)" field in your Logic Unit device settings.');
+                }
+
+                saveLogicDevice() {
+                    if (this.logicDeviceCapabilities.length < 2 || this.logicDeviceCapabilities.length > 10) {
+                        alert('Please select between 2 and 10 capabilities');
+                        return;
+                    }
+                    
+                    const formula = document.getElementById('logic-device-formula').value.trim();
+                    if (!formula) {
+                        alert('Please enter a formula');
+                        return;
+                    }
+                    
+                    const output = {
+                        input_links: this.logicDeviceCapabilities.map((cap, idx) => ({
+                            input: String.fromCharCode(97 + idx), // a, b, c...
+                            deviceId: cap.deviceId,
+                            capability: cap.capabilityId,
+                            deviceName: cap.deviceName
+                        })),
+                        formulas: [{
+                            id: 'formula_1',
+                            name: 'Main Formula',
+                            expression: formula,
+                            enabled: true,
+                            timeout: 30,
+                            firstImpression: false
+                        }]
+                    };
+                    
+                    this.showOutputModal('Logic Device Output', output,
+                        'Copy these JSON objects and paste them in the respective fields in your Logic Device settings.');
+                }
+
+                showOutputModal(title, output, instructions) {
+                    const modal = document.createElement('div');
+                    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50';
+                    modal.innerHTML = `
+                        <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+                            <h3 class="text-lg font-bold mb-4">${title}</h3>
+                            <p class="text-sm text-gray-400 mb-4">${instructions}</p>
+                            
+                            ${output.input_links ? `
+                                <div class="mb-4">
+                                    <h4 class="font-semibold mb-2">Input Links (JSON):</h4>
+                                    <textarea readonly class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg font-mono text-sm" rows="8">${JSON.stringify(output.input_links, null, 2)}</textarea>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="mb-6">
+                                <h4 class="font-semibold mb-2">Formulas (JSON):</h4>
+                                <textarea readonly class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg font-mono text-sm" rows="12">${JSON.stringify(output.formulas, null, 2)}</textarea>
+                            </div>
+                            
+                            <div class="flex justify-end gap-4">
+                                <button onclick="this.closest('.fixed').remove()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Close</button>
+                                <button onclick="navigator.clipboard.writeText('${JSON.stringify(output, null, 2).replace(/'/g, "\\'")}'); alert('Copied to clipboard!')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Copy All JSON</button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
                 }
 
                 async editDeviceFormula(deviceId) {
