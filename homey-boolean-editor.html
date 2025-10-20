@@ -488,6 +488,7 @@ a or (b and c)"></textarea>
                     this.logicUnitFormulas = [];
                     this.logicUnitPorts = 0;
                     this.logicDeviceCapabilities = [];
+                    this.evaluationDebounceTimer = null; // For debouncing truth table updates
                     this.init();
                 }
 
@@ -1018,14 +1019,23 @@ a or (b and c)"></textarea>
                         const newInput = formulaInput.cloneNode(true);
                         formulaInput.parentNode.replaceChild(newInput, formulaInput);
                         
-                        // Add new listener
+                        // Add new listener with debouncing to reduce console spam
                         newInput.addEventListener('input', () => {
                             const formula = newInput.value.trim();
-                            this.updateLogicDeviceTruthTable(formula);
+                            
+                            // Clear previous debounce timer
+                            if (this.evaluationDebounceTimer) {
+                                clearTimeout(this.evaluationDebounceTimer);
+                            }
+                            
+                            // Only evaluate after user stops typing for 500ms
+                            this.evaluationDebounceTimer = setTimeout(() => {
+                                this.updateLogicDeviceTruthTable(formula);
+                            }, 500);
                         });
                     }
                     
-                    // Update truth table immediately with current formula
+                    // Update truth table immediately with current formula (non-debounced)
                     if (currentFormula.trim()) {
                         this.updateLogicDeviceTruthTable(currentFormula.trim());
                     }
@@ -1714,8 +1724,21 @@ A * B + !C"
 
                 updateLogicUnitFormulaExpression(idx, expr) {
                     this.logicUnitFormulas[idx].expression = expr;
+                    
+                    // Clear previous debounce timer
+                    if (this.evaluationDebounceTimer) {
+                        clearTimeout(this.evaluationDebounceTimer);
+                    }
+                    
+                    // Only evaluate after user stops typing for 500ms
                     if (expr) {
-                        this.renderTruthTable(expr, this.logicUnitPorts, `truth-table-${idx}`);
+                        this.evaluationDebounceTimer = setTimeout(() => {
+                            this.renderTruthTable(expr, this.logicUnitPorts, `truth-table-${idx}`);
+                        }, 500);
+                    } else {
+                        // Clear truth table immediately if expression is empty
+                        const container = document.getElementById(`truth-table-${idx}`);
+                        if (container) container.innerHTML = '';
                     }
                 }
 
@@ -1878,7 +1901,7 @@ A * B + !C"
                             const resultClass = result === 1 ? 'bg-green-700' : 'bg-red-700';
                             rowHtml += `<td class="border border-gray-500 p-1 text-center font-bold ${resultClass}">${result}</td>`;
                         }
-                         
+                        
                         rowHtml += '</tr>';
                         html += rowHtml;
                     }
