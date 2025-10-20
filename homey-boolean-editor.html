@@ -1385,7 +1385,20 @@
                         console.log('Editing formulas for Logic Unit:', device.name, settings);
                         
                         // Load formulas
-                        this.logicUnitFormulas = settings.formulas || [];
+                        let formulas = settings.formulas || [];
+                        
+                        // If it's a string, parse it as JSON
+                        if (typeof formulas === 'string') {
+                            try {
+                                formulas = JSON.parse(formulas);
+                                console.log('Parsed formulas from JSON string');
+                            } catch (e) {
+                                console.warn('Failed to parse formulas JSON:', e);
+                                formulas = [];
+                            }
+                        }
+                        
+                        this.logicUnitFormulas = formulas;
                         if (this.logicUnitFormulas.length === 0) {
                             this.logicUnitFormulas = [{id: 'formula_1', name: 'My Formula', expression: '', enabled: true}];
                         }
@@ -1521,10 +1534,23 @@
                         }
                         
                         // Parse input_links to get selected capabilities
-                        const inputLinks = settings.input_links || [];
+                        let inputLinks = settings.input_links || [];
                         
                         console.log('Input links type:', typeof inputLinks);
                         console.log('Input links is array?', Array.isArray(inputLinks));
+                        
+                        // If it's a string, parse it as JSON
+                        if (typeof inputLinks === 'string') {
+                            try {
+                                inputLinks = JSON.parse(inputLinks);
+                                console.log('Parsed input links from JSON string');
+                            } catch (e) {
+                                this.hideLoader();
+                                alert('Failed to parse input links JSON: ' + e.message);
+                                return;
+                            }
+                        }
+                        
                         console.log('Input links length:', inputLinks.length);
                         console.log('Input links content:', JSON.stringify(inputLinks, null, 2));
                         
@@ -1575,7 +1601,19 @@
                         }
                         
                         // Get the first enabled formula
-                        const formulas = settings.formulas || [];
+                        let formulas = settings.formulas || [];
+                        
+                        // If it's a string, parse it as JSON
+                        if (typeof formulas === 'string') {
+                            try {
+                                formulas = JSON.parse(formulas);
+                                console.log('Parsed formulas from JSON string');
+                            } catch (e) {
+                                console.warn('Failed to parse formulas JSON:', e);
+                                formulas = [];
+                            }
+                        }
+                        
                         let formulaText = '';
                         
                         if (Array.isArray(formulas) && formulas.length > 0) {
