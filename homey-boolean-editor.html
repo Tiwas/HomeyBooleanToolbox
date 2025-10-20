@@ -252,11 +252,15 @@
                 <h2 class="text-xl font-bold mb-6">How many inputs?</h2>
                 <p class="text-gray-400 mb-6">Select the number of inputs (A, B, C...) for your Logic Unit.</p>
                 <div class="grid grid-cols-3 md:grid-cols-5 gap-4 max-w-4xl">
-                    ${[2,3,4,5,6,7,8,9,10].map(num => `
-                        <button onclick="window.app.setLogicUnitPorts(${num})" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">
-                            ${num}
-                        </button>
-                    `).join('')}
+                    <button onclick="window.app.setLogicUnitPorts(2)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">2</button>
+                    <button onclick="window.app.setLogicUnitPorts(3)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">3</button>
+                    <button onclick="window.app.setLogicUnitPorts(4)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">4</button>
+                    <button onclick="window.app.setLogicUnitPorts(5)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">5</button>
+                    <button onclick="window.app.setLogicUnitPorts(6)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">6</button>
+                    <button onclick="window.app.setLogicUnitPorts(7)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">7</button>
+                    <button onclick="window.app.setLogicUnitPorts(8)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">8</button>
+                    <button onclick="window.app.setLogicUnitPorts(9)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">9</button>
+                    <button onclick="window.app.setLogicUnitPorts(10)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">10</button>
                 </div>
             </div>
             
@@ -473,6 +477,9 @@
                 constructor() {
                     this.currentLang = localStorage.getItem('language') || 'en';
                     this.editingDeviceId = null;
+                    this.logicUnitFormulas = [];
+                    this.logicUnitPorts = 0;
+                    this.logicDeviceCapabilities = [];
                     this.init();
                 }
 
@@ -825,330 +832,10 @@
                 }
 
                 renderDeviceCapabilityList() {
-                    const container = document.getElementById('device-capability-list');
-                    container.innerHTML = '';
-                    
-                    const allDevicesList = Object.values(this.allDevices);
-                    const devicesByZone = this.groupDevicesByZone(allDevicesList);
-                    const sortedZones = this.sortZones(Object.keys(devicesByZone));
-                    
-                    sortedZones.forEach(zoneId => {
-                        if (!devicesByZone[zoneId] || !this.allZones[zoneId]) return;
-                        const zone = this.allZones[zoneId];
-                        const zoneDevices = devicesByZone[zoneId];
-                        
-                        // Zone wrapper
-                        const zoneWrapper = document.createElement('div');
-                        zoneWrapper.className = 'mb-4 border border-gray-600 rounded-lg overflow-hidden';
-                        
-                        // Zone header (collapsible)
-                        const zoneHeader = document.createElement('div');
-                        zoneHeader.className = 'bg-gray-700 p-4 cursor-pointer hover:bg-gray-650 transition-colors flex justify-between items-center';
-                        zoneHeader.innerHTML = `
-                            <h3 class="text-lg font-semibold">${zone.name}</h3>
-                            <svg class="zone-chevron w-5 h-5 transition-transform transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        `;
-                        
-                        // Zone content (devices)
-                        const zoneContent = document.createElement('div');
-                        zoneContent.className = 'zone-content hidden bg-gray-750 p-4 space-y-3';
-                        
-                        zoneDevices.forEach(device => {
-                            if (!device.capabilitiesObj || Object.keys(device.capabilitiesObj).length === 0) return;
-                            
-                            // Device wrapper
-                            const deviceWrapper = document.createElement('div');
-                            deviceWrapper.className = 'border border-gray-600 rounded-lg overflow-hidden';
-                            
-                            // Device header (collapsible)
-                            const deviceHeader = document.createElement('div');
-                            deviceHeader.className = 'bg-gray-700 p-3 cursor-pointer hover:bg-gray-650 transition-colors flex justify-between items-center';
-                            deviceHeader.innerHTML = `
-                                <div>
-                                    <p class="font-semibold">${device.name}</p>
-                                    <p class="text-xs text-gray-400 font-mono">${device.driverId}</p>
-                                </div>
-                                <svg class="device-chevron w-5 h-5 transition-transform transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            `;
-                            
-                            // Device content (capabilities)
-                            const deviceContent = document.createElement('div');
-                            deviceContent.className = 'device-content hidden bg-gray-800 p-3 space-y-2';
-                            
-                            Object.values(device.capabilitiesObj).forEach(cap => {
-                                const label = document.createElement('label');
-                                label.className = 'flex items-center space-x-3 cursor-pointer hover:bg-gray-700 p-2 rounded';
-                                label.innerHTML = `
-                                    <input type="checkbox" data-device-id="${device.id}" data-capability-id="${cap.id}" class="capability-checkbox form-checkbox h-5 w-5 rounded bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500">
-                                    <span class="text-gray-300">${cap.title} <span class="text-xs text-gray-500">(${cap.id})</span></span>
-                                `;
-                                deviceContent.appendChild(label);
-                            });
-                            
-                            // Device click handler
-                            deviceHeader.addEventListener('click', () => {
-                                const isHidden = deviceContent.classList.contains('hidden');
-                                deviceContent.classList.toggle('hidden');
-                                const chevron = deviceHeader.querySelector('.device-chevron');
-                                if (isHidden) {
-                                    chevron.style.transform = 'rotate(90deg)';
-                                } else {
-                                    chevron.style.transform = 'rotate(0deg)';
-                                }
-                            });
-                            
-                            deviceWrapper.appendChild(deviceHeader);
-                            deviceWrapper.appendChild(deviceContent);
-                            zoneContent.appendChild(deviceWrapper);
-                        });
-                        
-                        // Zone click handler
-                        zoneHeader.addEventListener('click', () => {
-                            const isHidden = zoneContent.classList.contains('hidden');
-                            zoneContent.classList.toggle('hidden');
-                            const chevron = zoneHeader.querySelector('.zone-chevron');
-                            if (isHidden) {
-                                chevron.style.transform = 'rotate(90deg)';
-                            } else {
-                                chevron.style.transform = 'rotate(0deg)';
-                            }
-                        });
-                        
-                        zoneWrapper.appendChild(zoneHeader);
-                        zoneWrapper.appendChild(zoneContent);
-                        container.appendChild(zoneWrapper);
-                    });
-                    
-                    // Add event listeners to all checkboxes
-                    container.querySelectorAll('.capability-checkbox').forEach(checkbox => {
-                        checkbox.addEventListener('change', (e) => this.handleCapabilitySelection(e.target));
-                    });
-                }
-                
-                renderSelectedCapabilities() {
-                    const list = document.getElementById('selected-capabilities-list');
-                    const countEl = document.getElementById('selected-count');
-                    const nextButton = document.getElementById('next-step-button');
-                    list.innerHTML = '';
-                    countEl.textContent = this.selectedCapabilities.length;
-                    if (this.selectedCapabilities.length === 0) list.innerHTML = `<li class="text-gray-500 text-center italic">${this.t('step1.noneSelected')}</li>`;
-                    this.selectedCapabilities.forEach((item, index) => {
-                        const li = document.createElement('li');
-                        li.className = 'bg-gray-700 p-2 rounded-md flex justify-between items-center text-sm';
-                        li.innerHTML = `<span class="truncate"><span class="font-bold">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} - ${item.capabilityTitle}</span><button data-index="${index}" class="remove-capability-btn text-red-400 hover:text-red-300 p-1 font-bold text-lg">&times;</button>`;
-                        list.appendChild(li);
-                    });
-                    list.querySelectorAll('.remove-capability-btn').forEach(btn => btn.addEventListener('click', e => this.removeCapability(parseInt(e.currentTarget.dataset.index))));
-                    const count = this.selectedCapabilities.length;
-                    nextButton.disabled = !(count >= 2 && count <= 10);
-                }
-                
-                showExpressionOutput() {
-                    const formula = document.getElementById('formula-input').value.trim();
-                    
-                    if (!formula) {
-                        alert('Please enter a formula');
-                        return;
-                    }
-                    
-                    // Build the output objects
-                    const devices = this.selectedCapabilities.map(cap => ({
-                        deviceId: cap.deviceId,
-                        capabilityId: cap.capabilityId
-                    }));
-                    
-                    // Show output in a modal or alert
-                    const output = {
-                        devices: devices,
-                        formula: formula
-                    };
-                    
-                    const outputJson = JSON.stringify(output, null, 2);
-                    
-                    // Create a nice modal for output
-                    const modal = document.createElement('div');
-                    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50';
-                    modal.innerHTML = `
-                        <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-700">
-                            <h3 class="text-lg font-bold mb-4">Expression Output</h3>
-                            <p class="text-sm text-gray-400 mb-4">Copy this JSON and use it in your Boolean Toolbox device settings:</p>
-                            
-                            <div class="mb-4">
-                                <h4 class="text-md font-semibold mb-2">Devices JSON:</h4>
-                                <textarea readonly class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg font-mono text-sm" rows="8">${JSON.stringify(devices, null, 2)}</textarea>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <h4 class="text-md font-semibold mb-2">Formula:</h4>
-                                <textarea readonly class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg font-mono text-sm" rows="2">${formula}</textarea>
-                            </div>
-                            
-                            <div class="mb-6">
-                                <h4 class="text-md font-semibold mb-2">Variable Mapping:</h4>
-                                <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
-                                    ${this.selectedCapabilities.map((cap, index) => 
-                                        `<div class="text-sm text-gray-300"><span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + index)}:</span> ${cap.deviceName} - ${cap.capabilityTitle}</div>`
-                                    ).join('')}
-                                </div>
-                            </div>
-                            
-                            <div class="flex justify-end gap-4">
-                                <button onclick="this.closest('.fixed').remove()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Close</button>
-                                <button onclick="navigator.clipboard.writeText(${JSON.stringify(outputJson).replace(/'/g, "\\'")}); alert('Copied to clipboard!')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Copy All</button>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.body.appendChild(modal);
-                }
-
-                renderVariableMapping() {
-                     const list = document.getElementById('variable-mapping-list');
-                     list.innerHTML = '';
-                     this.selectedCapabilities.forEach((item, index) => {
-                        const li = document.createElement('li');
-                        li.className = 'text-gray-300';
-                        li.innerHTML = `<span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} <span class="text-gray-500">(${item.capabilityTitle})</span>`;
-                        list.appendChild(li);
-                     });
-                }
-
-                handleCapabilitySelection(checkbox) {
-                    const { deviceId, capabilityId } = checkbox.dataset;
-                    const device = this.allDevices[deviceId];
-                    const capability = device.capabilitiesObj[capabilityId];
-                    if (checkbox.checked) {
-                        if (this.selectedCapabilities.length < 10) this.selectedCapabilities.push({ deviceId, capabilityId, deviceName: device.name, capabilityTitle: capability.title });
-                        else { checkbox.checked = false; alert(this.t('step1.maxCapabilities')); }
-                    } else {
-                        this.selectedCapabilities = this.selectedCapabilities.filter(item => !(item.deviceId === deviceId && item.capabilityId === capabilityId));
-                    }
-                    this.renderSelectedCapabilities();
-                }
-                
-                removeCapability(index) {
-                    const [removedItem] = this.selectedCapabilities.splice(index, 1);
-                    const checkbox = document.querySelector(`input[data-device-id="${removedItem.deviceId}"][data-capability-id="${removedItem.capabilityId}"]`);
-                    if (checkbox) checkbox.checked = false;
-                    this.renderSelectedCapabilities();
-                }
-                
-                async handleJsonImport() {
-                    const devicesJson = document.getElementById('json-devices-input').value;
-                    const formula = document.getElementById('json-formula-input').value;
-                    if (!devicesJson) return alert(this.t('import.errorEmpty'));
-                    try {
-                        const parsedDevices = JSON.parse(devicesJson);
-                        if (!Array.isArray(parsedDevices) || parsedDevices.length < 2 || parsedDevices.length > 10) return alert(this.t('import.errorRange'));
-                        this.selectedCapabilities = parsedDevices.map(item => {
-                            const device = this.allDevices[item.deviceId];
-                            if (!device) throw new Error(this.t('errors.deviceNotFound').replace('{id}', item.deviceId));
-                            const capability = device.capabilitiesObj[item.capabilityId];
-                            if (!capability) throw new Error(this.t('errors.capabilityNotFound').replace('{cap}', item.capabilityId).replace('{device}', device.name));
-                            return { deviceId: item.deviceId, capabilityId: item.capabilityId, deviceName: device.name, capabilityTitle: capability.title };
-                        });
-                        this.renderSelectedCapabilities();
-                        if (formula) document.getElementById('formula-input').value = formula;
-                        this.showScreen('create-expression-step2-screen');
-                    } catch (error) { alert(this.t('import.errorParsing') + ' ' + error.message); }
-                }
-                
-                async openSettingsModal(deviceId) {
-                    const device = this.allDevices[deviceId];
-                    if (!device) return;
-                    const modal = document.getElementById('settings-modal');
-                    const title = document.getElementById('settings-modal-title');
-                    const content = document.getElementById('settings-modal-content');
-                    const saveBtn = document.getElementById('settings-modal-save');
-                    title.textContent = `${this.t('settings.titleFor')} ${device.name}`;
-                    content.innerHTML = `<p>${this.t('settings.loading')}</p>`;
-                    saveBtn.dataset.deviceId = deviceId;
-                    modal.style.display = 'flex';
-                    
-                    this.showLoader('Loading settings...');
-                    try {
-                        // Get settings schema (structure with types, hints, etc.)
-                        const settingsSchema = await this.api.devices.getDeviceSettingsObj({ id: deviceId });
-                        console.log('Settings schema received:', settingsSchema);
-                        console.log('Device settings values:', device.settings);
-                        
-                        // Merge schema with actual values from device
-                        const mergeValues = (schema, values) => {
-                            if (Array.isArray(schema)) {
-                                return schema.map(item => {
-                                    if (item.type === 'group' && item.children) {
-                                        return {
-                                            ...item,
-                                            children: item.children.map(child => ({
-                                                ...child,
-                                                value: values?.[child.id] !== undefined ? values[child.id] : child.value
-                                            }))
-                                        };
-                                    } else if (item.id) {
-                                        return {
-                                            ...item,
-                                            value: values?.[item.id] !== undefined ? values[item.id] : item.value
-                                        };
-                                    }
-                                    return item;
-                                });
-                            }
-                            return schema;
-                        };
-                        
-                        const settingsWithValues = mergeValues(settingsSchema, device.settings);
-                        console.log('Merged settings:', settingsWithValues);
-                        
-                        let settingsHtml = '';
-                        
-                        // Check if settings is an array (Homey settings structure)
-                        if (Array.isArray(settingsWithValues)) {
-                            settingsWithValues.forEach(group => {
-                                if (group.type === 'group' && group.children) {
-                                    // Render group title
-                                    settingsHtml += `<div class="mb-4"><h4 class="text-md font-semibold text-gray-200 mb-3">${group.title || 'Settings'}</h4>`;
-                                    
-                                    // Render children
-                                    group.children.forEach(setting => {
-                                        settingsHtml += this.renderSettingField(setting);
-                                    });
-                                    
-                                    settingsHtml += `</div>`;
-                                } else {
-                                    // Single setting (not in a group)
-                                    settingsHtml += this.renderSettingField(group);
-                                }
-                            });
-                        } else {
-                            // Fallback for simple key-value settings
-                            for (const key in settingsWithValues) {
-                                const value = settingsWithValues[key];
-                                settingsHtml += this.renderSettingField({ id: key, title: key, value: value });
-                            }
-                        }
-                        
-                        content.innerHTML = settingsHtml || `<p>${this.t('settings.noSettings')}</p>`;
-                    } catch(error) { 
-                        console.error('Error loading settings:', error);
-                        content.innerHTML = `<p class="text-red-400">${this.t('settings.error')} ${error.message}</p>`; 
-                    } finally {
-                        this.hideLoader();
-                    }
-                }
-
-                renderDeviceCapabilityList() {
                     // DEPRECATED: This method is no longer used in the new UI structure
                     // Keeping empty stub to prevent crashes if called from old code paths
                     console.log('renderDeviceCapabilityList() called - deprecated, doing nothing');
                 }
-                
-                // OLD METHOD REMOVED - DO NOT ADD BACK
-                // The old renderDeviceCapabilityList with zones/devices is gone
-                // Use renderLogicDeviceCapabilityList() instead
 
                 renderLogicDeviceCapabilityList() {
                     const container = document.getElementById('logic-device-capability-list');
@@ -1426,84 +1113,6 @@
                     }
                 }
 
-                showFormulaEditModal(device, currentFormula) {
-                    const modal = document.createElement('div');
-                    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50';
-                    modal.id = 'formula-edit-modal';
-                    modal.innerHTML = `
-                        <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl shadow-2xl border border-gray-700">
-                            <h3 class="text-lg font-bold mb-4">Edit Formula: ${device.name}</h3>
-                            <p class="text-sm text-gray-400 mb-4">This Logic Unit has predefined inputs A, B, C. Edit the formula below:</p>
-                            
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-300 mb-2">Formula</label>
-                                <p class="text-xs text-gray-500 mb-2">Use variables A, B, C and operators AND, OR, NOT, XOR and parentheses ().</p>
-                                <textarea 
-                                    id="formula-edit-textarea" 
-                                    class="w-full h-32 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono"
-                                    placeholder="(A AND B) OR NOT C"
-                                >${currentFormula}</textarea>
-                            </div>
-                            
-                            <div class="flex justify-end gap-4">
-                                <button onclick="document.getElementById('formula-edit-modal').remove()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Cancel</button>
-                                <button onclick="app.saveFormulaFromModal('${device.id}')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Show Output</button>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.body.appendChild(modal);
-                }
-
-                saveFormulaFromModal(deviceId) {
-                    const formula = document.getElementById('formula-edit-textarea').value.trim();
-                    
-                    if (!formula) {
-                        alert('Please enter a formula');
-                        return;
-                    }
-                    
-                    // Close the edit modal
-                    document.getElementById('formula-edit-modal').remove();
-                    
-                    // Show output in a modal
-                    const output = {
-                        formula: formula
-                    };
-                    
-                    const modal = document.createElement('div');
-                    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50';
-                    modal.innerHTML = `
-                        <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl shadow-2xl border border-gray-700">
-                            <h3 class="text-lg font-bold mb-4">Formula Output</h3>
-                            <p class="text-sm text-gray-400 mb-4">Copy this formula and paste it in the device settings "Formulas (JSON)" field:</p>
-                            
-                            <div class="mb-4">
-                                <h4 class="text-md font-semibold mb-2">Formula:</h4>
-                                <textarea readonly class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg font-mono text-sm" rows="3">${formula}</textarea>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <h4 class="text-md font-semibold mb-2">Instructions:</h4>
-                                <ol class="text-sm text-gray-300 space-y-2 list-decimal list-inside">
-                                    <li>Copy the formula above</li>
-                                    <li>Go back and click "Settings" on the device</li>
-                                    <li>Find the "Formulas (JSON)" field</li>
-                                    <li>Update the "expression" value with your new formula</li>
-                                    <li>Click Save</li>
-                                </ol>
-                            </div>
-                            
-                            <div class="flex justify-end gap-4">
-                                <button onclick="this.closest('.fixed').remove()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Close</button>
-                                <button onclick="navigator.clipboard.writeText('${formula.replace(/'/g, "\\'")}'); alert('Formula copied to clipboard!')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Copy Formula</button>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.body.appendChild(modal);
-                }
-
                 async editDeviceExpression(deviceId) {
                     const device = this.allDevices[deviceId];
                     if (!device) {
@@ -1745,6 +1354,112 @@
                     }
                 }
 
+                async openSettingsModal(deviceId) {
+                    const device = this.allDevices[deviceId];
+                    if (!device) return;
+                    const modal = document.getElementById('settings-modal');
+                    const title = document.getElementById('settings-modal-title');
+                    const content = document.getElementById('settings-modal-content');
+                    const saveBtn = document.getElementById('settings-modal-save');
+                    title.textContent = `${this.t('settings.titleFor')} ${device.name}`;
+                    content.innerHTML = `<p>${this.t('settings.loading')}</p>`;
+                    saveBtn.dataset.deviceId = deviceId;
+                    modal.style.display = 'flex';
+                    
+                    this.showLoader('Loading settings...');
+                    try {
+                        // Get settings schema (structure with types, hints, etc.)
+                        const settingsSchema = await this.api.devices.getDeviceSettingsObj({ id: deviceId });
+                        console.log('Settings schema received:', settingsSchema);
+                        console.log('Device settings values:', device.settings);
+                        
+                        // Merge schema with actual values from device
+                        const mergeValues = (schema, values) => {
+                            if (Array.isArray(schema)) {
+                                return schema.map(item => {
+                                    if (item.type === 'group' && item.children) {
+                                        return {
+                                            ...item,
+                                            children: item.children.map(child => ({
+                                                ...child,
+                                                value: values?.[child.id] !== undefined ? values[child.id] : child.value
+                                            }))
+                                        };
+                                    } else if (item.id) {
+                                        return {
+                                            ...item,
+                                            value: values?.[item.id] !== undefined ? values[item.id] : item.value
+                                        };
+                                    }
+                                    return item;
+                                });
+                            }
+                            return schema;
+                        };
+                        
+                        const settingsWithValues = mergeValues(settingsSchema, device.settings);
+                        console.log('Merged settings:', settingsWithValues);
+                        
+                        let settingsHtml = '';
+                        
+                        // Check if settings is an array (Homey settings structure)
+                        if (Array.isArray(settingsWithValues)) {
+                            settingsWithValues.forEach(group => {
+                                if (group.type === 'group' && group.children) {
+                                    // Render group title
+                                    settingsHtml += `<div class="mb-4"><h4 class="text-md font-semibold text-gray-200 mb-3">${group.title || 'Settings'}</h4>`;
+                                    
+                                    // Render children
+                                    group.children.forEach(setting => {
+                                        settingsHtml += this.renderSettingField(setting);
+                                    });
+                                    
+                                    settingsHtml += `</div>`;
+                                } else {
+                                    // Single setting (not in a group)
+                                    settingsHtml += this.renderSettingField(group);
+                                }
+                            });
+                        } else {
+                            // Fallback for simple key-value settings
+                            for (const key in settingsWithValues) {
+                                const value = settingsWithValues[key];
+                                settingsHtml += this.renderSettingField({ id: key, title: key, value: value });
+                            }
+                        }
+                        
+                        content.innerHTML = settingsHtml || `<p>${this.t('settings.noSettings')}</p>`;
+                    } catch(error) { 
+                        console.error('Error loading settings:', error);
+                        content.innerHTML = `<p class="text-red-400">${this.t('settings.error')} ${error.message}</p>`; 
+                    } finally {
+                        this.hideLoader();
+                    }
+                }
+
+                renderSelectedCapabilities() {
+                    const list = document.getElementById('selected-capabilities-list');
+                    const countEl = document.getElementById('selected-count');
+                    const nextButton = document.getElementById('next-step-button');
+                    
+                    if (!list) return;
+                    
+                    list.innerHTML = '';
+                    if (countEl) countEl.textContent = this.selectedCapabilities.length;
+                    if (this.selectedCapabilities.length === 0 && list) list.innerHTML = `<li class="text-gray-500 text-center italic">${this.t('step1.noneSelected')}</li>`;
+                    this.selectedCapabilities.forEach((item, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'bg-gray-700 p-2 rounded-md flex justify-between items-center text-sm';
+                        li.innerHTML = `<span class="truncate"><span class="font-bold">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} - ${item.capabilityTitle}</span><button data-index="${index}" class="remove-capability-btn text-red-400 hover:text-red-300 p-1 font-bold text-lg">&times;</button>`;
+                        list.appendChild(li);
+                    });
+                    if (list) {
+                        list.querySelectorAll('.remove-capability-btn').forEach(btn => btn.addEventListener('click', e => this.removeCapability(parseInt(e.currentTarget.dataset.index))));
+                    }
+                    const count = this.selectedCapabilities.length;
+                    if (nextButton) nextButton.disabled = !(count >= 2 && count <= 10);
+                }
+
                 renderLoginScreen() {
                      document.getElementById('login-screen').innerHTML = `<h2 class="text-xl font-bold mb-4">${this.t('login.welcome')}</h2><p class="mb-6 text-gray-300">${this.t('login.message')}</p><button id="login-button" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg transition-colors">${this.t('login.button')}</button>`;
                 }
@@ -1753,7 +1468,6 @@
                     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
                     const screen = document.getElementById(screenId);
                     if (screen) screen.classList.add('active');
-                    if (screenId === 'create-expression-step2-screen') this.renderVariableMapping();
                 }
                 
                 showLoader(text = 'Loading...') {
@@ -1794,6 +1508,220 @@
                         if (!this.allZones[a] || !this.allZones[b]) return 0;
                         return this.allZones[a].name.localeCompare(this.allZones[b].name);
                     });
+                }
+
+                // Logic Unit methods
+                startLogicUnitFlow() {
+                    this.editingDeviceId = null;
+                    this.logicUnitFormulas = [];
+                    this.logicUnitPorts = 0;
+                    this.showScreen('logic-unit-select-screen');
+                }
+
+                setLogicUnitPorts(num) {
+                    this.logicUnitPorts = num;
+                    this.logicUnitFormulas = [{
+                        id: 'formula_1',
+                        name: 'My Formula',
+                        expression: '',
+                        enabled: true
+                    }];
+                    this.showScreen('logic-unit-editor-screen');
+                    this.renderLogicUnitEditor();
+                }
+
+                renderLogicUnitEditor() {
+                    const infoBox = document.getElementById('logic-unit-inputs-info');
+                    const container = document.getElementById('logic-unit-formulas-container');
+                    
+                    if (!infoBox || !container) return;
+                    
+                    const inputs = Array.from({length: this.logicUnitPorts}, (_, i) => String.fromCharCode(65 + i));
+                    infoBox.innerHTML = `
+                        <h3 class="font-semibold mb-2">Available Inputs:</h3>
+                        <p class="text-gray-300">${inputs.join(', ')}</p>
+                    `;
+                    
+                    container.innerHTML = this.logicUnitFormulas.map((formula, idx) => `
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-semibold">Formula ${idx + 1}</h3>
+                                ${this.logicUnitFormulas.length > 1 ? 
+                                    `<button onclick="window.app.removeLogicUnitFormula(${idx})" class="text-red-400 hover:text-red-300 text-sm">Remove</button>` 
+                                    : ''}
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-sm mb-1">Name</label>
+                                <input type="text" 
+                                    value="${formula.name}" 
+                                    onchange="window.app.updateLogicUnitFormulaName(${idx}, this.value)"
+                                    class="w-full p-2 bg-gray-600 border border-gray-500 rounded">
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-sm mb-1">Expression</label>
+                                <textarea 
+                                    oninput="window.app.updateLogicUnitFormulaExpression(${idx}, this.value)"
+                                    class="w-full h-24 p-2 bg-gray-600 border border-gray-500 rounded font-mono"
+                                    placeholder="(A AND B) OR NOT C"
+                                >${formula.expression}</textarea>
+                            </div>
+                            <div id="truth-table-${idx}" class="mt-3"></div>
+                        </div>
+                    `).join('');
+                    
+                    this.logicUnitFormulas.forEach((formula, idx) => {
+                        if (formula.expression) {
+                            this.renderTruthTable(formula.expression, this.logicUnitPorts, `truth-table-${idx}`);
+                        }
+                    });
+                }
+
+                updateLogicUnitFormulaName(idx, name) {
+                    this.logicUnitFormulas[idx].name = name;
+                }
+
+                updateLogicUnitFormulaExpression(idx, expr) {
+                    this.logicUnitFormulas[idx].expression = expr;
+                    if (expr) {
+                        this.renderTruthTable(expr, this.logicUnitPorts, `truth-table-${idx}`);
+                    }
+                }
+
+                addLogicUnitFormula() {
+                    this.logicUnitFormulas.push({
+                        id: `formula_${this.logicUnitFormulas.length + 1}`,
+                        name: `Formula ${this.logicUnitFormulas.length + 1}`,
+                        expression: '',
+                        enabled: true
+                    });
+                    this.renderLogicUnitEditor();
+                }
+
+                removeLogicUnitFormula(idx) {
+                    this.logicUnitFormulas.splice(idx, 1);
+                    this.renderLogicUnitEditor();
+                }
+
+                selectExistingLogicUnit() {
+                    this.showDeviceSelectionModal('logic-unit');
+                }
+
+                selectExistingLogicDevice() {
+                    this.showDeviceSelectionModal('logic-device');
+                }
+
+                showDeviceSelectionModal(type) {
+                    const allDevicesList = Object.values(this.allDevices);
+                    const devices = allDevicesList.filter(d => d.driverId.includes(type));
+                    
+                    if (devices.length === 0) {
+                        alert(`No ${type} devices found`);
+                        return;
+                    }
+                    
+                    const modal = document.createElement('div');
+                    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50';
+                    modal.innerHTML = `
+                        <div class="bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+                            <h3 class="text-lg font-bold mb-4">Select Device to Edit</h3>
+                            <div class="space-y-2">
+                                ${devices.map(d => `
+                                    <button onclick="window.app.${type === 'logic-unit' ? 'editLogicUnit' : 'editLogicDevice'}('${d.id}'); this.closest('.fixed').remove()"
+                                        class="w-full text-left p-3 bg-gray-700 hover:bg-gray-600 rounded transition-colors">
+                                        <div class="font-semibold">${d.name}</div>
+                                        <div class="text-xs text-gray-400">${this.allZones[d.zone]?.name || 'Unknown zone'}</div>
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <button onclick="this.closest('.fixed').remove()" 
+                                class="mt-4 w-full bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">
+                                Cancel
+                            </button>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                }
+
+                editLogicUnit(deviceId) {
+                    this.editDeviceFormula(deviceId);
+                }
+
+                editLogicDevice(deviceId) {
+                    this.editDeviceExpression(deviceId);
+                }
+
+                // Logic Device methods
+                startLogicDeviceFlow() {
+                    this.editingDeviceId = null;
+                    this.logicDeviceCapabilities = [];
+                    this.showScreen('logic-device-select-screen');
+                }
+
+                // Truth table and expression evaluation
+                evaluateExpression(expression, values) {
+                    try {
+                        let jsExpr = expression
+                            .replace(/\bAND\b/gi, '&&')
+                            .replace(/\bOR\b/gi, '||')
+                            .replace(/\bNOT\b/gi, '!')
+                            .replace(/\bXOR\b/gi, '^');
+                        
+                        Object.keys(values).forEach(variable => {
+                            const regex = new RegExp(`\\b${variable}\\b`, 'g');
+                            jsExpr = jsExpr.replace(regex, values[variable] ? 'true' : 'false');
+                        });
+                        
+                        return eval(jsExpr) ? 1 : 0;
+                    } catch (e) {
+                        return null;
+                    }
+                }
+
+                renderTruthTable(expression, numInputs, containerId) {
+                    const container = document.getElementById(containerId);
+                    if (!container) return;
+                    
+                    const inputs = Array.from({length: numInputs}, (_, i) => String.fromCharCode(65 + i));
+                    const rows = Math.pow(2, numInputs);
+                    
+                    if (rows > 256) {
+                        container.innerHTML = '<p class="text-yellow-400 text-sm">Too many inputs for truth table preview (max 8)</p>';
+                        return;
+                    }
+                    
+                    let html = `
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-600">
+                                        ${inputs.map(i => `<th class="border border-gray-500 p-1">${i}</th>`).join('')}
+                                        <th class="border border-gray-500 p-1 font-bold">Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    
+                    for (let i = 0; i < rows; i++) {
+                        const values = {};
+                        let rowHtml = '<tr>';
+                        
+                        for (let j = 0; j < numInputs; j++) {
+                            const val = (i >> (numInputs - 1 - j)) & 1;
+                            values[inputs[j]] = val;
+                            rowHtml += `<td class="border border-gray-500 p-1 text-center ${val ? 'bg-green-900' : 'bg-red-900'}">${val}</td>`;
+                        }
+                        
+                        const result = this.evaluateExpression(expression, values);
+                        const resultClass = result === 1 ? 'bg-green-700' : result === 0 ? 'bg-red-700' : 'bg-yellow-700';
+                        const resultText = result === null ? '?' : result;
+                        
+                        rowHtml += `<td class="border border-gray-500 p-1 text-center font-bold ${resultClass}">${resultText}</td>`;
+                        rowHtml += '</tr>';
+                        html += rowHtml;
+                    }
+                    
+                    html += '</tbody></table></div>';
+                    container.innerHTML = html;
                 }
             }
             
