@@ -599,6 +599,12 @@
                         const code = urlParams.get('code');
 
                         if (code) {
+                            // Check if we have credentials before processing auth code
+                            if (!this.CLIENT_ID || !this.CLIENT_SECRET) {
+                                console.warn('Received auth code but no credentials stored');
+                                window.location.href = window.location.pathname; // Remove code param
+                                return;
+                            }
                             await this.handleAuthRedirect(code);
                         } else if (await this.cloudApi.isLoggedIn()) {
                             await this.postLogin();
@@ -759,7 +765,9 @@
                     }
                 }
 
-                renderAll() { this.renderEditDevices(); this.renderDeviceCapabilityList(); }
+                renderAll() { 
+                    this.renderEditDevices(); 
+                }
                 
                 renderEditDevices() {
                     const container = document.getElementById('edit-devices-list');
@@ -1130,6 +1138,12 @@
                     } finally {
                         this.hideLoader();
                     }
+                }
+
+                renderDeviceCapabilityList() {
+                    // This method is deprecated - using renderLogicDeviceCapabilityList() instead
+                    // Keeping it here to avoid errors if called from old code paths
+                    console.log('renderDeviceCapabilityList called but deprecated');
                 }
 
                 renderLogicDeviceCapabilityList() {
