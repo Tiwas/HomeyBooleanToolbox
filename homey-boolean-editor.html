@@ -950,8 +950,25 @@
                         ? '<li class="text-gray-500 text-sm italic">No capabilities selected</li>'
                         : this.logicDeviceCapabilities.map((cap, idx) => `
                             <li class="bg-gray-700 p-2 rounded text-sm">
-                                <span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + idx)}:</span>
-                                ${cap.deviceName} - ${cap.capabilityTitle}
+                                <div class="flex items-center gap-2">
+                                    <div class="flex flex-col gap-1">
+                                        <button onclick="window.app.moveLogicDeviceCapability(${idx}, -1)" 
+                                            ${idx === 0 ? 'disabled' : ''}
+                                            class="text-gray-400 hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed text-xs leading-none"
+                                            title="Move up">▲</button>
+                                        <button onclick="window.app.moveLogicDeviceCapability(${idx}, 1)"
+                                            ${idx === this.logicDeviceCapabilities.length - 1 ? 'disabled' : ''}
+                                            class="text-gray-400 hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed text-xs leading-none"
+                                            title="Move down">▼</button>
+                                    </div>
+                                    <div class="flex-grow min-w-0">
+                                        <span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + idx)}:</span>
+                                        <span class="text-xs block truncate">${cap.deviceName} - ${cap.capabilityTitle}</span>
+                                    </div>
+                                    <button onclick="window.app.removeLogicDeviceCapability(${idx})" 
+                                        class="text-red-400 hover:text-red-300 font-bold text-lg flex-shrink-0"
+                                        title="Remove">×</button>
+                                </div>
                             </li>
                         `).join('');
                     
@@ -965,14 +982,83 @@
                         // Add new listener
                         newInput.addEventListener('input', () => {
                             const formula = newInput.value.trim();
-                            const truthTableContainer = document.getElementById('logic-device-truth-table');
-                            if (formula && this.logicDeviceCapabilities.length > 0) {
-                                this.renderTruthTable(formula, this.logicDeviceCapabilities.length, 'logic-device-truth-table');
-                            } else if (truthTableContainer) {
-                                truthTableContainer.innerHTML = '';
-                            }
+                            this.updateLogicDeviceTruthTable(formula);
                         });
                     }
+                }
+
+                moveLogicDeviceCapability(idx, direction) {
+                    const newIdx = idx + direction;
+                    
+                    if (newIdx < 0 || newIdx >= this.logicDeviceCapabilities.length) return;
+                    
+                    // Swap elements
+                    [this.logicDeviceCapabilities[idx], this.logicDeviceCapabilities[newIdx]] = 
+                    [this.logicDeviceCapabilities[newIdx], this.logicDeviceCapabilities[idx]];
+                    
+                    this.updateLogicDeviceSelectedList();
+                    
+                    // Update truth table with current formula
+                    const formulaInput = document.getElementById('logic-device-formula');
+                    if (formulaInput && formulaInput.value.trim()) {
+                        this.updateLogicDeviceTruthTable(formulaInput.value.trim());
+                    }
+                }
+
+                removeLogicDeviceCapability(idx) {
+                    const removed = this.logicDeviceCapabilities[idx];
+                    this.logicDeviceCapabilities.splice(idx, 1);
+                    
+                    // Uncheck the checkbox in the device list
+                    const checkbox = document.querySelector(
+                        `input[data-device-id="${removed.deviceId}"][data-capability-id="${removed.capabilityId}"]`
+                    );
+                    if (checkbox) checkbox.checked = false;
+                    
+                    this.updateLogicDeviceSelectedList();
+                    
+                    // Update truth table with current formula
+                    const formulaInput = document.getElementById('logic-device-formula');
+                    if (formulaInput && formulaInput.value.trim()) {
+                        this.updateLogicDeviceTruthTable(formulaInput.value.trim());
+                    }
+                }
+
+                updateLogicDeviceTruthTable(formula) {
+                    const truthTableContainer = document.getElementById('logic-device-truth-table');
+                    if (!truthTableContainer) return;
+                    
+                    if (!formula || this.logicDeviceCapabilities.length === 0) {
+                        truthTableContainer.innerHTML = '';
+                        return;
+                    }
+                    
+                    // Validate formula - check if it uses variables that don't exist
+                    const availableVars = Array.from(
+                        {length: this.logicDeviceCapabilities.length}, 
+                        (_, i) => String.fromCharCode(65 + i)
+                    );
+                    const usedVars = new Set(
+                        (formula.toUpperCase().match(/\b[A-J]\b/g) || [])
+                    );
+                    
+                    const missingVars = Array.from(usedVars).filter(v => {
+                        const idx = v.charCodeAt(0) - 65;
+                        return idx >= this.logicDeviceCapabilities.length;
+                    });
+                    
+                    if (missingVars.length > 0) {
+                        truthTableContainer.innerHTML = `
+                            <div class="bg-yellow-900 border border-yellow-500 rounded p-3 text-sm">
+                                <p class="font-semibold">⚠️ Warning:</p>
+                                <p>Formula uses ${missingVars.join(', ')} but only ${availableVars.join(', ')} are selected.</p>
+                                <p class="mt-2">Please select more capabilities or update your formula.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    this.renderTruthTable(formula, this.logicDeviceCapabilities.length, 'logic-device-truth-table');
                 }
 
                 saveLogicUnit() {
@@ -1008,9 +1094,28 @@
                         return;
                     }
                     
+                    // Validate formula before saving
+                    const availableVars = Array.from(
+                        {length: this.logicDeviceCapabilities.length}, 
+                        (_, i) => String.fromCharCode(65 + i)
+                    );
+                    const usedVars = new Set(
+                        (formula.toUpperCase().match(/\b[A-J]\b/g) || [])
+                    );
+                    
+                    const missingVars = Array.from(usedVars).filter(v => {
+                        const idx = v.charCodeAt(0) - 65;
+                        return idx >= this.logicDeviceCapabilities.length;
+                    });
+                    
+                    if (missingVars.length > 0) {
+                        alert(`Formula uses ${missingVars.join(', ')} but only ${availableVars.join(', ')} are selected. Please select more capabilities or update your formula.`);
+                        return;
+                    }
+                    
                     const output = {
                         input_links: this.logicDeviceCapabilities.map((cap, idx) => ({
-                            input: String.fromCharCode(97 + idx), // a, b, c...
+                            input: String.fromCharCode(97 + idx).toLowerCase(), // a, b, c... (lowercase to match formula)
                             deviceId: cap.deviceId,
                             capability: cap.capabilityId,
                             deviceName: cap.deviceName
@@ -1018,7 +1123,7 @@
                         formulas: [{
                             id: 'formula_1',
                             name: 'Main Formula',
-                            expression: formula,
+                            expression: formula.toLowerCase(), // Ensure lowercase for consistency
                             enabled: true,
                             timeout: 30,
                             firstImpression: false
@@ -1248,7 +1353,7 @@
                             formulaInput.value = formulaText;
                             // Trigger truth table render
                             if (formulaText && this.logicDeviceCapabilities.length > 0) {
-                                this.renderTruthTable(formulaText, this.logicDeviceCapabilities.length, 'logic-device-truth-table');
+                                this.updateLogicDeviceTruthTable(formulaText);
                             }
                         }
                         
@@ -1660,19 +1765,23 @@
                 // Truth table and expression evaluation
                 evaluateExpression(expression, values) {
                     try {
-                        let jsExpr = expression
+                        // Normalize expression to uppercase for evaluation
+                        let jsExpr = expression.toUpperCase()
                             .replace(/\bAND\b/gi, '&&')
                             .replace(/\bOR\b/gi, '||')
                             .replace(/\bNOT\b/gi, '!')
                             .replace(/\bXOR\b/gi, '^');
                         
+                        // Replace variables with their boolean values
                         Object.keys(values).forEach(variable => {
-                            const regex = new RegExp(`\\b${variable}\\b`, 'g');
+                            const upperVar = variable.toUpperCase();
+                            const regex = new RegExp(`\\b${upperVar}\\b`, 'g');
                             jsExpr = jsExpr.replace(regex, values[variable] ? 'true' : 'false');
                         });
                         
                         return eval(jsExpr) ? 1 : 0;
                     } catch (e) {
+                        console.warn('Error evaluating expression:', e);
                         return null;
                     }
                 }
