@@ -195,16 +195,16 @@
             <div id="main-menu-screen" class="screen">
                 <h2 class="text-xl font-bold mb-6 text-center">What would you like to work with?</h2>
                 <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('edit-devices-screen')">
+                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="window.app.showScreen('edit-devices-screen')">
                         <h3 class="text-lg font-semibold mb-2">⚙️ Manage Existing Devices</h3>
                         <p class="text-gray-400 text-sm">View and modify settings for existing Boolean Toolbox devices.</p>
                     </div>
-                    <div class="bg-gradient-to-br from-blue-600 to-blue-700 p-6 rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all cursor-pointer shadow-lg" onclick="app.startLogicUnitFlow()">
+                    <div class="bg-gradient-to-br from-blue-600 to-blue-700 p-6 rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all cursor-pointer shadow-lg" onclick="window.app.startLogicUnitFlow()">
                         <h3 class="text-lg font-semibold mb-2">🔢 Logic Unit</h3>
                         <p class="text-gray-200 text-sm">Create or edit formulas with predefined inputs (A, B, C...).</p>
                         <p class="text-xs text-blue-200 mt-2">• Multiple formulas supported</p>
                     </div>
-                    <div class="bg-gradient-to-br from-green-600 to-green-700 p-6 rounded-lg hover:from-green-500 hover:to-green-600 transition-all cursor-pointer shadow-lg" onclick="app.startLogicDeviceFlow()">
+                    <div class="bg-gradient-to-br from-green-600 to-green-700 p-6 rounded-lg hover:from-green-500 hover:to-green-600 transition-all cursor-pointer shadow-lg" onclick="window.app.startLogicDeviceFlow()">
                         <h3 class="text-lg font-semibold mb-2">🔗 Logic Device</h3>
                         <p class="text-gray-200 text-sm">Connect device capabilities and create boolean expressions.</p>
                         <p class="text-xs text-green-200 mt-2">• Single formula with device inputs</p>
@@ -253,7 +253,7 @@
                 <p class="text-gray-400 mb-6">Select the number of inputs (A, B, C...) for your Logic Unit.</p>
                 <div class="grid grid-cols-3 md:grid-cols-5 gap-4 max-w-4xl">
                     ${[2,3,4,5,6,7,8,9,10].map(num => `
-                        <button onclick="app.setLogicUnitPorts(${num})" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">
+                        <button onclick="window.app.setLogicUnitPorts(${num})" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">
                             ${num}
                         </button>
                     `).join('')}
@@ -1255,6 +1255,8 @@
                     const list = document.getElementById('logic-device-selected-list');
                     const count = document.getElementById('logic-device-count');
                     
+                    if (!list || !count) return;
+                    
                     count.textContent = this.logicDeviceCapabilities.length;
                     
                     list.innerHTML = this.logicDeviceCapabilities.length === 0 
@@ -1266,13 +1268,21 @@
                             </li>
                         `).join('');
                     
-                    // Update truth table when formula changes
+                    // Add live truth table updates for formula input
                     const formulaInput = document.getElementById('logic-device-formula');
                     if (formulaInput) {
-                        formulaInput.addEventListener('keyup', () => {
-                            const formula = formulaInput.value;
+                        // Remove old listeners
+                        const newInput = formulaInput.cloneNode(true);
+                        formulaInput.parentNode.replaceChild(newInput, formulaInput);
+                        
+                        // Add new listener
+                        newInput.addEventListener('input', () => {
+                            const formula = newInput.value.trim();
+                            const truthTableContainer = document.getElementById('logic-device-truth-table');
                             if (formula && this.logicDeviceCapabilities.length > 0) {
                                 this.renderTruthTable(formula, this.logicDeviceCapabilities.length, 'logic-device-truth-table');
+                            } else if (truthTableContainer) {
+                                truthTableContainer.innerHTML = '';
                             }
                         });
                     }
@@ -1368,36 +1378,37 @@
                         return;
                     }
                     
-                    this.showLoader('Loading formula...');
+                    this.editingDeviceId = deviceId;
                     
                     try {
                         const settings = device.settings;
-                        console.log('Editing formula for Logic Unit:', device.name, settings);
+                        console.log('Editing formulas for Logic Unit:', device.name, settings);
                         
-                        // For Logic Unit, inputs A, B, C are predefined - we only need to load the formula
-                        // Clear selected capabilities (not used for Logic Unit)
-                        this.selectedCapabilities = [];
-                        
-                        // Get the first enabled formula
-                        const formulas = settings.formulas || [];
-                        let formulaText = '';
-                        
-                        if (Array.isArray(formulas) && formulas.length > 0) {
-                            const enabledFormula = formulas.find(f => f.enabled !== false);
-                            if (enabledFormula) {
-                                formulaText = enabledFormula.expression || '';
-                            }
+                        // Load formulas
+                        this.logicUnitFormulas = settings.formulas || [];
+                        if (this.logicUnitFormulas.length === 0) {
+                            this.logicUnitFormulas = [{id: 'formula_1', name: 'My Formula', expression: '', enabled: true}];
                         }
                         
-                        console.log('Loaded formula:', formulaText);
+                        // Determine port count from device name or formulas
+                        const match = device.name.match(/\((\d+)\s+input/i);
+                        if (match) {
+                            this.logicUnitPorts = parseInt(match[1]);
+                        } else {
+                            // Count unique variables in formulas
+                            const allVars = new Set();
+                            this.logicUnitFormulas.forEach(f => {
+                                const matches = f.expression.match(/\b[A-J]\b/g);
+                                if (matches) matches.forEach(v => allVars.add(v));
+                            });
+                            this.logicUnitPorts = Math.max(3, allVars.size);
+                        }
                         
-                        // Create a modal to edit just the formula
-                        this.hideLoader();
-                        this.showFormulaEditModal(device, formulaText);
+                        this.showScreen('logic-unit-editor-screen');
+                        this.renderLogicUnitEditor();
                         
                     } catch (error) {
                         console.error('Error loading formula:', error);
-                        this.hideLoader();
                         alert('Failed to load formula: ' + error.message);
                     }
                 }
@@ -1482,28 +1493,35 @@
 
                 async editDeviceExpression(deviceId) {
                     const device = this.allDevices[deviceId];
-                    if (!device || !device.settings) {
-                        alert('Could not load device settings');
+                    if (!device) {
+                        alert('Could not load device');
                         return;
                     }
                     
                     this.showLoader('Loading expression...');
                     
                     try {
-                        const settings = device.settings;
-                        console.log('Editing expression for Logic Device:', device.name, settings);
+                        // Get fresh settings from API
+                        const settingsSchema = await this.api.devices.getDeviceSettingsObj({ id: deviceId });
+                        const settings = device.settings || {};
+                        
+                        console.log('Editing expression for Logic Device:', device.name);
+                        console.log('Settings schema:', settingsSchema);
+                        console.log('Device settings:', settings);
                         
                         // Parse input_links to get selected capabilities
                         const inputLinks = settings.input_links || [];
                         
+                        console.log('Input links found:', inputLinks);
+                        
                         if (!Array.isArray(inputLinks) || inputLinks.length === 0) {
-                            alert('No input links found on this device');
                             this.hideLoader();
+                            alert('No input links found on this device. Please add capabilities through Settings first, or create a new Logic Device.');
                             return;
                         }
                         
-                        // Build selectedCapabilities array
-                        this.selectedCapabilities = [];
+                        // Build logicDeviceCapabilities array
+                        this.logicDeviceCapabilities = [];
                         
                         for (const link of inputLinks) {
                             const linkedDevice = this.allDevices[link.deviceId];
@@ -1518,7 +1536,7 @@
                                 continue;
                             }
                             
-                            this.selectedCapabilities.push({
+                            this.logicDeviceCapabilities.push({
                                 deviceId: link.deviceId,
                                 capabilityId: link.capability,
                                 deviceName: link.deviceName || linkedDevice.name,
@@ -1526,7 +1544,7 @@
                             });
                         }
                         
-                        console.log('Loaded capabilities:', this.selectedCapabilities);
+                        console.log('Loaded capabilities:', this.logicDeviceCapabilities);
                         
                         // Get the first enabled formula
                         const formulas = settings.formulas || [];
@@ -1541,18 +1559,23 @@
                         
                         console.log('Loaded formula:', formulaText);
                         
-                        // Navigate to step 2
-                        this.hideLoader();
-                        this.showScreen('create-expression-step2-screen');
-                        
-                        // Set formula in textarea
-                        document.getElementById('formula-input').value = formulaText;
-                        
-                        // Re-render the variable mapping
-                        this.renderVariableMapping();
-                        
                         // Store the device ID so we know we're editing an existing device
                         this.editingDeviceId = deviceId;
+                        
+                        // Navigate to editor
+                        this.hideLoader();
+                        this.showScreen('logic-device-editor-screen');
+                        this.renderLogicDeviceCapabilityList();
+                        
+                        // Set formula
+                        const formulaInput = document.getElementById('logic-device-formula');
+                        if (formulaInput) {
+                            formulaInput.value = formulaText;
+                            // Trigger truth table render
+                            if (formulaText && this.logicDeviceCapabilities.length > 0) {
+                                this.renderTruthTable(formulaText, this.logicDeviceCapabilities.length, 'logic-device-truth-table');
+                            }
+                        }
                         
                     } catch (error) {
                         console.error('Error loading expression:', error);
