@@ -956,6 +956,7 @@ a or (b and c)"></textarea>
                         } else {
                             checkbox.checked = false;
                             alert('Maximum 10 capabilities allowed');
+                            return;
                         }
                     } else {
                         this.logicDeviceCapabilities = this.logicDeviceCapabilities.filter(
@@ -963,7 +964,15 @@ a or (b and c)"></textarea>
                         );
                     }
                     
+                    // Update the selected list (this replaces the formula input element)
                     this.updateLogicDeviceSelectedList();
+                    
+                    // IMPORTANT: Get the NEW formula input element after updateLogicDeviceSelectedList()
+                    // because it was replaced with a clone
+                    const formulaInput = document.getElementById('logic-device-formula');
+                    if (formulaInput && formulaInput.value.trim()) {
+                        this.updateLogicDeviceTruthTable(formulaInput.value.trim());
+                    }
                 }
 
                 updateLogicDeviceSelectedList() {
@@ -1000,10 +1009,12 @@ a or (b and c)"></textarea>
                             </li>
                         `).join('');
                     
-                    // Add live truth table updates for formula input
+                    // Get current formula value BEFORE replacing element
                     const formulaInput = document.getElementById('logic-device-formula');
+                    const currentFormula = formulaInput ? formulaInput.value : '';
+                    
+                    // Replace formula input to remove old event listeners
                     if (formulaInput) {
-                        // Remove old listeners
                         const newInput = formulaInput.cloneNode(true);
                         formulaInput.parentNode.replaceChild(newInput, formulaInput);
                         
@@ -1012,6 +1023,12 @@ a or (b and c)"></textarea>
                             const formula = newInput.value.trim();
                             this.updateLogicDeviceTruthTable(formula);
                         });
+                    }
+                    
+                    // Update truth table immediately with current formula
+                    if (currentFormula.trim()) {
+                        console.log('Updating truth table with', this.logicDeviceCapabilities.length, 'capabilities');
+                        this.updateLogicDeviceTruthTable(currentFormula.trim());
                     }
                 }
 
@@ -1061,31 +1078,7 @@ a or (b and c)"></textarea>
                         return;
                     }
                     
-                    // Validate formula - check if it uses variables that don't exist
-                    const availableVars = Array.from(
-                        {length: this.logicDeviceCapabilities.length}, 
-                        (_, i) => String.fromCharCode(65 + i)
-                    );
-                    const usedVars = new Set(
-                        (formula.toUpperCase().match(/\b[A-J]\b/g) || [])
-                    );
-                    
-                    const missingVars = Array.from(usedVars).filter(v => {
-                        const idx = v.charCodeAt(0) - 65;
-                        return idx >= this.logicDeviceCapabilities.length;
-                    });
-                    
-                    if (missingVars.length > 0) {
-                        truthTableContainer.innerHTML = `
-                            <div class="bg-yellow-900 border border-yellow-500 rounded p-3 text-sm">
-                                <p class="font-semibold">⚠️ Warning:</p>
-                                <p>Formula uses ${missingVars.join(', ')} but only ${availableVars.join(', ')} are selected.</p>
-                                <p class="mt-2">Please select more capabilities or update your formula.</p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    
+                    // renderTruthTable now handles all validation and error display internally
                     this.renderTruthTable(formula, this.logicDeviceCapabilities.length, 'logic-device-truth-table');
                 }
 
@@ -1833,6 +1826,26 @@ A * B + !C"
                         return;
                     }
                     
+                    // Validate that expression doesn't use undefined inputs
+                    const usedInputs = new Set(
+                        (expression.toUpperCase().match(/\b[A-J]\b/g) || [])
+                    );
+                    const missingInputs = Array.from(usedInputs).filter(input => {
+                        const idx = input.charCodeAt(0) - 65;
+                        return idx >= numInputs;
+                    });
+                    
+                    if (missingInputs.length > 0) {
+                        container.innerHTML = `
+                            <div class="bg-red-900/30 border border-red-500 rounded p-3 text-sm">
+                                <p class="font-semibold">❌ Error:</p>
+                                <p>Formula uses <strong>${missingInputs.join(', ')}</strong> but only <strong>${inputs.join(', ')}</strong> ${numInputs === 1 ? 'is' : 'are'} selected.</p>
+                                <p class="mt-2">Please select more capabilities or update your formula.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
                     let html = `
                         <div class="overflow-x-auto">
                             <table class="w-full text-xs border-collapse">
@@ -1845,6 +1858,8 @@ A * B + !C"
                                 <tbody>
                     `;
                     
+                    let hasErrors = false;
+                    
                     for (let i = 0; i < rows; i++) {
                         const values = {};
                         let rowHtml = '<tr>';
@@ -1856,15 +1871,30 @@ A * B + !C"
                         }
                         
                         const result = this.evaluateExpression(expression, values);
-                        const resultClass = result === 1 ? 'bg-green-700' : result === 0 ? 'bg-red-700' : 'bg-yellow-700';
-                        const resultText = result === null ? '?' : result;
                         
-                        rowHtml += `<td class="border border-gray-500 p-1 text-center font-bold ${resultClass}">${resultText}</td>`;
+                        if (result === null) {
+                            hasErrors = true;
+                            rowHtml += `<td class="border border-gray-500 p-1 text-center font-bold bg-yellow-700">?</td>`;
+                        } else {
+                            const resultClass = result === 1 ? 'bg-green-700' : 'bg-red-700';
+                            rowHtml += `<td class="border border-gray-500 p-1 text-center font-bold ${resultClass}">${result}</td>`;
+                        }
+                        
                         rowHtml += '</tr>';
                         html += rowHtml;
                     }
                     
-                    html += '</tbody></table></div>';
+                    html += '</tbody></table>';
+                    
+                    if (hasErrors) {
+                        html += `
+                            <div class="mt-2 text-xs text-yellow-400">
+                                ⚠️ Some rows could not be evaluated due to syntax errors
+                            </div>
+                        `;
+                    }
+                    
+                    html += '</div>';
                     container.innerHTML = html;
                 }
             }
