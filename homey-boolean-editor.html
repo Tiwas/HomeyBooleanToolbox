@@ -418,6 +418,7 @@
 
                 constructor() {
                     this.currentLang = localStorage.getItem('language') || 'en';
+                    this.editingDeviceId = null;
                     this.init();
                 }
 
@@ -744,23 +745,31 @@
                         const zoneEl = document.createElement('div');
                         zoneEl.className = 'mt-6';
                         zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${zoneDevices.map(device => `
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${zoneDevices.map(device => {
+                                // Determine if this is a logic-unit (only formulas) or logic-device (capabilities + formulas)
+                                const isLogicUnit = device.driverId.includes('logic-unit');
+                                const buttonText = isLogicUnit ? 'Edit Formula' : 'Edit Expression';
+                                const buttonClass = isLogicUnit ? 'edit-formula-button' : 'edit-expression-button';
+                                
+                                return `
                                 <div class="bg-gray-700 p-4 rounded-lg">
                                     <div class="flex justify-between items-start mb-2">
                                         <span class="font-medium">${device.name}</span>
                                         <div class="flex gap-2">
-                                            <button data-device-id="${device.id}" class="edit-expression-button bg-green-600 hover:bg-green-500 text-white text-xs py-1 px-2 rounded-md">Edit Expression</button>
+                                            <button data-device-id="${device.id}" class="${buttonClass} bg-green-600 hover:bg-green-500 text-white text-xs py-1 px-2 rounded-md">${buttonText}</button>
                                             <button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-xs py-1 px-2 rounded-md">${this.t('editDevices.settings')}</button>
                                         </div>
                                     </div>
                                     <div class="text-xs text-gray-400 font-mono">${device.driverId}</div>
                                 </div>
-                            `).join('')}</div>`;
+                                `;
+                            }).join('')}</div>`;
                         container.appendChild(zoneEl);
                     });
                     
                     container.querySelectorAll('.open-settings-button').forEach(button => button.addEventListener('click', (e) => this.openSettingsModal(e.target.dataset.deviceId)));
                     container.querySelectorAll('.edit-expression-button').forEach(button => button.addEventListener('click', (e) => this.editDeviceExpression(e.target.dataset.deviceId)));
+                    container.querySelectorAll('.edit-formula-button').forEach(button => button.addEventListener('click', (e) => this.editDeviceFormula(e.target.dataset.deviceId)));
                 }
 
                 renderDeviceCapabilityList() {
@@ -1079,6 +1088,125 @@
                     }
                 }
 
+                async editDeviceFormula(deviceId) {
+                    const device = this.allDevices[deviceId];
+                    if (!device || !device.settings) {
+                        alert('Could not load device settings');
+                        return;
+                    }
+                    
+                    this.showLoader('Loading formula...');
+                    
+                    try {
+                        const settings = device.settings;
+                        console.log('Editing formula for Logic Unit:', device.name, settings);
+                        
+                        // For Logic Unit, inputs A, B, C are predefined - we only need to load the formula
+                        // Clear selected capabilities (not used for Logic Unit)
+                        this.selectedCapabilities = [];
+                        
+                        // Get the first enabled formula
+                        const formulas = settings.formulas || [];
+                        let formulaText = '';
+                        
+                        if (Array.isArray(formulas) && formulas.length > 0) {
+                            const enabledFormula = formulas.find(f => f.enabled !== false);
+                            if (enabledFormula) {
+                                formulaText = enabledFormula.expression || '';
+                            }
+                        }
+                        
+                        console.log('Loaded formula:', formulaText);
+                        
+                        // Create a modal to edit just the formula
+                        this.hideLoader();
+                        this.showFormulaEditModal(device, formulaText);
+                        
+                    } catch (error) {
+                        console.error('Error loading formula:', error);
+                        this.hideLoader();
+                        alert('Failed to load formula: ' + error.message);
+                    }
+                }
+
+                showFormulaEditModal(device, currentFormula) {
+                    const modal = document.createElement('div');
+                    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50';
+                    modal.id = 'formula-edit-modal';
+                    modal.innerHTML = `
+                        <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl shadow-2xl border border-gray-700">
+                            <h3 class="text-lg font-bold mb-4">Edit Formula: ${device.name}</h3>
+                            <p class="text-sm text-gray-400 mb-4">This Logic Unit has predefined inputs A, B, C. Edit the formula below:</p>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Formula</label>
+                                <p class="text-xs text-gray-500 mb-2">Use variables A, B, C and operators AND, OR, NOT, XOR and parentheses ().</p>
+                                <textarea 
+                                    id="formula-edit-textarea" 
+                                    class="w-full h-32 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono"
+                                    placeholder="(A AND B) OR NOT C"
+                                >${currentFormula}</textarea>
+                            </div>
+                            
+                            <div class="flex justify-end gap-4">
+                                <button onclick="document.getElementById('formula-edit-modal').remove()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Cancel</button>
+                                <button onclick="app.saveFormulaFromModal('${device.id}')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Show Output</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(modal);
+                }
+
+                saveFormulaFromModal(deviceId) {
+                    const formula = document.getElementById('formula-edit-textarea').value.trim();
+                    
+                    if (!formula) {
+                        alert('Please enter a formula');
+                        return;
+                    }
+                    
+                    // Close the edit modal
+                    document.getElementById('formula-edit-modal').remove();
+                    
+                    // Show output in a modal
+                    const output = {
+                        formula: formula
+                    };
+                    
+                    const modal = document.createElement('div');
+                    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50';
+                    modal.innerHTML = `
+                        <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl shadow-2xl border border-gray-700">
+                            <h3 class="text-lg font-bold mb-4">Formula Output</h3>
+                            <p class="text-sm text-gray-400 mb-4">Copy this formula and paste it in the device settings "Formulas (JSON)" field:</p>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-md font-semibold mb-2">Formula:</h4>
+                                <textarea readonly class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg font-mono text-sm" rows="3">${formula}</textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h4 class="text-md font-semibold mb-2">Instructions:</h4>
+                                <ol class="text-sm text-gray-300 space-y-2 list-decimal list-inside">
+                                    <li>Copy the formula above</li>
+                                    <li>Go back and click "Settings" on the device</li>
+                                    <li>Find the "Formulas (JSON)" field</li>
+                                    <li>Update the "expression" value with your new formula</li>
+                                    <li>Click Save</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="flex justify-end gap-4">
+                                <button onclick="this.closest('.fixed').remove()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Close</button>
+                                <button onclick="navigator.clipboard.writeText('${formula.replace(/'/g, "\\'")}'); alert('Formula copied to clipboard!')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Copy Formula</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(modal);
+                }
+
                 async editDeviceExpression(deviceId) {
                     const device = this.allDevices[deviceId];
                     if (!device || !device.settings) {
@@ -1090,7 +1218,7 @@
                     
                     try {
                         const settings = device.settings;
-                        console.log('Editing expression for device:', device.name, settings);
+                        console.log('Editing expression for Logic Device:', device.name, settings);
                         
                         // Parse input_links to get selected capabilities
                         const inputLinks = settings.input_links || [];
@@ -1149,6 +1277,9 @@
                         
                         // Re-render the variable mapping
                         this.renderVariableMapping();
+                        
+                        // Store the device ID so we know we're editing an existing device
+                        this.editingDeviceId = deviceId;
                         
                     } catch (error) {
                         console.error('Error loading expression:', error);
