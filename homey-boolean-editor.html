@@ -1823,12 +1823,13 @@ A * B + !C"
                             .replace(/\bXOR\b/gi, '^');
                         
                         // Replace variables with their boolean values
+                        try {
                         Object.keys(values).forEach(variable => {
                             const upperVar = variable.toUpperCase();
                             const regex = new RegExp(`\\b${upperVar}\\b`, 'g');
                             jsExpr = jsExpr.replace(regex, values[variable] ? 'true' : 'false');
                         });
-                        
+                        } catch (e) {}
                         return eval(jsExpr) ? 1 : 0;
                     } catch (e) {
                         console.warn('Error evaluating expression:', e);
