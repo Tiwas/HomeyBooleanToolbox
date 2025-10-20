@@ -1141,10 +1141,14 @@
                 }
 
                 renderDeviceCapabilityList() {
-                    // This method is deprecated - using renderLogicDeviceCapabilityList() instead
-                    // Keeping it here to avoid errors if called from old code paths
-                    console.log('renderDeviceCapabilityList called but deprecated');
+                    // DEPRECATED: This method is no longer used in the new UI structure
+                    // Keeping empty stub to prevent crashes if called from old code paths
+                    console.log('renderDeviceCapabilityList() called - deprecated, doing nothing');
                 }
+                
+                // OLD METHOD REMOVED - DO NOT ADD BACK
+                // The old renderDeviceCapabilityList with zones/devices is gone
+                // Use renderLogicDeviceCapabilityList() instead
 
                 renderLogicDeviceCapabilityList() {
                     const container = document.getElementById('logic-device-capability-list');
