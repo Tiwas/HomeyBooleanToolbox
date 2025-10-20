@@ -319,8 +319,16 @@
                         
                         <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
                             <h3 class="text-lg font-semibold mb-2">Formula</h3>
-                            <p class="text-xs text-gray-400 mb-2">Use A-J and operators AND, OR, NOT, XOR, ().</p>
-                            <textarea id="logic-device-formula" class="w-full h-32 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm" placeholder="(A AND B) OR NOT C"></textarea>
+                            <p class="text-xs text-gray-400 mb-2">
+                                Operators: <code class="bg-gray-700 px-1 rounded">AND</code> <code class="bg-gray-700 px-1 rounded">*</code> · 
+                                <code class="bg-gray-700 px-1 rounded">OR</code> <code class="bg-gray-700 px-1 rounded">+</code> · 
+                                <code class="bg-gray-700 px-1 rounded">NOT</code> <code class="bg-gray-700 px-1 rounded">!</code> · 
+                                <code class="bg-gray-700 px-1 rounded">XOR</code> <code class="bg-gray-700 px-1 rounded">^</code> · 
+                                Parentheses <code class="bg-gray-700 px-1 rounded">()</code>
+                            </p>
+                            <textarea id="logic-device-formula" class="w-full h-32 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm" placeholder="Examples: (A AND B) OR C
+A * B + !C
+a or (b and c)"></textarea>
                             
                             <div id="logic-device-truth-table" class="mt-4"></div>
                         </div>
@@ -1684,10 +1692,17 @@
                             </div>
                             <div class="mb-3">
                                 <label class="block text-sm mb-1">Expression</label>
+                                <p class="text-xs text-gray-400 mb-1">
+                                    Operators: <code class="bg-gray-600 px-1 rounded">AND</code> <code class="bg-gray-600 px-1 rounded">*</code> · 
+                                    <code class="bg-gray-600 px-1 rounded">OR</code> <code class="bg-gray-600 px-1 rounded">+</code> · 
+                                    <code class="bg-gray-600 px-1 rounded">NOT</code> <code class="bg-gray-600 px-1 rounded">!</code> · 
+                                    <code class="bg-gray-600 px-1 rounded">XOR</code> <code class="bg-gray-600 px-1 rounded">^</code>
+                                </p>
                                 <textarea 
                                     oninput="window.app.updateLogicUnitFormulaExpression(${idx}, this.value)"
                                     class="w-full h-24 p-2 bg-gray-600 border border-gray-500 rounded font-mono"
-                                    placeholder="(A AND B) OR NOT C"
+                                    placeholder="Examples: (A AND B) OR C
+A * B + !C"
                                 >${formula.expression}</textarea>
                             </div>
                             <div id="truth-table-${idx}" class="mt-3"></div>
