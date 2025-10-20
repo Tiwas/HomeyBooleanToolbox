@@ -1829,8 +1829,8 @@ A * B + !C"
                             const regex = new RegExp(`\\b${upperVar}\\b`, 'g');
                             jsExpr = jsExpr.replace(regex, values[variable] ? 'true' : 'false');
                         });
-                        } catch (e) {}
                         return eval(jsExpr) ? 1 : 0;
+                        } catch (e) { return null; }
                     } catch (e) {
                         console.warn('Error evaluating expression:', e);
                         return null;
