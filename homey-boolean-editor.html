@@ -859,7 +859,7 @@
                         zoneHeader.className = 'bg-gray-700 p-3 cursor-pointer hover:bg-gray-650 flex justify-between items-center';
                         zoneHeader.innerHTML = `
                             <h3 class="font-semibold">${zone.name}</h3>
-                            <svg class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="zone-chevron w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
                         `;
@@ -870,12 +870,21 @@
                         zoneDevices.forEach(device => {
                             if (!device.capabilitiesObj || Object.keys(device.capabilitiesObj).length === 0) return;
                             
-                            const deviceEl = document.createElement('div');
-                            deviceEl.className = 'bg-gray-700 p-2 rounded';
-                            deviceEl.innerHTML = `<div class="font-medium text-sm mb-2">${device.name}</div>`;
+                            // Device wrapper with collapsible header
+                            const deviceWrapper = document.createElement('div');
+                            deviceWrapper.className = 'border border-gray-600 rounded overflow-hidden';
+                            
+                            const deviceHeader = document.createElement('div');
+                            deviceHeader.className = 'bg-gray-700 p-2 cursor-pointer hover:bg-gray-650 flex justify-between items-center';
+                            deviceHeader.innerHTML = `
+                                <div class="font-medium text-sm">${device.name}</div>
+                                <svg class="device-chevron w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            `;
                             
                             const capsEl = document.createElement('div');
-                            capsEl.className = 'space-y-1 pl-2';
+                            capsEl.className = 'hidden bg-gray-800 space-y-1 p-2';
                             
                             Object.values(device.capabilitiesObj).forEach(cap => {
                                 const isSelected = this.logicDeviceCapabilities.some(
@@ -883,7 +892,7 @@
                                 );
                                 
                                 const label = document.createElement('label');
-                                label.className = 'flex items-center gap-2 text-sm cursor-pointer hover:bg-gray-600 p-1 rounded';
+                                label.className = 'flex items-center gap-2 text-sm cursor-pointer hover:bg-gray-700 p-1 rounded';
                                 label.innerHTML = `
                                     <input type="checkbox" 
                                         ${isSelected ? 'checked' : ''}
@@ -901,14 +910,25 @@
                                 capsEl.appendChild(label);
                             });
                             
-                            deviceEl.appendChild(capsEl);
-                            zoneContent.appendChild(deviceEl);
+                            // Device click handler - toggle capabilities visibility
+                            deviceHeader.addEventListener('click', () => {
+                                const isHidden = capsEl.classList.contains('hidden');
+                                capsEl.classList.toggle('hidden');
+                                deviceHeader.querySelector('.device-chevron').style.transform = 
+                                    isHidden ? 'rotate(90deg)' : 'rotate(0deg)';
+                            });
+                            
+                            deviceWrapper.appendChild(deviceHeader);
+                            deviceWrapper.appendChild(capsEl);
+                            zoneContent.appendChild(deviceWrapper);
                         });
                         
+                        // Zone click handler - toggle devices visibility
                         zoneHeader.addEventListener('click', () => {
+                            const isHidden = zoneContent.classList.contains('hidden');
                             zoneContent.classList.toggle('hidden');
-                            zoneHeader.querySelector('svg').style.transform = 
-                                zoneContent.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
+                            zoneHeader.querySelector('.zone-chevron').style.transform = 
+                                isHidden ? 'rotate(90deg)' : 'rotate(0deg)';
                         });
                         
                         zoneWrapper.appendChild(zoneHeader);
@@ -1094,7 +1114,7 @@
                         return;
                     }
                     
-                    // Validate formula before saving
+                    // Validate formula before saving (case-insensitive)
                     const availableVars = Array.from(
                         {length: this.logicDeviceCapabilities.length}, 
                         (_, i) => String.fromCharCode(65 + i)
@@ -1115,7 +1135,7 @@
                     
                     const output = {
                         input_links: this.logicDeviceCapabilities.map((cap, idx) => ({
-                            input: String.fromCharCode(97 + idx).toLowerCase(), // a, b, c... (lowercase to match formula)
+                            input: String.fromCharCode(97 + idx).toLowerCase(), // a, b, c... (lowercase for Homey compatibility)
                             deviceId: cap.deviceId,
                             capability: cap.capabilityId,
                             deviceName: cap.deviceName
@@ -1123,7 +1143,7 @@
                         formulas: [{
                             id: 'formula_1',
                             name: 'Main Formula',
-                            expression: formula.toLowerCase(), // Ensure lowercase for consistency
+                            expression: formula, // Keep original case - evaluation is case-insensitive
                             enabled: true,
                             timeout: 30,
                             firstImpression: false
