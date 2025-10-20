@@ -1501,20 +1501,40 @@
                     this.showLoader('Loading expression...');
                     
                     try {
-                        // Get fresh settings from API
-                        const settingsSchema = await this.api.devices.getDeviceSettingsObj({ id: deviceId });
-                        const settings = device.settings || {};
-                        
                         console.log('Editing expression for Logic Device:', device.name);
-                        console.log('Settings schema:', settingsSchema);
-                        console.log('Device settings:', settings);
+                        console.log('Device object:', device);
+                        
+                        // Get settings - try multiple sources
+                        let settings = device.settings || {};
+                        console.log('Device.settings:', settings);
+                        
+                        // Also try to get fresh settings from API
+                        try {
+                            const freshSettings = await this.api.devices.getDevice({ id: deviceId });
+                            console.log('Fresh device from API:', freshSettings);
+                            if (freshSettings && freshSettings.settings) {
+                                settings = freshSettings.settings;
+                                console.log('Using fresh settings:', settings);
+                            }
+                        } catch (e) {
+                            console.warn('Could not fetch fresh settings, using cached:', e);
+                        }
                         
                         // Parse input_links to get selected capabilities
                         const inputLinks = settings.input_links || [];
                         
-                        console.log('Input links found:', inputLinks);
+                        console.log('Input links type:', typeof inputLinks);
+                        console.log('Input links is array?', Array.isArray(inputLinks));
+                        console.log('Input links length:', inputLinks.length);
+                        console.log('Input links content:', JSON.stringify(inputLinks, null, 2));
                         
-                        if (!Array.isArray(inputLinks) || inputLinks.length === 0) {
+                        if (!Array.isArray(inputLinks)) {
+                            this.hideLoader();
+                            alert('Input links format is invalid. Expected an array but got: ' + typeof inputLinks);
+                            return;
+                        }
+                        
+                        if (inputLinks.length === 0) {
                             this.hideLoader();
                             alert('No input links found on this device. Please add capabilities through Settings first, or create a new Logic Device.');
                             return;
@@ -1524,6 +1544,8 @@
                         this.logicDeviceCapabilities = [];
                         
                         for (const link of inputLinks) {
+                            console.log('Processing link:', link);
+                            
                             const linkedDevice = this.allDevices[link.deviceId];
                             if (!linkedDevice) {
                                 console.warn(`Device not found: ${link.deviceId}`);
@@ -1545,6 +1567,12 @@
                         }
                         
                         console.log('Loaded capabilities:', this.logicDeviceCapabilities);
+                        
+                        if (this.logicDeviceCapabilities.length === 0) {
+                            this.hideLoader();
+                            alert('Could not load any valid capabilities from input links. The devices or capabilities might not exist anymore.');
+                            return;
+                        }
                         
                         // Get the first enabled formula
                         const formulas = settings.formulas || [];
