@@ -1,8 +1,18 @@
+# Generated files
+app.json
+.homeybuild/
+
 # Node.js dependencies
 node_modules/
 
 # Homey build artifacts
 .homeybuild/
+
+# Development
+*.log
+.DS_Store
+node_modules/
+npm-debug.log
 
 # Old version
 no.tiwas.booleantoolbox.old/
@@ -10,6 +20,7 @@ no.tiwas.booleantoolbox.old/
 # Other images
 extra_images/
 
+# Misc
 codebase.*
 codebase-manifest.*
 .codebaseignore

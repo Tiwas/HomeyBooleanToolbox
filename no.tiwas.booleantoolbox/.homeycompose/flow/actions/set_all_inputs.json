@@ -1,0 +1,23 @@
+{
+  "title": {
+    "en": "Set all inputs from JSON",
+    "no": "Sett alle innganger fra JSON"
+  },
+  "titleFormatted": {
+    "en": "Set all inputs from JSON: [[values]]",
+    "no": "Sett alle innganger fra JSON: [[values]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    },
+    {
+      "type": "text",
+      "name": "values",
+      "title": { "en": "JSON values", "no": "JSON-verdier" },
+      "placeholder": { "en": "{\"A\": true, \"B\": false}", "no": "{\"A\": true, \"B\": false}" }
+    }
+  ]
+}

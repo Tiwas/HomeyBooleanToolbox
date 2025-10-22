@@ -1,0 +1,35 @@
+{
+  "title": {
+    "en": "Re-evaluate all formulas",
+    "no": "Re-evaluer alle formler",
+    "de": "Alle Formeln neu bewerten",
+    "nl": "Alle formules opnieuw evalueren",
+    "fr": "Réévaluer toutes les formules",
+    "da": "Gentag evaluering af alle formler",
+    "fi": "Arvioi kaikki kaavat uudelleen",
+    "sv": "Omvärdera alla formler",
+    "pl": "Ponownie oceń wszystkie formuły",
+    "it": "Rivaluta tutte le formule",
+    "es": "Re-evaluar todas las fórmulas"
+  },
+  "titleFormatted": {
+    "en": "Re-evaluate all formulas",
+    "no": "Re-evaluer alle formler",
+    "de": "Alle Formeln neu bewerten",
+    "nl": "Alle formules opnieuw evalueren",
+    "fr": "Réévaluer toutes les formules",
+    "da": "Gentag evaluering af alle formler",
+    "fi": "Arvioi kaikki kaavat uudelleen",
+    "sv": "Omvärdera alla formler",
+    "pl": "Ponownie oceń wszystkie formuły",
+    "it": "Rivaluta tutte le formule",
+    "es": "Re-evaluar todas las fórmulas"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    }
+  ]
+}

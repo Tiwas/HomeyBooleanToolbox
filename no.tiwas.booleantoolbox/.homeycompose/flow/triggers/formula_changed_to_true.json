@@ -1,0 +1,47 @@
+{
+  "title": {
+    "en": "Formula changed to TRUE",
+    "no": "Formel endret til SANN",
+    "de": "Formel auf WAHR geändert",
+    "nl": "Formule veranderde naar WAAR",
+    "fr": "Formule changée en VRAI",
+    "da": "Formel ændret til SAND",
+    "fi": "Kaava muuttui TODEKSI",
+    "sv": "Formel ändrades till SANN",
+    "pl": "Formuła zmieniona na PRAWDA",
+    "it": "Formula cambiata in VERO",
+    "es": "Fórmula cambiada a VERDADERO"
+  },
+  "titleFormatted": {
+    "en": "Formula [[formula]] changed to TRUE",
+    "no": "Formel [[formula]] endret til SANN",
+    "de": "Formel [[formula]] auf WAHR geändert",
+    "nl": "Formule [[formula]] veranderde naar WAAR",
+    "fr": "Formule [[formula]] changée en VRAI",
+    "da": "Formel [[formula]] ændret til SAND",
+    "fi": "Kaava [[formula]] muuttui TODEKSI",
+    "sv": "Formel [[formula]] ändrades till SANN",
+    "pl": "Formuła [[formula]] zmieniona na PRAWDA",
+    "it": "Formula [[formula]] cambiata in VERO",
+    "es": "Fórmula [[formula]] cambiada a VERDADERO"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    },
+    {
+      "type": "autocomplete",
+      "name": "formula",
+      "title": {
+        "en": "Formula",
+        "no": "Formel"
+      },
+      "placeholder": {
+        "en": "Select formula",
+        "no": "Velg formel"
+      }
+    }
+  ]
+}

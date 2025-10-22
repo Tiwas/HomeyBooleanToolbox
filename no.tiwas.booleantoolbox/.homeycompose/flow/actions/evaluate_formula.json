@@ -1,0 +1,23 @@
+{
+  "title": {
+    "en": "Evaluate specific formula",
+    "no": "Evaluer spesifikk formel"
+  },
+  "titleFormatted": {
+    "en": "Evaluate formula [[formula]]",
+    "no": "Evaluer formel [[formula]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    },
+    {
+      "type": "autocomplete",
+      "name": "formula",
+      "title": { "en": "Formula", "no": "Formel" },
+      "placeholder": { "en": "Select formula", "no": "Velg formel" }
+    }
+  ]
+}

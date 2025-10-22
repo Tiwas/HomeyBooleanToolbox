@@ -1,0 +1,165 @@
+{
+  "name": {
+    "en": "Logic Device",
+    "no": "Logisk Enhet",
+    "de": "Logikgerät",
+    "nl": "Logisch Apparaat",
+    "fr": "Appareil Logique",
+    "da": "Logisk Enhed",
+    "fi": "Logiikkalaite",
+    "sv": "Logikenhet",
+    "pl": "Urządzenie Logiczne",
+    "it": "Dispositivo Logico",
+    "es": "Dispositivo Lógico"
+  },
+  "class": "other",
+  "capabilities": [
+    "onoff",
+    "alarm_generic"
+  ],
+  "capabilitiesOptions": {
+    "alarm_generic": {
+      "title": {
+        "en": "Logic State",
+        "no": "Logikk-status",
+        "de": "Logikzustand",
+        "nl": "Logische Status",
+        "fr": "État Logique",
+        "da": "Logisk Status",
+        "fi": "Logiikkatila",
+        "sv": "Logikstatus",
+        "pl": "Stan Logiczny",
+        "it": "Stato Logico",
+        "es": "Estado Lógico"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": ""
+      },
+      "icon": "/assets/icon.svg"
+    }
+  },
+  "energy": {
+    "approximation": {
+      "usageConstant": 0
+    }
+  },
+  "images": {
+    "large": "/assets/images_logic_device/large.png",
+    "small": "/assets/images_logic_device/small.png"
+  },
+  "pair": [
+    {
+      "id": "select_num_inputs"
+    },
+    {
+      "id": "configure_inputs"
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "settings": [
+    {
+      "type": "group",
+      "label": {
+        "en": "Formulas",
+        "no": "Formler",
+        "de": "Formeln",
+        "nl": "Formules",
+        "fr": "Formules",
+        "da": "Formler",
+        "fi": "Kaavat",
+        "sv": "Formler",
+        "pl": "Formuły",
+        "it": "Formule",
+        "es": "Fórmulas"
+      },
+      "children": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "no": "Formler (JSON)",
+            "de": "Formeln (JSON)",
+            "nl": "Formules (JSON)",
+            "fr": "Formules (JSON)",
+            "da": "Formler (JSON)",
+            "fi": "Kaavat (JSON)",
+            "sv": "Formler (JSON)",
+            "pl": "Formuły (JSON)",
+            "it": "Formule (JSON)",
+            "es": "Fórmulas (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nJSON will be auto-formatted when you save.\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Main Logic\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: false (default) = reactive mode, true/1 = lock inputs at first value",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nJSON vil bli auto-formatert når du lagrer.\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Hovedlogikk\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: false (standard) = reaktiv modus, true/1 = lås inputs ved første verdi",
+            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nJSON wird beim Speichern automatisch formatiert.\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Hauptlogik\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: Sekunden vor Zeitüberschreitung (weglassen/0 = unendlich)\nfirstImpression: false (Standard) = reaktiver Modus, true/1 = Eingänge beim ersten Wert sperren",
+            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nJSON wordt automatisch opgemaakt bij het opslaan.\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Hoofdlogica\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: seconden voor time-out (weglaten/0 = oneindig)\nfirstImpression: false (standaard) = reactieve modus, true/1 = vergrendel invoer bij eerste waarde",
+            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs : AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nLe JSON sera formaté automatiquement lors de l'enregistrement.\n\nExemple :\n[{\"id\":\"f1\",\"name\":\"Logique Principale\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout : secondes avant l'expiration (omettre/0 = infini)\nfirstImpression : false (par défaut) = mode réactif, true/1 = verrouiller les entrées à la première valeur",
+            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nJSON bliver auto-formateret, når du gemmer.\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Hovedlogik\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: false (standard) = reaktiv tilstand, true/1 = lås input ved første værdi",
+            "fi": "JSON-taulukko. Jokaisella kaavalla on oma syötetila. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nJSON muotoillaan automaattisesti tallennettaessa.\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Päälogiikka\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: sekuntia ennen aikakatkaisua (jätä pois/0 = ääretön)\nfirstImpression: false (oletus) = reaktiivinen tila, true/1 = lukitse syötteet ensimmäiseen arvoon",
+            "sv": "JSON-array. Varje formel har sin egen ingångsstatus. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nJSON kommer att autoformateras när du sparar.\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Huvudlogik\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: false (standard) = reaktivt läge, true/1 = lås ingångar vid första värdet",
+            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejściowy. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nJSON zostanie automatycznie sformatowany po zapisaniu.\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Główna Logika\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: sekundy do przekroczenia limitu czasu (pomiń/0 = nieskończony)\nfirstImpression: false (domyślnie) = tryb reaktywny, true/1 = zablokuj wejścia przy pierwszej wartości",
+            "it": "Array JSON. Ogni formula ha il proprio stato di input. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nIl JSON verrà formattato automaticamente al salvataggio.\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Logica Principale\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: secondi prima del timeout (omettere/0 = infinito)\nfirstImpression: false (predefinito) = modalità reattiva, true/1 = blocca gli input al primo valore",
+            "es": "Array JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEl JSON se formateará automáticamente al guardar.\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Lógica Principal\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: false (predeterminado) = modo reactivo, true/1 = bloquear entradas en el primer valor"
+          },
+          "value": "[]"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "label": {
+        "en": "Input Links",
+        "no": "Inngangs-koblinger",
+        "de": "Eingangsverknüpfungen",
+        "nl": "Invoerkoppelingen",
+        "fr": "Liens d'Entrée",
+        "da": "Input-links",
+        "fi": "Tulolinkit",
+        "sv": "Ingångslänkar",
+        "pl": "Linki Wejściowe",
+        "it": "Collegamenti di Ingresso",
+        "es": "Enlaces de Entrada"
+      },
+      "children": [
+        {
+          "id": "input_links",
+          "type": "textarea",
+          "label": {
+            "en": "Input Links (JSON)",
+            "no": "Inngangs-koblinger (JSON)",
+            "de": "Eingangsverknüpfungen (JSON)",
+            "nl": "Invoerkoppelingen (JSON)",
+            "fr": "Liens d'Entrée (JSON)",
+            "da": "Input-links (JSON)",
+            "fi": "Tulolinkit (JSON)",
+            "sv": "Ingångslänkar (JSON)",
+            "pl": "Linki Wejściowe (JSON)",
+            "it": "Collegamenti di Ingresso (JSON)",
+            "es": "Enlaces de Entrada (JSON)"
+          },
+          "hint": {
+            "en": "Links between inputs and devices. JSON will be auto-formatted when you save.\n\nExample:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\",\"deviceName\":\"Kitchen Light\"}]",
+            "no": "Koblinger mellom innganger og enheter. JSON vil bli auto-formatert når du lagrer.\n\nEksempel:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\",\"deviceName\":\"Kjøkkenlys\"}]",
+            "de": "Verknüpfungen zwischen Eingängen und Geräten. JSON wird beim Speichern automatisch formatiert.\n\nBeispiel:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\",\"deviceName\":\"Küchenlicht\"}]",
+            "nl": "Koppelingen tussen ingangen en apparaten. JSON wordt automatisch opgemaakt bij het opslaan.\n\nVoorbeeld:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\",\"deviceName\":\"Keukenlamp\"}]",
+            "fr": "Liens entre les entrées et les appareils. Le JSON sera formaté automatiquement lors de l'enregistrement.\n\nExemple :\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\",\"deviceName\":\"Lumière Cuisine\"}]",
+            "da": "Links mellem inputs og enheder. JSON bliver auto-formateret, når du gemmer.\n\nEksempel:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\",\"deviceName\":\"Køkkenlys\"}]",
+            "fi": "Linkit syötteiden ja laitteiden välillä. JSON muotoillaan automaattisesti tallennettaessa.\n\nEsimerkki:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\",\"deviceName\":\"Keittiön Valo\"}]",
+            "sv": "Länkar mellan ingångar och enheter. JSON kommer att autoformateras när du sparar.\n\nExempel:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\",\"deviceName\":\"Kökslampa\"}]",
+            "pl": "Powiązania między wejściami a urządzeniami. JSON zostanie automatycznie sformatowany po zapisaniu.\n\nPrzykład:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\",\"deviceName\":\"Światło w kuchni\"}]",
+            "it": "Collegamenti tra input e dispositivi. Il JSON verrà formattato automaticamente al salvataggio.\n\nEsempio:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\",\"deviceName\":\"Luce Cucina\"}]",
+            "es": "Enlaces entre entradas y dispositivos. El JSON se formateará automáticamente al guardar.\n\nEjemplo:\n[{\"input\":\"a\",\"deviceId\":\"abc123\",\"capability\":\"onoff\",\"deviceName\":\"Luz de la Cocina\"}]"
+          },
+          "value": "[]"
+        }
+      ]
+    }
+  ]
+}

@@ -25,5 +25,8 @@
   },
   "1.2.2": {
     "en": "Added a couple of cards for evaluation and error control."
+  },
+  "1.2.3": {
+    "en": "Changed the code base to use homeycompose. Added a logger."
   }
 }

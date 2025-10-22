@@ -1,0 +1,38 @@
+{
+  "title": {
+    "en": "Set input value for formula",
+    "no": "Sett inngangsverdi for formel"
+  },
+  "titleFormatted": {
+    "en": "Set input [[input]] to [[value]] for formula [[formula]]",
+    "no": "Sett inngang [[input]] til [[value]] for formel [[formula]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    },
+    {
+      "type": "autocomplete",
+      "name": "formula",
+      "title": { "en": "Formula", "no": "Formel" },
+      "placeholder": { "en": "Select formula", "no": "Velg formel" }
+    },
+    {
+      "type": "autocomplete",
+      "name": "input",
+      "title": { "en": "Input", "no": "Inngang" },
+      "placeholder": { "en": "Select input", "no": "Velg inngang" }
+    },
+    {
+      "type": "dropdown",
+      "name": "value",
+      "title": { "en": "Value", "no": "Verdi" },
+      "values": [
+        { "id": "true", "title": { "en": "TRUE", "no": "SANN" } },
+        { "id": "false", "title": { "en": "FALSE", "no": "USANN" } }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "title": {
+    "en": "Evaluate expression",
+    "no": "Evaluer uttrykk",
+    "de": "Ausdruck auswerten",
+    "nl": "Uitdrukking evalueren",
+    "fr": "Évaluer l'expression",
+    "da": "Evaluer udtryk",
+    "fi": "Arvioi lauseke",
+    "sv": "Utvärdera uttryck",
+    "pl": "Oceń wyrażenie",
+    "it": "Valuta espressione",
+    "es": "Evaluar expresión"
+  },
+  "titleFormatted": {
+    "en": "Evaluate [[input]] [[op1]] min [[logical_op]] [[op2]] max with rules [[rules]]",
+    "no": "Evaluer [[input]] [[op1]] min [[logical_op]] [[op2]] maks med regler [[rules]]",
+    "de": "Bewerte [[input]] [[op1]] min [[logical_op]] [[op2]] max mit Regeln [[rules]]",
+    "nl": "Evalueer [[input]] [[op1]] min [[logical_op]] [[op2]] max met regels [[rules]]",
+    "fr": "Évaluer [[input]] [[op1]] min [[logical_op]] [[op2]] max avec règles [[rules]]",
+    "da": "Evaluer [[input]] [[op1]] min [[logical_op]] [[op2]] max med regler [[rules]]",
+    "fi": "Arvioi [[input]] [[op1]] min [[logical_op]] [[op2]] max säännöillä [[rules]]",
+    "sv": "Utvärdera [[input]] [[op1]] min [[logical_op]] [[op2]] max med regler [[rules]]",
+    "pl": "Oceń [[input]] [[op1]] min [[logical_op]] [[op2]] max z regułami [[rules]]",
+    "it": "Valuta [[input]] [[op1]] min [[logical_op]] [[op2]] max con regole [[rules]]",
+    "es": "Evaluar [[input]] [[op1]] min [[logical_op]] [[op2]] max con reglas [[rules]]"
+  },
+  "args": [
+    {
+      "type": "number",
+      "name": "input",
+      "title": {
+        "en": "Input value",
+        "no": "Inngangsverdi"
+      },
+      "placeholder": {
+        "en": "Enter number",
+        "no": "Skriv inn tall"
+      }
+    },
+    {
+      "type": "text",
+      "name": "rules",
+      "title": {
+        "en": "Rules",
+        "no": "Regler"
+      },
+      "placeholder": {
+        "en": "min,max,output; ...",
+        "no": "min,maks,utgang; ..."
+      }
+    },
+    {
+      "type": "dropdown",
+      "name": "op1",
+      "title": {
+        "en": "First operator",
+        "no": "Første operator"
+      },
+      "values": [
+        {
+          "id": "gt",
+          "title": {
+            "en": ">",
+            "no": ">"
+          }
+        },
+        {
+          "id": "gte",
+          "title": {
+            "en": "≥",
+            "no": "≥"
+          }
+        },
+        {
+          "id": "lt",
+          "title": {
+            "en": "<",
+            "no": "<"
+          }
+        },
+        {
+          "id": "lte",
+          "title": {
+            "en": "≤",
+            "no": "≤"
+          }
+        }
+      ]
+    },
+    {
+      "type": "dropdown",
+      "name": "op2",
+      "title": {
+        "en": "Second operator",
+        "no": "Andre operator"
+      },
+      "values": [
+        {
+          "id": "gt",
+          "title": {
+            "en": ">",
+            "no": ">"
+          }
+        },
+        {
+          "id": "gte",
+          "title": {
+            "en": "≥",
+            "no": "≥"
+          }
+        },
+        {
+          "id": "lt",
+          "title": {
+            "en": "<",
+            "no": "<"
+          }
+        },
+        {
+          "id": "lte",
+          "title": {
+            "en": "≤",
+            "no": "≤"
+          }
+        }
+      ]
+    },
+    {
+      "type": "dropdown",
+      "name": "logical_op",
+      "title": {
+        "en": "Logical operator",
+        "no": "Logisk operator"
+      },
+      "values": [
+        {
+          "id": "AND",
+          "title": {
+            "en": "AND",
+            "no": "OG"
+          }
+        },
+        {
+          "id": "OR",
+          "title": {
+            "en": "OR",
+            "no": "ELLER"
+          }
+        }
+      ]
+    }
+  ],
+  "tokens": [
+    {
+      "name": "outputValue",
+      "type": "number",
+      "title": {
+        "en": "Output value",
+        "no": "Utgangsverdi"
+      },
+      "example": 100
+    },
+    {
+      "name": "errorMessage",
+      "type": "string",
+      "title": {
+        "en": "Error message",
+        "no": "Feilmelding"
+      },
+      "example": "No error"
+    }
+  ]
+}

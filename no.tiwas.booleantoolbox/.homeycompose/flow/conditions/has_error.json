@@ -1,0 +1,42 @@
+{
+  "title": {
+    "en": "!{{Has|Has no}} error",
+    "no": "!{{Har|Har ingen}} feil",
+    "de": "!{{Hat|Hat keinen}} Fehler",
+    "nl": "!{{Heeft|Heeft geen}} fout",
+    "fr": "!{{A|N'a pas}} d'erreur",
+    "da": "!{{Har|Har ingen}} fejl",
+    "fi": "!{{On|Ei ole}} virhe",
+    "sv": "!{{Har|Har inget}} fel",
+    "pl": "!{{Ma|Nie ma}} błąd",
+    "it": "!{{Ha|Non ha}} errore",
+    "es": "!{{Tiene|No tiene}} error"
+  },
+  "titleFormatted": {
+    "en": "!{{Has|Has no}} error in [[text_input]]",
+    "no": "!{{Har|Har ingen}} feil i [[text_input]]",
+    "de": "!{{Hat|Hat keinen}} Fehler in [[text_input]]",
+    "nl": "!{{Heeft|Heeft geen}} fout in [[text_input]]",
+    "fr": "!{{A|N'a pas}} d'erreur dans [[text_input]]",
+    "da": "!{{Har|Har ingen}} fejl i [[text_input]]",
+    "fi": "!{{On|Ei ole}} virhe [[text_input]]:ssa",
+    "sv": "!{{Har|Har inget}} fel i [[text_input]]",
+    "pl": "!{{Ma|Nie ma}} błąd w [[text_input]]",
+    "it": "!{{Ha|Non ha}} errore in [[text_input]]",
+    "es": "!{{Tiene|No tiene}} error en [[text_input]]"
+  },
+  "args": [
+    {
+      "type": "text",
+      "name": "text_input",
+      "title": {
+        "en": "Error message",
+        "no": "Feilmelding"
+      },
+      "placeholder": {
+        "en": "Enter error message or token",
+        "no": "Skriv inn feilmelding eller token"
+      }
+    }
+  ]
+}

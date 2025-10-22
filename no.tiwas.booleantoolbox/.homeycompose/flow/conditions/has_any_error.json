@@ -1,0 +1,17 @@
+{
+  "title": {
+    "en": "Device !{{has|has no}} error",
+    "no": "Enhet !{{har|har ingen}} feil"
+  },
+  "titleFormatted": {
+    "en": "Device !{{has|has no}} error",
+    "no": "Enhet !{{har|har ingen}} feil"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    }
+  ]
+}

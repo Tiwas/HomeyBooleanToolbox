@@ -1,0 +1,71 @@
+{
+  "title": {
+    "en": "Formula result is...",
+    "no": "Formelresultat er...",
+    "de": "Formelergebnis ist...",
+    "nl": "Formule resultaat is...",
+    "fr": "Résultat de la formule est...",
+    "da": "Formelresultat er...",
+    "fi": "Kaavan tulos on...",
+    "sv": "Formelresultat är...",
+    "pl": "Wynik formuły to...",
+    "it": "Risultato formula è...",
+    "es": "Resultado de fórmula es..."
+  },
+  "titleFormatted": {
+    "en": "Formula [[formula]] result is [[what_is]]",
+    "no": "Formel [[formula]] resultat er [[what_is]]",
+    "de": "Formel [[formula]] Ergebnis ist [[what_is]]",
+    "nl": "Formule [[formula]] resultaat is [[what_is]]",
+    "fr": "Formule [[formula]] résultat est [[what_is]]",
+    "da": "Formel [[formula]] resultat er [[what_is]]",
+    "fi": "Kaava [[formula]] tulos on [[what_is]]",
+    "sv": "Formel [[formula]] resultat är [[what_is]]",
+    "pl": "Formuła [[formula]] wynik to [[what_is]]",
+    "it": "Formula [[formula]] risultato è [[what_is]]",
+    "es": "Fórmula [[formula]] resultado es [[what_is]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    },
+    {
+      "type": "autocomplete",
+      "name": "formula",
+      "title": {
+        "en": "Formula",
+        "no": "Formel"
+      },
+      "placeholder": {
+        "en": "Select formula",
+        "no": "Velg formel"
+      }
+    },
+    {
+      "type": "dropdown",
+      "name": "what_is",
+      "title": {
+        "en": "Value",
+        "no": "Verdi"
+      },
+      "values": [
+        {
+          "id": "true",
+          "title": {
+            "en": "TRUE",
+            "no": "SANN"
+          }
+        },
+        {
+          "id": "false",
+          "title": {
+            "en": "FALSE",
+            "no": "USANN"
+          }
+        }
+      ]
+    }
+  ]
+}

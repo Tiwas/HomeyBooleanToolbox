@@ -1,18 +1,22 @@
 'use strict';
 const Homey = require('homey');
+const Logger = require('./Logger');
 
 module.exports = class BaseLogicDriver extends Homey.Driver {
   async onInit() {
+    const driverName = this.constructor.name || 'LogicDriver';
+    this.logger = new Logger(this, driverName);
+
     const driverId = this.id;
     const numInputs = parseInt(driverId.split('-').pop());
     this.numInputs = numInputs;
-    this.log(`Logic Unit Driver (${this.numInputs} inputs) has been initialized`);
+    this.logger.info(`Logic Unit Driver (${this.numInputs} inputs) has been initialized`);
   }
 
-  // Sikrer unikt navn: "X 2", "X 3", ...
+  // Ensures unique device name: "X 2", "X 3", ...
   async ensureUniqueDeviceName(name) {
     try {
-      if (!this.homey.app.api) return name; // fallback hvis API ikke er klart
+      if (!this.homey.app.api) return name; // fallback if API is not ready
       const all = await this.homey.app.api.devices.getDevices();
       const existing = new Set(
         Object.values(all).map(d => (d?.name || '').trim()).filter(Boolean)
@@ -31,8 +35,8 @@ module.exports = class BaseLogicDriver extends Homey.Driver {
       }
       return candidate;
     } catch (e) {
-      this.error('ensureUniqueDeviceName failed:', e.message);
-      return name; // ikke kræsje ved feil
+      this.logger.error('ensureUniqueDeviceName failed:', e.message);
+      return name; // don't crash on error
     }
   }
 

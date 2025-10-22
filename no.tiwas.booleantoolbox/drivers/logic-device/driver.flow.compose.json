@@ -1,0 +1,54 @@
+{
+  "triggers": [
+    {
+      "id": "device_state_changed",
+      "title": {
+        "en": "State changed",
+        "no": "Tilstand endret",
+        "de": "Zustand geändert",
+        "nl": "Staat gewijzigd",
+        "fr": "État modifié",
+        "da": "Tilstand ændret",
+        "fi": "Tila muuttunut",
+        "sv": "Tillstånd ändrat",
+        "pl": "Stan zmieniony",
+        "it": "Stato cambiato",
+        "es": "Estado cambiado"
+      },
+      "hint": {
+        "en": "Triggers when the device state changes (on/off)",
+        "no": "Trigges når enhetens tilstand endres (på/av)",
+        "de": "Wird ausgelöst, wenn sich der Gerätestatus ändert (ein/aus)",
+        "nl": "Activeert wanneer de apparaatstatus verandert (aan/uit)",
+        "fr": "Se déclenche lorsque l'état de l'appareil change (marche/arrêt)",
+        "da": "Udløses, når enhedens tilstand ændres (tænd/sluk)",
+        "fi": "Laukaistaan, kun laitteen tila muuttuu (päälle/pois)",
+        "sv": "Utlöses när enhetens tillstånd ändras (på/av)",
+        "pl": "Uruchamia się, gdy stan urządzenia ulegnie zmianie (włącz/wyłącz)",
+        "it": "Si attiva quando lo stato del dispositivo cambia (on/off)",
+        "es": "Se activa cuando el estado del dispositivo cambia (encendido/apagado)"
+      },
+      "tokens": [
+        {
+          "name": "state",
+          "type": "boolean",
+          "title": {
+            "en": "State",
+            "no": "Tilstand",
+            "de": "Zustand",
+            "nl": "Staat",
+            "fr": "État",
+            "da": "Tilstand",
+            "fi": "Tila",
+            "sv": "Tillstånd",
+            "pl": "Stan",
+            "it": "Stato",
+            "es": "Estado"
+          },
+          "example": true
+        }
+      ],
+      "args": []
+    }
+  ]
+}

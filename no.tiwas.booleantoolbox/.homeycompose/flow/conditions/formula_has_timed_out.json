@@ -1,0 +1,23 @@
+{
+  "title": {
+    "en": "Formula !{{has|has not}} timed out",
+    "no": "Formel !{{har|har ikke}} fått timeout"
+  },
+  "titleFormatted": {
+    "en": "Formula [[formula]] !{{has|has not}} timed out",
+    "no": "Formel [[formula]] !{{har|har ikke}} fått timeout"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    },
+    {
+      "type": "autocomplete",
+      "name": "formula",
+      "title": { "en": "Formula", "no": "Formel" },
+      "placeholder": { "en": "Select formula", "no": "Velg formel" }
+    }
+  ]
+}

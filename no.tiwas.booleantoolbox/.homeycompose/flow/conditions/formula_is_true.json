@@ -1,0 +1,23 @@
+{
+  "title": {
+    "en": "Formula is !{{TRUE|FALSE}}",
+    "no": "Formel er !{{SANN|USANN}}"
+  },
+  "titleFormatted": {
+    "en": "Formula [[formula]] is !{{TRUE|FALSE}}",
+    "no": "Formel [[formula]] er !{{SANN|USANN}}"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    },
+    {
+      "type": "autocomplete",
+      "name": "formula",
+      "title": { "en": "Formula", "no": "Formel" },
+      "placeholder": { "en": "Select formula", "no": "Velg formel" }
+    }
+  ]
+}

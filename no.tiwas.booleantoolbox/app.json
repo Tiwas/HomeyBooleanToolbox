@@ -1,4 +1,5 @@
 {
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.tiwas.booleantoolbox",
   "support": "https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906",
   "version": "1.2.2",
@@ -55,9 +56,896 @@
     "large": "/assets/images/large.jpeg",
     "small": "/assets/images/small.jpeg"
   },
+  "flow": {
+    "triggers": [
+      {
+        "title": {
+          "en": "Formula changed to FALSE",
+          "no": "Formel endret til USANN",
+          "de": "Formel auf FALSCH geändert",
+          "nl": "Formule veranderde naar ONWAAR",
+          "fr": "Formule changée en FAUX",
+          "da": "Formel ændret til FALSK",
+          "fi": "Kaava muuttui EPÄTODEKSI",
+          "sv": "Formel ändrades till OSANN",
+          "pl": "Formuła zmieniona na FAŁSZ",
+          "it": "Formula cambiata in FALSO",
+          "es": "Fórmula cambiada a FALSO"
+        },
+        "titleFormatted": {
+          "en": "Formula [[formula]] changed to FALSE",
+          "no": "Formel [[formula]] endret til USANN",
+          "de": "Formel [[formula]] auf FALSCH geändert",
+          "nl": "Formule [[formula]] veranderde naar ONWAAR",
+          "fr": "Formule [[formula]] changée en FAUX",
+          "da": "Formel [[formula]] ændret til FALSK",
+          "fi": "Kaava [[formula]] muuttui EPÄTODEKSI",
+          "sv": "Formel [[formula]] ändrades till OSANN",
+          "pl": "Formuła [[formula]] zmieniona na FAŁSZ",
+          "it": "Formula [[formula]] cambiata in FALSO",
+          "es": "Fórmula [[formula]] cambiada a FALSO"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "title": {
+              "en": "Formula",
+              "no": "Formel"
+            },
+            "placeholder": {
+              "en": "Select formula",
+              "no": "Velg formel"
+            }
+          }
+        ],
+        "id": "formula_changed_to_false"
+      },
+      {
+        "title": {
+          "en": "Formula changed to TRUE",
+          "no": "Formel endret til SANN",
+          "de": "Formel auf WAHR geändert",
+          "nl": "Formule veranderde naar WAAR",
+          "fr": "Formule changée en VRAI",
+          "da": "Formel ændret til SAND",
+          "fi": "Kaava muuttui TODEKSI",
+          "sv": "Formel ändrades till SANN",
+          "pl": "Formuła zmieniona na PRAWDA",
+          "it": "Formula cambiata in VERO",
+          "es": "Fórmula cambiada a VERDADERO"
+        },
+        "titleFormatted": {
+          "en": "Formula [[formula]] changed to TRUE",
+          "no": "Formel [[formula]] endret til SANN",
+          "de": "Formel [[formula]] auf WAHR geändert",
+          "nl": "Formule [[formula]] veranderde naar WAAR",
+          "fr": "Formule [[formula]] changée en VRAI",
+          "da": "Formel [[formula]] ændret til SAND",
+          "fi": "Kaava [[formula]] muuttui TODEKSI",
+          "sv": "Formel [[formula]] ändrades till SANN",
+          "pl": "Formuła [[formula]] zmieniona na PRAWDA",
+          "it": "Formula [[formula]] cambiata in VERO",
+          "es": "Fórmula [[formula]] cambiada a VERDADERO"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "title": {
+              "en": "Formula",
+              "no": "Formel"
+            },
+            "placeholder": {
+              "en": "Select formula",
+              "no": "Velg formel"
+            }
+          }
+        ],
+        "id": "formula_changed_to_true"
+      },
+      {
+        "title": {
+          "en": "Formula timed out",
+          "no": "Formel fikk timeout",
+          "de": "Formel-Zeitüberschreitung",
+          "nl": "Formule time-out",
+          "fr": "Délai d'attente de la formule expiré",
+          "da": "Formel fik timeout",
+          "fi": "Kaava aikakatkaistu",
+          "sv": "Formel fick timeout",
+          "pl": "Formuła przekroczyła limit czasu",
+          "it": "Timeout formula",
+          "es": "Fórmula agotó tiempo"
+        },
+        "titleFormatted": {
+          "en": "Formula [[formula]] timed out",
+          "no": "Formel [[formula]] fikk timeout",
+          "de": "Formel [[formula]] Zeitüberschreitung",
+          "nl": "Formule [[formula]] time-out",
+          "fr": "Délai de formule [[formula]] expiré",
+          "da": "Formel [[formula]] fik timeout",
+          "fi": "Kaava [[formula]] aikakatkaistu",
+          "sv": "Formel [[formula]] fick timeout",
+          "pl": "Formuła [[formula]] przekroczyła limit czasu",
+          "it": "Timeout formula [[formula]]",
+          "es": "Fórmula [[formula]] agotó tiempo"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "title": {
+              "en": "Formula",
+              "no": "Formel"
+            },
+            "placeholder": {
+              "en": "Select formula",
+              "no": "Velg formel"
+            }
+          }
+        ],
+        "id": "formula_timeout"
+      },
+      {
+        "id": "device_state_changed",
+        "title": {
+          "en": "State changed",
+          "no": "Tilstand endret",
+          "de": "Zustand geändert",
+          "nl": "Staat gewijzigd",
+          "fr": "État modifié",
+          "da": "Tilstand ændret",
+          "fi": "Tila muuttunut",
+          "sv": "Tillstånd ändrat",
+          "pl": "Stan zmieniony",
+          "it": "Stato cambiato",
+          "es": "Estado cambiado"
+        },
+        "hint": {
+          "en": "Triggers when the device state changes (on/off)",
+          "no": "Trigges når enhetens tilstand endres (på/av)",
+          "de": "Wird ausgelöst, wenn sich der Gerätestatus ändert (ein/aus)",
+          "nl": "Activeert wanneer de apparaatstatus verandert (aan/uit)",
+          "fr": "Se déclenche lorsque l'état de l'appareil change (marche/arrêt)",
+          "da": "Udløses, når enhedens tilstand ændres (tænd/sluk)",
+          "fi": "Laukaistaan, kun laitteen tila muuttuu (päälle/pois)",
+          "sv": "Utlöses när enhetens tillstånd ändras (på/av)",
+          "pl": "Uruchamia się, gdy stan urządzenia ulegnie zmianie (włącz/wyłącz)",
+          "it": "Si attiva quando lo stato del dispositivo cambia (on/off)",
+          "es": "Se activa cuando el estado del dispositivo cambia (encendido/apagado)"
+        },
+        "tokens": [
+          {
+            "name": "state",
+            "type": "boolean",
+            "title": {
+              "en": "State",
+              "no": "Tilstand",
+              "de": "Zustand",
+              "nl": "Staat",
+              "fr": "État",
+              "da": "Tilstand",
+              "fi": "Tila",
+              "sv": "Tillstånd",
+              "pl": "Stan",
+              "it": "Stato",
+              "es": "Estado"
+            },
+            "example": true
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "title": {
+          "en": "Formula !{{has|has not}} timed out",
+          "no": "Formel !{{har|har ikke}} fått timeout"
+        },
+        "titleFormatted": {
+          "en": "Formula [[formula]] !{{has|has not}} timed out",
+          "no": "Formel [[formula]] !{{har|har ikke}} fått timeout"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "title": {
+              "en": "Formula",
+              "no": "Formel"
+            },
+            "placeholder": {
+              "en": "Select formula",
+              "no": "Velg formel"
+            }
+          }
+        ],
+        "id": "formula_has_timed_out"
+      },
+      {
+        "title": {
+          "en": "Formula is FALSE",
+          "no": "Formel er USANN"
+        },
+        "titleFormatted": {
+          "en": "Formula [[formula]] is FALSE",
+          "no": "Formel [[formula]] er USANN"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "title": {
+              "en": "Formula",
+              "no": "Formel"
+            },
+            "placeholder": {
+              "en": "Select formula",
+              "no": "Velg formel"
+            }
+          }
+        ],
+        "id": "formula_is_false"
+      },
+      {
+        "title": {
+          "en": "Formula is !{{TRUE|FALSE}}",
+          "no": "Formel er !{{SANN|USANN}}"
+        },
+        "titleFormatted": {
+          "en": "Formula [[formula]] is !{{TRUE|FALSE}}",
+          "no": "Formel [[formula]] er !{{SANN|USANN}}"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "title": {
+              "en": "Formula",
+              "no": "Formel"
+            },
+            "placeholder": {
+              "en": "Select formula",
+              "no": "Velg formel"
+            }
+          }
+        ],
+        "id": "formula_is_true"
+      },
+      {
+        "title": {
+          "en": "Formula result is...",
+          "no": "Formelresultat er...",
+          "de": "Formelergebnis ist...",
+          "nl": "Formule resultaat is...",
+          "fr": "Résultat de la formule est...",
+          "da": "Formelresultat er...",
+          "fi": "Kaavan tulos on...",
+          "sv": "Formelresultat är...",
+          "pl": "Wynik formuły to...",
+          "it": "Risultato formula è...",
+          "es": "Resultado de fórmula es..."
+        },
+        "titleFormatted": {
+          "en": "Formula [[formula]] result is [[what_is]]",
+          "no": "Formel [[formula]] resultat er [[what_is]]",
+          "de": "Formel [[formula]] Ergebnis ist [[what_is]]",
+          "nl": "Formule [[formula]] resultaat is [[what_is]]",
+          "fr": "Formule [[formula]] résultat est [[what_is]]",
+          "da": "Formel [[formula]] resultat er [[what_is]]",
+          "fi": "Kaava [[formula]] tulos on [[what_is]]",
+          "sv": "Formel [[formula]] resultat är [[what_is]]",
+          "pl": "Formuła [[formula]] wynik to [[what_is]]",
+          "it": "Formula [[formula]] risultato è [[what_is]]",
+          "es": "Fórmula [[formula]] resultado es [[what_is]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "title": {
+              "en": "Formula",
+              "no": "Formel"
+            },
+            "placeholder": {
+              "en": "Select formula",
+              "no": "Velg formel"
+            }
+          },
+          {
+            "type": "dropdown",
+            "name": "what_is",
+            "title": {
+              "en": "Value",
+              "no": "Verdi"
+            },
+            "values": [
+              {
+                "id": "true",
+                "title": {
+                  "en": "TRUE",
+                  "no": "SANN"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "FALSE",
+                  "no": "USANN"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "formula_result_is"
+      },
+      {
+        "title": {
+          "en": "Device !{{has|has no}} error",
+          "no": "Enhet !{{har|har ingen}} feil"
+        },
+        "titleFormatted": {
+          "en": "Device !{{has|has no}} error",
+          "no": "Enhet !{{har|har ingen}} feil"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          }
+        ],
+        "id": "has_any_error"
+      },
+      {
+        "title": {
+          "en": "!{{Has|Has no}} error",
+          "no": "!{{Har|Har ingen}} feil",
+          "de": "!{{Hat|Hat keinen}} Fehler",
+          "nl": "!{{Heeft|Heeft geen}} fout",
+          "fr": "!{{A|N'a pas}} d'erreur",
+          "da": "!{{Har|Har ingen}} fejl",
+          "fi": "!{{On|Ei ole}} virhe",
+          "sv": "!{{Har|Har inget}} fel",
+          "pl": "!{{Ma|Nie ma}} błąd",
+          "it": "!{{Ha|Non ha}} errore",
+          "es": "!{{Tiene|No tiene}} error"
+        },
+        "titleFormatted": {
+          "en": "!{{Has|Has no}} error in [[text_input]]",
+          "no": "!{{Har|Har ingen}} feil i [[text_input]]",
+          "de": "!{{Hat|Hat keinen}} Fehler in [[text_input]]",
+          "nl": "!{{Heeft|Heeft geen}} fout in [[text_input]]",
+          "fr": "!{{A|N'a pas}} d'erreur dans [[text_input]]",
+          "da": "!{{Har|Har ingen}} fejl i [[text_input]]",
+          "fi": "!{{On|Ei ole}} virhe [[text_input]]:ssa",
+          "sv": "!{{Har|Har inget}} fel i [[text_input]]",
+          "pl": "!{{Ma|Nie ma}} błąd w [[text_input]]",
+          "it": "!{{Ha|Non ha}} errore in [[text_input]]",
+          "es": "!{{Tiene|No tiene}} error en [[text_input]]"
+        },
+        "args": [
+          {
+            "type": "text",
+            "name": "text_input",
+            "title": {
+              "en": "Error message",
+              "no": "Feilmelding"
+            },
+            "placeholder": {
+              "en": "Enter error message or token",
+              "no": "Skriv inn feilmelding eller token"
+            }
+          }
+        ],
+        "id": "has_error"
+      }
+    ],
+    "actions": [
+      {
+        "title": {
+          "en": "Clear formula error state",
+          "no": "Fjern formel-feilstatus",
+          "de": "Formel-Fehlerstatus löschen",
+          "nl": "Formule-foutstatus wissen",
+          "fr": "Effacer l'état d'erreur de la formule",
+          "da": "Ryd formel fejlstatus",
+          "fi": "Tyhjennä kaavan virhetila",
+          "sv": "Rensa formelfelstatus",
+          "pl": "Wyczyść stan błędu formuły",
+          "it": "Cancella stato di errore formula",
+          "es": "Limpiar estado de error de fórmula"
+        },
+        "titleFormatted": {
+          "en": "Clear error state for formula [[formula]]",
+          "no": "Fjern feilstatus for formel [[formula]]",
+          "de": "Fehlerstatus für Formel [[formula]] löschen",
+          "nl": "Foutstatus voor formule [[formula]] wissen",
+          "fr": "Effacer l'erreur pour formule [[formula]]",
+          "da": "Ryd fejlstatus for formel [[formula]]",
+          "fi": "Tyhjennä virhetila kaavalle [[formula]]",
+          "sv": "Rensa felstatus för formel [[formula]]",
+          "pl": "Wyczyść stan błędu dla formuły [[formula]]",
+          "it": "Cancella errore per formula [[formula]]",
+          "es": "Limpiar error para fórmula [[formula]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "title": {
+              "en": "Formula",
+              "no": "Formel"
+            },
+            "placeholder": {
+              "en": "Select formula",
+              "no": "Velg formel"
+            }
+          }
+        ],
+        "id": "clear_error_state"
+      },
+      {
+        "title": {
+          "en": "Re-evaluate all formulas",
+          "no": "Re-evaluer alle formler",
+          "de": "Alle Formeln neu bewerten",
+          "nl": "Alle formules opnieuw evalueren",
+          "fr": "Réévaluer toutes les formules",
+          "da": "Gentag evaluering af alle formler",
+          "fi": "Arvioi kaikki kaavat uudelleen",
+          "sv": "Omvärdera alla formler",
+          "pl": "Ponownie oceń wszystkie formuły",
+          "it": "Rivaluta tutte le formule",
+          "es": "Re-evaluar todas las fórmulas"
+        },
+        "titleFormatted": {
+          "en": "Re-evaluate all formulas",
+          "no": "Re-evaluer alle formler",
+          "de": "Alle Formeln neu bewerten",
+          "nl": "Alle formules opnieuw evalueren",
+          "fr": "Réévaluer toutes les formules",
+          "da": "Gentag evaluering af alle formler",
+          "fi": "Arvioi kaikki kaavat uudelleen",
+          "sv": "Omvärdera alla formler",
+          "pl": "Ponownie oceń wszystkie formuły",
+          "it": "Rivaluta tutte le formule",
+          "es": "Re-evaluar todas las fórmulas"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          }
+        ],
+        "id": "evaluate_all_formulas"
+      },
+      {
+        "title": {
+          "en": "Evaluate expression",
+          "no": "Evaluer uttrykk",
+          "de": "Ausdruck auswerten",
+          "nl": "Uitdrukking evalueren",
+          "fr": "Évaluer l'expression",
+          "da": "Evaluer udtryk",
+          "fi": "Arvioi lauseke",
+          "sv": "Utvärdera uttryck",
+          "pl": "Oceń wyrażenie",
+          "it": "Valuta espressione",
+          "es": "Evaluar expresión"
+        },
+        "titleFormatted": {
+          "en": "Evaluate [[input]] [[op1]] min [[logical_op]] [[op2]] max with rules [[rules]]",
+          "no": "Evaluer [[input]] [[op1]] min [[logical_op]] [[op2]] maks med regler [[rules]]",
+          "de": "Bewerte [[input]] [[op1]] min [[logical_op]] [[op2]] max mit Regeln [[rules]]",
+          "nl": "Evalueer [[input]] [[op1]] min [[logical_op]] [[op2]] max met regels [[rules]]",
+          "fr": "Évaluer [[input]] [[op1]] min [[logical_op]] [[op2]] max avec règles [[rules]]",
+          "da": "Evaluer [[input]] [[op1]] min [[logical_op]] [[op2]] max med regler [[rules]]",
+          "fi": "Arvioi [[input]] [[op1]] min [[logical_op]] [[op2]] max säännöillä [[rules]]",
+          "sv": "Utvärdera [[input]] [[op1]] min [[logical_op]] [[op2]] max med regler [[rules]]",
+          "pl": "Oceń [[input]] [[op1]] min [[logical_op]] [[op2]] max z regułami [[rules]]",
+          "it": "Valuta [[input]] [[op1]] min [[logical_op]] [[op2]] max con regole [[rules]]",
+          "es": "Evaluar [[input]] [[op1]] min [[logical_op]] [[op2]] max con reglas [[rules]]"
+        },
+        "args": [
+          {
+            "type": "number",
+            "name": "input",
+            "title": {
+              "en": "Input value",
+              "no": "Inngangsverdi"
+            },
+            "placeholder": {
+              "en": "Enter number",
+              "no": "Skriv inn tall"
+            }
+          },
+          {
+            "type": "text",
+            "name": "rules",
+            "title": {
+              "en": "Rules",
+              "no": "Regler"
+            },
+            "placeholder": {
+              "en": "min,max,output; ...",
+              "no": "min,maks,utgang; ..."
+            }
+          },
+          {
+            "type": "dropdown",
+            "name": "op1",
+            "title": {
+              "en": "First operator",
+              "no": "Første operator"
+            },
+            "values": [
+              {
+                "id": "gt",
+                "title": {
+                  "en": ">",
+                  "no": ">"
+                }
+              },
+              {
+                "id": "gte",
+                "title": {
+                  "en": "≥",
+                  "no": "≥"
+                }
+              },
+              {
+                "id": "lt",
+                "title": {
+                  "en": "<",
+                  "no": "<"
+                }
+              },
+              {
+                "id": "lte",
+                "title": {
+                  "en": "≤",
+                  "no": "≤"
+                }
+              }
+            ]
+          },
+          {
+            "type": "dropdown",
+            "name": "op2",
+            "title": {
+              "en": "Second operator",
+              "no": "Andre operator"
+            },
+            "values": [
+              {
+                "id": "gt",
+                "title": {
+                  "en": ">",
+                  "no": ">"
+                }
+              },
+              {
+                "id": "gte",
+                "title": {
+                  "en": "≥",
+                  "no": "≥"
+                }
+              },
+              {
+                "id": "lt",
+                "title": {
+                  "en": "<",
+                  "no": "<"
+                }
+              },
+              {
+                "id": "lte",
+                "title": {
+                  "en": "≤",
+                  "no": "≤"
+                }
+              }
+            ]
+          },
+          {
+            "type": "dropdown",
+            "name": "logical_op",
+            "title": {
+              "en": "Logical operator",
+              "no": "Logisk operator"
+            },
+            "values": [
+              {
+                "id": "AND",
+                "title": {
+                  "en": "AND",
+                  "no": "OG"
+                }
+              },
+              {
+                "id": "OR",
+                "title": {
+                  "en": "OR",
+                  "no": "ELLER"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "outputValue",
+            "type": "number",
+            "title": {
+              "en": "Output value",
+              "no": "Utgangsverdi"
+            },
+            "example": 100
+          },
+          {
+            "name": "errorMessage",
+            "type": "string",
+            "title": {
+              "en": "Error message",
+              "no": "Feilmelding"
+            },
+            "example": "No error"
+          }
+        ],
+        "id": "evaluate_expression"
+      },
+      {
+        "title": {
+          "en": "Evaluate specific formula",
+          "no": "Evaluer spesifikk formel"
+        },
+        "titleFormatted": {
+          "en": "Evaluate formula [[formula]]",
+          "no": "Evaluer formel [[formula]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "title": {
+              "en": "Formula",
+              "no": "Formel"
+            },
+            "placeholder": {
+              "en": "Select formula",
+              "no": "Velg formel"
+            }
+          }
+        ],
+        "id": "evaluate_formula"
+      },
+      {
+        "title": {
+          "en": "Re-evaluate all formulas",
+          "no": "Re-evaluer alle formler"
+        },
+        "titleFormatted": {
+          "en": "Re-evaluate all formulas",
+          "no": "Re-evaluer alle formler"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          }
+        ],
+        "id": "reevaluate_formulas"
+      },
+      {
+        "title": {
+          "en": "Set all inputs from JSON",
+          "no": "Sett alle innganger fra JSON"
+        },
+        "titleFormatted": {
+          "en": "Set all inputs from JSON: [[values]]",
+          "no": "Sett alle innganger fra JSON: [[values]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "text",
+            "name": "values",
+            "title": {
+              "en": "JSON values",
+              "no": "JSON-verdier"
+            },
+            "placeholder": {
+              "en": "{\"A\": true, \"B\": false}",
+              "no": "{\"A\": true, \"B\": false}"
+            }
+          }
+        ],
+        "id": "set_all_inputs"
+      },
+      {
+        "title": {
+          "en": "Set input value (all formulas)",
+          "no": "Sett inngangsverdi (alle formler)"
+        },
+        "titleFormatted": {
+          "en": "Set input [[input]] to [[value]]",
+          "no": "Sett inngang [[input]] til [[value]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "autocomplete",
+            "name": "input",
+            "title": {
+              "en": "Input",
+              "no": "Inngang"
+            },
+            "placeholder": {
+              "en": "Select input",
+              "no": "Velg inngang"
+            }
+          },
+          {
+            "type": "dropdown",
+            "name": "value",
+            "title": {
+              "en": "Value",
+              "no": "Verdi"
+            },
+            "values": [
+              {
+                "id": "true",
+                "title": {
+                  "en": "TRUE",
+                  "no": "SANN"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "FALSE",
+                  "no": "USANN"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_input"
+      },
+      {
+        "title": {
+          "en": "Set input value for formula",
+          "no": "Sett inngangsverdi for formel"
+        },
+        "titleFormatted": {
+          "en": "Set input [[input]] to [[value]] for formula [[formula]]",
+          "no": "Sett inngang [[input]] til [[value]] for formel [[formula]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "type": "autocomplete",
+            "name": "formula",
+            "title": {
+              "en": "Formula",
+              "no": "Formel"
+            },
+            "placeholder": {
+              "en": "Select formula",
+              "no": "Velg formel"
+            }
+          },
+          {
+            "type": "autocomplete",
+            "name": "input",
+            "title": {
+              "en": "Input",
+              "no": "Inngang"
+            },
+            "placeholder": {
+              "en": "Select input",
+              "no": "Velg inngang"
+            }
+          },
+          {
+            "type": "dropdown",
+            "name": "value",
+            "title": {
+              "en": "Value",
+              "no": "Verdi"
+            },
+            "values": [
+              {
+                "id": "true",
+                "title": {
+                  "en": "TRUE",
+                  "no": "SANN"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "FALSE",
+                  "no": "USANN"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_input_value"
+      }
+    ]
+  },
   "drivers": [
     {
-      "id": "logic-device",
       "name": {
         "en": "Logic Device",
         "no": "Logisk Enhet",
@@ -73,41 +961,41 @@
       },
       "class": "other",
       "capabilities": [
-          "onoff",
-          "alarm_generic"
-        ],
-        "capabilitiesOptions": {
-          "alarm_generic": {
-            "title": {
-              "en": "Logic State",
-              "no": "Logikk-status",
-              "de": "Logikzustand",
-              "nl": "Logische Status",
-              "fr": "État Logique",
-              "da": "Logisk Status",
-              "fi": "Logiikkatila",
-              "sv": "Logikstatus",
-              "pl": "Stan Logiczny",
-              "it": "Stato Logico",
-              "es": "Estado Lógico"
-            },
-            "uiComponent": "sensor",
-            "getable": true,
-            "setable": false,
-            "units": {
-              "en": ""
-            },
-            "icon": "/assets/icon.svg"
-          }
-        },  
-        "energy": {
+        "onoff",
+        "alarm_generic"
+      ],
+      "capabilitiesOptions": {
+        "alarm_generic": {
+          "title": {
+            "en": "Logic State",
+            "no": "Logikk-status",
+            "de": "Logikzustand",
+            "nl": "Logische Status",
+            "fr": "État Logique",
+            "da": "Logisk Status",
+            "fi": "Logiikkatila",
+            "sv": "Logikstatus",
+            "pl": "Stan Logiczny",
+            "it": "Stato Logico",
+            "es": "Estado Lógico"
+          },
+          "uiComponent": "sensor",
+          "getable": true,
+          "setable": false,
+          "units": {
+            "en": ""
+          },
+          "icon": "/assets/icon.svg"
+        }
+      },
+      "energy": {
         "approximation": {
           "usageConstant": 0
         }
       },
       "images": {
-        "large": "/drivers/logic-device/assets/images/large.png",
-        "small": "/drivers/logic-device/assets/images/small.png"
+        "large": "/assets/images_logic_device/large.png",
+        "small": "/assets/images_logic_device/small.png"
       },
       "pair": [
         {
@@ -220,610 +1108,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "logic-device"
     },
     {
-      "id": "logic-unit-2",
-      "name": {
-        "en": "Logic Unit (2 inputs)",
-        "no": "Logisk Enhet (2 innganger)",
-        "de": "Logikeinheit (2 Eingänge)",
-        "nl": "Logische Eenheid (2 ingangen)",
-        "fr": "Unité Logique (2 entrées)",
-        "da": "Logisk Enhed (2 indgange)",
-        "fi": "Logiikkayksikkö (2 tuloa)",
-        "sv": "Logikenhet (2 ingångar)",
-        "pl": "Jednostka Logiczna (2 wejścia)",
-        "it": "Unità Logica (2 ingressi)",
-        "es": "Unidad Lógica (2 entradas)"
-      },
-      "class": "other",
-      "capabilities": [
-        "onoff"
-      ],
-      "energy": {
-        "approximation": {
-          "usageConstant": 0
-        }
-      },
-      "images": {
-        "large": "/drivers/logic-unit-2/assets/images/large.png",
-        "small": "/drivers/logic-unit-2/assets/images/small.png"
-      },
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "settings": [
-        {
-          "id": "formulas",
-          "type": "textarea",
-          "label": {
-            "en": "Formulas (JSON)",
-            "no": "Formler (JSON)",
-            "de": "Formeln (JSON)",
-            "nl": "Formules (JSON)",
-            "fr": "Formules (JSON)",
-            "da": "Formler (JSON)",
-            "fi": "Kaavat (JSON)",
-            "sv": "Formler (JSON)",
-            "pl": "Formuły (JSON)",
-            "it": "Formule (JSON)",
-            "es": "Fórmulas (JSON)"
-          },
-          "hint": {
-            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"My Formula\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
-            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
-            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Meine Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
-            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Mijn Formule\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
-            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Ma Formule\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
-            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
-            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kaavani\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
-            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
-            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Moja Formuła\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
-            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"La Mia Formula\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
-            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Mi Fórmula\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
-          },
-          "value": "[]"
-        }
-      ]
-    },
-    {
-      "id": "logic-unit-3",
-      "name": {
-        "en": "Logic Unit (3 inputs)",
-        "no": "Logisk Enhet (3 innganger)",
-        "de": "Logikeinheit (3 Eingänge)",
-        "nl": "Logische Eenheid (3 ingangen)",
-        "fr": "Unité Logique (3 entrées)",
-        "da": "Logisk Enhed (3 indgange)",
-        "fi": "Logiikkayksikkö (3 tuloa)",
-        "sv": "Logikenhet (3 ingångar)",
-        "pl": "Jednostka Logiczna (3 wejścia)",
-        "it": "Unità Logica (3 ingressi)",
-        "es": "Unidad Lógica (3 entradas)"
-      },
-      "class": "other",
-      "capabilities": [
-        "onoff"
-      ],
-      "energy": {
-        "approximation": {
-          "usageConstant": 0
-        }
-      },
-      "images": {
-        "large": "/drivers/logic-unit-3/assets/images/large.png",
-        "small": "/drivers/logic-unit-3/assets/images/small.png"
-      },
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "settings": [
-        {
-          "id": "formulas",
-          "type": "textarea",
-          "label": {
-            "en": "Formulas (JSON)",
-            "no": "Formler (JSON)",
-            "de": "Formeln (JSON)",
-            "nl": "Formules (JSON)",
-            "fr": "Formules (JSON)",
-            "da": "Formler (JSON)",
-            "fi": "Kaavat (JSON)",
-            "sv": "Formler (JSON)",
-            "pl": "Formuły (JSON)",
-            "it": "Formule (JSON)",
-            "es": "Fórmulas (JSON)"
-          },
-          "hint": {
-            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"My Formula\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
-            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
-            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Meine Formel\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
-            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Mijn Formule\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
-            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Ma Formule\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
-            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
-            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kaavani\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
-            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
-            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Moja Formuła\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
-            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"La Mia Formula\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
-            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Mi Fórmula\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
-          },
-          "value": "[]"
-        }
-      ]
-    },
-    {
-      "id": "logic-unit-4",
-      "name": {
-        "en": "Logic Unit (4 inputs)",
-        "no": "Logisk Enhet (4 innganger)",
-        "de": "Logikeinheit (4 Eingänge)",
-        "nl": "Logische Eenheid (4 ingangen)",
-        "fr": "Unité Logique (4 entrées)",
-        "da": "Logisk Enhed (4 indgange)",
-        "fi": "Logiikkayksikkö (4 tuloa)",
-        "sv": "Logikenhet (4 ingångar)",
-        "pl": "Jednostka Logiczna (4 wejścia)",
-        "it": "Unità Logica (4 ingressi)",
-        "es": "Unidad Lógica (4 entradas)"
-      },
-      "class": "other",
-      "capabilities": [
-        "onoff"
-      ],
-      "energy": {
-        "approximation": {
-          "usageConstant": 0
-        }
-      },
-      "images": {
-        "large": "/drivers/logic-unit-4/assets/images/large.png",
-        "small": "/drivers/logic-unit-4/assets/images/small.png"
-      },
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "settings": [
-        {
-          "id": "formulas",
-          "type": "textarea",
-          "label": {
-            "en": "Formulas (JSON)",
-            "no": "Formler (JSON)",
-            "de": "Formeln (JSON)",
-            "nl": "Formules (JSON)",
-            "fr": "Formules (JSON)",
-            "da": "Formler (JSON)",
-            "fi": "Kaavat (JSON)",
-            "sv": "Formler (JSON)",
-            "pl": "Formuły (JSON)",
-            "it": "Formule (JSON)",
-            "es": "Fórmulas (JSON)"
-          },
-          "hint": {
-            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"My Formula\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
-            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
-            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Meine Formel\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
-            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Mijn Formule\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
-            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Ma Formule\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
-            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
-            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kaavani\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
-            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
-            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Moja Formuła\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
-            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"La Mia Formula\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
-            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Mi Fórmula\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
-          },
-          "value": "[]"
-        }
-      ]
-    },
-    {
-      "id": "logic-unit-5",
-      "name": {
-        "en": "Logic Unit (5 inputs)",
-        "no": "Logisk Enhet (5 innganger)",
-        "de": "Logikeinheit (5 Eingänge)",
-        "nl": "Logische Eenheid (5 ingangen)",
-        "fr": "Unité Logique (5 entrées)",
-        "da": "Logisk Enhed (5 indgange)",
-        "fi": "Logiikkayksikkö (5 tuloa)",
-        "sv": "Logikenhet (5 ingångar)",
-        "pl": "Jednostka Logiczna (5 wejść)",
-        "it": "Unità Logica (5 ingressi)",
-        "es": "Unidad Lógica (5 entradas)"
-      },
-      "class": "other",
-      "capabilities": [
-        "onoff"
-      ],
-      "energy": {
-        "approximation": {
-          "usageConstant": 0
-        }
-      },
-      "images": {
-        "large": "/drivers/logic-unit-5/assets/images/large.png",
-        "small": "/drivers/logic-unit-5/assets/images/small.png"
-      },
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "settings": [
-        {
-          "id": "formulas",
-          "type": "textarea",
-          "label": {
-            "en": "Formulas (JSON)",
-            "no": "Formler (JSON)",
-            "de": "Formeln (JSON)",
-            "nl": "Formules (JSON)",
-            "fr": "Formules (JSON)",
-            "da": "Formler (JSON)",
-            "fi": "Kaavat (JSON)",
-            "sv": "Formler (JSON)",
-            "pl": "Formuły (JSON)",
-            "it": "Formule (JSON)",
-            "es": "Fórmulas (JSON)"
-          },
-          "hint": {
-            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"All active\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
-            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Alle aktive\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
-            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Alle aktiv\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
-            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Alle actief\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
-            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Tous actifs\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
-            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Alle aktive\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
-            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kaikki aktiivisia\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
-            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Alla aktiva\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
-            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Wszystkie aktywne\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
-            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Tutti attivi\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
-            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Todos activos\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
-          },
-          "value": "[]"
-        }
-      ]
-    },
-    {
-      "id": "logic-unit-6",
-      "name": {
-        "en": "Logic Unit (6 inputs)",
-        "no": "Logisk Enhet (6 innganger)",
-        "de": "Logikeinheit (6 Eingänge)",
-        "nl": "Logische Eenheid (6 ingangen)",
-        "fr": "Unité Logique (6 entrées)",
-        "da": "Logisk Enhed (6 indgange)",
-        "fi": "Logiikkayksikkö (6 tuloa)",
-        "sv": "Logikenhet (6 ingångar)",
-        "pl": "Jednostka Logiczna (6 wejść)",
-        "it": "Unità Logica (6 ingressi)",
-        "es": "Unidad Lógica (6 entradas)"
-      },
-      "class": "other",
-      "capabilities": [
-        "onoff"
-      ],
-      "energy": {
-        "approximation": {
-          "usageConstant": 0
-        }
-      },
-      "images": {
-        "large": "/drivers/logic-unit-6/assets/images/large.png",
-        "small": "/drivers/logic-unit-6/assets/images/small.png"
-      },
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "settings": [
-        {
-          "id": "formulas",
-          "type": "textarea",
-          "label": {
-            "en": "Formulas (JSON)",
-            "no": "Formler (JSON)",
-            "de": "Formeln (JSON)",
-            "nl": "Formules (JSON)",
-            "fr": "Formules (JSON)",
-            "da": "Formler (JSON)",
-            "fi": "Kaavat (JSON)",
-            "sv": "Formler (JSON)",
-            "pl": "Formuły (JSON)",
-            "it": "Formule (JSON)",
-            "es": "Fórmulas (JSON)"
-          },
-          "hint": {
-            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Three groups\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
-            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Tre grupper\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
-            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Drei Gruppen\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
-            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Drie groepen\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
-            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Trois groupes\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
-            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Tre grupper\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
-            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kolme ryhmää\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
-            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Tre grupper\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
-            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Trzy grupy\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
-            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Tre gruppi\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
-            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Tres grupos\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
-          },
-          "value": "[]"
-        }
-      ]
-    },
-    {
-      "id": "logic-unit-7",
-      "name": {
-        "en": "Logic Unit (7 inputs)",
-        "no": "Logisk Enhet (7 innganger)",
-        "de": "Logikeinheit (7 Eingänge)",
-        "nl": "Logische Eenheid (7 ingangen)",
-        "fr": "Unité Logique (7 entrées)",
-        "da": "Logisk Enhed (7 indgange)",
-        "fi": "Logiikkayksikkö (7 tuloa)",
-        "sv": "Logikenhet (7 ingångar)",
-        "pl": "Jednostka Logiczna (7 wejść)",
-        "it": "Unità Logica (7 ingressi)",
-        "es": "Unidad Lógica (7 entradas)"
-      },
-      "class": "other",
-      "capabilities": [
-        "onoff"
-      ],
-      "energy": {
-        "approximation": {
-          "usageConstant": 0
-        }
-      },
-      "images": {
-        "large": "/drivers/logic-unit-7/assets/images/large.png",
-        "small": "/drivers/logic-unit-7/assets/images/small.png"
-      },
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "settings": [
-        {
-          "id": "formulas",
-          "type": "textarea",
-          "label": {
-            "en": "Formulas (JSON)",
-            "no": "Formler (JSON)",
-            "de": "Formeln (JSON)",
-            "nl": "Formules (JSON)",
-            "fr": "Formules (JSON)",
-            "da": "Formler (JSON)",
-            "fi": "Kaavat (JSON)",
-            "sv": "Formler (JSON)",
-            "pl": "Formuły (JSON)",
-            "it": "Formule (JSON)",
-            "es": "Fórmulas (JSON)"
-          },
-          "hint": {
-            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Grouped\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
-            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Grupperte\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
-            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Gruppiert\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
-            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Gegroepeerd\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
-            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Groupé\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
-            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Grupperet\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
-            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Ryhmitelty\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
-            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Grupperad\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
-            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Zgrupowane\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
-            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Raggruppato\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
-            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Agrupado\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
-          },
-          "value": "[]"
-        }
-      ]
-    },
-    {
-      "id": "logic-unit-8",
-      "name": {
-        "en": "Logic Unit (8 inputs)",
-        "no": "Logisk Enhet (8 innganger)",
-        "de": "Logikeinheit (8 Eingänge)",
-        "nl": "Logische Eenheid (8 ingangen)",
-        "fr": "Unité Logique (8 entrées)",
-        "da": "Logisk Enhed (8 indgange)",
-        "fi": "Logiikkayksikkö (8 tuloa)",
-        "sv": "Logikenhet (8 ingångar)",
-        "pl": "Jednostka Logiczna (8 wejść)",
-        "it": "Unità Logica (8 ingressi)",
-        "es": "Unidad Lógica (8 entradas)"
-      },
-      "class": "other",
-      "capabilities": [
-        "onoff"
-      ],
-      "energy": {
-        "approximation": {
-          "usageConstant": 0
-        }
-      },
-      "images": {
-        "large": "/drivers/logic-unit-8/assets/images/large.png",
-        "small": "/drivers/logic-unit-8/assets/images/small.png"
-      },
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "settings": [
-        {
-          "id": "formulas",
-          "type": "textarea",
-          "label": {
-            "en": "Formulas (JSON)",
-            "no": "Formler (JSON)",
-            "de": "Formeln (JSON)",
-            "nl": "Formules (JSON)",
-            "fr": "Formules (JSON)",
-            "da": "Formler (JSON)",
-            "fi": "Kaavat (JSON)",
-            "sv": "Formler (JSON)",
-            "pl": "Formuły (JSON)",
-            "it": "Formule (JSON)",
-            "es": "Fórmulas (JSON)"
-          },
-          "hint": {
-            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Four pairs\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
-            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Fire par\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
-            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Vier Paare\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
-            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Vier paren\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
-            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Quatre paires\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
-            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Fire par\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
-            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Neljä paria\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
-            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Fyra par\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
-            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Cztery pary\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
-            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Quattro coppie\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
-            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Cuatro pares\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
-          },
-          "value": "[]"
-        }
-      ]
-    },
-    {
-      "id": "logic-unit-9",
-      "name": {
-        "en": "Logic Unit (9 inputs)",
-        "no": "Logisk Enhet (9 innganger)",
-        "de": "Logikeinheit (9 Eingänge)",
-        "nl": "Logische Eenheid (9 ingangen)",
-        "fr": "Unité Logique (9 entrées)",
-        "da": "Logisk Enhed (9 indgange)",
-        "fi": "Logiikkayksikkö (9 tuloa)",
-        "sv": "Logikenhet (9 ingångar)",
-        "pl": "Jednostka Logiczna (9 wejść)",
-        "it": "Unità Logica (9 ingressi)",
-        "es": "Unidad Lógica (9 entradas)"
-      },
-      "class": "other",
-      "capabilities": [
-        "onoff"
-      ],
-      "energy": {
-        "approximation": {
-          "usageConstant": 0
-        }
-      },
-      "images": {
-        "large": "/drivers/logic-unit-9/assets/images/large.png",
-        "small": "/drivers/logic-unit-9/assets/images/small.png"
-      },
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "settings": [
-        {
-          "id": "formulas",
-          "type": "textarea",
-          "label": {
-            "en": "Formulas (JSON)",
-            "no": "Formler (JSON)",
-            "de": "Formeln (JSON)",
-            "nl": "Formules (JSON)",
-            "fr": "Formules (JSON)",
-            "da": "Formler (JSON)",
-            "fi": "Kaavat (JSON)",
-            "sv": "Formler (JSON)",
-            "pl": "Formuły (JSON)",
-            "it": "Formule (JSON)",
-            "es": "Fórmulas (JSON)"
-          },
-          "hint": {
-            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Three trios\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
-            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Tre trioer\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
-            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Drei Trios\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
-            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Drie trio's\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
-            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Trois trios\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
-            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Tre trioer\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
-            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kolme kolmikkoa\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
-            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Tre trior\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
-            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Trzy trójki\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
-            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Tre trii\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
-            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Tres tríos\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
-          },
-          "value": "[]"
-        }
-      ]
-    },
-    {
-      "id": "logic-unit-10",
       "name": {
         "en": "Logic Unit (10 inputs)",
         "no": "Logisk Enhet (10 innganger)",
@@ -847,8 +1135,8 @@
         }
       },
       "images": {
-        "large": "/drivers/logic-unit-10/assets/images/large.png",
-        "small": "/drivers/logic-unit-10/assets/images/small.png"
+        "large": "/assets/images_logic_unit/large.png",
+        "small": "/assets/images_logic_unit/small.png"
       },
       "pair": [
         {
@@ -895,761 +1183,608 @@
           },
           "value": "[]"
         }
-      ]
-    }
-  ],
-  "flow": {
-    "triggers": [
-      {
-        "id": "formula_changed_to_true",
-        "title": {
-          "en": "Formula result changed to TRUE",
-          "no": "Formelresultat ble SANN",
-          "de": "Formelergebnis wurde WAHR",
-          "nl": "Formule resultaat werd WAAR",
-          "fr": "Le résultat de la formule est devenu VRAI",
-          "da": "Formelresultat blev SAND",
-          "fi": "Kaavan tulos muuttui TODEKSI",
-          "sv": "Formelresultat blev SANT",
-          "pl": "Wynik formuły zmienił się na PRAWDA",
-          "it": "Il risultato della formula è diventato VERO",
-          "es": "El resultado de la fórmula cambió a VERDADERO"
-        },
-        "titleFormatted": {
-          "en": "Formula [[formula]] changed to TRUE",
-          "no": "Formel [[formula]] ble SANN",
-          "de": "Formel [[formula]] wurde WAHR",
-          "nl": "Formule [[formula]] werd WAAR",
-          "fr": "La formule [[formula]] est devenue VRAI",
-          "da": "Formel [[formula]] blev SAND",
-          "fi": "Kaava [[formula]] muuttui TODEKSI",
-          "sv": "Formel [[formula]] blev SANT",
-          "pl": "Formuła [[formula]] zmieniła się na PRAWDA",
-          "it": "La formula [[formula]] è diventata VERO",
-          "es": "La fórmula [[formula]] cambió a VERDADERO"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
-          },
-          {
-            "type": "autocomplete",
-            "name": "formula",
-            "placeholder": {
-              "en": "Select Formula",
-              "no": "Velg Formel",
-              "de": "Formel wählen",
-              "nl": "Kies Formule",
-              "fr": "Sélectionner une Formule",
-              "da": "Vælg Formel",
-              "fi": "Valitse Kaava",
-              "sv": "Välj Formel",
-              "pl": "Wybierz Formułę",
-              "it": "Seleziona Formula",
-              "es": "Seleccionar Fórmula"
-            }
-          }
-        ]
-      },
-      {
-        "id": "formula_changed_to_false",
-        "title": {
-          "en": "Formula result changed to FALSE",
-          "no": "Formelresultat ble USANN",
-          "de": "Formelergebnis wurde FALSCH",
-          "nl": "Formule resultaat werd ONWAAR",
-          "fr": "Le résultat de la formule est devenu FAUX",
-          "da": "Formelresultat blev FALSK",
-          "fi": "Kaavan tulos muuttui EPÄTODEKSI",
-          "sv": "Formelresultat blev FALSKT",
-          "pl": "Wynik formuły zmienił się na FAŁSZ",
-          "it": "Il risultato della formula è diventato FALSO",
-          "es": "El resultado de la fórmula cambió a FALSO"
-        },
-        "titleFormatted": {
-          "en": "Formula [[formula]] changed to FALSE",
-          "no": "Formel [[formula]] ble USANN",
-          "de": "Formel [[formula]] wurde FALSCH",
-          "nl": "Formule [[formula]] werd ONWAAR",
-          "fr": "La formule [[formula]] est devenue FAUX",
-          "da": "Formel [[formula]] blev FALSK",
-          "fi": "Kaava [[formula]] muuttui EPÄTODEKSI",
-          "sv": "Formel [[formula]] blev FALSKT",
-          "pl": "Formuła [[formula]] zmieniła się na FAŁSZ",
-          "it": "La formula [[formula]] è diventata FALSO",
-          "es": "La fórmula [[formula]] cambió a FALSO"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
-          },
-          {
-            "type": "autocomplete",
-            "name": "formula",
-            "placeholder": {
-              "en": "Select Formula",
-              "no": "Velg Formel",
-              "de": "Formel wählen",
-              "nl": "Kies Formule",
-              "fr": "Sélectionner une Formule",
-              "da": "Vælg Formel",
-              "fi": "Valitse Kaava",
-              "sv": "Välj Formel",
-              "pl": "Wybierz Formułę",
-              "it": "Seleziona Formula",
-              "es": "Seleccionar Fórmula"
-            }
-          }
-        ]
-      },
-      {
-        "id": "formula_timeout",
-        "title": {
-          "en": "Formula timed out",
-          "no": "Formel fikk timeout",
-          "de": "Formel Zeitüberschreitung",
-          "nl": "Formule time-out",
-          "fr": "La formule a expiré",
-          "da": "Formel fik timeout",
-          "fi": "Kaava aikakatkaistiin",
-          "sv": "Formel fick timeout",
-          "pl": "Formuła przekroczyła czas",
-          "it": "Formula scaduta",
-          "es": "La fórmula agotó el tiempo"
-        },
-        "titleFormatted": {
-          "en": "Formula [[formula]] timed out",
-          "no": "Formel [[formula]] fikk timeout",
-          "de": "Formel [[formula]] Zeitüberschreitung",
-          "nl": "Formule [[formula]] time-out",
-          "fr": "La formule [[formula]] a expiré",
-          "da": "Formel [[formula]] fik timeout",
-          "fi": "Kaava [[formula]] aikakatkaistiin",
-          "sv": "Formel [[formula]] fick timeout",
-          "pl": "Formuła [[formula]] przekroczyła czas",
-          "it": "Formula [[formula]] scaduta",
-          "es": "La fórmula [[formula]] agotó el tiempo"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
-          },
-          {
-            "type": "autocomplete",
-            "name": "formula",
-            "placeholder": {
-              "en": "Select Formula",
-              "no": "Velg Formel",
-              "de": "Formel wählen",
-              "nl": "Kies Formule",
-              "fr": "Sélectionner une Formule",
-              "da": "Vælg Formel",
-              "fi": "Valitse Kaava",
-              "sv": "Välj Formel",
-              "pl": "Wybierz Formułę",
-              "it": "Seleziona Formula",
-              "es": "Seleccionar Fórmula"
-            }
-          }
-        ]
-      },
-      {
-        "id": "device_state_changed",
-        "title": {
-          "en": "State changed",
-          "no": "Tilstand endret",
-          "de": "Zustand geändert",
-          "nl": "Staat gewijzigd",
-          "fr": "État modifié",
-          "da": "Tilstand ændret",
-          "fi": "Tila muuttunut",
-          "sv": "Tillstånd ändrat",
-          "pl": "Stan zmieniony",
-          "it": "Stato cambiato",
-          "es": "Estado cambiado"
-        },
-        "hint": {
-          "en": "Triggers when the device state changes (on/off)",
-          "no": "Trigges når enhetens tilstand endres (på/av)",
-          "de": "Wird ausgelöst, wenn sich der Gerätestatus ändert (ein/aus)",
-          "nl": "Activeert wanneer de apparaatstatus verandert (aan/uit)",
-          "fr": "Se déclenche lorsque l'état de l'appareil change (marche/arrêt)",
-          "da": "Udløses, når enhedens tilstand ændres (tænd/sluk)",
-          "fi": "Laukaistaan, kun laitteen tila muuttuu (päälle/pois)",
-          "sv": "Utlöses när enhetens tillstånd ändras (på/av)",
-          "pl": "Uruchamia się, gdy stan urządzenia ulegnie zmianie (włącz/wyłącz)",
-          "it": "Si attiva quando lo stato del dispositivo cambia (on/off)",
-          "es": "Se activa cuando el estado del dispositivo cambia (encendido/apagado)"
-        },
-        "tokens": [
-          {
-            "name": "state",
-            "type": "boolean",
-            "title": {
-              "en": "State",
-              "no": "Tilstand",
-              "de": "Zustand",
-              "nl": "Staat",
-              "fr": "État",
-              "da": "Tilstand",
-              "fi": "Tila",
-              "sv": "Tillstånd",
-              "pl": "Stan",
-              "it": "Stato",
-              "es": "Estado"
-            },
-            "example": true
-          }
-        ],
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=logic-device"
-          }
-        ]
-      }      
-    ],
-    "actions": [
-      {
-        "id": "set_input_value",
-        "title": {
-          "en": "Set input value for formula",
-          "no": "Sett inngangsverdi for formel",
-          "de": "Eingangswert für Formel festlegen",
-          "nl": "Stel invoerwaarde in voor formule",
-          "fr": "Définir la valeur d'entrée pour la formule",
-          "da": "Indstil inputværdi for formel",
-          "fi": "Aseta tuloarvo kaavalle",
-          "sv": "Ställ in ingångsvärde för formel",
-          "pl": "Ustaw wartość wejścia dla formuły",
-          "it": "Imposta valore di ingresso per formula",
-          "es": "Establecer valor de entrada para fórmula"
-        },
-        "titleFormatted": {
-          "en": "Set [[input]] to [[value]] for [[formula]]",
-          "no": "Sett [[input]] til [[value]] for [[formula]]",
-          "de": "[[input]] auf [[value]] für [[formula]] setzen",
-          "nl": "Stel [[input]] in op [[value]] voor [[formula]]",
-          "fr": "Définir [[input]] à [[value]] pour [[formula]]",
-          "da": "Sæt [[input]] til [[value]] for [[formula]]",
-          "fi": "Aseta [[input]] arvoon [[value]] kaavalle [[formula]]",
-          "sv": "Ställ in [[input]] till [[value]] för [[formula]]",
-          "pl": "Ustaw [[input]] na [[value]] dla [[formula]]",
-          "it": "Imposta [[input]] a [[value]] per [[formula]]",
-          "es": "Establecer [[input]] en [[value]] para [[formula]]"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
-          },
-          {
-            "type": "autocomplete",
-            "name": "formula",
-            "placeholder": {
-              "en": "Select Formula",
-              "no": "Velg Formel",
-              "de": "Formel wählen",
-              "nl": "Kies Formule",
-              "fr": "Sélectionner une Formule",
-              "da": "Vælg Formel",
-              "fi": "Valitse Kaava",
-              "sv": "Välj Formel",
-              "pl": "Wybierz Formułę",
-              "it": "Seleziona Formula",
-              "es": "Seleccionar Fórmula"
-            }
-          },
-          {
-            "type": "autocomplete",
-            "name": "input",
-            "placeholder": {
-              "en": "Select Input",
-              "no": "Velg Inngang",
-              "de": "Eingang wählen",
-              "nl": "Kies Ingang",
-              "fr": "Sélectionner une Entrée",
-              "da": "Vælg Input",
-              "fi": "Valitse Tulo",
-              "sv": "Välj Ingång",
-              "pl": "Wybierz Wejście",
-              "it": "Seleziona Ingresso",
-              "es": "Seleccionar Entrada"
-            }
-          },
-          {
-            "name": "value",
-            "type": "dropdown",
-            "values": [
-              {
-                "id": "true",
-                "label": {
-                  "en": "true",
-                  "no": "sann",
-                  "de": "wahr",
-                  "nl": "waar",
-                  "fr": "vrai",
-                  "da": "sand",
-                  "fi": "tosi",
-                  "sv": "sant",
-                  "pl": "prawda",
-                  "it": "vero",
-                  "es": "verdadero"
-                }
-              },
-              {
-                "id": "false",
-                "label": {
-                  "en": "false",
-                  "no": "usann",
-                  "de": "falsch",
-                  "nl": "onwaar",
-                  "fr": "faux",
-                  "da": "falsk",
-                  "fi": "epätosi",
-                  "sv": "falskt",
-                  "pl": "fałsz",
-                  "it": "falso",
-                  "es": "falso"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "evaluate_formula",
-        "title": {
-          "en": "Evaluate formula",
-          "no": "Evaluer formel",
-          "de": "Formel auswerten",
-          "nl": "Evalueer formule",
-          "fr": "Évaluer la formule",
-          "da": "Evaluer formel",
-          "fi": "Arvioi kaava",
-          "sv": "Utvärdera formel",
-          "pl": "Oceń formułę",
-          "it": "Valuta formula",
-          "es": "Evaluar fórmula"
-        },
-        "titleFormatted": {
-          "en": "Evaluate [[formula]]",
-          "no": "Evaluer [[formula]]",
-          "de": "[[formula]] auswerten",
-          "nl": "Evalueer [[formula]]",
-          "fr": "Évaluer [[formula]]",
-          "da": "Evaluer [[formula]]",
-          "fi": "Arvioi [[formula]]",
-          "sv": "Utvärdera [[formula]]",
-          "pl": "Oceń [[formula]]",
-          "it": "Valuta [[formula]]",
-          "es": "Evaluar [[formula]]"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
-          },
-          {
-            "type": "autocomplete",
-            "name": "formula",
-            "placeholder": {
-              "en": "Select Formula",
-              "no": "Velg Formel",
-              "de": "Formel wählen",
-              "nl": "Kies Formule",
-              "fr": "Sélectionner une Formule",
-              "da": "Vælg Formel",
-              "fi": "Valitse Kaava",
-              "sv": "Välj Formel",
-              "pl": "Wybierz Formułę",
-              "it": "Seleziona Formula",
-              "es": "Seleccionar Fórmula"
-            }
-          }
-        ]
-      },
-      {
-        "id": "evaluate_all_formulas",
-        "title": {
-          "en": "Re-evaluate all formulas",
-          "no": "Re-evaluer alle formler",
-          "de": "Alle Formeln neu auswerten",
-          "nl": "Herevalueer alle formules",
-          "fr": "Réévaluer toutes les formules",
-          "da": "Genberegn alle formler",
-          "fi": "Arvioi kaikki kaavat uudelleen",
-          "sv": "Omvärdera alla formler",
-          "pl": "Oceń ponownie wszystkie formuły",
-          "it": "Rivaluta tutte le formule",
-          "es": "Reevaluar todas las fórmulas"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
-          }
-        ]
-      },
-      {
-        "id": "evaluate_expression",
-        "title": {
-          "en": "Evaluate expression",
-          "no": "Evaluer uttrykk",
-          "de": "Ausdruck auswerten",
-          "nl": "Expressie evalueren",
-          "fr": "Évaluer l'expression",
-          "da": "Evaluer udtryk",
-          "fi": "Arvioi lauseke",
-          "sv": "Utvärdera uttryck",
-          "pl": "Oceń wyrażenie",
-          "it": "Valuta espressione",
-          "es": "Evaluar expresión"
-        },
-        "hint": {
-          "en": "Example for rules: 0,10,1;10,20,2;20,30,3",
-          "no": "Eksempel for regler: 0,10,1;10,20,2;20,30,3",
-          "de": "Beispiel für Regeln: 0,10,1;10,20,2;20,30,3",
-          "nl": "Voorbeeld voor regels: 0,10,1;10,20,2;20,30,3",
-          "fr": "Exemple pour les règles: 0,10,1;10,20,2;20,30,3",
-          "da": "Eksempel for regler: 0,10,1;10,20,2;20,30,3",
-          "fi": "Esimerkki säännöille: 0,10,1;10,20,2;20,30,3",
-          "sv": "Exempel för regler: 0,10,1;10,20,2;20,30,3",
-          "pl": "Przykład dla zasad: 0,10,1;10,20,2;20,30,3",
-          "it": "Esempio per le regole: 0,10,1;10,20,2;20,30,3",
-          "es": "Ejemplo de reglas: 0,10,1;10,20,2;20,30,3"
-        },
-        "titleFormatted": {
-            "en": "Evaluate [[input]] with rules `[[rules]]` (op1: [[op1]], op2: [[op2]], logic: [[logical_op]])",
-            "no": "Evaluer [[input]] med regler `[[rules]]` (op1: [[op1]], op2: [[op2]], logikk: [[logical_op]])",
-            "de": "Werte [[input]] mit Regeln `[[rules]]` aus (op1: [[op1]], op2: [[op2]], Logik: [[logical_op]])",
-            "nl": "Evalueer [[input]] met regels `[[rules]]` (op1: [[op1]], op2: [[op2]], logica: [[logical_op]])",
-            "fr": "Évaluer [[input]] avec les règles `[[rules]]` (op1: [[op1]], op2: [[op2]], logique: [[logical_op]])",
-            "da": "Evaluer [[input]] med regler `[[rules]]` (op1: [[op1]], op2: [[op2]], logik: [[logical_op]])",
-            "fi": "Arvioi [[input]] säännöillä `[[rules]]` (op1: [[op1]], op2: [[op2]], logiikka: [[logical_op]])",
-            "sv": "Utvärdera [[input]] med regler `[[rules]]` (op1: [[op1]], op2: [[op2]], logik: [[logical_op]])",
-            "pl": "Oceń [[input]] według zasad `[[rules]]` (op1: [[op1]], op2: [[op2]], logika: [[logical_op]])",
-            "it": "Valuta [[input]] con le regole `[[rules]]` (op1: [[op1]], op2: [[op2]], logica: [[logical_op]])",
-            "es": "Evaluar [[input]] con reglas `[[rules]]` (op1: [[op1]], op2: [[op2]], lógica: [[logical_op]])"
-        },
-        "args": [
-          {
-            "name": "input",
-            "type": "number",
-            "title": {
-              "en": "Input value",
-              "no": "Inngangsverdi",
-              "de": "Eingabewert",
-              "nl": "Invoerwaarde",
-              "fr": "Valeur d'entrée",
-              "da": "Indtastningsværdi",
-              "fi": "Syöttöarvo",
-              "sv": "Inmatningsvärde",
-              "pl": "Wartość wejściowa",
-              "it": "Valore di input",
-              "es": "Valor de entrada"
-            }
-          },
-          {
-            "name": "rules",
-            "type": "text",
-            "title": {
-                "en": "Rule string (min,max,output;...)",
-                "no": "Regel-streng (min,maks,utgang;...)",
-                "de": "Regel-Zeichenfolge (min,max,ausgabe;...)",
-                "nl": "Regel-string (min,max,uitvoer;...)",
-                "fr": "Chaîne de règles (min,max,sortie;...)",
-                "da": "Regel-streng (min,max,output;...)",
-                "fi": "Sääntö-merkkijono (min,max,ulos;...)",
-                "sv": "Regel-sträng (min,max,utdata;...)",
-                "pl": "Ciąg reguł (min,maks,wyjście;...)",
-                "it": "Stringa regola (min,max,output;...)",
-                "es": "Cadena de reglas (mín,máx,salida;...)"
-            },
-            "placeholder": "e.g. 0,10,1;10,20,2"
-          },
-          {
-            "name": "op1",
-            "type": "dropdown",
-            "title": {
-              "en": "Operator 1 (for min value)",
-              "no": "Operator 1 (for min-verdi)",
-              "de": "Operator 1 (für Mindestwert)",
-              "nl": "Operator 1 (voor min waarde)",
-              "fr": "Opérateur 1 (pour valeur min)",
-              "da": "Operator 1 (for min-værdi)",
-              "fi": "Operaattori 1 (min-arvolle)",
-              "sv": "Operator 1 (för min-värde)",
-              "pl": "Operator 1 (dla wartości min)",
-              "it": "Operatore 1 (per valore min)",
-              "es": "Operador 1 (para valor mín)"
-            },
-            "values": [
-              { "id": "gt", "label": { "en": "is greater than (>)", "no": "er større enn (>)", "de": "ist größer als (>)", "nl": "is groter dan (>)", "fr": "est supérieur à (>)", "da": "er større end (>)", "fi": "on suurempi kuin (>)", "sv": "är större än (>)", "pl": "jest większy niż (>)", "it": "è maggiore di (>)", "es": "es mayor que (>)" } },
-              { "id": "gte", "label": { "en": "is greater than or equal to (>=)", "no": "er større enn eller lik (>=)", "de": "ist größer oder gleich (>=)", "nl": "is groter dan of gelijk aan (>=)", "fr": "est supérieur ou égal à (>=)", "da": "er større end eller lig med (>=)", "fi": "on suurempi tai yhtä suuri kuin (>=)", "sv": "är större än eller lika med (>=)", "pl": "jest większy lub równy (>=)", "it": "è maggiore o uguale a (>=)", "es": "es mayor o igual que (>=)" } }
-            ]
-          },
-          {
-            "name": "op2",
-            "type": "dropdown",
-            "title": {
-              "en": "Operator 2 (for max value)",
-              "no": "Operator 2 (for maks-verdi)",
-              "de": "Operator 2 (für Höchstwert)",
-              "nl": "Operator 2 (voor max waarde)",
-              "fr": "Opérateur 2 (pour valeur max)",
-              "da": "Operator 2 (for max-værdi)",
-              "fi": "Operaattori 2 (max-arvolle)",
-              "sv": "Operator 2 (för max-värde)",
-              "pl": "Operator 2 (dla wartości max)",
-              "it": "Operatore 2 (per valore max)",
-              "es": "Operador 2 (para valor máx)"
-            },
-            "values": [
-                { "id": "lt", "label": { "en": "is less than (<)", "no": "er mindre enn (<)", "de": "ist kleiner als (<)", "nl": "is kleiner dan (<)", "fr": "est inférieur à (<)", "da": "er mindre end (<)", "fi": "on pienempi kuin (<)", "sv": "är mindre än (<)", "pl": "jest mniejszy niż (<)", "it": "è minore di (<)", "es": "es menor que (<)" } },
-                { "id": "lte", "label": { "en": "is less than or equal to (<=)", "no": "er mindre enn eller lik (<=)", "de": "ist kleiner oder gleich (<=)", "nl": "is kleiner dan of gelijk aan (<=)", "fr": "est inférieur ou égal à (<=)", "da": "er mindre end eller lig med (<=)", "fi": "on pienempi tai yhtä suuri kuin (<=)", "sv": "är mindre än eller lika med (<=)", "pl": "jest mniejszy lub równy (<=)", "it": "è minore o uguale a (<=)", "es": "es menor o igual que (<=)" } }
-            ]
-          },
-          {
-            "name": "logical_op",
-            "type": "dropdown",
-            "title": {
-              "en": "Logical operator",
-              "no": "Logisk operator",
-              "de": "Logischer Operator",
-              "nl": "Logische operator",
-              "fr": "Opérateur logique",
-              "da": "Logisk operator",
-              "fi": "Looginen operaattori",
-              "sv": "Logisk operator",
-              "pl": "Operator logiczny",
-              "it": "Operatore logico",
-              "es": "Operador lógico"
-            },
-            "values": [
-              { "id": "AND", "label": { "en": "AND", "no": "OG", "de": "UND", "nl": "EN", "fr": "ET", "da": "OG", "fi": "JA", "sv": "OCH", "pl": "I", "it": "E", "es": "Y" } },
-              { "id": "OR", "label": { "en": "OR", "no": "ELLER", "de": "ODER", "nl": "OF", "fr": "OU", "da": "ELLER", "fi": "TAI", "sv": "ELLER", "pl": "LUB", "it": "O", "es": "O" } }
-            ]
-          }
-        ],
-        "tokens": [
-          {
-            "name": "outputValue",
-            "type": "number",
-            "title": { "en": "Result", "no": "Resultat", "de": "Ergebnis", "nl": "Resultaat", "fr": "Résultat", "da": "Resultat", "fi": "Tulos", "sv": "Resultat", "pl": "Wynik", "it": "Risultato", "es": "Resultado" }
-          },
-          {
-            "name": "errorMessage",
-            "type": "string",
-            "title": { "en": "Error message", "no": "Feilmelding", "de": "Fehlermeldung", "nl": "Foutbericht", "fr": "Message d'erreur", "da": "Fejlmeddelelse", "fi": "Virheilmoitus", "sv": "Felmeddelande", "pl": "Komunikat o błędzie", "it": "Messaggio di errore", "es": "Mensaje de error" }
-          }
-        ]
-      }
-    ],
-    "conditions": [
-      {
-        "id": "formula_result_is",
-        "title": {
-          "en": "Formula result is...",
-          "no": "Formelresultat er...",
-          "de": "Formelergebnis ist...",
-          "nl": "Formule resultaat is...",
-          "fr": "Le résultat de la formule est...",
-          "da": "Formelresultat er...",
-          "fi": "Kaavan tulos on...",
-          "sv": "Formelresultat är...",
-          "pl": "Wynik formuły to...",
-          "it": "Il risultato della formula è...",
-          "es": "El resultado de la fórmula es..."
-        },
-        "titleFormatted": {
-          "en": "Formula [[formula]] is [[what_is]]",
-          "no": "Formel [[formula]] er [[what_is]]",
-          "de": "Formel [[formula]] ist [[what_is]]",
-          "nl": "Formule [[formula]] is [[what_is]]",
-          "fr": "La formule [[formula]] est [[what_is]]",
-          "da": "Formel [[formula]] er [[what_is]]",
-          "fi": "Kaava [[formula]] on [[what_is]]",
-          "sv": "Formel [[formula]] är [[what_is]]",
-          "pl": "Formuła [[formula]] to [[what_is]]",
-          "it": "La formula [[formula]] è [[what_is]]",
-          "es": "La fórmula [[formula]] es [[what_is]]"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
-          },
-          {
-            "type": "autocomplete",
-            "name": "formula",
-            "placeholder": {
-              "en": "Select Formula",
-              "no": "Velg Formel",
-              "de": "Formel wählen",
-              "nl": "Kies Formule",
-              "fr": "Sélectionner une Formule",
-              "da": "Vælg Formel",
-              "fi": "Valitse Kaava",
-              "sv": "Välj Formel",
-              "pl": "Wybierz Formułę",
-              "it": "Seleziona Formula",
-              "es": "Seleccionar Fórmula"
-            }
-          },
-          {
-            "name": "what_is",
-            "type": "dropdown",
-            "values": [
-              {
-                "id": "true",
-                "label": {
-                  "en": "true",
-                  "no": "sann",
-                  "de": "wahr",
-                  "nl": "waar",
-                  "fr": "vrai",
-                  "da": "sand",
-                  "fi": "tosi",
-                  "sv": "sant",
-                  "pl": "prawda",
-                  "it": "vero",
-                  "es": "verdadero"
-                }
-              },
-              {
-                "id": "false",
-                "label": {
-                  "en": "false",
-                  "no": "usann",
-                  "de": "falsch",
-                  "nl": "onwaar",
-                  "fr": "faux",
-                  "da": "falsk",
-                  "fi": "epätosi",
-                  "sv": "falskt",
-                  "pl": "fałsz",
-                  "it": "falso",
-                  "es": "falso"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "formula_has_timed_out",
-        "title": {
-          "en": "Formula has timed out",
-          "no": "Formel har fått timeout",
-          "de": "Formel hat Zeitüberschreitung",
-          "nl": "Formule heeft time-out",
-          "fr": "La formule a expiré",
-          "da": "Formel har fået timeout",
-          "fi": "Kaava on aikakatkaistu",
-          "sv": "Formel har fått timeout",
-          "pl": "Formuła przekroczyła czas",
-          "it": "La formula è scaduta",
-          "es": "La fórmula ha agotado el tiempo"
-        },
-        "titleFormatted": {
-          "en": "Formula [[formula]] has timed out",
-          "no": "Formel [[formula]] har fått timeout",
-          "de": "Formel [[formula]] hat Zeitüberschreitung",
-          "nl": "Formule [[formula]] heeft time-out",
-          "fr": "La formule [[formula]] a expiré",
-          "da": "Formel [[formula]] har fået timeout",
-          "fi": "Kaava [[formula]] on aikakatkaistu",
-          "sv": "Formel [[formula]] har fått timeout",
-          "pl": "Formuła [[formula]] przekroczyła czas",
-          "it": "La formula [[formula]] è scaduta",
-          "es": "La fórmula [[formula]] ha agotado el tiempo"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
-          },
-          {
-            "type": "autocomplete",
-            "name": "formula",
-            "placeholder": {
-              "en": "Select Formula",
-              "no": "Velg Formel",
-              "de": "Formel wählen",
-              "nl": "Kies Formule",
-              "fr": "Sélectionner une Formule",
-              "da": "Vælg Formel",
-              "fi": "Valitse Kaava",
-              "sv": "Välj Formel",
-              "pl": "Wybierz Formułę",
-              "it": "Seleziona Formula",
-              "es": "Seleccionar Fórmula"
-            }
-          }
-        ]
-      },
-      {
-  "id": "has_error",
-  "title": {
-    "en": "Has error message",
-    "no": "Har feilmelding",
-    "de": "Hat Fehlermeldung",
-    "nl": "Heeft foutbericht",
-    "fr": "A un message d'erreur",
-    "da": "Har fejlmeddelelse",
-    "fi": "Sisältää virheilmoituksen",
-    "sv": "Har felmeddelande",
-    "pl": "Posiada komunikat o błędzie",
-    "it": "Ha un messaggio di errore",
-    "es": "Tiene mensaje de error"
-  },
-  "titleFormatted": {
-    "en": "[[text_input]] has a value",
-    "no": "[[text_input]] har en verdi",
-    "de": "[[text_input]] hat einen Wert",
-    "nl": "[[text_input]] heeft een waarde",
-    "fr": "[[text_input]] a une valeur",
-    "da": "[[text_input]] har en værdi",
-    "fi": "[[text_input]] on arvo",
-    "sv": "[[text_input]] har ett värde",
-    "pl": "[[text_input]] ma wartość",
-    "it": "[[text_input]] ha un valore",
-    "es": "[[text_input]] tiene un valor"
-  },
-  "args": [
+      ],
+      "id": "logic-unit-10"
+    },
     {
-      "name": "text_input",
-      "type": "text",
-      "title": {
-        "en": "Error message token",
-        "no": "Feilmelding-tag",
-        "de": "Fehlermeldungs-Token",
-        "nl": "Foutbericht-token",
-        "fr": "Jeton du message d'erreur",
-        "da": "Fejlmeddelelses-tag",
-        "fi": "Virheilmoitus-tunniste",
-        "sv": "Felmeddelande-tagg",
-        "pl": "Token komunikatu o błędzie",
-        "it": "Token del messaggio di errore",
-        "es": "Token de mensaje de error"
-      }
+      "name": {
+        "en": "Logic Unit (2 inputs)",
+        "no": "Logisk Enhet (2 innganger)",
+        "de": "Logikeinheit (2 Eingänge)",
+        "nl": "Logische Eenheid (2 ingangen)",
+        "fr": "Unité Logique (2 entrées)",
+        "da": "Logisk Enhed (2 indgange)",
+        "fi": "Logiikkayksikkö (2 tuloa)",
+        "sv": "Logikenhet (2 ingångar)",
+        "pl": "Jednostka Logiczna (2 wejścia)",
+        "it": "Unità Logica (2 ingressi)",
+        "es": "Unidad Lógica (2 entradas)"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff"
+      ],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/assets/images_logic_unit/large.png",
+        "small": "/assets/images_logic_unit/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "no": "Formler (JSON)",
+            "de": "Formeln (JSON)",
+            "nl": "Formules (JSON)",
+            "fr": "Formules (JSON)",
+            "da": "Formler (JSON)",
+            "fi": "Kaavat (JSON)",
+            "sv": "Formler (JSON)",
+            "pl": "Formuły (JSON)",
+            "it": "Formule (JSON)",
+            "es": "Fórmulas (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"My Formula\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
+            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Meine Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
+            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Mijn Formule\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
+            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Ma Formule\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
+            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
+            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kaavani\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
+            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
+            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Moja Formuła\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
+            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"La Mia Formula\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
+            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Mi Fórmula\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
+          },
+          "value": "[]"
+        }
+      ],
+      "id": "logic-unit-2"
+    },
+    {
+      "name": {
+        "en": "Logic Unit (3 inputs)",
+        "no": "Logisk Enhet (3 innganger)",
+        "de": "Logikeinheit (3 Eingänge)",
+        "nl": "Logische Eenheid (3 ingangen)",
+        "fr": "Unité Logique (3 entrées)",
+        "da": "Logisk Enhed (3 indgange)",
+        "fi": "Logiikkayksikkö (3 tuloa)",
+        "sv": "Logikenhet (3 ingångar)",
+        "pl": "Jednostka Logiczna (3 wejścia)",
+        "it": "Unità Logica (3 ingressi)",
+        "es": "Unidad Lógica (3 entradas)"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff"
+      ],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/assets/images_logic_unit/large.png",
+        "small": "/assets/images_logic_unit/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "no": "Formler (JSON)",
+            "de": "Formeln (JSON)",
+            "nl": "Formules (JSON)",
+            "fr": "Formules (JSON)",
+            "da": "Formler (JSON)",
+            "fi": "Kaavat (JSON)",
+            "sv": "Formler (JSON)",
+            "pl": "Formuły (JSON)",
+            "it": "Formule (JSON)",
+            "es": "Fórmulas (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"My Formula\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
+            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Meine Formel\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
+            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Mijn Formule\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
+            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Ma Formule\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
+            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
+            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kaavani\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
+            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
+            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Moja Formuła\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
+            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"La Mia Formula\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
+            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Mi Fórmula\",\"expression\":\"(A+B)*C\",\"enabled\":true,\"timeout\":60,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
+          },
+          "value": "[]"
+        }
+      ],
+      "id": "logic-unit-3"
+    },
+    {
+      "name": {
+        "en": "Logic Unit (4 inputs)",
+        "no": "Logisk Enhet (4 innganger)",
+        "de": "Logikeinheit (4 Eingänge)",
+        "nl": "Logische Eenheid (4 ingangen)",
+        "fr": "Unité Logique (4 entrées)",
+        "da": "Logisk Enhed (4 indgange)",
+        "fi": "Logiikkayksikkö (4 tuloa)",
+        "sv": "Logikenhet (4 ingångar)",
+        "pl": "Jednostka Logiczna (4 wejścia)",
+        "it": "Unità Logica (4 ingressi)",
+        "es": "Unidad Lógica (4 entradas)"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff"
+      ],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/assets/images_logic_unit/large.png",
+        "small": "/assets/images_logic_unit/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "no": "Formler (JSON)",
+            "de": "Formeln (JSON)",
+            "nl": "Formules (JSON)",
+            "fr": "Formules (JSON)",
+            "da": "Formler (JSON)",
+            "fi": "Kaavat (JSON)",
+            "sv": "Formler (JSON)",
+            "pl": "Formuły (JSON)",
+            "it": "Formule (JSON)",
+            "es": "Fórmulas (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"My Formula\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
+            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Meine Formel\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
+            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Mijn Formule\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
+            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Ma Formule\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
+            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
+            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kaavani\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
+            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
+            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Moja Formuła\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
+            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"La Mia Formula\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
+            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Mi Fórmula\",\"expression\":\"(A+B)*(C+D)\",\"enabled\":true,\"timeout\":45,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
+          },
+          "value": "[]"
+        }
+      ],
+      "id": "logic-unit-4"
+    },
+    {
+      "name": {
+        "en": "Logic Unit (5 inputs)",
+        "no": "Logisk Enhet (5 innganger)",
+        "de": "Logikeinheit (5 Eingänge)",
+        "nl": "Logische Eenheid (5 ingangen)",
+        "fr": "Unité Logique (5 entrées)",
+        "da": "Logisk Enhed (5 indgange)",
+        "fi": "Logiikkayksikkö (5 tuloa)",
+        "sv": "Logikenhet (5 ingångar)",
+        "pl": "Jednostka Logiczna (5 wejść)",
+        "it": "Unità Logica (5 ingressi)",
+        "es": "Unidad Lógica (5 entradas)"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff"
+      ],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/assets/images_logic_unit/large.png",
+        "small": "/assets/images_logic_unit/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "no": "Formler (JSON)",
+            "de": "Formeln (JSON)",
+            "nl": "Formules (JSON)",
+            "fr": "Formules (JSON)",
+            "da": "Formler (JSON)",
+            "fi": "Kaavat (JSON)",
+            "sv": "Formler (JSON)",
+            "pl": "Formuły (JSON)",
+            "it": "Formule (JSON)",
+            "es": "Fórmulas (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"All active\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Alle aktive\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
+            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Alle aktiv\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
+            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Alle actief\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
+            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Tous actifs\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
+            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Alle aktive\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
+            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kaikki aktiivisia\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
+            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Alla aktiva\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
+            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Wszystkie aktywne\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
+            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Tutti attivi\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
+            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Todos activos\",\"expression\":\"A&B&C&D&E\",\"enabled\":true,\"timeout\":120,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
+          },
+          "value": "[]"
+        }
+      ],
+      "id": "logic-unit-5"
+    },
+    {
+      "name": {
+        "en": "Logic Unit (6 inputs)",
+        "no": "Logisk Enhet (6 innganger)",
+        "de": "Logikeinheit (6 Eingänge)",
+        "nl": "Logische Eenheid (6 ingangen)",
+        "fr": "Unité Logique (6 entrées)",
+        "da": "Logisk Enhed (6 indgange)",
+        "fi": "Logiikkayksikkö (6 tuloa)",
+        "sv": "Logikenhet (6 ingångar)",
+        "pl": "Jednostka Logiczna (6 wejść)",
+        "it": "Unità Logica (6 ingressi)",
+        "es": "Unidad Lógica (6 entradas)"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff"
+      ],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/assets/images_logic_unit/large.png",
+        "small": "/assets/images_logic_unit/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "no": "Formler (JSON)",
+            "de": "Formeln (JSON)",
+            "nl": "Formules (JSON)",
+            "fr": "Formules (JSON)",
+            "da": "Formler (JSON)",
+            "fi": "Kaavat (JSON)",
+            "sv": "Formler (JSON)",
+            "pl": "Formuły (JSON)",
+            "it": "Formule (JSON)",
+            "es": "Fórmulas (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Three groups\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Tre grupper\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
+            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Drei Gruppen\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
+            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Drie groepen\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
+            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Trois groupes\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
+            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Tre grupper\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
+            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kolme ryhmää\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
+            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Tre grupper\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
+            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Trzy grupy\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
+            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Tre gruppi\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
+            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Tres grupos\",\"expression\":\"(A+B)*(C+D)*(E+F)\",\"enabled\":true,\"timeout\":90,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
+          },
+          "value": "[]"
+        }
+      ],
+      "id": "logic-unit-6"
+    },
+    {
+      "name": {
+        "en": "Logic Unit (7 inputs)",
+        "no": "Logisk Enhet (7 innganger)",
+        "de": "Logikeinheit (7 Eingänge)",
+        "nl": "Logische Eenheid (7 ingangen)",
+        "fr": "Unité Logique (7 entrées)",
+        "da": "Logisk Enhed (7 indgange)",
+        "fi": "Logiikkayksikkö (7 tuloa)",
+        "sv": "Logikenhet (7 ingångar)",
+        "pl": "Jednostka Logiczna (7 wejść)",
+        "it": "Unità Logica (7 ingressi)",
+        "es": "Unidad Lógica (7 entradas)"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff"
+      ],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/assets/images_logic_unit/large.png",
+        "small": "/assets/images_logic_unit/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "no": "Formler (JSON)",
+            "de": "Formeln (JSON)",
+            "nl": "Formules (JSON)",
+            "fr": "Formules (JSON)",
+            "da": "Formler (JSON)",
+            "fi": "Kaavat (JSON)",
+            "sv": "Formler (JSON)",
+            "pl": "Formuły (JSON)",
+            "it": "Formule (JSON)",
+            "es": "Fórmulas (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Grouped\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Grupperte\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
+            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Gruppiert\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
+            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Gegroepeerd\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
+            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Groupé\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
+            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Grupperet\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
+            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Ryhmitelty\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
+            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Grupperad\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
+            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Zgrupowane\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
+            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Raggruppato\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
+            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Agrupado\",\"expression\":\"(A+B+C)*(D+E)*(F+G)\",\"enabled\":true,\"timeout\":150,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
+          },
+          "value": "[]"
+        }
+      ],
+      "id": "logic-unit-7"
+    },
+    {
+      "name": {
+        "en": "Logic Unit (8 inputs)",
+        "no": "Logisk Enhet (8 innganger)",
+        "de": "Logikeinheit (8 Eingänge)",
+        "nl": "Logische Eenheid (8 ingangen)",
+        "fr": "Unité Logique (8 entrées)",
+        "da": "Logisk Enhed (8 indgange)",
+        "fi": "Logiikkayksikkö (8 tuloa)",
+        "sv": "Logikenhet (8 ingångar)",
+        "pl": "Jednostka Logiczna (8 wejść)",
+        "it": "Unità Logica (8 ingressi)",
+        "es": "Unidad Lógica (8 entradas)"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff"
+      ],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/assets/images_logic_unit/large.png",
+        "small": "/assets/images_logic_unit/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "no": "Formler (JSON)",
+            "de": "Formeln (JSON)",
+            "nl": "Formules (JSON)",
+            "fr": "Formules (JSON)",
+            "da": "Formler (JSON)",
+            "fi": "Kaavat (JSON)",
+            "sv": "Formler (JSON)",
+            "pl": "Formuły (JSON)",
+            "it": "Formule (JSON)",
+            "es": "Fórmulas (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Four pairs\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Fire par\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
+            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Vier Paare\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
+            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Vier paren\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
+            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Quatre paires\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
+            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Fire par\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
+            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Neljä paria\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
+            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Fyra par\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
+            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Cztery pary\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
+            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Quattro coppie\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
+            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Cuatro pares\",\"expression\":\"(A+B)*(C+D)*(E+F)*(G+H)\",\"enabled\":true,\"timeout\":180,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
+          },
+          "value": "[]"
+        }
+      ],
+      "id": "logic-unit-8"
+    },
+    {
+      "name": {
+        "en": "Logic Unit (9 inputs)",
+        "no": "Logisk Enhet (9 innganger)",
+        "de": "Logikeinheit (9 Eingänge)",
+        "nl": "Logische Eenheid (9 ingangen)",
+        "fr": "Unité Logique (9 entrées)",
+        "da": "Logisk Enhed (9 indgange)",
+        "fi": "Logiikkayksikkö (9 tuloa)",
+        "sv": "Logikenhet (9 ingångar)",
+        "pl": "Jednostka Logiczna (9 wejść)",
+        "it": "Unità Logica (9 ingressi)",
+        "es": "Unidad Lógica (9 entradas)"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff"
+      ],
+      "energy": {
+        "approximation": {
+          "usageConstant": 0
+        }
+      },
+      "images": {
+        "large": "/assets/images_logic_unit/large.png",
+        "small": "/assets/images_logic_unit/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "id": "formulas",
+          "type": "textarea",
+          "label": {
+            "en": "Formulas (JSON)",
+            "no": "Formler (JSON)",
+            "de": "Formeln (JSON)",
+            "nl": "Formules (JSON)",
+            "fr": "Formules (JSON)",
+            "da": "Formler (JSON)",
+            "fi": "Kaavat (JSON)",
+            "sv": "Formler (JSON)",
+            "pl": "Formuły (JSON)",
+            "it": "Formule (JSON)",
+            "es": "Fórmulas (JSON)"
+          },
+          "hint": {
+            "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"Three trios\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+            "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Tre trioer\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
+            "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Drei Trios\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
+            "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Drie trio's\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
+            "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Trois trios\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
+            "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Tre trioer\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
+            "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kolme kolmikkoa\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
+            "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Tre trior\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
+            "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Trzy trójki\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
+            "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Tre trii\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
+            "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Tres tríos\",\"expression\":\"(A+B+C)*(D+E+F)*(G+H+I)\",\"enabled\":true,\"timeout\":200,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
+          },
+          "value": "[]"
+        }
+      ],
+      "id": "logic-unit-9"
     }
   ]
 }
-    ]
-  }
-}
-

@@ -1,0 +1,47 @@
+{
+  "title": {
+    "en": "Formula changed to FALSE",
+    "no": "Formel endret til USANN",
+    "de": "Formel auf FALSCH geändert",
+    "nl": "Formule veranderde naar ONWAAR",
+    "fr": "Formule changée en FAUX",
+    "da": "Formel ændret til FALSK",
+    "fi": "Kaava muuttui EPÄTODEKSI",
+    "sv": "Formel ändrades till OSANN",
+    "pl": "Formuła zmieniona na FAŁSZ",
+    "it": "Formula cambiata in FALSO",
+    "es": "Fórmula cambiada a FALSO"
+  },
+  "titleFormatted": {
+    "en": "Formula [[formula]] changed to FALSE",
+    "no": "Formel [[formula]] endret til USANN",
+    "de": "Formel [[formula]] auf FALSCH geändert",
+    "nl": "Formule [[formula]] veranderde naar ONWAAR",
+    "fr": "Formule [[formula]] changée en FAUX",
+    "da": "Formel [[formula]] ændret til FALSK",
+    "fi": "Kaava [[formula]] muuttui EPÄTODEKSI",
+    "sv": "Formel [[formula]] ändrades till OSANN",
+    "pl": "Formuła [[formula]] zmieniona na FAŁSZ",
+    "it": "Formula [[formula]] cambiata in FALSO",
+    "es": "Fórmula [[formula]] cambiada a FALSO"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    },
+    {
+      "type": "autocomplete",
+      "name": "formula",
+      "title": {
+        "en": "Formula",
+        "no": "Formel"
+      },
+      "placeholder": {
+        "en": "Select formula",
+        "no": "Velg formel"
+      }
+    }
+  ]
+}

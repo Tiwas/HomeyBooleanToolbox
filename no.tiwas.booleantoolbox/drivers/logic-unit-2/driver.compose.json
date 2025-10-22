@@ -1,0 +1,74 @@
+{
+  "name": {
+    "en": "Logic Unit (2 inputs)",
+    "no": "Logisk Enhet (2 innganger)",
+    "de": "Logikeinheit (2 Eingänge)",
+    "nl": "Logische Eenheid (2 ingangen)",
+    "fr": "Unité Logique (2 entrées)",
+    "da": "Logisk Enhed (2 indgange)",
+    "fi": "Logiikkayksikkö (2 tuloa)",
+    "sv": "Logikenhet (2 ingångar)",
+    "pl": "Jednostka Logiczna (2 wejścia)",
+    "it": "Unità Logica (2 ingressi)",
+    "es": "Unidad Lógica (2 entradas)"
+  },
+  "class": "other",
+  "capabilities": [
+    "onoff"
+  ],
+  "energy": {
+    "approximation": {
+      "usageConstant": 0
+    }
+  },
+  "images": {
+    "large": "/assets/images_logic_unit/large.png",
+    "small": "/assets/images_logic_unit/small.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "settings": [
+    {
+      "id": "formulas",
+      "type": "textarea",
+      "label": {
+        "en": "Formulas (JSON)",
+        "no": "Formler (JSON)",
+        "de": "Formeln (JSON)",
+        "nl": "Formules (JSON)",
+        "fr": "Formules (JSON)",
+        "da": "Formler (JSON)",
+        "fi": "Kaavat (JSON)",
+        "sv": "Formler (JSON)",
+        "pl": "Formuły (JSON)",
+        "it": "Formule (JSON)",
+        "es": "Fórmulas (JSON)"
+      },
+      "hint": {
+        "en": "JSON array. Each formula has its own input state. Operators: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExample:\n[{\"id\":\"f1\",\"name\":\"My Formula\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: seconds before timeout (omit/0 = infinite)\nfirstImpression: true/1 (default) = lock inputs at first value, false/0 = reactive mode",
+        "no": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (utelat/0 = uendelig)\nfirstImpression: true/1 (standard) = lås inputs ved første verdi, false/0 = reaktiv modus",
+        "de": "JSON-Array. Jede Formel hat ihren eigenen Eingangszustand. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nBeispiel:\n[{\"id\":\"f1\",\"name\":\"Meine Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: Sekunden vor Timeout (weglassen/0 = unendlich)\nfirstImpression: true/1 (Standard) = Eingänge beim ersten Wert sperren, false/0 = reaktiver Modus",
+        "nl": "JSON-array. Elke formule heeft zijn eigen invoerstatus. Operatoren: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nVoorbeeld:\n[{\"id\":\"f1\",\"name\":\"Mijn Formule\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: seconden voor timeout (weglaten/0 = oneindig)\nfirstImpression: true/1 (standaard) = invoer vergrendelen bij eerste waarde, false/0 = reactieve modus",
+        "fr": "Tableau JSON. Chaque formule a son propre état d'entrée. Opérateurs: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExemple:\n[{\"id\":\"f1\",\"name\":\"Ma Formule\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: secondes avant expiration (omettre/0 = infini)\nfirstImpression: true/1 (défaut) = verrouiller les entrées à la première valeur, false/0 = mode réactif",
+        "da": "JSON-array. Hver formel har sin egen input-tilstand. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEksempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekunder før timeout (udelad/0 = uendelig)\nfirstImpression: true/1 (standard) = lås input ved første værdi, false/0 = reaktiv tilstand",
+        "fi": "JSON-taulukko. Jokaisella kaavalla on oma tulotilaansa. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Kaavani\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekuntia ennen aikakatkaistua (jätä pois/0 = ääretön)\nfirstImpression: true/1 (oletus) = lukitse tulot ensimmäiseen arvoon, false/0 = reaktiivinen tila",
+        "sv": "JSON-array. Varje formel har sitt eget ingångstillstånd. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Min Formel\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: true/1 (standard) = lås ingångar vid första värdet, false/0 = reaktivt läge",
+        "pl": "Tablica JSON. Każda formuła ma swój własny stan wejścia. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Moja Formuła\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: sekundy przed przekroczeniem czasu (pomiń/0 = nieskończony)\nfirstImpression: true/1 (domyślnie) = zablokuj wejścia przy pierwszej wartości, false/0 = tryb reaktywny",
+        "it": "Array JSON. Ogni formula ha il proprio stato di ingresso. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"La Mia Formula\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: secondi prima del timeout (ometti/0 = infinito)\nfirstImpression: true/1 (predefinito) = blocca ingressi al primo valore, false/0 = modalità reattiva",
+        "es": "Matriz JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Mi Fórmula\",\"expression\":\"A AND B\",\"enabled\":true,\"timeout\":30,\"firstImpression\":true}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: true/1 (predeterminado) = bloquear entradas en el primer valor, false/0 = modo reactivo"
+      },
+      "value": "[]"
+    }
+  ]
+}

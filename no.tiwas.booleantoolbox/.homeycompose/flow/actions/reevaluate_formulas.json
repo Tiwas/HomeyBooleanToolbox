@@ -1,0 +1,17 @@
+{
+  "title": {
+    "en": "Re-evaluate all formulas",
+    "no": "Re-evaluer alle formler"
+  },
+  "titleFormatted": {
+    "en": "Re-evaluate all formulas",
+    "no": "Re-evaluer alle formler"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    }
+  ]
+}

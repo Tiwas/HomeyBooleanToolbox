@@ -1,8 +1,9 @@
 'use strict';
 const Homey = require('homey');
+const Logger = require('./Logger');
 
 module.exports = class BaseLogicUnit extends Homey.Device {
-  // Trygg capability-oppdatering (ignorer 404, stopp ved sletting)
+  // Safe capability update (ignores 404, stops on deletion)
   async safeSetCapabilityValue(cap, value) {
     if (this._isDeleting) return;
     try {
@@ -11,25 +12,27 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     } catch (e) {
       const msg = e?.message || '';
       if (e?.statusCode === 404 || /not\s*found/i.test(msg)) {
-        this.log(`(safe) Skipper ${cap} – enheten finnes ikke lenger.`);
+        this.logger.debug(`(safe) Skipping ${cap} – device no longer exists.`);
         return;
       }
-      this.error(`Capability update failed for ${cap}:`, msg);
+      this.logger.error(`Capability update failed for ${cap}:`, msg);
     }
   }
 
   async onInit() {
-    this.log(`Logic Unit '${this.getName()}' initializing.`);
+    const driverName = this.constructor.name || 'LogicDriver';
+    this.logger = new Logger(this, driverName);
+
+    this.logger.device(`Logic Unit '${this.getName()}' initializing.`);
     if (!this.hasCapability('onoff')) {
       await this.addCapability('onoff');
     }
 
-    // Get number of inputs from device data
     this.numInputs = this.getData().numInputs ?? 5;
     this.availableInputs = this.getAvailableInputIds();
 
     this.initializeFormulas();
-    await this.evaluateAllFormulasInitial(); // sett onoff=false hvis ingenting kan evalueres
+    await this.evaluateAllFormulasInitial();
     this.startTimeoutChecks();
   }
 
@@ -42,12 +45,10 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     return this.availableInputs.map(i => i.toUpperCase());
   }
 
-  // Initialize formulas from settings
   initializeFormulas() {
     const settings = this.getSettings();
     try {
       const formulasData = settings.formulas ? JSON.parse(settings.formulas) : [];
-      // Initialize each formula with its own input state and timeout
       this.formulas = formulasData.map(f => ({
         id: f.id,
         name: f.name,
@@ -61,7 +62,6 @@ module.exports = class BaseLogicUnit extends Homey.Device {
         result: null,
         timedOut: false
       }));
-      // Initialize input states for each formula
       this.formulas.forEach(formula => {
         this.availableInputs.forEach(id => {
           formula.inputStates[id] = 'undefined';
@@ -69,11 +69,10 @@ module.exports = class BaseLogicUnit extends Homey.Device {
         });
       });
     } catch (e) {
-      this.error('Failed to parse formulas:', e);
+      this.logger.error('Failed to parse formulas:', e);
       this.formulas = [];
     }
 
-    // Ensure we have at least one default formula
     if (this.formulas.length === 0) {
       const defaultFormula = {
         id: 'formula_1',
@@ -101,7 +100,6 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     return inputs.join(' AND ');
   }
 
-  // Get all enabled formulas for autocomplete
   getFormulas() {
     return this.formulas
       .filter(f => f.enabled)
@@ -112,7 +110,6 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       }));
   }
 
-  // Get available inputs for dropdown
   getInputOptions() {
     return this.getAvailableInputsUppercase().map(input => ({
       id: input.toLowerCase(),
@@ -120,7 +117,6 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     }));
   }
 
-  // Validate boolean expression (enkel validering + syntaks-test)
   validateExpression(expression) {
     if (!expression || expression.trim() === '') {
       return { valid: false, error: 'Expression cannot be empty' };
@@ -128,12 +124,11 @@ module.exports = class BaseLogicUnit extends Homey.Device {
 
     const inputs = this.getAvailableInputsUppercase();
 
-    // Normaliser alias til JS-operatorer og sjekk syntaks
     let testExpr = expression
       .toUpperCase()
       .replace(/\bAND\b|&&|\*/g, '&&')
       .replace(/\bOR\b|\|\||\+/g, '||')
-      .replace(/\bXOR\b|\^|!=/g, '!=')   // boolsk XOR ~= ulikhet
+      .replace(/\bXOR\b|\^|!=/g, '!=')
       .replace(/\bNOT\b|!/g, '!');
 
     for (const key of inputs) {
@@ -141,7 +136,6 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       testExpr = testExpr.replace(regex, 'true');
     }
 
-    // Parentesbalanse
     let depth = 0;
     for (const ch of testExpr) {
       if (ch === '(') depth++;
@@ -151,7 +145,6 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     if (depth !== 0) return { valid: false, error: 'Unbalanced parentheses' };
 
     try {
-      // eslint-disable-next-line no-new-func
       const fn = new Function(`return ${testExpr}`);
       void fn();
       return { valid: true };
@@ -160,7 +153,6 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     }
   }
 
-  // Parse expression to find required inputs
   parseExpression(expression) {
     const inputs = this.getAvailableInputsUppercase();
     const pattern = new RegExp(`\\b(${inputs.join('|')})\\b`, 'gi');
@@ -168,32 +160,31 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     return matches ? [...new Set(matches.map(char => char.toUpperCase()))] : [];
   }
 
-  // Set input value for a specific formula
   async setInputForFormula(formulaId, inputId, value) {
     if (this._isDeleting) return null;
 
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula) {
-      this.log(`Formula '${formulaId}' not found.`);
+      this.logger.warn(`Formula '${formulaId}' not found.`);
       return null;
     }
 
     if (formula.firstImpression && formula.lockedInputs[inputId]) {
-      this.log(
+      this.logger.debug(
         `Input '${inputId.toUpperCase()}' is locked for '${formula.name}' (first impression) – ignoring update`
       );
       return formula.result;
     }
 
     const oldValue = formula.inputStates[inputId];
-    this.log(`Setting input '${inputId.toUpperCase()}' to ${value} for '${formula.name}' (was: ${oldValue})`);
+    this.logger.input(`Setting input '${inputId.toUpperCase()}' to ${value} for '${formula.name}' (was: ${oldValue})`);
 
     formula.inputStates[inputId] = value;
     formula.timedOut = false;
 
     if (formula.firstImpression && value !== 'undefined' && !formula.lockedInputs[inputId]) {
       formula.lockedInputs[inputId] = true;
-      this.log(`🔒 Input '${inputId.toUpperCase()}' locked at value ${value} (first impression)`);
+      this.logger.debug(`🔒 Input '${inputId.toUpperCase()}' locked at value ${value} (first impression)`);
     }
 
     if (value !== 'undefined') {
@@ -203,24 +194,23 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     return await this.evaluateFormula(formulaId);
   }
 
-  // Evaluate specific formula by ID
   async evaluateFormula(formulaId, resetLocks = false) {
     if (this._isDeleting) return null;
 
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula || !formula.enabled) {
-      this.log(`Formula '${formulaId}' not found or disabled.`);
+      this.logger.debug(`Formula '${formulaId}' not found or disabled.`);
       return null;
     }
 
     if (resetLocks && formula.firstImpression) {
       this.availableInputs.forEach(id => { formula.lockedInputs[id] = false; });
-      this.log(`🔓 Unlocked all inputs for formula '${formula.name}'`);
+      this.logger.debug(`🔓 Unlocked all inputs for formula '${formula.name}'`);
     }
 
     const expression = formula.expression;
     if (!expression) {
-      this.log('No expression set, cannot evaluate.');
+      this.logger.debug('No expression set, cannot evaluate.');
       return null;
     }
 
@@ -231,23 +221,21 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       formula.inputStates[id.toLowerCase()] !== 'undefined'
     );
     if (!allDefined) {
-      this.log(`Formula '${formula.name}': Waiting for inputs. Required: [${requiredInputs.join(', ')}]`);
+      this.logger.debug(`Formula '${formula.name}': Waiting for inputs. Required: [${requiredInputs.join(', ')}]`);
       return null;
     }
 
     const values = {};
     this.availableInputs.forEach(id => { values[id.toUpperCase()] = formula.inputStates[id]; });
 
-    this.log(`Formula '${formula.name}': Evaluating with inputs:`, values);
+    this.logger.debug(`Formula '${formula.name}': Evaluating with inputs:`, values);
 
-    // Normaliser alias til JS-operatorer
     let evalExpression = expression
       .replace(/\bAND\b|&&|\*/gi, '&&')
       .replace(/\bOR\b|\|\||\+/gi, '||')
-      .replace(/\bXOR\b|\^|!=/gi, '!=')   // boolsk XOR ~= ulikhet
+      .replace(/\bXOR\b|\^|!=/gi, '!=')
       .replace(/\bNOT\b|!/gi, '!');
 
-    // Sett inn boolske verdier
     for (const key in values) {
       if (values[key] !== 'undefined') {
         const re = new RegExp(`\\b${key}\\b`, 'gi');
@@ -255,73 +243,65 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       }
     }
 
-    this.log(`Evaluating: "${expression}" → "${evalExpression}"`);
+    this.logger.formula(`Evaluating: "${expression}" → "${evalExpression}"`);
     try {
-      // eslint-disable-next-line no-new-func
       const fn = new Function(`return ${evalExpression}`);
       const result = !!fn();
 
-      this.log(`✅ Formula '${formula.name}' result: ${result}`);
+      this.logger.debug(`Formula '${formula.name}' result: ${result}`);
 
       const previous = formula.result;
       formula.result = result;
       formula.timedOut = false;
 
-      // Logic Unit har kun 'onoff' – oppdater trygt
       await this.safeSetCapabilityValue('onoff', result);
 
-      // (Evt. flow-triggers kan legges til her)
       return result;
     } catch (e) {
-      this.error(`❌ Failed to evaluate formula '${formula.name}': ${e.message}`);
+      this.logger.error(`Failed to evaluate formula '${formula.name}': ${e.message}`);
       return null;
     }
   }
 
-  // Evaluate all enabled formulas (manuell re-evaluering)
   async evaluateAllFormulas() {
-    this.log('Re-evaluating all formulas (resetting locks)...');
+    this.logger.info('Re-evaluating all formulas (resetting locks)...');
     const results = [];
     for (const formula of this.formulas) {
       if (formula.enabled) {
         this.availableInputs.forEach(id => { formula.lockedInputs[id] = false; });
-        this.log(`🔓 Unlocked all inputs for formula '${formula.name}'`);
+        this.logger.debug(`🔓 Unlocked all inputs for formula '${formula.name}'`);
         const result = await this.evaluateFormula(formula.id);
         results.push({ id: formula.id, name: formula.name, result });
       }
     }
-    this.log(`Evaluated ${results.length} formulas`);
+    this.logger.debug(`Evaluated ${results.length} formulas`);
     return results;
   }
 
-  // Get formula result
   getFormulaResult(formulaId) {
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula) {
-      this.log(`getFormulaResult: Formula '${formulaId}' not found`);
+      this.logger.warn(`getFormulaResult: Formula '${formulaId}' not found`);
       return null;
     }
-    this.log(
+    this.logger.debug(
       `getFormulaResult: Formula '${formula.name}' (${formulaId}) result = ${formula.result} (type: ${typeof formula.result})`
     );
     return formula ? formula.result : null;
   }
 
-  // Check if formula has timed out
   hasFormulaTimedOut(formulaId) {
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula) return false;
     return formula.timedOut;
   }
 
-  // Start timeout checks
   startTimeoutChecks() {
     this.timeoutInterval = setInterval(() => {
       this.checkTimeouts();
     }, 1000);
   }
 
-  // Check all formulas for timeouts
   checkTimeouts() {
     const now = Date.now();
     this.formulas.forEach(formula => {
@@ -343,26 +323,26 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       const timeoutMs = formula.timeout * 1000;
       const elapsed = now - formula.lastInputTime;
       if (elapsed >= timeoutMs) {
-        this.log(`⏱️ Formula '${formula.name}' timed out after ${formula.timeout}s`);
+        this.logger.info(`Formula '${formula.name}' timed out after ${formula.timeout}s`);
         formula.timedOut = true;
 
         const triggerData = { formula: { id: formula.id, name: formula.name } };
         const state = { formulaId: formula.id };
         this.homey.flow.getDeviceTriggerCard('formula_timeout')
           .trigger(this, triggerData, state)
-          .catch(err => this.error('Error triggering timeout:', err));
+          .catch(err => this.logger.error('Error triggering timeout:', err));
       }
     });
   }
 
   async onSettings({ oldSettings, newSettings, changedKeys }) {
-    this.log('Settings changed. Reinitializing formulas.');
+    this.logger.info('Settings changed. Reinitializing formulas.');
     if (this.timeoutInterval) {
       clearInterval(this.timeoutInterval);
     }
 
     this.initializeFormulas();
-    await this.evaluateAllFormulasInitial(); // konsekvent init etter settings
+    await this.evaluateAllFormulasInitial();
 
     if (changedKeys.includes('formulas')) {
       for (const formula of this.formulas) {
@@ -377,17 +357,16 @@ module.exports = class BaseLogicUnit extends Homey.Device {
 
   async onDeleted() {
     this._isDeleting = true;
-    this.log('Logic Unit deleted — cleaning up timers');
+    this.logger.device('Logic Unit deleted — cleaning up timers');
     if (this.timeoutInterval) {
       clearInterval(this.timeoutInterval);
       this.timeoutInterval = null;
     }
-    this.log('Cleanup complete');
+    this.logger.info('Cleanup complete');
   }
 
-  // Initial evaluering (på init og etter settings)
   async evaluateAllFormulasInitial() {
-    this.log('Initial evaluation of all formulas...');
+    this.logger.debug('Initial evaluation of all formulas...');
     let anyEvaluated = false;
 
     for (const formula of this.formulas) {
@@ -403,18 +382,18 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       );
 
       if (allDefined) {
-        this.log(`Formula '${formula.name}': All inputs defined, evaluating...`);
+        this.logger.debug(`Formula '${formula.name}': All inputs defined, evaluating...`);
         await this.evaluateFormula(formula.id);
         anyEvaluated = true;
       } else {
         const states = {};
         required.forEach(id => { states[id] = formula.inputStates[id.toLowerCase()]; });
-        this.log(`Formula '${formula.name}': Missing inputs:`, states);
+        this.logger.debug(`Formula '${formula.name}': Missing inputs:`, states);
       }
     }
 
     if (!anyEvaluated) {
-      this.log('⚠️ No formulas could be evaluated - waiting for input values');
+      this.logger.warn('No formulas could be evaluated - waiting for input values');
       await this.safeSetCapabilityValue('onoff', false);
     }
   }

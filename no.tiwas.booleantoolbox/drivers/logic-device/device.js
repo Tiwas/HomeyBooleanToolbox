@@ -1,55 +1,57 @@
 'use strict';
 
 const Homey = require('homey');
+const Logger = require('../../lib/Logger');
 
 module.exports = class LogicDeviceDevice extends Homey.Device {
 
   async onInit() {
-    this.log(`Logic Device '${this.getName()}' initializing.`);
-    
-    // First, read settings to detect how many inputs we actually need
+    const driverName = this.constructor.name || 'LogicDevice';
+    this.logger = new Logger(this, driverName);
+
+    this.logger.device(`Logic Device '${this.getName()}' initializing.`);
+
     const settings = this.getSettings();
     const detectedInputs = this.detectRequiredInputs(settings);
-    
-    // Use the higher of: detected inputs, or original numInputs from device data
+
     const originalNumInputs = this.getData().numInputs || 2;
     this.numInputs = Math.max(detectedInputs, originalNumInputs);
-    
+
     if (detectedInputs > originalNumInputs) {
-      this.log(`📈 Detected ${detectedInputs} inputs needed (originally ${originalNumInputs}). Expanding capacity!`);
+      this.logger.info(`Detected ${detectedInputs} inputs needed (originally ${originalNumInputs}). Expanding capacity.`);
     }
-    
+
     this.availableInputs = this.getAvailableInputIds();
     this.deviceListeners = new Map();
     this.pollingIntervals = new Map();
-    
+
     if (!this.hasCapability('onoff')) {
       await this.addCapability('onoff');
     }
-    
+
     if (!this.hasCapability('alarm_generic')) {
       await this.addCapability('alarm_generic');
     }
-    
+
     try {
       await this.setCapabilityOptions('onoff', {
         setable: false,
         getable: true
       });
-      this.log('✅ Set onoff as read-only');
+      this.logger.debug('Set onoff as read-only');
     } catch (e) {
-      this.log('Could not set capability options:', e.message);
+      this.logger.warn('Could not set capability options:', e.message);
     }
-    
+
     await this.initializeFormulas();
     await this.setupDeviceLinks();
-    
-    this.log('Running initial formula evaluation...');
+
+    this.logger.info('Running initial formula evaluation...');
     await this.evaluateAllFormulasInitial();
-    
+
     this.startTimeoutChecks();
-    
-    this.log(`Logic Device '${this.getName()}' initialized with ${this.numInputs} inputs`);
+
+    this.logger.info(`Logic Device '${this.getName()}' initialized with ${this.numInputs} inputs`);
   }
 
   getAvailableInputIds() {
@@ -63,42 +65,39 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
   detectRequiredInputs(settings) {
     let maxInput = 2; // Default minimum
-    
+
     try {
-      // Check formulas for used inputs
       const formulasData = settings.formulas ? JSON.parse(settings.formulas) : [];
-      
+
       formulasData.forEach(formula => {
         if (!formula.expression) return;
         
-        // Find all letter inputs (A-J) in the expression
         const pattern = /\b([A-J])\b/gi;
         const matches = formula.expression.match(pattern);
-        
+
         if (matches) {
           matches.forEach(letter => {
-            const inputNumber = letter.toUpperCase().charCodeAt(0) - 64; // A=1, B=2, etc.
+            const inputNumber = letter.toUpperCase().charCodeAt(0) - 64; // A=1, B=2
             maxInput = Math.max(maxInput, inputNumber);
           });
         }
       });
-      
-      // Also check input_links
+
       const inputLinks = settings.input_links ? JSON.parse(settings.input_links) : [];
-      
+
       inputLinks.forEach(link => {
         if (link.input) {
-          const inputNumber = link.input.toLowerCase().charCodeAt(0) - 96; // a=1, b=2, etc.
+          const inputNumber = link.input.toLowerCase().charCodeAt(0) - 96; // a=1, b=2
           maxInput = Math.max(maxInput, inputNumber);
         }
       });
-      
-      this.log(`🔍 Detected max input: ${String.fromCharCode(64 + maxInput)} (${maxInput} inputs needed)`);
-      
+
+      this.logger.debug(`Detected max input: ${String.fromCharCode(64 + maxInput)} (${maxInput} inputs needed)`);
+
     } catch (e) {
-      this.error('Error detecting required inputs:', e.message);
+      this.logger.error('Error detecting required inputs:', e.message);
     }
-    
+
     return maxInput;
   }
 
@@ -106,7 +105,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     const settings = this.getSettings();
     try {
       const formulasData = settings.formulas ? JSON.parse(settings.formulas) : [];
-      
+
       this.formulas = formulasData.map(f => ({
         id: f.id,
         name: f.name,
@@ -120,19 +119,19 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         result: null,
         timedOut: false
       }));
-      
+
       this.formulas.forEach(formula => {
         this.availableInputs.forEach(id => {
           formula.inputStates[id] = 'undefined';
           formula.lockedInputs[id] = false;
         });
       });
-      
+
     } catch (e) {
-      this.error('Failed to parse formulas:', e);
+      this.logger.error('Failed to parse formulas:', e);
       this.formulas = [];
     }
-    
+
     if (this.formulas.length === 0) {
       const defaultFormula = {
         id: 'formula_1',
@@ -147,18 +146,18 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         result: null,
         timedOut: false
       };
-      
+
       this.availableInputs.forEach(id => {
         defaultFormula.inputStates[id] = 'undefined';
         defaultFormula.lockedInputs[id] = false;
       });
-      
+
       this.formulas = [defaultFormula];
     }
-    
-    this.log(`Initialized ${this.formulas.length} formulas`);
+
+    this.logger.info(`Initialized ${this.formulas.length} formulas`);
     this.formulas.forEach(f => {
-      this.log(`  - ${f.name}: "${f.expression}" (enabled: ${f.enabled})`);
+      this.logger.debug(`  - ${f.name}: "${f.expression}" (enabled: ${f.enabled})`);
     });
   }
 
@@ -168,73 +167,62 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
   }
 
   async setupDeviceLinks() {
-    this.log('Setting up device links...');
+    this.logger.info('Setting up device links...');
 
-    // Rydd opp eventuelle gamle lyttere
     for (const [key, listener] of this.deviceListeners.entries()) {
       try {
         if (listener.unregister) {
           await listener.unregister();
-          this.log(`Unregistered listener: ${key}`);
+          this.logger.debug(`Unregistered listener: ${key}`);
         }
       } catch (e) {
-        this.error('Error unregistering listener:', e);
+        this.logger.error('Error unregistering listener:', e);
       }
     }
     this.deviceListeners.clear();
 
-    // Les koblinger fra settings
     const settings = this.getSettings();
     let inputLinks = [];
     try {
       inputLinks = settings.input_links ? JSON.parse(settings.input_links) : [];
     } catch (e) {
-      this.error('Failed to parse input_links:', e);
+      this.logger.error('Failed to parse input_links:', e);
       return;
     }
 
-    // 🔧 Viktig: persister på instansen for senere bruk (poll/re-fetch)
     this.inputLinks = inputLinks;
 
-    this.log(`Setting up ${inputLinks.length} device links`);
+    this.logger.debug(`Setting up ${inputLinks.length} device links`);
     for (const link of inputLinks) {
       try {
-        this.log(`\n=== Setting up link for input ${link.input?.toUpperCase()} ===`);
         await this.setupDeviceListener(link);
-        this.log(`=== Completed setup for input ${link.input?.toUpperCase()} ===\n`);
       } catch (e) {
-        this.error(`Failed to setup listener for input ${link.input}:`, e);
+        this.logger.error(`Failed to setup listener for input ${link.input}:`, e);
       }
     }
 
-    this.log('\n=== Fetching initial values for all inputs ===');
+    this.logger.debug('Fetching initial values for all inputs...');
     await this.fetchInitialValues(inputLinks);
-    this.log('=== Initial values fetch complete ===\n');
 
-    this.log('Device links setup complete');
+    this.logger.info('Device links setup complete');
   }
 
 
   async fetchInitialValues(inputLinks) {
     if (!this.homey.app.api) {
-      this.error('App API not available for fetching initial values');
+      this.logger.error('App API not available for fetching initial values');
       return;
     }
 
     for (const link of inputLinks) {
-      const { input, deviceId, capability, deviceName } = link;
-      
-      if (!input || !deviceId || !capability) {
-        continue;
-      }
+      const { input, deviceId, capability } = link;
+      if (!input || !deviceId || !capability) continue;
 
       try {
-        this.log(`[${input.toUpperCase()}] Fetching initial value...`);
-        
+        this.logger.debug(`[${input.toUpperCase()}] Fetching initial value...`);
         const device = await this.homey.app.api.devices.getDevice({ id: deviceId });
-        
         if (!device) {
-          this.log(`[${input.toUpperCase()}] ❌ Device not found`);
+          this.logger.warn(`[${input.toUpperCase()}] Device not found`);
           continue;
         }
 
@@ -242,288 +230,141 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
         if (device.capabilitiesObj && device.capabilitiesObj[capability]) {
           initialValue = device.capabilitiesObj[capability].value;
-          this.log(`[${input.toUpperCase()}] ✔ Got value from capabilitiesObj: ${initialValue}`);
         } else if (device.capabilityValues && device.capabilityValues[capability] !== undefined) {
           initialValue = device.capabilityValues[capability];
-          this.log(`[${input.toUpperCase()}] ✔ Got value from capabilityValues: ${initialValue}`);
         } else if (device.state && device.state[capability] !== undefined) {
           initialValue = device.state[capability];
-          this.log(`[${input.toUpperCase()}] ✔ Got value from state: ${initialValue}`);
         }
-
+        
+        this.logger.input(`[${input.toUpperCase()}] Received initial value:`, initialValue);
+        
         if (initialValue !== null && initialValue !== undefined) {
           const boolValue = this.convertToBoolean(initialValue, capability);
-          this.log(`[${input.toUpperCase()}] ✔ Initial value: ${initialValue} → ${boolValue}`);
-          
+          this.logger.debug(`[${input.toUpperCase()}] Converted value: ${initialValue} → ${boolValue}`);
+
           for (const formula of this.formulas) {
             formula.inputStates[input] = boolValue;
-            this.log(`[${input.toUpperCase()}] Set in '${formula.name}' to ${boolValue}`);
           }
         } else {
-          this.log(`[${input.toUpperCase()}] ⚠️ No initial value found - waiting for first event`);
+          this.logger.warn(`[${input.toUpperCase()}] No initial value found - waiting for first event`);
         }
 
       } catch (e) {
-        this.error(`[${input.toUpperCase()}] Error fetching initial value:`, e.message);
+        this.logger.error(`[${input.toUpperCase()}] Error fetching initial value:`, e.message);
       }
     }
   }
 
   async refetchInputsAndEvaluate(source = 'unknown') {
-    this.log(`🔁 Refetch+Eval invoked (source=${source})`);
+    this.logger.info(`Refetch and evaluate invoked (source=${source})`);
     let links = [];
     try {
       const settings = this.getSettings();
       links = settings.input_links ? JSON.parse(settings.input_links) : [];
     } catch (e) {
-      this.error('Failed to parse input_links during refetch:', e.message);
+      this.logger.error('Failed to parse input_links during refetch:', e.message);
     }
 
     if (!Array.isArray(links) || links.length === 0) {
-      this.warn('⚠️ No input links available during refetch; skipping value fetch.');
+      this.logger.warn('No input links available during refetch; skipping value fetch.');
       await this.evaluateAllFormulasInitial();
       return;
     }
 
-    // Persistér for senere bruk (polling, re-evaluering, osv.)
     this.inputLinks = links;
 
-    this.log('📥 Refetching initial values before evaluation...');
+    this.logger.debug('Refetching initial values before evaluation...');
     await this.fetchInitialValues(links);
     await this.evaluateAllFormulasInitial();
   }
 
-async setupDeviceListener(link) {
-  const { input, deviceId, capability, deviceName } = link;
+  async setupDeviceListener(link) {
+    const { input, deviceId, capability, deviceName } = link;
+    
+    this.logger.debug(`Setting up listener for input ${input.toUpperCase()}`, { deviceName, deviceId, capability });
+    
+    if (!input || !deviceId || !capability) {
+      this.logger.error(`Invalid link configuration for input ${input?.toUpperCase()}`, link);
+      return;
+    }
+    
+    try {
+      if (!this.homey.app.api) {
+        this.logger.error(`App API not available for listener setup`);
+        return;
+      }
 
-  this.log(`\n[${input.toUpperCase()}] ========== SETUP START ==========`); 
-  this.log(`[${input.toUpperCase()}] Device Name: ${deviceName}`);
-  this.log(`[${input.toUpperCase()}] Device ID: ${deviceId}`);
-  this.log(`[${input.toUpperCase()}] Capability: ${capability}`);
+      const targetDevice = await this.homey.app.api.devices.getDevice({ id: deviceId });
+      
+      if (!targetDevice) {
+        this.logger.error(`Device not found for listener: ${deviceId}`);
+        return;
+      }
+      this.logger.debug(`Found device: ${targetDevice.name}`);
 
-  if (!input || !deviceId || !capability) {
-    this.error(`[${input?.toUpperCase?.() ?? '?'}] Invalid link configuration:`, link);
-    return;
+      if (!targetDevice.capabilities || !targetDevice.capabilities.includes(capability)) {
+        this.logger.error(`Device is missing capability: ${capability}`, { available: targetDevice.capabilities });
+        return;
+      }
+      this.logger.debug(`Device has capability: ${capability}`);
+
+      const listenerFn = async (value) => {
+        if (this._isDeleting) return;
+        
+        this.logger.input(`Event received for input ${input.toUpperCase()}`, { device: targetDevice.name, capability, rawValue: value });
+        
+        const boolValue = this.convertToBoolean(value, capability);
+        this.logger.debug(`Converted boolean value: ${boolValue}`);
+        
+        for (const formula of this.formulas) {
+          try {
+            await this.setInputForFormula(formula.id, input, boolValue);
+          } catch (err) {
+            if (!this._isDeleting) this.logger.error('setInputForFormula error:', err);
+          }
+        }
+      };
+      
+      this.logger.debug(`Registering capability listener for ${capability}...`);
+      const capabilityInstance = targetDevice.makeCapabilityInstance(capability, listenerFn);
+      
+      const listenerKey = `${input}-${deviceId}-${capability}`;
+      this.deviceListeners.set(listenerKey, {
+        unregister: () => capabilityInstance.destroy(),
+      });
+      
+      this.logger.debug(`Listener setup complete for input ${input.toUpperCase()}`);
+    } catch (e) {
+      this.logger.error(`Setup for listener on input ${input.toUpperCase()} failed:`, e.message);
+      this.logger.debug(e.stack);
+    }
   }
 
-  try {
-    if (!this.homey.app.api) {
-      this.error(`[${input.toUpperCase()}] App API not available!`);
-      return;
-    }
-
-    this.log(`[${input.toUpperCase()}] Getting all devices from API...`);
-    const allDevices = await this.homey.app.api.devices.getDevices();
-    this.log(
-      `[${input.toUpperCase()}] Total devices found: ${Object.keys(allDevices).length}`
-    );
-
-    const targetDevice = allDevices[deviceId];
-    if (!targetDevice) {
-      this.error(`[${input.toUpperCase()}] ❌ Device not found: ${deviceId}`);
-      const sampleIds = Object.keys(allDevices).slice(0, 5);
-      this.error(`[${input.toUpperCase()}] Sample device IDs:`, sampleIds);
-      return;
-    }
-
-    this.log(`[${input.toUpperCase()}] ✔ Found device: ${targetDevice.name}`);
-    this.log(`[${input.toUpperCase()}] Device capabilities:`, targetDevice.capabilities);
-
-    if (!targetDevice.capabilities || !targetDevice.capabilities.includes(capability)) {
-      this.error(`[${input.toUpperCase()}] ❌ Device missing capability: ${capability}`);
-      this.error(`[${input.toUpperCase()}] Available:`, targetDevice.capabilities);
-      return;
-    }
-    this.log(`[${input.toUpperCase()}] ✔ Device has capability: ${capability}`);
-
-    // --- Prøv å hente initialverdi (best-effort, vi gjør uansett en egen fetch senere) ---
-    let initialValue = null;
-    this.log(`[${input.toUpperCase()}] Attempting to get initial value...`);
-    if (targetDevice.capabilityValues && targetDevice.capabilityValues[capability] !== undefined) {
-      initialValue = targetDevice.capabilityValues[capability];
-      this.log(`[${input.toUpperCase()}] ✔ Method 1 (capabilityValues): ${initialValue}`);
-    } else if (targetDevice.capabilityInstances && targetDevice.capabilityInstances[capability]) {
-      initialValue = targetDevice.capabilityInstances[capability].value;
-      this.log(`[${input.toUpperCase()}] ✔ Method 2 (capabilityInstances): ${initialValue}`);
-    } else if (targetDevice.state && targetDevice.state[capability] !== undefined) {
-      initialValue = targetDevice.state[capability];
-      this.log(`[${input.toUpperCase()}] ✔ Method 3 (state): ${initialValue}`);
-    } else {
-      try {
-        this.log(`[${input.toUpperCase()}] Trying to fetch current value...`);
-        const deviceState = await this.homey.app.api.devices.getDevice({ id: deviceId });
-        if (deviceState && deviceState.capabilityValues) {
-          initialValue = deviceState.capabilityValues[capability];
-          this.log(`[${input.toUpperCase()}] ✔ Method 4 (fresh fetch): ${initialValue}`);
-        }
-      } catch (e) {
-        this.log(`[${input.toUpperCase()}] Method 4 failed:`, e.message);
-      }
-    }
-
-    if (initialValue !== null && initialValue !== undefined) {
-      const boolValue = this.convertToBoolean(initialValue, capability);
-      this.log(
-        `[${input.toUpperCase()}] ✔ Initial value: ${initialValue} → ${boolValue}`
-      );
-      for (const formula of this.formulas) {
-        formula.inputStates[input] = boolValue;
-        this.log(
-          `[${input.toUpperCase()}] Set in '${formula.name}' to ${boolValue}`
-        );
-      }
-    } else {
-      this.log(
-        `[${input.toUpperCase()}] ⚠️ No initial value - waiting for first event`
-      );
-    }
-
-    // --- Event-listener ---
-    const listenerFn = async (value) => {
-      // Kortslutt hvis devicen er i sletting
-      if (this._isDeleting) return;
-
-      this.log(`\n*** [${input.toUpperCase()}] EVENT RECEIVED ***`);
-      this.log(`Device: ${targetDevice.name}`);
-      this.log(`Capability: ${capability}`);
-      this.log(`Raw value: ${value}`);
-
-      const boolValue = this.convertToBoolean(value, capability);
-      this.log(`Boolean value: ${boolValue}`);
-
-      for (const formula of this.formulas) {
-        this.log(
-          `Updating '${formula.name}' input ${input.toUpperCase()} → ${boolValue}`
-        );
-        try {
-          await this.setInputForFormula(formula.id, input, boolValue);
-        } catch (err) {
-          if (!this._isDeleting) this.error('setInputForFormula error:', err);
-        }
-      }
-      this.log(`*** [${input.toUpperCase()}] EVENT COMPLETE ***\n`);
-    };
-
-    // Registrering + oppsett av "unregister"
-    this.log(`[${input.toUpperCase()}] Registering capability listener...`);
-    let registered = false;
-    let unregister = null;
-    let eventName = `capability.${capability}`;
-
-    // makeCapabilityInstance (SDK)
-    if (typeof targetDevice.makeCapabilityInstance === 'function') {
-      try {
-        this.log(`[${input.toUpperCase()}] Trying makeCapabilityInstance...`);
-        const instance = targetDevice.makeCapabilityInstance(capability, listenerFn);
-        // I Homey SDK er det vanlig at instance har .destroy()
-        unregister = async () => {
-          try {
-            if (instance && typeof instance.destroy === 'function') {
-              instance.destroy();
-            }
-          } catch (e) {
-            this.error(`[${input.toUpperCase()}] Error destroying capability instance:`, e.message);
-          }
-        };
-        this.log(`[${input.toUpperCase()}] ✔ Registered via makeCapabilityInstance`);
-        registered = true;
-      } catch (e) {
-        this.error(`[${input.toUpperCase()}] makeCapabilityInstance failed:`, e.message);
-      }
-    }
-
-    // device.on fallback (EventEmitter-lignende)
-    if (!registered && typeof targetDevice.on === 'function') {
-      try {
-        this.log(`[${input.toUpperCase()}] Trying device.on('${eventName}')...`);
-        targetDevice.on(eventName, listenerFn);
-        unregister = async () => {
-          try {
-            if (typeof targetDevice.removeListener === 'function') {
-              targetDevice.removeListener(eventName, listenerFn);
-            }
-          } catch (e) {
-            this.error(`[${input.toUpperCase()}] Error removing listener:`, e.message);
-          }
-        };
-        this.log(`[${input.toUpperCase()}] ✔ Registered via device.on`);
-        registered = true;
-      } catch (e) {
-        this.error(`[${input.toUpperCase()}] device.on failed:`, e.message);
-      }
-    }
-
-    if (!registered) {
-      this.error(
-        `[${input.toUpperCase()}] ❌ Could not register listener!`
-      );
-      this.log(
-        `[${input.toUpperCase()}] Available methods:`,
-        Object.keys(targetDevice).filter(k => typeof targetDevice[k] === 'function').slice(0, 10)
-      );
-    }
-
-    const listenerKey = `${input}-${deviceId}-${capability}`;
-    this.deviceListeners.set(listenerKey, {
-      deviceId,
-      capability,
-      input,
-      device: targetDevice,
-      listener: listenerFn,
-      registered,
-      unregister, // 👈 LAGRER UNREGISTER
-      eventName
-    });
-
-    this.log(`[${input.toUpperCase()}] ========== SETUP COMPLETE ==========\n`);
-  } catch (e) {
-    this.error(`[${input.toUpperCase()}] ❌ SETUP FAILED:`, e.message);
-    this.error(`[${input.toUpperCase()}] Stack:`, e.stack);
-  }
-}
 
   convertToBoolean(value, capability) {
-    if (typeof value === 'boolean') {
-      return value;
-    }
-    
-    if (capability.startsWith('alarm_')) {
-      return !!value;
-    }
-    
-    if (capability === 'onoff') {
-      return !!value;
-    }
-    
-    if (typeof value === 'number') {
-      return value > 0;
-    }
-    
+    if (typeof value === 'boolean') return value;
+    if (capability.startsWith('alarm_')) return !!value;
+    if (capability === 'onoff') return !!value;
+    if (typeof value === 'number') return value > 0;
     if (typeof value === 'string') {
       const lowerValue = value.toLowerCase();
       return lowerValue === 'true' || lowerValue === '1' || lowerValue === 'on' || lowerValue === 'yes';
     }
-    
     return !!value;
   }
 
   async safeSetCapabilityValue(cap, value) {
-    // Ikke gjør noe hvis enheten er i ferd med å slettes
     if (this._isDeleting) return;
     try {
-      // Valgfritt: hopp over hvis capability ikke finnes
       if (!this.hasCapability(cap)) return;
-
       await this.setCapabilityValue(cap, value);
     } catch (e) {
-      // Ignorer 404 / Not Found – typisk etter sletting
       const msg = e?.message || '';
       if (e?.statusCode === 404 || /not\s*found/i.test(msg)) {
-        this.log(`(safe) Skipper ${cap} – enheten finnes ikke lenger.`);
+        this.logger.debug(`(safe) Skipping ${cap} – device no longer exists.`);
         return;
       }
-      // Andre feil logges – men knekker ikke flyten
-      this.error(`Capability update failed for ${cap}:`, msg);
+      this.logger.error(`Capability update failed for ${cap}:`, msg);
     }
   }
 
@@ -533,27 +374,27 @@ async setupDeviceListener(link) {
     if (!formula) {
       return null;
     }
-    
+
     if (formula.firstImpression && formula.lockedInputs[inputId]) {
-      this.log(`⚠️ Input '${inputId.toUpperCase()}' locked for formula '${formula.name}' (firstImpression mode)`);
+      this.logger.warn(`Input '${inputId.toUpperCase()}' locked for formula '${formula.name}' (firstImpression mode)`);
       return formula.result;
     }
-    
+
     const oldValue = formula.inputStates[inputId];
-    this.log(`Setting input '${inputId.toUpperCase()}' to ${value} for formula '${formula.name}' (was: ${oldValue})`);
-    
+    this.logger.debug(`Setting input '${inputId.toUpperCase()}' to ${value} for formula '${formula.name}' (was: ${oldValue})`);
+
     formula.inputStates[inputId] = value;
     formula.timedOut = false;
-    
+
     if (formula.firstImpression && value !== 'undefined' && !formula.lockedInputs[inputId]) {
       formula.lockedInputs[inputId] = true;
-      this.log(`🔒 Input '${inputId.toUpperCase()}' locked at value ${value} (firstImpression mode)`);
+      this.logger.debug(`🔒 Input '${inputId.toUpperCase()}' locked at value ${value} (firstImpression mode)`);
     }
-    
+
     if (value !== 'undefined') {
       formula.lastInputTime = Date.now();
     }
-    
+
     return await this.evaluateFormula(formulaId);
   }
 
@@ -561,7 +402,7 @@ async setupDeviceListener(link) {
     if (this._isDeleting) return null;
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula || !formula.enabled) {
-      this.log(`Formula '${formulaId}' not found or disabled.`);
+      this.logger.debug(`Formula '${formulaId}' not found or disabled.`);
       return null;
     }
 
@@ -569,24 +410,24 @@ async setupDeviceListener(link) {
       this.availableInputs.forEach(id => {
         formula.lockedInputs[id] = false;
       });
-      this.log(`🔓 Unlocked all inputs for formula '${formula.name}'`);
+      this.logger.debug(`🔓 Unlocked all inputs for formula '${formula.name}'`);
     }
 
     const expression = formula.expression;
     if (!expression) {
-      this.log('No expression set, cannot evaluate.');
+      this.logger.debug('No expression set, cannot evaluate.');
       return null;
     }
 
     const requiredInputs = this.parseExpression(expression);
     if (requiredInputs.length === 0) return null;
 
-    const allInputsDefined = requiredInputs.every(id => 
+    const allInputsDefined = requiredInputs.every(id =>
       formula.inputStates[id.toLowerCase()] !== 'undefined'
     );
-    
+
     if (!allInputsDefined) {
-      this.log(`Formula '${formula.name}': Waiting for inputs. Required: [${requiredInputs.join(', ')}]`);
+      this.logger.debug(`Formula '${formula.name}': Waiting for inputs. Required: [${requiredInputs.join(', ')}]`);
       return null;
     }
 
@@ -594,8 +435,6 @@ async setupDeviceListener(link) {
     this.availableInputs.forEach(id => {
       values[id.toUpperCase()] = formula.inputStates[id];
     });
-
-    this.log(`Formula '${formula.name}': Evaluating with inputs:`, values);
 
     let evalExpression = expression
       .replace(/\bAND\b|&|\*/gi, '&&')
@@ -610,40 +449,35 @@ async setupDeviceListener(link) {
       }
     }
 
-    this.log(`Evaluating: "${expression}" → "${evalExpression}"`);
+    this.logger.formula(`Evaluating: "${expression}" → "${evalExpression}"`);
 
     try {
       const evaluate = new Function(`return ${evalExpression}`);
       const result = !!evaluate();
 
-      this.log(`✅ Formula '${formula.name}' result: ${result}`);
-      
+      this.logger.debug(`Formula '${formula.name}' result: ${result}`);
+
       const previousResult = formula.result;
       formula.result = result;
       formula.timedOut = false;
-      
+
       try {
         await this.safeSetCapabilityValue('onoff', result);
         await this.safeSetCapabilityValue('alarm_generic', result);
       } catch (e) {
         if (e.statusCode === 404) {
-          this.log('Device deleted, skipping capability update');
+          this.logger.debug('Device deleted, skipping capability update');
           return null;
         }
         throw e;
       }
-      
+
       if (previousResult !== null && previousResult !== result) {
-        const triggerData = {
-          formula: {
-            id: formulaId,
-            name: formula.name
-          }
-        };
-        
+        const triggerData = { formula: { id: formulaId, name: formula.name } };
         const state = { formulaId };
-        
+
         try {
+          this.logger.flow(`Triggering flow for formula '${formula.name}' change to ${result}`);
           if (result) {
             await this.homey.flow.getDeviceTriggerCard('formula_changed_to_true')
               .trigger(this, triggerData, state);
@@ -651,47 +485,47 @@ async setupDeviceListener(link) {
             await this.homey.flow.getDeviceTriggerCard('formula_changed_to_false')
               .trigger(this, triggerData, state);
           }
-          
+
           await this.homey.flow.getDeviceTriggerCard('device_state_changed')
             .trigger(this, { state: result }, {});
-            
+
         } catch (e) {
           if (e.statusCode === 404) {
-            this.log('Device deleted, skipping flow trigger');
+            this.logger.debug('Device deleted, skipping flow trigger');
             return null;
           }
-          this.error('Error triggering flow:', e);
+          this.logger.error('Error triggering flow:', e);
         }
       }
 
       return result;
 
     } catch (e) {
-      this.error(`❌ Failed to evaluate formula '${formula.name}': ${e.message}`);
+      this.logger.error(`Failed to evaluate formula '${formula.name}': ${e.message}`);
       return null;
     }
   }
 
   async evaluateAllFormulasInitial() {
-    this.log('Initial evaluation of all formulas...');
-    
+    this.logger.info('Initial evaluation of all formulas...');
+
     let anyEvaluated = false;
-    
+
     for (const formula of this.formulas) {
       if (!formula.enabled) continue;
-      
+
       const expression = formula.expression;
       if (!expression) continue;
-      
+
       const requiredInputs = this.parseExpression(expression);
       if (requiredInputs.length === 0) continue;
-      
-      const allInputsDefined = requiredInputs.every(id => 
+
+      const allInputsDefined = requiredInputs.every(id =>
         formula.inputStates[id.toLowerCase()] !== 'undefined'
       );
-      
+
       if (allInputsDefined) {
-        this.log(`Formula '${formula.name}': All inputs defined, evaluating...`);
+        this.logger.debug(`Formula '${formula.name}': All inputs defined, evaluating...`);
         await this.evaluateFormula(formula.id);
         anyEvaluated = true;
       } else {
@@ -699,19 +533,19 @@ async setupDeviceListener(link) {
         requiredInputs.forEach(id => {
           states[id] = formula.inputStates[id.toLowerCase()];
         });
-        this.log(`Formula '${formula.name}': Missing inputs:`, states);
+        this.logger.debug(`Formula '${formula.name}': Missing inputs:`, states);
       }
     }
-    
+
     if (!anyEvaluated) {
-      this.log('⚠️ No formulas could be evaluated - waiting for input values');
+      this.logger.warn('No formulas could be evaluated - waiting for input values');
       await this.safeSetCapabilityValue('onoff', false);
       await this.safeSetCapabilityValue('alarm_generic', false);
     }
   }
 
   parseExpression(expression) {
-    const inputs = this.getAvailableInputsUppercase(); // f.eks. ['A','B','C']
+    const inputs = this.getAvailableInputsUppercase();
     if (!inputs.length) return [];
     const varRe = new RegExp(`\\b(${inputs.join('|')})\\b`, 'gi');
     const matches = expression.match(varRe);
@@ -727,19 +561,16 @@ async setupDeviceListener(link) {
     const inputs = this.getAvailableInputsUppercase();
     if (!inputs.length) return { valid: false, error: 'No inputs available' };
 
-    // Tokeniser: ord-operatorer, symbol-operatorer, paranteser og inputs
     const tokenRe = new RegExp(
       `\\b(?:AND|OR|XOR|NOT)\\b|&&|\\|\\||\\^|!=|\\*|\\+|!|\\(|\\)|\\b(?:${inputs.join('|')})\\b`,
       'gi'
     );
 
-    // Finn ugyldige rester
     const stripped = upper.replace(tokenRe, '').replace(/\s+/g, '');
     if (stripped.length > 0) {
       return { valid: false, error: `Invalid tokens in expression: "${stripped}"` };
     }
 
-    // Grov parantes-sjekk
     let depth = 0;
     for (const ch of upper) {
       if (ch === '(') depth++;
@@ -748,11 +579,10 @@ async setupDeviceListener(link) {
     }
     if (depth !== 0) return { valid: false, error: 'Unbalanced parentheses' };
 
-    // Syntaks-test: normaliser til JS og evaluer med dummyverdier
     let testExpr = upper
       .replace(/\bAND\b|&&|\*/g, '&&')
       .replace(/\bOR\b|\|\||\+/g, '||')
-      .replace(/\bXOR\b|\^|!=/g, '!=')  // boolsk XOR ~= ulikhet
+      .replace(/\bXOR\b|\^|!=/g, '!=')
       .replace(/\bNOT\b|!/g, '!');
 
     for (const key of inputs) {
@@ -761,7 +591,6 @@ async setupDeviceListener(link) {
     }
 
     try {
-      // eslint-disable-next-line no-new-func
       const fn = new Function(`return ${testExpr}`);
       void fn();
       return { valid: true };
@@ -790,10 +619,9 @@ async setupDeviceListener(link) {
   getFormulaResult(formulaId) {
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula) {
-      this.log(`getFormulaResult: Formula '${formulaId}' not found`);
+      this.logger.warn(`getFormulaResult: Formula '${formulaId}' not found`);
       return null;
     }
-    
     return formula.result;
   }
 
@@ -804,22 +632,19 @@ async setupDeviceListener(link) {
   }
 
   async evaluateAllFormulas() {
-    this.log('Re-evaluating all formulas (resetting locks)...');
-    
+    this.logger.info('Re-evaluating all formulas (resetting locks)...');
     const results = [];
     for (const formula of this.formulas) {
       if (formula.enabled) {
         this.availableInputs.forEach(id => {
           formula.lockedInputs[id] = false;
         });
-        this.log(`🔓 Unlocked all inputs for formula '${formula.name}'`);
-        
+        this.logger.debug(`🔓 Unlocked all inputs for formula '${formula.name}'`);
         const result = await this.evaluateFormula(formula.id);
         results.push({ id: formula.id, name: formula.name, result });
       }
     }
-    
-    this.log(`Evaluated ${results.length} formulas`);
+    this.logger.debug(`Evaluated ${results.length} formulas`);
     return results;
   }
 
@@ -831,101 +656,84 @@ async setupDeviceListener(link) {
 
   checkTimeouts() {
     const now = Date.now();
-    
     this.formulas.forEach(formula => {
       if (!formula.timeout || formula.timeout <= 0) return;
       if (formula.timedOut || !formula.enabled) return;
       if (!formula.lastInputTime) return;
-      
-      const hasAnyInput = this.availableInputs.some(id => 
+
+      const hasAnyInput = this.availableInputs.some(id =>
         formula.inputStates[id] !== 'undefined'
       );
-      
       if (!hasAnyInput) return;
-      
+
       const requiredInputs = this.parseExpression(formula.expression);
-      const allInputsDefined = requiredInputs.every(id => 
+      const allInputsDefined = requiredInputs.every(id =>
         formula.inputStates[id.toLowerCase()] !== 'undefined'
       );
-      
       if (allInputsDefined) return;
-      
+
       const timeoutMs = formula.timeout * 1000;
       const elapsed = now - formula.lastInputTime;
-      
+
       if (elapsed >= timeoutMs) {
-        this.log(`⏱️ Formula '${formula.name}' timed out after ${formula.timeout}s`);
+        this.logger.info(`Formula '${formula.name}' timed out after ${formula.timeout}s`);
         formula.timedOut = true;
-        
-        const triggerData = {
-          formula: {
-            id: formula.id,
-            name: formula.name
-          }
-        };
-        
-        const state = {
-          formulaId: formula.id
-        };
-        
+
+        const triggerData = { formula: { id: formula.id, name: formula.name } };
+        const state = { formulaId: formula.id };
         this.homey.flow.getDeviceTriggerCard('formula_timeout')
           .trigger(this, triggerData, state)
-          .catch(err => this.error('Error triggering timeout:', err));
+          .catch(err => this.logger.error('Error triggering timeout:', err));
       }
     });
   }
 
   async onSettings({ oldSettings, newSettings, changedKeys }) {
-    this.log('Settings changed:', changedKeys);
+    this.logger.info('Settings changed:', changedKeys);
 
     if (this.timeoutInterval) {
       clearInterval(this.timeoutInterval);
     }
 
-    // 1) Oppdater kapasitet hvis formler eller koblinger antyder flere inputs
     if (changedKeys.includes('formulas') || changedKeys.includes('input_links')) {
       const detectedInputs = this.detectRequiredInputs(newSettings);
       const originalNumInputs = this.getData().numInputs ?? 2;
       const newNumInputs = Math.max(detectedInputs, originalNumInputs);
       if (newNumInputs !== this.numInputs) {
-        this.log(`📊 Updating capacity: ${this.numInputs} → ${newNumInputs} inputs`);
+        this.logger.info(`Updating capacity: ${this.numInputs} → ${newNumInputs} inputs`);
         this.numInputs = newNumInputs;
         this.availableInputs = this.getAvailableInputIds();
       }
     }
 
-    // 2) Autoformat-buffer
     const formatSettings = {};
     let needsFormat = false;
 
-    // 3) Parse/autoformat formler
     let parsedFormulas = [];
     if (changedKeys.includes('formulas')) {
       try {
         let rawFormulas = newSettings.formulas;
-        this.log('[onSettings] Raw formulas input:', rawFormulas);
+        this.logger.debug('Raw formulas input from settings:', rawFormulas);
         parsedFormulas = typeof rawFormulas === 'string' ? JSON.parse(rawFormulas) : rawFormulas;
-        this.log('[onSettings] Parsed formulas:', parsedFormulas);
-
+        
         const formatted = JSON.stringify(parsedFormulas, null, 2);
         const original = typeof newSettings.formulas === 'string' ? newSettings.formulas : JSON.stringify(newSettings.formulas);
         if (formatted !== original) {
           formatSettings.formulas = formatted;
           needsFormat = true;
-          this.log('Will auto-format formulas JSON');
+          this.logger.debug('Will auto-format formulas JSON');
         }
       } catch (e) {
-        this.error('Could not parse formulas:', e.message);
+        this.logger.error('Could not parse formulas:', e.message);
         throw new Error(`Invalid formulas JSON: ${e.message}`);
       }
     }
 
-    // 4) Parse/autoformat input_links (kun hvis de faktisk endret seg)
     let parsedLinks = [];
     if (changedKeys.includes('input_links')) {
       try {
         let rawLinks = newSettings.input_links;
-        this.log('[onSettings] Raw input_links:', rawLinks);
+        this.logger.debug('Raw input_links from settings:', rawLinks);
         parsedLinks = typeof rawLinks === 'string' ? JSON.parse(rawLinks) : rawLinks;
 
         const formatted = JSON.stringify(parsedLinks, null, 2);
@@ -933,99 +741,79 @@ async setupDeviceListener(link) {
         if (formatted !== original) {
           formatSettings.input_links = formatted;
           needsFormat = true;
-          this.log('Will auto-format input_links JSON');
+          this.logger.debug('Will auto-format input_links JSON');
         }
       } catch (e) {
-        this.error('Could not parse input_links:', e.message);
+        this.logger.error('Could not parse input_links:', e.message);
         throw new Error(`Invalid input_links JSON: ${e.message}`);
       }
     }
 
-    // 5) Re-initialiser formelstrukturen ved formelendring
     if (changedKeys.includes('formulas')) {
       this.formulas = parsedFormulas.map(f => ({
-        id: f.id,
-        name: f.name,
-        expression: f.expression,
-        enabled: f.enabled !== false,
-        timeout: f.timeout ?? 0,
-        firstImpression: f.firstImpression === true,
-        inputStates: {},
-        lockedInputs: {},
-        lastInputTime: null,
-        result: null,
-        timedOut: false,
+        id: f.id, name: f.name, expression: f.expression,
+        enabled: f.enabled !== false, timeout: f.timeout ?? 0, firstImpression: f.firstImpression === true,
+        inputStates: {}, lockedInputs: {}, lastInputTime: null, result: null, timedOut: false,
       }));
-
       this.availableInputs.forEach(id => {
         this.formulas.forEach(f => {
           f.inputStates[id] = 'undefined';
           f.lockedInputs[id] = false;
         });
       });
-
-      this.log(`Initialized ${this.formulas.length} formulas`);
-      this.formulas.forEach(f => {
-        this.log(` - ${f.name}: "${f.expression}" (enabled: ${f.enabled})`);
-      });
-
-      // Valider uttrykkene
+      this.logger.debug(`Re-initialized ${this.formulas.length} formulas`);
       for (const formula of this.formulas) {
         const validation = this.validateExpression(formula.expression);
-        this.log(`[onSettings] Validation for "${formula.expression}":`, validation);
         if (!validation.valid) {
           throw new Error(`Formula '${formula.name}': ${validation.error}`);
         }
       }
     }
 
-    // 6) Hvis koblinger endret seg: sett opp lyttere og (re)hent initialverdier
     if (changedKeys.includes('input_links')) {
-      await this.setupDeviceLinks();         // setter this.inputLinks + fetchInitialValues(...)
+      await this.setupDeviceLinks();
       await this.evaluateAllFormulasInitial();
     }
 
-    // 7) Hvis KUN formler endret seg: hent verdier før evaluering
     if (changedKeys.includes('formulas') && !changedKeys.includes('input_links')) {
       await this.refetchInputsAndEvaluate('formulas-change');
     }
 
     this.startTimeoutChecks();
-    this.log('Settings applied successfully');
+    this.logger.info('Settings applied successfully');
 
-    // 8) Autoformat settings etterpå
     if (needsFormat) {
       setTimeout(async () => {
         try {
-          this.log('Applying formatted settings...');
+          this.logger.debug('Applying auto-formatted settings...');
           await this.setSettings(formatSettings);
-          this.log('✨ Settings auto-formatted');
+          this.logger.info('Settings auto-formatted');
         } catch (e) {
-          this.error('Failed to auto-format settings:', e.message);
+          this.logger.error('Failed to auto-format settings:', e.message);
         }
       }, 500);
     }
   }
 
   async pollDeviceInputs() {
-    this.log('🔄 Polling all linked device inputs...');
+    this.logger.debug('Polling all linked device inputs...');
 
     const links = this.inputLinks || [];
     if (!links.length) {
-      this.warn('⚠️ No inputLinks available for polling');
+      this.logger.warn('No inputLinks available for polling');
       return;
     }
     if (!this.homey.app.api) {
-      this.error('App API not available for polling');
+      this.logger.error('App API not available for polling');
       return;
     }
 
     for (const link of links) {
-      this.log(`🔗 Polling input "${link.input}" from device "${link.deviceId}" using capability "${link.capability}"`);
+      this.logger.debug(`Polling input "${link.input}" from device "${link.deviceId}" capability "${link.capability}"`);
       try {
         const dev = await this.homey.app.api.devices.getDevice({ id: link.deviceId });
         if (!dev) {
-          this.warn(`⚠️ Device not found: ${link.deviceId}`);
+          this.logger.warn(`Device not found: ${link.deviceId}`);
           continue;
         }
 
@@ -1039,12 +827,12 @@ async setupDeviceListener(link) {
         }
 
         if (raw === null || raw === undefined) {
-          this.log(`⚠️ No value for ${link.input.toUpperCase()} (${link.capability})`);
+          this.logger.warn(`No value for ${link.input.toUpperCase()} (${link.capability})`);
           continue;
         }
 
         const boolValue = this.convertToBoolean(raw, link.capability);
-        this.log(`📥 Polled ${link.input.toUpperCase()}: ${raw} → ${boolValue}`);
+        this.logger.input(`Polled ${link.input.toUpperCase()}: ${raw} → ${boolValue}`);
 
         for (const formula of this.formulas) {
           formula.inputStates[link.input] = boolValue;
@@ -1053,44 +841,36 @@ async setupDeviceListener(link) {
           }
         }
       } catch (e) {
-        this.error(`❌ Failed to poll ${link.input}:`, e.message);
+        this.logger.error(`Failed to poll ${link.input}:`, e.message);
       }
     }
   }
 
-async onDeleted() {
-  this._isDeleting = true; // 👈 signaliser til eventer at vi er på vei ut
-  this.log('Device deleted — cleaning up listeners & timers');
+  async onDeleted() {
+    this._isDeleting = true;
+    this.logger.device('Device deleted — cleaning up listeners & timers');
 
-  // Prøv å unregister’e alle listeners vi har lagret
-  for (const [key, entry] of this.deviceListeners.entries()) {
-    try {
-      if (typeof entry?.unregister === 'function') {
-        await entry.unregister();
-        this.log(`Unregistered listener: ${key}`);
-      } else if (entry?.device && entry?.listener && typeof entry.device.removeListener === 'function') {
-        // Best effort fallback for device.on(...) varianter
-        const ev = entry.eventName || (entry.capability ? `capability.${entry.capability}` : undefined);
-        if (ev) entry.device.removeListener(ev, entry.listener);
-        this.log(`Removed listener via removeListener: ${key}`);
+    for (const [key, entry] of this.deviceListeners.entries()) {
+      try {
+        if (typeof entry?.unregister === 'function') {
+          await entry.unregister();
+          this.logger.debug(`Unregistered listener: ${key}`);
+        }
+      } catch (e) {
+        this.logger.error('Error cleaning up listener:', e);
       }
-    } catch (e) {
-      this.error('Error cleaning up listener:', e);
     }
-  }
-  this.deviceListeners.clear();
+    this.deviceListeners.clear();
 
-  // Stopp eventuelle intervaller (timeouts tikker i egen metode hos deg)
-  if (this.timeoutInterval) {
-    clearInterval(this.timeoutInterval);
-    this.timeoutInterval = null;
-  }
+    if (this.timeoutInterval) {
+      clearInterval(this.timeoutInterval);
+      this.timeoutInterval = null;
+    }
 
-  // Frigi evt. andre ressurser (om du senere bruker pollingIntervals etc.)
-  if (this.pollingIntervals && typeof this.pollingIntervals.clear === 'function') {
-    try { this.pollingIntervals.clear(); } catch (_) {}
-  }
+    if (this.pollingIntervals && typeof this.pollingIntervals.clear === 'function') {
+      try { this.pollingIntervals.clear(); } catch (_) {}
+    }
 
-  this.log('Cleanup complete');
-}
+    this.logger.info('Cleanup complete');
+  }
 };
