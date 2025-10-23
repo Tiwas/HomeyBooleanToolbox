@@ -2,8 +2,9 @@
 
 /**
  * Advanced Logger for Homey Apps
- * 
+ *
  * NEW: Supports global configuration via loggerConfig.js
+ * FIX: Manually performs variable substitution as this.homey.__() fails to do so.
  */
 
 class Logger {
@@ -49,7 +50,24 @@ class Logger {
   }
 
   constructor(context, category = 'App', options = {}) {
-    this.context = context;
+    this.context = context; // This is the App or Device instance
+    
+    // --- FIKS I KONSTRUKTØR ---
+    // Finner det *ekte* homey-objektet uansett om 'context' er App eller Device
+    if (context && context.homey) {
+      this.homey = context.homey;
+    } else if (context && context.app && context.app.homey) { // Fallback
+      this.homey = context.app.homey;
+    } else {
+      console.error(`Logger: Could not find 'homey' object on context for category '${category}'.`);
+      // Oppretter en dummy for å unngå krasj
+      this.homey = { 
+        app: { log: console.log, error: console.error },
+        __: (s) => s // Returnerer bare nøkkelen
+      };
+    }
+    // --- SLUTT FIKS ---
+
     this.category = category;
     
     // Load global config
@@ -65,7 +83,7 @@ class Logger {
     }
     
     this.options = {
-      level: level,
+      level: level.toUpperCase(),
       timestamps: options.timestamps || globalConfig.options.timestamps || false,
       colors: options.colors || globalConfig.options.colors || false,
       ...options
@@ -76,9 +94,10 @@ class Logger {
   }
 
   setLevel(level) {
-    if (Logger.LEVELS[level] !== undefined) {
-      this.minLevel = Logger.LEVELS[level];
-      this.options.level = level;
+    const upperLevel = level.toUpperCase();
+    if (Logger.LEVELS[upperLevel] !== undefined) {
+      this.minLevel = Logger.LEVELS[upperLevel];
+      this.options.level = upperLevel;
     }
   }
 
@@ -90,73 +109,76 @@ class Logger {
     return Logger.LEVELS[level] >= this.minLevel;
   }
 
-  _formatMessage(symbol, message, data) {
-    const parts = [];
-    
-    if (symbol) {
-      parts.push(symbol);
-    }
-    
-    parts.push(`[${this.category}]`);
-    parts.push(message);
-    
-    const formattedMessage = parts.join(' ');
-    
-    if (data !== undefined) {
-      return [formattedMessage, data];
-    }
-    
-    return [formattedMessage];
+  _getPrefix(symbol) {
+    return `${symbol} [${this.category}]`;
   }
 
-  _log(level, symbol, message, data) {
+  _formatMessage(keyOrMessage, data) {
+    let message;
+    try {
+      // 1. Hent mal-strengen (f.eks. "Logic Device '{name}'...")
+      message = this.homey.__(keyOrMessage, data);
+    } catch (e) {
+      // Hvis __-funksjonen feiler, bruk nøkkelen som melding
+      message = keyOrMessage;
+      console.error(`Logger: this.homey.__() failed for key: ${keyOrMessage}`, e);
+    }
+    
+    // 2. MANUELL ERSTATNING (dette er den nye, kritiske fiks-en)
+    if (data && typeof data === 'object' && data !== null) {
+      try {
+        for (const key in data) {
+          // Lag en regex for å erstatte {key}
+          const regex = new RegExp(`\\{${key}\\}`, 'g');
+          message = message.replace(regex, data[key]);
+        }
+      } catch (e) {
+         console.error(`Logger: Manuell erstatning feilet for: ${message}`, e);
+      }
+    }
+
+    return message;
+  }
+
+  _log(level, symbol, keyOrMessage, data) {
     if (!this._shouldLog(level)) {
       return;
     }
 
-    const args = this._formatMessage(symbol, message, data);
+    const prefix = this._getPrefix(symbol);
+    const formattedMessage = this._formatMessage(keyOrMessage, data);
     
     try {
-      if (this.context && this.context.log) {
-        this.context.log(...args);
-      } else if (this.context && this.context.homey && this.context.homey.app && this.context.homey.app.log) {
-        this.context.homey.app.log(...args);
-      } else {
-        console.log(...args);
-      }
+      // Bruk ALLTID this.homey.app.log
+      this.homey.app.log(prefix, formattedMessage);
+
     } catch (error) {
-      console.error('Logger error:', error);
-      console.log(...args);
+      console.error('Logger internal error:', error);
+      console.log(prefix, formattedMessage); // Fallback til console.log
     }
   }
 
-  _logError(message, error) {
+  _logError(keyOrMessage, error) {
     if (!this._shouldLog('ERROR')) {
       return;
     }
 
-    const args = this._formatMessage(Logger.SYMBOLS.ERROR, message);
+    const prefix = this._getPrefix(Logger.SYMBOLS.ERROR);
+    
+    // Data-objektet kan være gjemt i 'error' hvis det ikke er en ekte Error
+    let data = (error instanceof Error) ? null : error;
+    const formattedMessage = this._formatMessage(keyOrMessage, data);
     
     try {
-      if (this.context && this.context.error) {
-        this.context.error(...args);
-        if (error) {
-          this.context.error(error);
-        }
-      } else if (this.context && this.context.homey && this.context.homey.app && this.context.homey.app.error) {
-        this.context.homey.app.error(...args);
-        if (error) {
-          this.context.homey.app.error(error);
-        }
-      } else {
-        console.error(...args);
-        if (error) {
-          console.error(error);
-        }
+      this.homey.app.error(prefix, formattedMessage);
+      if (error instanceof Error) {
+        this.homey.app.error(error); // Logg stack trace hvis det er en Error
+      } else if (data) {
+        // Hvis 'error' bare var data, er den allerede i formattedMessage
       }
     } catch (err) {
-      console.error('Logger error:', err);
-      console.error(...args);
+      console.error('Logger internal error (error):', err);
+      console.error(prefix, formattedMessage);
       if (error) {
         console.error(error);
       }
@@ -250,7 +272,12 @@ class Logger {
     }
 
     this._onceKeys.add(key);
-    this[level.toLowerCase()](message, data);
+    const method = level.toLowerCase();
+     if (typeof this[method] === 'function') {
+        this[method](message, data);
+    } else {
+        console.warn(`Logger: Invalid level "${level}" provided to 'once' method.`);
+    }
   }
 
   child(subCategory) {
@@ -266,11 +293,19 @@ class Logger {
   banner(message) {
     if (this._shouldLog('INFO')) {
       const line = '═'.repeat(message.length + 4);
-      this._log('INFO', '', line);
-      this._log('INFO', '', `  ${message}  `);
-      this._log('INFO', '', line);
+      // Banner kaller logg-funksjonen direkte for å unngå prefiks
+      try {
+        this.homey.app.log(line);
+        this.homey.app.log(`  ${message}  `);
+        this.homey.app.log(line);
+      } catch (e) {
+        console.log(line);
+        console.log(`  ${message}  `);
+        console.log(line);
+      }
     }
   }
 }
 
 module.exports = Logger;
+
