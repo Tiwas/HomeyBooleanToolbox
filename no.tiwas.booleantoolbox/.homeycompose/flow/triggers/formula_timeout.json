@@ -36,11 +36,29 @@
       "name": "formula",
       "title": {
         "en": "Formula",
-        "no": "Formel"
+        "no": "Formel",
+        "de": "Formel",
+        "nl": "Formule",
+        "fr": "Formule",
+        "da": "Formel",
+        "fi": "Kaava",
+        "sv": "Formel",
+        "pl": "Formuła",
+        "it": "Formula",
+        "es": "Fórmula"
       },
       "placeholder": {
         "en": "Select formula",
-        "no": "Velg formel"
+        "no": "Velg formel",
+        "de": "Wähle Formel",
+        "nl": "Selecteer formule",
+        "fr": "Sélectionner la formule",
+        "da": "Vælg formel",
+        "fi": "Valitse kaava",
+        "sv": "Välj formel",
+        "pl": "Wybierz formułę",
+        "it": "Seleziona formula",
+        "es": "Seleccionar fórmula"
       }
     }
   ]

@@ -67,19 +67,46 @@
 </head>
 <body>
   <div class="container">
-    <h2>Select number of inputs</h2>
-    <p class="description">How many devices do you want to connect to this logic device?</p>
+    <h2 data-i18n="pair.select_inputs_title">Select number of inputs</h2>
+    <p class="description" data-i18n="pair.select_inputs_description">How many devices do you want to connect to this logic device?</p>
     
     <div class="input-selector">
       <input type="number" id="numInputs" class="input-number" min="2" max="10" value="2">
-      <div class="range-info">Choose between 2 and 10 inputs</div>
+      <div class="range-info" data-i18n="pair.inputs_range">Choose between 2 and 10 inputs</div>
     </div>
 
-    <button id="continue-btn">Next →</button>
+    <button id="continue-btn" data-i18n="pair.next">Next →</button>
   </div>
 
   <script>
     const numInputsEl = document.getElementById('numInputs');
+    
+    function onHomeyReady(Homey) {
+      // Apply translations
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        el.textContent = Homey.__(key);
+      });
+
+      init();
+      
+      numInputsEl.addEventListener('change', async (e) => {
+        let value = parseInt(e.target.value);
+        if (isNaN(value) || value < 2) value = 2;
+        if (value > 10) value = 10;
+        e.target.value = value;
+        
+        try {
+          await Homey.emit('set_num_inputs', { numInputs: value });
+        } catch (e) {
+          console.error('Error setting num inputs:', e);
+        }
+      });
+
+      document.getElementById('continue-btn').addEventListener('click', () => {
+        Homey.nextView();
+      });
+    }
     
     async function init() {
       try {
@@ -89,25 +116,6 @@
         console.error('Init error:', e);
       }
     }
-
-    numInputsEl.addEventListener('change', async (e) => {
-      let value = parseInt(e.target.value);
-      if (isNaN(value) || value < 2) value = 2;
-      if (value > 10) value = 10;
-      e.target.value = value;
-      
-      try {
-        await Homey.emit('set_num_inputs', { numInputs: value });
-      } catch (e) {
-        console.error('Error setting num inputs:', e);
-      }
-    });
-
-    document.getElementById('continue-btn').addEventListener('click', () => {
-      Homey.nextView();
-    });
-
-    init();
   </script>
 </body>
 </html>

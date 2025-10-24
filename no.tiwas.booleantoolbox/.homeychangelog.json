@@ -28,5 +28,8 @@
   },
   "1.2.3": {
     "en": "Changed the code base to use homeycompose. Added a logger."
+  },
+  "1.2.4": {
+    "en": "Updated translations and fixed code to read localization files."
   }
 }

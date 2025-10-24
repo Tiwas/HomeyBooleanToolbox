@@ -25,74 +25,86 @@ module.exports = class LogicDeviceDriver extends Homey.Driver {
       }
       return candidate;
     } catch (e) {
-      this.logger.error('ensureUniqueDeviceName failed:', e.message);
+      // FIKS: Send nøkkel og error-objekt
+      this.logger.error('driver.ensure_unique_failed', e);
       return name;
     }
   }
 
   async onInit() {
-    const driverName = this.constructor.name || 'LogicDriver';
+    const driverName = `Driver: ${this.id}`;
     this.logger = new Logger(this, driverName);
 
-    this.logger.info('Logic Device Driver has been initialized');
+    // FIKS: Send nøkkel
+    this.logger.info('driver.ready');
   }
 
   async onPair(session) {
-    this.logger.info('Pairing session started');
+    // FIKS: Send nøkkel
+    this.logger.info('pair.session_started');
 
     let numInputs = 2;
     let inputLinks = [];
-    let deviceName = 'Logic Device';
+    let deviceName = this.homey.__('pair.name_placeholder');
 
     session.setHandler('get_num_inputs', async () => {
-      this.logger.debug('[PAIR] get_num_inputs called');
+      // FIKS: Send nøkkel
+      this.logger.debug('pair.get_num_inputs');
       return { numInputs };
     });
 
     session.setHandler('set_num_inputs', async (data) => {
-      this.logger.debug('[PAIR] set_num_inputs called with data:', data);
+      // FIKS: Send nøkkel og data-objekt
+      this.logger.debug('pair.set_num_inputs', data);
       numInputs = parseInt(data.numInputs);
       return { success: true };
     });
 
     session.setHandler('get_zones', async () => {
-      this.logger.debug('[PAIR] get_zones called');
+      // FIKS: Send nøkkel
+      this.logger.debug('pair.get_zones');
       try {
         return await this.homey.app.getAvailableZones();
       } catch (e) {
-        this.logger.error('[PAIR] ERROR in get_zones:', e.message);
-        throw new Error(`Failed to get zones: ${e.message}`);
+        // FIKS: Send nøkkel og error-objekt
+        this.logger.error('pair.get_zones_error', e);
+        throw new Error(this.homey.__('errors.connection_failed'));
       }
     });
 
     session.setHandler('get_devices_in_zone', async (data) => {
-      this.logger.debug(`[PAIR] get_devices_in_zone called for zone: ${data.zoneId}`);
+      // FIKS: Send nøkkel og data-objekt
+      this.logger.debug('pair.get_devices_in_zone', { zone: data.zoneId });
       if (!data.zoneId) return [];
       try {
         return await this.homey.app.getDevicesInZone(data.zoneId);
       } catch (e) {
-        this.logger.error('[PAIR] ERROR in get_devices_in_zone:', e.message);
-        throw new Error(`Failed to get devices: ${e.message}`);
+        // FIKS: Send nøkkel og error-objekt
+        this.logger.error('pair.get_devices_error', e);
+        throw new Error(this.homey.__('errors.connection_failed'));
       }
     });
 
     session.setHandler('set_input_links', async (data) => {
-      this.logger.debug('[PAIR] set_input_links called');
+      // FIKS: Send nøkkel
+      this.logger.debug('pair.set_input_links');
       inputLinks = data.inputLinks;
       return { success: true };
     });
 
     session.setHandler('set_device_name', async (data) => {
-      this.logger.debug('[PAIR] set_device_name called with:', data.name);
+      // FIKS: Send nøkkel og data-objekt
+      this.logger.debug('pair.set_device_name', { name: data.name });
       deviceName = data.name;
       return { success: true };
     });
 
     session.setHandler('create_device', async () => {
-      this.logger.info('[PAIR] create_device called');
+      // FIKS: Send nøkkel
+      this.logger.info('pair.create_device');
 
       if (!inputLinks || inputLinks.length === 0) {
-        throw new Error('No input links configured!');
+        throw new Error(this.homey.__('errors.invalid_input'));
       }
 
       const uniqueName = await this.ensureUniqueDeviceName(deviceName);
@@ -107,7 +119,7 @@ module.exports = class LogicDeviceDriver extends Homey.Driver {
           input_links: JSON.stringify(inputLinks),
           formulas: JSON.stringify([{
             id: 'formula_1',
-            name: 'Main Formula',
+            name: this.homey.__('formula.default_name'),
             expression: this.getDefaultExpression(numInputs),
             enabled: true,
             timeout: 0,
@@ -116,11 +128,14 @@ module.exports = class LogicDeviceDriver extends Homey.Driver {
         }
       };
 
-      this.logger.info('[PAIR] Creating device:', JSON.stringify(device, null, 2));
+      // FIKS: Send nøkkel og data-objekt + bruk dump for detaljer
+      this.logger.info('pair.creating_device', { name: uniqueName });
+      this.logger.dump('Device data', device);
       return device;
     });
 
-    this.logger.debug('Pairing handlers registered');
+    // FIKS: Send nøkkel
+    this.logger.debug('pair.handlers_registered');
   }
 
   getDefaultExpression(numInputs) {

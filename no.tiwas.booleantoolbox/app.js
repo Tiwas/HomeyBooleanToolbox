@@ -17,34 +17,43 @@ module.exports = class BooleanToolboxApp extends Homey.App {
 
   async onInit() {
     this.logger = new Logger(this, 'App');
-    this.logger.banner('BOOLEAN TOOLBOX v1.2.2');
+    const version = require('./package.json').version;
+    this.logger.banner(`BOOLEAN TOOLBOX v${version}`);
 
     // Initialize API for accessing all devices
     try {
       const athomApi = require('athom-api');
-      this.logger.debug('athom-api loaded successfully');
+      // Kall med nøkkel
+      this.logger.debug('app.athom_api_loaded');
 
       const { HomeyAPI } = athomApi;
-      this.logger.debug('HomeyAPI extracted, type:', typeof HomeyAPI);
+      // Kall med nøkkel og data separat
+      this.logger.debug('app.homey_api_extracted', { type: typeof HomeyAPI });
 
       if (typeof HomeyAPI.forCurrentHomey === 'function') {
-        this.logger.debug('Initializing HomeyAPI.forCurrentHomey...');
+        // Kall med nøkkel
+        this.logger.debug('app.initializing_homey_api');
         this.api = await HomeyAPI.forCurrentHomey(this.homey);
-        this.logger.info('Homey API initialized successfully');
+        // Fjernet logger.info('device.ready') - hører ikke hjemme her
       } else {
-        this.logger.error('HomeyAPI.forCurrentHomey is not a function');
-        this.logger.debug('HomeyAPI methods:', Object.keys(HomeyAPI));
+        // Kall med nøkkel
+        this.logger.error('app.homey_api_not_function');
+        // Kall med nøkkel og data separat
+        this.logger.debug('app.homey_api_methods', { keys: Object.keys(HomeyAPI) });
       }
     } catch (e) {
-      this.logger.error('Failed to initialize Homey API:', e.message);
-      this.logger.debug('Error stack:', e.stack);
+      // Kall med nøkkel og data separat
+      this.logger.error('errors.connection_failed', { message: e.message });
+      // Kall med nøkkel og data separat
+      this.logger.debug('app.error_stack', { stack: e.stack });
     }
 
     await this.registerFlowCards();
   }
 
   async getAvailableZones() {
-    this.logger.debug('Getting available zones...');
+    // Kall med nøkkel
+    this.logger.debug('app.getting_zones');
     try {
       if (!this.api) {
         const athomApi = require('athom-api');
@@ -57,16 +66,19 @@ module.exports = class BooleanToolboxApp extends Homey.App {
         name: zone.name,
       }));
       zoneList.sort((a, b) => a.name.localeCompare(b.name));
-      this.logger.debug(`Found ${zoneList.length} zones`);
+      // Kall med nøkkel og data separat
+      this.logger.debug('app.found_zones', { count: zoneList.length });
       return zoneList;
     } catch (e) {
-      this.logger.error('Error getting zones:', e.message);
+      // Kall med nøkkel og data separat
+      this.logger.error('app.error_getting_zones', { message: e.message });
       return [];
     }
   }
 
   async getDevicesInZone(zoneId) {
-    this.logger.debug(`Getting devices for zone ID: ${zoneId}`);
+    // Kall med nøkkel og data separat
+    this.logger.debug('app.getting_devices_for_zone', { zoneId });
     const deviceList = [];
     try {
       if (!this.api) {
@@ -102,15 +114,18 @@ module.exports = class BooleanToolboxApp extends Homey.App {
       }
 
       deviceList.sort((a, b) => a.name.localeCompare(b.name));
-      this.logger.debug(`Found ${deviceList.length} devices in zone ${zoneId}`);
+      // Kall med nøkkel og data separat
+      this.logger.debug('app.found_devices_in_zone', { count: deviceList.length, zoneId });
     } catch (e) {
-      this.logger.error(`Error getting devices for zone ${zoneId}:`, e.message);
+      // Kall med nøkkel og data separat
+      this.logger.error('app.error_getting_devices', { zoneId, message: e.message });
     }
     return deviceList;
   }
 
   async registerFlowCards() {
-    this.logger.debug('Registering flow cards...');
+    // Kall med nøkkel
+    this.logger.debug('app.registering_flow_cards');
 
     // Register TRIGGER cards
     const formulaTrueCard = this.homey.flow.getDeviceTriggerCard('formula_changed_to_true');
@@ -118,7 +133,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
     formulaTrueCard.registerArgumentAutocompleteListener('formula', async (query, args) => {
       const device = args.device;
       if (!device) return [];
-      
+
       const formulas = device.getFormulas();
       if (!query) return formulas;
 
@@ -136,7 +151,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
     formulaFalseCard.registerArgumentAutocompleteListener('formula', async (query, args) => {
       const device = args.device;
       if (!device) return [];
-      
+
       const formulas = device.getFormulas();
       if (!query) return formulas;
 
@@ -154,7 +169,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
     formulaTimeoutCard.registerArgumentAutocompleteListener('formula', async (query, args) => {
       const device = args.device;
       if (!device) return [];
-      
+
       const formulas = device.getFormulas();
       if (!query) return formulas;
 
@@ -173,7 +188,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
     setInputCard.registerArgumentAutocompleteListener('formula', async (query, args) => {
       const device = args.device;
       if (!device) return [];
-      
+
       const formulas = device.getFormulas();
       if (!query) return formulas;
 
@@ -185,7 +200,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
     setInputCard.registerArgumentAutocompleteListener('input', async (query, args) => {
       const device = args.device;
       if (!device) return [];
-      
+
       const inputs = device.getInputOptions();
 
       if (!query) return inputs;
@@ -199,14 +214,14 @@ module.exports = class BooleanToolboxApp extends Homey.App {
       const device = args.device;
 
       if (!device) {
-        throw new Error('Could not find device. Please reconfigure this flow card.');
+        throw new Error(this.homey.__('errors.device_not_found'));
       }
 
       const formulaId = args.formula.id;
 
       const formula = device.formulas?.find(f => f.id === formulaId);
       if (!formula) {
-        throw new Error(`Formula '${formulaId}' not found. Please reconfigure this flow card with an existing formula.`);
+        throw new Error(this.homey.__('errors.invalid_formula'));
       }
 
       await device.setInputForFormula(formulaId, args.input.id, args.value === 'true');
@@ -219,7 +234,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
     evaluateFormulaCard.registerArgumentAutocompleteListener('formula', async (query, args) => {
       const device = args.device;
       if (!device) return [];
-      
+
       const formulas = device.getFormulas();
 
       if (!query) return formulas;
@@ -233,14 +248,14 @@ module.exports = class BooleanToolboxApp extends Homey.App {
       const device = args.device;
 
       if (!device) {
-        throw new Error('Could not find device. Please reconfigure this flow card.');
+        throw new Error(this.homey.__('errors.device_not_found'));
       }
 
       const formulaId = args.formula.id;
 
       const formula = device.formulas?.find(f => f.id === formulaId);
       if (!formula) {
-        throw new Error(`Formula '${formulaId}' not found. Please reconfigure this flow card with an existing formula.`);
+        throw new Error(this.homey.__('errors.invalid_formula'));
       }
 
       await device.evaluateFormula(formulaId, true);
@@ -254,7 +269,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
       const device = args.device;
 
       if (!device) {
-        throw new Error('Could not find device. Please reconfigure this flow card.');
+        throw new Error(this.homey.__('errors.device_not_found'));
       }
 
       await device.evaluateAllFormulas();
@@ -267,7 +282,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
     conditionCard.registerArgumentAutocompleteListener('formula', async (query, args) => {
       const device = args.device;
       if (!device) return [];
-      
+
       const formulas = device.getFormulas();
 
       if (!query) return formulas;
@@ -281,24 +296,32 @@ module.exports = class BooleanToolboxApp extends Homey.App {
       const device = args.device;
 
       if (!device) {
-        this.logger.warn('Condition: Could not find device', args);
-        throw new Error('Could not find device. Please reconfigure this flow card.');
+        this.logger.warn('errors.device_not_found', args); // Send key + data
+        throw new Error(this.homey.__('errors.device_not_found'));
       }
 
       const formulaId = args.formula.id;
 
       const formula = device.formulas?.find(f => f.id === formulaId);
       if (!formula) {
-        this.logger.warn(`Condition: Formula '${formulaId}' not found`);
-        throw new Error(`Formula '${formulaId}' not found. Please reconfigure this flow card with an existing formula.`);
+        this.logger.warn('errors.invalid_formula'); // Send key
+        throw new Error(this.homey.__('errors.invalid_formula'));
       }
 
       const result = device.getFormulaResult(formulaId);
 
-      this.logger.flow(`Condition check: Formula '${formula.name}' result = ${result}, checking if it is '${args.what_is}'`);
-
+      // Kall med nøkkel og data separat
+      this.logger.flow('app.condition_check', {
+        formulaName: formula.name,
+        result,
+        expected: args.what_is
+      });
       if (result === null || result === undefined) {
-        this.logger.debug(`Condition: Formula '${formula.name}' has not been evaluated yet (result is ${result})`);
+        // Kall med nøkkel og data separat
+        this.logger.debug('app.formula_not_evaluated', {
+          formulaName: formula.name,
+          result
+        });
         return false;
       }
 
@@ -311,7 +334,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
     timeoutConditionCard.registerArgumentAutocompleteListener('formula', async (query, args) => {
       const device = args.device;
       if (!device) return [];
-      
+
       const formulas = device.getFormulas();
 
       if (!query) return formulas;
@@ -325,17 +348,55 @@ module.exports = class BooleanToolboxApp extends Homey.App {
       const device = args.device;
 
       if (!device) {
-        throw new Error('Could not find device. Please reconfigure this flow card.');
+        throw new Error(this.homey.__('errors.device_not_found'));
       }
 
       const formulaId = args.formula.id;
 
       const formula = device.formulas?.find(f => f.id === formulaId);
       if (!formula) {
-        throw new Error(`Formula '${formulaId}' not found. Please reconfigure this flow card with an existing formula.`);
+        throw new Error(this.homey.__('errors.invalid_formula'));
       }
 
       return device.hasFormulaTimedOut(formulaId);
+    });
+
+    // Register CLEAR ERROR STATE action
+    const clearErrorCard = this.homey.flow.getActionCard('clear_error_state');
+
+    clearErrorCard.registerArgumentAutocompleteListener('formula', async (query, args) => {
+      const device = args.device;
+      if (!device) return [];
+
+      const formulas = device.getFormulas();
+
+      if (!query) return formulas;
+
+      return formulas.filter(f =>
+        f.name.toLowerCase().includes(query.toLowerCase())
+      );
+    });
+
+    clearErrorCard.registerRunListener(async (args) => {
+      const device = args.device;
+
+      if (!device) {
+        throw new Error(this.homey.__('errors.device_not_found'));
+      }
+
+      const formulaId = args.formula.id;
+
+      const formula = device.formulas?.find(f => f.id === formulaId);
+      if (!formula) {
+        throw new Error(this.homey.__('errors.invalid_formula'));
+      }
+
+      // Clear timeout state
+      formula.timedOut = false;
+      // Kall med nøkkel
+      this.logger.info('notifications.error_cleared');
+
+      return true;
     });
 
     // --- Register action card ---
@@ -348,11 +409,12 @@ module.exports = class BooleanToolboxApp extends Homey.App {
         await evaluateActionCard.setTokenValue('errorMessage', '');
 
         try {
-            this.logger.flow(`Running evaluation. Input: ${input}, Rules: '${rules}'`);
+            // Kall med nøkkel og data separat
+            this.logger.flow('app.running_evaluation', { input, rules });
             let output = null;
 
             if (!rules || rules.trim() === '') {
-              throw new Error("Rule string cannot be empty.");
+              throw new Error(this.homey.__('errors.invalid_input'));
             }
 
             const ruleSets = rules.split(';').map(set => set.trim()).filter(set => set.length > 0);
@@ -360,7 +422,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             for (const ruleSet of ruleSets) {
                 const parts = ruleSet.split(',');
                 if (parts.length !== 3) {
-                  throw new Error(`Invalid format in rule '${ruleSet}'. Expected 'min,max,output'.`);
+                  throw new Error(this.homey.__('errors.invalid_formula'));
                 }
 
                 const min = parseFloat(parts[0]);
@@ -368,7 +430,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                 const resultValue = parseInt(parts[2], 10);
 
                 if (isNaN(min) || isNaN(max) || isNaN(resultValue)) {
-                  throw new Error(`Invalid numeric value in rule '${ruleSet}'.`);
+                  throw new Error(this.homey.__('errors.invalid_input'));
                 }
 
                 const condition1 = evaluateCondition(input, op1, min);
@@ -385,17 +447,19 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             }
 
             if (output !== null) {
-                this.logger.debug(`Evaluation finished. Output: ${output}`);
+                // Kall med nøkkel og data separat
+                this.logger.debug('app.evaluation_finished', { output });
                 await evaluateActionCard.setTokenValue('outputValue', output);
             } else {
-                const logicalErrorMsg = `Value ${input} is outside the defined logic.`;
-                this.logger.debug(logicalErrorMsg);
+                const logicalErrorMsg = this.homey.__('app.value_outside_logic', { input });
+                this.logger.debug(logicalErrorMsg); // Kan ikke oversettes direkte via logger
                 await evaluateActionCard.setTokenValue('errorMessage', logicalErrorMsg);
             }
 
         } catch (e) {
-            this.logger.error(`Configuration error caught: ${e.message}`);
-            await evaluateActionCard.setTokenValue('errorMessage', `Configuration error: ${e.message}`);
+            // Kall med nøkkel og data separat
+            this.logger.error('errors.evaluation_failed', { message: e.message });
+            await evaluateActionCard.setTokenValue('errorMessage', this.homey.__('errors.evaluation_failed'));
         }
 
         return true;
@@ -406,10 +470,13 @@ module.exports = class BooleanToolboxApp extends Homey.App {
     hasErrorConditionCard.registerRunListener(async (args, state) => {
       const textInput = args.text_input;
       const hasError = !!textInput && textInput.length > 0;
-      this.logger.flow(`Checking for error. Input: '${textInput}', Has error: ${hasError}`);
+      // Kall med nøkkel og data separat
+      this.logger.flow('app.checking_for_error', { textInput, hasError });
       return hasError;
     });
 
-    this.logger.info('Flow cards registered');
+    // Kall med nøkkel
+    this.logger.info('app.flow_cards_registered');
   }
 };
+

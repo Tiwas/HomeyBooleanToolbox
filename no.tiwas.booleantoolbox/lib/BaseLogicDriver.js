@@ -4,13 +4,14 @@ const Logger = require('./Logger');
 
 module.exports = class BaseLogicDriver extends Homey.Driver {
   async onInit() {
-    const driverName = this.constructor.name || 'LogicDriver';
+    const driverName = `Driver: ${this.id}`;
     this.logger = new Logger(this, driverName);
 
     const driverId = this.id;
     const numInputs = parseInt(driverId.split('-').pop());
     this.numInputs = numInputs;
-    this.logger.info(`Logic Unit Driver (${this.numInputs} inputs) has been initialized`);
+    // FIKS: Send nøkkel, ikke oversatt tekst
+    this.logger.info('driver.ready');
   }
 
   // Ensures unique device name: "X 2", "X 3", ...
@@ -35,14 +36,15 @@ module.exports = class BaseLogicDriver extends Homey.Driver {
       }
       return candidate;
     } catch (e) {
-      this.logger.error('ensureUniqueDeviceName failed:', e.message);
+      // FIKS: Send nøkkel og error-objekt
+      this.logger.error('driver.ensure_unique_failed', e);
       return name; // don't crash on error
     }
   }
 
   async onPair(session) {
     session.setHandler('list_devices', async () => {
-      const baseName = `Logic Unit (${this.numInputs} inputs)`;
+      const baseName = this.homey.__('device.logic_unit_name', { count: this.numInputs });
       const name = await this.ensureUniqueDeviceName(baseName);
       return [{
         name,

@@ -6,10 +6,11 @@ const Logger = require('../../lib/Logger');
 module.exports = class LogicDeviceDevice extends Homey.Device {
 
   async onInit() {
-    const driverName = this.constructor.name || 'LogicDevice';
+    const driverName = `Device: ${this.driver.id}`;
     this.logger = new Logger(this, driverName);
 
-    this.logger.device(`Logic Device '${this.getName()}' initializing.`);
+    // Kall med nøkkel og data separat
+    this.logger.device('device.initializing', { name: this.getName() });
 
     const settings = this.getSettings();
     const detectedInputs = this.detectRequiredInputs(settings);
@@ -18,7 +19,11 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     this.numInputs = Math.max(detectedInputs, originalNumInputs);
 
     if (detectedInputs > originalNumInputs) {
-      this.logger.info(`Detected ${detectedInputs} inputs needed (originally ${originalNumInputs}). Expanding capacity.`);
+      // Kall med nøkkel og data separat
+      this.logger.info('device.capacity_expanded', {
+        detected: detectedInputs,
+        original: originalNumInputs
+      });
     }
 
     this.availableInputs = this.getAvailableInputIds();
@@ -38,20 +43,27 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         setable: false,
         getable: true
       });
-      this.logger.debug('Set onoff as read-only');
+      // Kall med nøkkel
+      this.logger.debug('device.capability_readonly');
     } catch (e) {
-      this.logger.warn('Could not set capability options:', e.message);
+      // Kall med nøkkel og data separat
+      this.logger.warn('device.capability_options_failed', { message: e.message });
     }
 
     await this.initializeFormulas();
     await this.setupDeviceLinks();
 
-    this.logger.info('Running initial formula evaluation...');
+    // Kall med nøkkel
+    this.logger.info('evaluation.running_initial');
     await this.evaluateAllFormulasInitial();
 
     this.startTimeoutChecks();
 
-    this.logger.info(`Logic Device '${this.getName()}' initialized with ${this.numInputs} inputs`);
+    // Kall med nøkkel og data separat
+    this.logger.info('device.initialized', {
+      name: this.getName(),
+      count: this.numInputs
+    });
   }
 
   getAvailableInputIds() {
@@ -71,7 +83,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
       formulasData.forEach(formula => {
         if (!formula.expression) return;
-        
+
         const pattern = /\b([A-J])\b/gi;
         const matches = formula.expression.match(pattern);
 
@@ -92,10 +104,15 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         }
       });
 
-      this.logger.debug(`Detected max input: ${String.fromCharCode(64 + maxInput)} (${maxInput} inputs needed)`);
+      // Kall med nøkkel og data separat
+      this.logger.debug('device.max_input_detected', {
+        input: String.fromCharCode(64 + maxInput),
+        count: maxInput
+      });
 
     } catch (e) {
-      this.logger.error('Error detecting required inputs:', e.message);
+      // Kall med nøkkel og data separat
+      this.logger.error('parse.error_detecting_inputs', { message: e.message });
     }
 
     return maxInput;
@@ -128,14 +145,15 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       });
 
     } catch (e) {
-      this.logger.error('Failed to parse formulas:', e);
+      // Kall med nøkkel og data separat
+      this.logger.error('parse.error_formulas', { message: e.message });
       this.formulas = [];
     }
 
     if (this.formulas.length === 0) {
       const defaultFormula = {
         id: 'formula_1',
-        name: 'Main Formula',
+        name: this.homey.__('formula.default_name'),
         expression: this.getDefaultExpression(),
         enabled: true,
         timeout: 0,
@@ -155,9 +173,15 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       this.formulas = [defaultFormula];
     }
 
-    this.logger.info(`Initialized ${this.formulas.length} formulas`);
+    // Kall med nøkkel og data separat
+    this.logger.info('formula.initialized', { count: this.formulas.length });
     this.formulas.forEach(f => {
-      this.logger.debug(`  - ${f.name}: "${f.expression}" (enabled: ${f.enabled})`);
+      // Kall med nøkkel og data separat
+      this.logger.debug('formula.details', {
+        name: f.name,
+        expression: f.expression,
+        enabled: f.enabled
+      });
     });
   }
 
@@ -167,16 +191,19 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
   }
 
   async setupDeviceLinks() {
-    this.logger.info('Setting up device links...');
+    // Kall med nøkkel
+    this.logger.info('devicelinks.setting_up');
 
     for (const [key, listener] of this.deviceListeners.entries()) {
       try {
         if (listener.unregister) {
           await listener.unregister();
-          this.logger.debug(`Unregistered listener: ${key}`);
+          // Kall med nøkkel og data separat
+          this.logger.debug('devicelinks.unregistered', { key });
         }
       } catch (e) {
-        this.logger.error('Error unregistering listener:', e);
+        // Kall med nøkkel og data separat
+        this.logger.error('devicelinks.error_unregister', { message: e.message });
       }
     }
     this.deviceListeners.clear();
@@ -186,31 +213,37 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     try {
       inputLinks = settings.input_links ? JSON.parse(settings.input_links) : [];
     } catch (e) {
-      this.logger.error('Failed to parse input_links:', e);
+      // Kall med nøkkel og data separat
+      this.logger.error('parse.error_input_links', { message: e.message });
       return;
     }
 
     this.inputLinks = inputLinks;
 
-    this.logger.debug(`Setting up ${inputLinks.length} device links`);
+    // Kall med nøkkel og data separat
+    this.logger.debug('devicelinks.count', { count: inputLinks.length });
     for (const link of inputLinks) {
       try {
         await this.setupDeviceListener(link);
       } catch (e) {
-        this.logger.error(`Failed to setup listener for input ${link.input}:`, e);
+        // Kall med nøkkel og data separat
+        this.logger.error('devicelinks.setup_failed', { input: link.input, message: e.message });
       }
     }
 
-    this.logger.debug('Fetching initial values for all inputs...');
+    // Kall med nøkkel
+    this.logger.debug('initial.fetching_all');
     await this.fetchInitialValues(inputLinks);
 
-    this.logger.info('Device links setup complete');
+    // Kall med nøkkel
+    this.logger.info('devicelinks.complete');
   }
 
 
   async fetchInitialValues(inputLinks) {
     if (!this.homey.app.api) {
-      this.logger.error('App API not available for fetching initial values');
+      // Kall med nøkkel
+      this.logger.error('initial.api_unavailable');
       return;
     }
 
@@ -219,10 +252,12 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       if (!input || !deviceId || !capability) continue;
 
       try {
-        this.logger.debug(`[${input.toUpperCase()}] Fetching initial value...`);
+        // Kall med nøkkel og data separat
+        this.logger.debug('initial.fetching_input', { input: input.toUpperCase() });
         const device = await this.homey.app.api.devices.getDevice({ id: deviceId });
         if (!device) {
-          this.logger.warn(`[${input.toUpperCase()}] Device not found`);
+          // Kall med nøkkel og data separat
+          this.logger.warn('initial.device_not_found', { input: input.toUpperCase() });
           continue;
         }
 
@@ -235,107 +270,135 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         } else if (device.state && device.state[capability] !== undefined) {
           initialValue = device.state[capability];
         }
-        
-        this.logger.input(`[${input.toUpperCase()}] Received initial value:`, initialValue);
-        
+
+        this.logger.input('initial.received_value', { input: input.toUpperCase(), value: initialValue });
+
         if (initialValue !== null && initialValue !== undefined) {
           const boolValue = this.convertToBoolean(initialValue, capability);
-          this.logger.debug(`[${input.toUpperCase()}] Converted value: ${initialValue} → ${boolValue}`);
+          // Kall med nøkkel og data separat
+          this.logger.debug('initial.value_received', {
+            input: input.toUpperCase(),
+            value: initialValue,
+            boolean: boolValue
+          });
 
           for (const formula of this.formulas) {
             formula.inputStates[input] = boolValue;
           }
         } else {
-          this.logger.warn(`[${input.toUpperCase()}] No initial value found - waiting for first event`);
+          this.logger.warn('initial.no_value_waiting', { input: input.toUpperCase() });
         }
 
       } catch (e) {
-        this.logger.error(`[${input.toUpperCase()}] Error fetching initial value:`, e.message);
+        // Kall med nøkkel og data separat
+        this.logger.error('initial.error', { input: input.toUpperCase(), message: e.message });
       }
     }
   }
 
   async refetchInputsAndEvaluate(source = 'unknown') {
-    this.logger.info(`Refetch and evaluate invoked (source=${source})`);
+    this.logger.info('refetch.invoked', { source: source });
     let links = [];
     try {
       const settings = this.getSettings();
       links = settings.input_links ? JSON.parse(settings.input_links) : [];
     } catch (e) {
-      this.logger.error('Failed to parse input_links during refetch:', e.message);
+      this.logger.error('refetch.parse_failed', { message: e.message });
     }
 
     if (!Array.isArray(links) || links.length === 0) {
-      this.logger.warn('No input links available during refetch; skipping value fetch.');
+      this.logger.warn('refetch.no_links');
       await this.evaluateAllFormulasInitial();
       return;
     }
 
     this.inputLinks = links;
 
-    this.logger.debug('Refetching initial values before evaluation...');
+    this.logger.debug('refetch.fetching_values');
     await this.fetchInitialValues(links);
     await this.evaluateAllFormulasInitial();
   }
 
   async setupDeviceListener(link) {
     const { input, deviceId, capability, deviceName } = link;
-    
-    this.logger.debug(`Setting up listener for input ${input.toUpperCase()}`, { deviceName, deviceId, capability });
-    
+
+    this.logger.debug('listener.setting_up', { input: input.toUpperCase(), deviceName, deviceId, capability });
+
     if (!input || !deviceId || !capability) {
-      this.logger.error(`Invalid link configuration for input ${input?.toUpperCase()}`, link);
+      this.logger.error('listener.invalid_config', { input: input?.toUpperCase() });
       return;
     }
-    
+
     try {
       if (!this.homey.app.api) {
-        this.logger.error(`App API not available for listener setup`);
+        this.logger.error('listener.api_unavailable');
         return;
       }
 
       const targetDevice = await this.homey.app.api.devices.getDevice({ id: deviceId });
-      
+
       if (!targetDevice) {
-        this.logger.error(`Device not found for listener: ${deviceId}`);
+        // Kall med nøkkel og data separat
+        this.logger.error('listener.device_not_found', {
+          input: input.toUpperCase(),
+          device: deviceId
+        });
         return;
       }
-      this.logger.debug(`Found device: ${targetDevice.name}`);
+      this.logger.debug('listener.device_found', { device: targetDevice.name });
 
       if (!targetDevice.capabilities || !targetDevice.capabilities.includes(capability)) {
-        this.logger.error(`Device is missing capability: ${capability}`, { available: targetDevice.capabilities });
+        // Kall med nøkkel og data separat
+        this.logger.error('listener.capability_not_exist', {
+          input: input.toUpperCase(),
+          capability,
+          device: deviceId,
+          available: targetDevice.capabilities
+        });
         return;
       }
-      this.logger.debug(`Device has capability: ${capability}`);
+      this.logger.debug('listener.capability_found', { capability: capability });
 
       const listenerFn = async (value) => {
         if (this._isDeleting) return;
-        
-        this.logger.input(`Event received for input ${input.toUpperCase()}`, { device: targetDevice.name, capability, rawValue: value });
-        
+
+        this.logger.input('listener.event_received', { input: input.toUpperCase(), device: targetDevice.name, capability, value });
+
         const boolValue = this.convertToBoolean(value, capability);
-        this.logger.debug(`Converted boolean value: ${boolValue}`);
-        
+        // Kall med nøkkel og data separat
+        this.logger.debug('listener.capability_changed', {
+          input: input.toUpperCase(),
+          capability,
+          value,
+          boolean: boolValue
+        });
+
         for (const formula of this.formulas) {
           try {
             await this.setInputForFormula(formula.id, input, boolValue);
           } catch (err) {
-            if (!this._isDeleting) this.logger.error('setInputForFormula error:', err);
+            if (!this._isDeleting) this.logger.error('formula.set_input_error', { message: err.message });
           }
         }
       };
-      
-      this.logger.debug(`Registering capability listener for ${capability}...`);
+
+      this.logger.debug('listener.registering', { capability: capability });
       const capabilityInstance = targetDevice.makeCapabilityInstance(capability, listenerFn);
-      
+
       const listenerKey = `${input}-${deviceId}-${capability}`;
       this.deviceListeners.set(listenerKey, {
         unregister: () => capabilityInstance.destroy(),
       });
-      
-      this.logger.debug(`Listener setup complete for input ${input.toUpperCase()}`);
+
+      // Kall med nøkkel og data separat
+      this.logger.debug('listener.registered', {
+        input: input.toUpperCase(),
+        device: targetDevice.name,
+        capability
+      });
     } catch (e) {
-      this.logger.error(`Setup for listener on input ${input.toUpperCase()} failed:`, e.message);
+      // Kall med nøkkel og data separat
+      this.logger.error('listener.error_setup', { input: input.toUpperCase(), message: e.message });
       this.logger.debug(e.stack);
     }
   }
@@ -361,10 +424,12 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     } catch (e) {
       const msg = e?.message || '';
       if (e?.statusCode === 404 || /not\s*found/i.test(msg)) {
-        this.logger.debug(`(safe) Skipping ${cap} – device no longer exists.`);
+        // Kall med nøkkel og data separat
+        this.logger.debug('device.capability_skip_deleted', { capability: cap });
         return;
       }
-      this.logger.error(`Capability update failed for ${cap}:`, msg);
+      // Kall med nøkkel og data separat
+      this.logger.error('device.capability_update_failed', { capability: cap, message: msg });
     }
   }
 
@@ -376,19 +441,19 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     }
 
     if (formula.firstImpression && formula.lockedInputs[inputId]) {
-      this.logger.warn(`Input '${inputId.toUpperCase()}' locked for formula '${formula.name}' (firstImpression mode)`);
+      this.logger.warn('inputs.locked_first_impression', { input: inputId.toUpperCase(), formula: formula.name });
       return formula.result;
     }
 
     const oldValue = formula.inputStates[inputId];
-    this.logger.debug(`Setting input '${inputId.toUpperCase()}' to ${value} for formula '${formula.name}' (was: ${oldValue})`);
+    this.logger.debug('inputs.setting_value', { input: inputId.toUpperCase(), value, formula: formula.name, oldValue });
 
     formula.inputStates[inputId] = value;
     formula.timedOut = false;
 
     if (formula.firstImpression && value !== 'undefined' && !formula.lockedInputs[inputId]) {
       formula.lockedInputs[inputId] = true;
-      this.logger.debug(`🔒 Input '${inputId.toUpperCase()}' locked at value ${value} (firstImpression mode)`);
+      this.logger.debug('inputs.locked_at_value', { input: inputId.toUpperCase(), value });
     }
 
     if (value !== 'undefined') {
@@ -402,7 +467,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     if (this._isDeleting) return null;
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula || !formula.enabled) {
-      this.logger.debug(`Formula '${formulaId}' not found or disabled.`);
+      this.logger.debug('formula.not_found_or_disabled', { id: formulaId });
       return null;
     }
 
@@ -410,12 +475,12 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       this.availableInputs.forEach(id => {
         formula.lockedInputs[id] = false;
       });
-      this.logger.debug(`🔓 Unlocked all inputs for formula '${formula.name}'`);
+      this.logger.debug('formula.unlocked_inputs', { name: formula.name });
     }
 
     const expression = formula.expression;
     if (!expression) {
-      this.logger.debug('No expression set, cannot evaluate.');
+      this.logger.debug('formula.no_expression');
       return null;
     }
 
@@ -427,7 +492,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     );
 
     if (!allInputsDefined) {
-      this.logger.debug(`Formula '${formula.name}': Waiting for inputs. Required: [${requiredInputs.join(', ')}]`);
+      this.logger.debug('formula.waiting_for_inputs', { name: formula.name, required: requiredInputs.join(', ') });
       return null;
     }
 
@@ -449,13 +514,13 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       }
     }
 
-    this.logger.formula(`Evaluating: "${expression}" → "${evalExpression}"`);
+    this.logger.formula('formula.evaluating_expression', { expression, evalExpression });
 
     try {
       const evaluate = new Function(`return ${evalExpression}`);
       const result = !!evaluate();
 
-      this.logger.debug(`Formula '${formula.name}' result: ${result}`);
+      this.logger.debug('formula.result', { name: formula.name, result });
 
       const previousResult = formula.result;
       formula.result = result;
@@ -466,18 +531,18 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         await this.safeSetCapabilityValue('alarm_generic', result);
       } catch (e) {
         if (e.statusCode === 404) {
-          this.logger.debug('Device deleted, skipping capability update');
+          this.logger.debug('device.deleted_skip_update');
           return null;
         }
         throw e;
       }
 
       if (previousResult !== null && previousResult !== result) {
-        const triggerData = { formula: { id: formulaId, name: formula.name } };
+        const triggerData = { formula: { id: formula.id, name: formula.name } };
         const state = { formulaId };
 
         try {
-          this.logger.flow(`Triggering flow for formula '${formula.name}' change to ${result}`);
+          this.logger.flow('flow.triggered', { name: formula.name, result: result });
           if (result) {
             await this.homey.flow.getDeviceTriggerCard('formula_changed_to_true')
               .trigger(this, triggerData, state);
@@ -491,23 +556,24 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
         } catch (e) {
           if (e.statusCode === 404) {
-            this.logger.debug('Device deleted, skipping flow trigger');
+            this.logger.debug('device.deleted_skip_flow');
             return null;
           }
-          this.logger.error('Error triggering flow:', e);
+          this.logger.error('flow.trigger_error', { message: e.message });
         }
       }
 
       return result;
 
     } catch (e) {
-      this.logger.error(`Failed to evaluate formula '${formula.name}': ${e.message}`);
+      this.logger.error('formula.evaluation_failed', { name: formula.name, message: e.message });
       return null;
     }
   }
 
   async evaluateAllFormulasInitial() {
-    this.logger.info('Initial evaluation of all formulas...');
+    // Kall med nøkkel
+    this.logger.info('evaluation.initial_complete');
 
     let anyEvaluated = false;
 
@@ -525,7 +591,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       );
 
       if (allInputsDefined) {
-        this.logger.debug(`Formula '${formula.name}': All inputs defined, evaluating...`);
+        this.logger.debug('formula.all_inputs_defined', { name: formula.name });
         await this.evaluateFormula(formula.id);
         anyEvaluated = true;
       } else {
@@ -533,16 +599,18 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         requiredInputs.forEach(id => {
           states[id] = formula.inputStates[id.toLowerCase()];
         });
-        this.logger.debug(`Formula '${formula.name}': Missing inputs:`, states);
+        this.logger.debug('formula.missing_inputs', { name: formula.name });
       }
     }
 
     if (!anyEvaluated) {
-      this.logger.warn('No formulas could be evaluated - waiting for input values');
+      this.logger.warn('evaluation.no_formulas_ready');
       await this.safeSetCapabilityValue('onoff', false);
       await this.safeSetCapabilityValue('alarm_generic', false);
     }
   }
+
+
 
   parseExpression(expression) {
     const inputs = this.getAvailableInputsUppercase();
@@ -554,7 +622,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
   validateExpression(expression) {
     if (!expression || expression.trim() === '') {
-      return { valid: false, error: 'Expression cannot be empty' };
+      return { valid: false, error: this.homey.__('formula.expression_empty') };
     }
 
     const upper = expression.toUpperCase();
@@ -568,7 +636,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
     const stripped = upper.replace(tokenRe, '').replace(/\s+/g, '');
     if (stripped.length > 0) {
-      return { valid: false, error: `Invalid tokens in expression: "${stripped}"` };
+      return { valid: false, error: this.homey.__('formula.invalid_tokens', { tokens: stripped }) };
     }
 
     let depth = 0;
@@ -595,7 +663,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       void fn();
       return { valid: true };
     } catch (e) {
-      return { valid: false, error: `Invalid expression syntax: ${e.message}` };
+      return { valid: false, error: this.homey.__('formula.invalid_syntax', { message: e.message }) };
     }
   }
 
@@ -605,7 +673,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       .map(f => ({
         id: f.id,
         name: f.name,
-        description: f.expression || '(no expression)'
+        description: f.expression || this.homey.__('formula.no_expression')
       }));
   }
 
@@ -619,7 +687,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
   getFormulaResult(formulaId) {
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula) {
-      this.logger.warn(`getFormulaResult: Formula '${formulaId}' not found`);
+      this.logger.warn('formula.get_result_not_found', { id: formulaId });
       return null;
     }
     return formula.result;
@@ -632,19 +700,20 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
   }
 
   async evaluateAllFormulas() {
-    this.logger.info('Re-evaluating all formulas (resetting locks)...');
+    this.logger.info('evaluation.reevaluating_all');
     const results = [];
     for (const formula of this.formulas) {
       if (formula.enabled) {
         this.availableInputs.forEach(id => {
           formula.lockedInputs[id] = false;
         });
-        this.logger.debug(`🔓 Unlocked all inputs for formula '${formula.name}'`);
+        this.logger.debug('formula.unlocked_inputs', { name: formula.name });
         const result = await this.evaluateFormula(formula.id);
         results.push({ id: formula.id, name: formula.name, result });
       }
     }
-    this.logger.debug(`Evaluated ${results.length} formulas`);
+    // Kall med nøkkel og data separat
+    this.logger.debug('formula.evaluated_count', { count: results.length });
     return results;
   }
 
@@ -676,20 +745,26 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       const elapsed = now - formula.lastInputTime;
 
       if (elapsed >= timeoutMs) {
-        this.logger.info(`Formula '${formula.name}' timed out after ${formula.timeout}s`);
+        // Kall med nøkkel og data separat
+        this.logger.info('formula.timed_out', {
+          name: formula.name,
+          timeout: formula.timeout
+        });
         formula.timedOut = true;
 
         const triggerData = { formula: { id: formula.id, name: formula.name } };
         const state = { formulaId: formula.id };
         this.homey.flow.getDeviceTriggerCard('formula_timeout')
           .trigger(this, triggerData, state)
-          .catch(err => this.logger.error('Error triggering timeout:', err));
+          // Kall med nøkkel og data separat
+          .catch(err => this.logger.error('timeout.error', { message: err.message }));
       }
     });
   }
 
   async onSettings({ oldSettings, newSettings, changedKeys }) {
-    this.logger.info('Settings changed:', changedKeys);
+    // Kall med nøkkel og data separat
+    this.logger.info('settings.changed', { keys: changedKeys.join(', ') });
 
     if (this.timeoutInterval) {
       clearInterval(this.timeoutInterval);
@@ -700,7 +775,11 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       const originalNumInputs = this.getData().numInputs ?? 2;
       const newNumInputs = Math.max(detectedInputs, originalNumInputs);
       if (newNumInputs !== this.numInputs) {
-        this.logger.info(`Updating capacity: ${this.numInputs} → ${newNumInputs} inputs`);
+        // Kall med nøkkel og data separat
+        this.logger.info('device.capacity_updated', {
+          old: this.numInputs,
+          new: newNumInputs
+        });
         this.numInputs = newNumInputs;
         this.availableInputs = this.getAvailableInputIds();
       }
@@ -713,19 +792,22 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     if (changedKeys.includes('formulas')) {
       try {
         let rawFormulas = newSettings.formulas;
-        this.logger.debug('Raw formulas input from settings:', rawFormulas);
+        // Kall med nøkkel og data separat
+        this.logger.debug('debug.raw_formulas', { formulas: rawFormulas });
         parsedFormulas = typeof rawFormulas === 'string' ? JSON.parse(rawFormulas) : rawFormulas;
-        
+
         const formatted = JSON.stringify(parsedFormulas, null, 2);
         const original = typeof newSettings.formulas === 'string' ? newSettings.formulas : JSON.stringify(newSettings.formulas);
         if (formatted !== original) {
           formatSettings.formulas = formatted;
           needsFormat = true;
-          this.logger.debug('Will auto-format formulas JSON');
+          // Kall med nøkkel og data separat
+          this.logger.debug('settings.formatting', { type: 'formulas' });
         }
       } catch (e) {
-        this.logger.error('Could not parse formulas:', e.message);
-        throw new Error(`Invalid formulas JSON: ${e.message}`);
+        // Kall med nøkkel og data separat
+        this.logger.error('parse.error_formulas_json', { message: e.message });
+        throw new Error(this.homey.__('parse.error_formulas_invalid', { message: e.message }));
       }
     }
 
@@ -733,7 +815,8 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     if (changedKeys.includes('input_links')) {
       try {
         let rawLinks = newSettings.input_links;
-        this.logger.debug('Raw input_links from settings:', rawLinks);
+        // Kall med nøkkel og data separat
+        this.logger.debug('debug.raw_input_links', { links: rawLinks });
         parsedLinks = typeof rawLinks === 'string' ? JSON.parse(rawLinks) : rawLinks;
 
         const formatted = JSON.stringify(parsedLinks, null, 2);
@@ -741,11 +824,13 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         if (formatted !== original) {
           formatSettings.input_links = formatted;
           needsFormat = true;
-          this.logger.debug('Will auto-format input_links JSON');
+          // Kall med nøkkel og data separat
+          this.logger.debug('settings.formatting', { type: 'input_links' });
         }
       } catch (e) {
-        this.logger.error('Could not parse input_links:', e.message);
-        throw new Error(`Invalid input_links JSON: ${e.message}`);
+        // Kall med nøkkel og data separat
+        this.logger.error('parse.error_input_links', { message: e.message });
+        throw new Error(this.homey.__('parse.error_input_links_invalid', { message: e.message }));
       }
     }
 
@@ -761,11 +846,15 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
           f.lockedInputs[id] = false;
         });
       });
-      this.logger.debug(`Re-initialized ${this.formulas.length} formulas`);
+      // Kall med nøkkel og data separat
+      this.logger.debug('formula.reinitialized', { count: this.formulas.length });
       for (const formula of this.formulas) {
         const validation = this.validateExpression(formula.expression);
         if (!validation.valid) {
-          throw new Error(`Formula '${formula.name}': ${validation.error}`);
+          throw new Error(this.homey.__('formula.error_validation', {
+            name: formula.name,
+            error: validation.error
+          }));
         }
       }
     }
@@ -780,40 +869,53 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     }
 
     this.startTimeoutChecks();
-    this.logger.info('Settings applied successfully');
+    // Kall med nøkkel
+    this.logger.info('settings.applied');
 
     if (needsFormat) {
       setTimeout(async () => {
         try {
-          this.logger.debug('Applying auto-formatted settings...');
+          // Kall med nøkkel
+          this.logger.debug('settings.applying_formatted');
           await this.setSettings(formatSettings);
-          this.logger.info('Settings auto-formatted');
+          // Kall med nøkkel
+          this.logger.info('settings.auto_formatted');
         } catch (e) {
-          this.logger.error('Failed to auto-format settings:', e.message);
+          // Kall med nøkkel og data separat
+          this.logger.error('settings.format_failed', { message: e.message });
         }
       }, 500);
     }
   }
 
   async pollDeviceInputs() {
-    this.logger.debug('Polling all linked device inputs...');
+    // Kall med nøkkel
+    this.logger.debug('polling.all_inputs');
 
     const links = this.inputLinks || [];
     if (!links.length) {
-      this.logger.warn('No inputLinks available for polling');
+      // Kall med nøkkel
+      this.logger.warn('polling.no_links');
       return;
     }
     if (!this.homey.app.api) {
-      this.logger.error('App API not available for polling');
+      // Kall med nøkkel
+      this.logger.error('polling.api_unavailable');
       return;
     }
 
     for (const link of links) {
-      this.logger.debug(`Polling input "${link.input}" from device "${link.deviceId}" capability "${link.capability}"`);
+      // Kall med nøkkel og data separat
+      this.logger.debug('polling.input', {
+        input: link.input,
+        device: link.deviceId,
+        capability: link.capability
+      });
       try {
         const dev = await this.homey.app.api.devices.getDevice({ id: link.deviceId });
         if (!dev) {
-          this.logger.warn(`Device not found: ${link.deviceId}`);
+          // Kall med nøkkel og data separat
+          this.logger.warn('polling.device_not_found', { device: link.deviceId });
           continue;
         }
 
@@ -827,12 +929,21 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         }
 
         if (raw === null || raw === undefined) {
-          this.logger.warn(`No value for ${link.input.toUpperCase()} (${link.capability})`);
+          // Kall med nøkkel og data separat
+          this.logger.warn('polling.no_value', {
+            input: link.input.toUpperCase(),
+            capability: link.capability
+          }); // FIKSET: Fjernet ekstra parentes her
           continue;
         }
 
         const boolValue = this.convertToBoolean(raw, link.capability);
-        this.logger.input(`Polled ${link.input.toUpperCase()}: ${raw} → ${boolValue}`);
+        // Kall med nøkkel og data separat
+        this.logger.input('polling.value_received', {
+          input: link.input.toUpperCase(),
+          value: raw,
+          boolean: boolValue
+        });
 
         for (const formula of this.formulas) {
           formula.inputStates[link.input] = boolValue;
@@ -841,23 +952,27 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
           }
         }
       } catch (e) {
-        this.logger.error(`Failed to poll ${link.input}:`, e.message);
+        // Kall med nøkkel og data separat
+        this.logger.error('polling.failed', { input: link.input, message: e.message });
       }
     }
   }
 
   async onDeleted() {
     this._isDeleting = true;
-    this.logger.device('Device deleted — cleaning up listeners & timers');
+    // Kall med nøkkel
+    this.logger.device('device.deleted_cleanup');
 
     for (const [key, entry] of this.deviceListeners.entries()) {
       try {
         if (typeof entry?.unregister === 'function') {
           await entry.unregister();
-          this.logger.debug(`Unregistered listener: ${key}`);
+          // Kall med nøkkel og data separat
+          this.logger.debug('devicelinks.unregistered', { key });
         }
       } catch (e) {
-        this.logger.error('Error cleaning up listener:', e);
+        // Kall med nøkkel og data separat
+        this.logger.error('devicelinks.error_cleanup', { message: e.message });
       }
     }
     this.deviceListeners.clear();
@@ -871,6 +986,8 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       try { this.pollingIntervals.clear(); } catch (_) {}
     }
 
-    this.logger.info('Cleanup complete');
+    // Kall med nøkkel
+    this.logger.info('device.cleanup_complete');
   }
 };
+

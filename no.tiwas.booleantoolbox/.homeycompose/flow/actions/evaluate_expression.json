@@ -31,11 +31,29 @@
       "name": "input",
       "title": {
         "en": "Input value",
-        "no": "Inngangsverdi"
+        "no": "Inngangsverdi",
+        "de": "Eingangswert",
+        "nl": "Invoerwaarde",
+        "fr": "Valeur d'entrée",
+        "da": "Indgangsværdi",
+        "fi": "Tuloarvo",
+        "sv": "Ingångsvärde",
+        "pl": "Wartość wejściowa",
+        "it": "Valore di input",
+        "es": "Valor de entrada"
       },
       "placeholder": {
         "en": "Enter number",
-        "no": "Skriv inn tall"
+        "no": "Skriv inn tall",
+        "de": "Nummer eingeben",
+        "nl": "Voer nummer in",
+        "fr": "Entrez un nombre",
+        "da": "Indtast tal",
+        "fi": "Anna numero",
+        "sv": "Ange nummer",
+        "pl": "Wprowadź numer",
+        "it": "Inserisci numero",
+        "es": "Introducir número"
       }
     },
     {
@@ -43,11 +61,29 @@
       "name": "rules",
       "title": {
         "en": "Rules",
-        "no": "Regler"
+        "no": "Regler",
+        "de": "Regeln",
+        "nl": "Regels",
+        "fr": "Règles",
+        "da": "Regler",
+        "fi": "Säännöt",
+        "sv": "Regler",
+        "pl": "Reguły",
+        "it": "Regole",
+        "es": "Reglas"
       },
       "placeholder": {
         "en": "min,max,output; ...",
-        "no": "min,maks,utgang; ..."
+        "no": "min,maks,utgang; ...",
+        "de": "min,max,ausgabe; ...",
+        "nl": "min,max,uitvoer; ...",
+        "fr": "min,max,sortie; ...",
+        "da": "min,maks,output; ...",
+        "fi": "min,max,lähtö; ...",
+        "sv": "min,max,utgång; ...",
+        "pl": "min,max,wyjście; ...",
+        "it": "min,max,uscita; ...",
+        "es": "min,max,salida; ..."
       }
     },
     {
@@ -55,7 +91,16 @@
       "name": "op1",
       "title": {
         "en": "First operator",
-        "no": "Første operator"
+        "no": "Første operator",
+        "de": "Erster Operator",
+        "nl": "Eerste operator",
+        "fr": "Premier opérateur",
+        "da": "Første operatør",
+        "fi": "Ensimmäinen operaattori",
+        "sv": "Första operator",
+        "pl": "Pierwszy operator",
+        "it": "Primo operatore",
+        "es": "Primer operador"
       },
       "values": [
         {
@@ -93,7 +138,16 @@
       "name": "op2",
       "title": {
         "en": "Second operator",
-        "no": "Andre operator"
+        "no": "Andre operator",
+        "de": "Zweiter Operator",
+        "nl": "Tweede operator",
+        "fr": "Deuxième opérateur",
+        "da": "Anden operatør",
+        "fi": "Toinen operaattori",
+        "sv": "Andra operator",
+        "pl": "Drugi operator",
+        "it": "Secondo operatore",
+        "es": "Segundo operador"
       },
       "values": [
         {
@@ -131,21 +185,48 @@
       "name": "logical_op",
       "title": {
         "en": "Logical operator",
-        "no": "Logisk operator"
+        "no": "Logisk operator",
+        "de": "Logischer Operator",
+        "nl": "Logische operator",
+        "fr": "Opérateur logique",
+        "da": "Logisk operatør",
+        "fi": "Looginen operaattori",
+        "sv": "Logisk operator",
+        "pl": "Operator logiczny",
+        "it": "Operatore logico",
+        "es": "Operador lógico"
       },
       "values": [
         {
           "id": "AND",
           "title": {
             "en": "AND",
-            "no": "OG"
+            "no": "OG",
+            "de": "UND",
+            "nl": "EN",
+            "fr": "ET",
+            "da": "OG",
+            "fi": "JA",
+            "sv": "OCH",
+            "pl": "I",
+            "it": "E",
+            "es": "Y"
           }
         },
         {
           "id": "OR",
           "title": {
             "en": "OR",
-            "no": "ELLER"
+            "no": "ELLER",
+            "de": "ODER",
+            "nl": "OF",
+            "fr": "OU",
+            "da": "ELLER",
+            "fi": "TAI",
+            "sv": "ELLER",
+            "pl": "LUB",
+            "it": "O",
+            "es": "O"
           }
         }
       ]
@@ -157,7 +238,16 @@
       "type": "number",
       "title": {
         "en": "Output value",
-        "no": "Utgangsverdi"
+        "no": "Utgangsverdi",
+        "de": "Ausgabewert",
+        "nl": "Uitvoerwaarde",
+        "fr": "Valeur de sortie",
+        "da": "Udgangsværdi",
+        "fi": "Lähtöarvo",
+        "sv": "Utgångsvärde",
+        "pl": "Wartość wyjściowa",
+        "it": "Valore di output",
+        "es": "Valor de salida"
       },
       "example": 100
     },
@@ -166,9 +256,19 @@
       "type": "string",
       "title": {
         "en": "Error message",
-        "no": "Feilmelding"
+        "no": "Feilmelding",
+        "de": "Fehlermeldung",
+        "nl": "Foutmelding",
+        "fr": "Message d'erreur",
+        "da": "Fejlmeddelelse",
+        "fi": "Virheilmoitus",
+        "sv": "Felmeddelande",
+        "pl": "Komunikat o błędzie",
+        "it": "Messaggio di errore",
+        "es": "Mensaje de error"
       },
       "example": "No error"
     }
   ]
 }
+

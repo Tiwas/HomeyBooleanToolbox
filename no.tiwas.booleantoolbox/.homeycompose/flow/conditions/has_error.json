@@ -31,11 +31,29 @@
       "name": "text_input",
       "title": {
         "en": "Error message",
-        "no": "Feilmelding"
+        "no": "Feilmelding",
+        "de": "Fehlermeldung",
+        "nl": "Foutmelding",
+        "fr": "Message d'erreur",
+        "da": "Fejlmeddelelse",
+        "fi": "Virheilmoitus",
+        "sv": "Felmeddelande",
+        "pl": "Komunikat o błędzie",
+        "it": "Messaggio di errore",
+        "es": "Mensaje de error"
       },
       "placeholder": {
         "en": "Enter error message or token",
-        "no": "Skriv inn feilmelding eller token"
+        "no": "Skriv inn feilmelding eller token",
+        "de": "Fehlermeldung oder Token eingeben",
+        "nl": "Voer foutmelding of token in",
+        "fr": "Entrez le message d'erreur ou le jeton",
+        "da": "Indtast fejlmeddelelse eller token",
+        "fi": "Anna virheilmoitus tai tunniste",
+        "sv": "Ange felmeddelande eller token",
+        "pl": "Wprowadź komunikat o błędzie lub token",
+        "it": "Inserisci messaggio di errore o token",
+        "es": "Introducir mensaje de error o token"
       }
     }
   ]

@@ -191,18 +191,16 @@
 </head>
 <body>
   <div class="container">
-    <h2>Configure inputs</h2>
-    <p class="description">Select which device and capability each input should follow:</p>
+    <h2 data-i18n="pair.configure_inputs_title">Configure inputs</h2>
+    <p class="description" data-i18n="pair.configure_inputs_description">Select which device and capability each input should follow:</p>
     
-    <div id="loading" class="loading">
-      Loading devices...
-    </div>
+    <div id="loading" class="loading"></div>
     
     <div id="inputs-container" style="display: none;"></div>
 
     <div id="device-name-section" class="device-name-section" style="display: none;">
-      <label for="deviceName">Give the device a name:</label>
-      <input type="text" id="deviceName" placeholder="E.g: Bedroom logic" value="Logic Device">
+      <label for="deviceName" data-i18n="pair.device_name_label">Give the device a name:</label>
+      <input type="text" id="deviceName" value="">
     </div>
 
     <div id="summary" class="summary" style="display: none;"></div>
@@ -213,55 +211,33 @@
   </div>
 
 <script>
-    document.getElementById('complete-btn').addEventListener('click', visVarsel);
-
-    async function visVarsel() {
-      try {
-        const inputLinks = [];
-        const deviceName = document.getElementById('deviceName').value || 'Logic Device';
-        
-        for (let i = 0; i < numInputs; i++) {
-          const inputId = letters[i].toLowerCase();
-          const deviceSelect = document.getElementById(`device-${inputId}`);
-          const deviceId = deviceSelect?.value;
-          const capability = document.getElementById(`capability-${inputId}`)?.value;
-          
-          if (deviceId && capability) {
-            // Hent også device name fra selected option
-            const selectedOption = deviceSelect.options[deviceSelect.selectedIndex];
-            const deviceName = selectedOption?.text || 'Unknown Device';
-            
-            inputLinks.push({ 
-              input: inputId, 
-              deviceId, 
-              capability,
-              deviceName  // Lagre device name
-            });
-          }
-        }
-        
-        if (inputLinks.length !== numInputs) {
-          await Homey.alert('Please configure all inputs first!', 'warning');
-          return;
-        }
-        
-        await Homey.emit('set_input_links', { inputLinks });
-        await Homey.emit('set_device_name', { name: deviceName });
-        
-        const deviceData = await Homey.emit('create_device');
-        await Homey.createDevice(deviceData);
-        
-        await Homey.done();
-        
-      } catch (e) {
-        console.error('Error:', e);
-        await Homey.alert('Error: ' + e.message, 'error');
-      }
-    }
-
+    let Homey;
     let zones = [];
     let numInputs = 2;
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+
+    function onHomeyReady(homey) {
+      Homey = homey;
+
+      // Apply translations
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        el.textContent = Homey.__(key);
+      });
+
+      // Set translated placeholder
+      const deviceNameInput = document.getElementById('deviceName');
+      deviceNameInput.placeholder = Homey.__('pair.device_name_placeholder');
+      deviceNameInput.value = Homey.__('pair.name_placeholder');
+
+      // Set loading text
+      document.getElementById('loading').textContent = Homey.__('common.loading');
+
+      // Set button handler
+      document.getElementById('complete-btn').addEventListener('click', visVarsel);
+
+      init();
+    }
 
     function log(message, data) {
       const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
@@ -283,7 +259,7 @@
         log('Fetching zones...');
         zones = await Homey.emit('get_zones');
         if (!zones || zones.length === 0) {
-          showError('No zones found. Please create zones in your Homey first.');
+          showError(Homey.__('pair.no_zones_error'));
           document.getElementById('loading').style.display = 'none';
           return;
         }
@@ -301,7 +277,7 @@
         }, 100);
       } catch (e) {
         console.error('Init error:', e);
-        showError('Error loading initial data: ' + e.message);
+        showError(Homey.__('pair.init_error') + ': ' + e.message);
         document.getElementById('loading').style.display = 'none';
       }
     }
@@ -310,7 +286,7 @@
       const container = document.getElementById('inputs-container');
       container.innerHTML = '';
       
-      let zoneOptions = '<option value="">-- Select zone/room --</option>';
+      let zoneOptions = `<option value="">${Homey.__('pair.select_zone')}</option>`;
       zones.forEach(zone => {
         zoneOptions += `<option value="${zone.id}">${zone.name}</option>`;
       });
@@ -324,14 +300,14 @@
         div.id = `input-config-${inputId}`;
         
         div.innerHTML = `
-          <h3>Input ${letter}</h3>
-          <label>Zone/Room:</label>
+          <h3>${Homey.__('pair.input')} ${letter}</h3>
+          <label>${Homey.__('pair.zone_label')}</label>
           <select id="zone-${inputId}" data-input="${inputId}">${zoneOptions}</select>
-          <label>Device:</label>
-          <select id="device-${inputId}" data-input="${inputId}" disabled><option value="">-- Select zone first --</option></select>
-          <label>Capability:</label>
-          <select id="capability-${inputId}" data-input="${inputId}" disabled><option value="">-- Select device first --</option></select>
-          <div class="status incomplete" id="status-${inputId}">⚠️ Not configured</div>
+          <label>${Homey.__('pair.device_label')}</label>
+          <select id="device-${inputId}" data-input="${inputId}" disabled><option value="">${Homey.__('pair.select_zone_first')}</option></select>
+          <label>${Homey.__('pair.capability_label')}</label>
+          <select id="capability-${inputId}" data-input="${inputId}" disabled><option value="">${Homey.__('pair.select_device_first')}</option></select>
+          <div class="status incomplete" id="status-${inputId}">⚠️ ${Homey.__('pair.not_configured')}</div>
         `;
         container.appendChild(div);
 
@@ -346,13 +322,13 @@
       const deviceSelect = document.getElementById(`device-${inputId}`);
       const capabilitySelect = document.getElementById(`capability-${inputId}`);
       
-      deviceSelect.innerHTML = '<option value="">Loading devices...</option>';
+      deviceSelect.innerHTML = `<option value="">${Homey.__('common.loading')}</option>`;
       deviceSelect.disabled = true;
-      capabilitySelect.innerHTML = '<option value="">-- Select device first --</option>';
+      capabilitySelect.innerHTML = `<option value="">${Homey.__('pair.select_device_first')}</option>`;
       capabilitySelect.disabled = true;
       
       if (!zoneId) {
-        deviceSelect.innerHTML = '<option value="">-- Select zone first --</option>';
+        deviceSelect.innerHTML = `<option value="">${Homey.__('pair.select_zone_first')}</option>`;
         updateSummary();
         return;
       }
@@ -361,7 +337,7 @@
         const devicesInZone = await Homey.emit('get_devices_in_zone', { zoneId });
         log(`Found ${devicesInZone.length} devices in zone ${zoneId}`);
         
-        deviceSelect.innerHTML = '<option value="">-- Select device --</option>';
+        deviceSelect.innerHTML = `<option value="">${Homey.__('pair.select_device')}</option>`;
         devicesInZone.forEach(d => {
           const option = document.createElement('option');
           option.value = d.id;
@@ -371,8 +347,8 @@
         });
         deviceSelect.disabled = false;
       } catch (e) {
-        showError(`Failed to load devices for zone: ${e.message}`);
-        deviceSelect.innerHTML = '<option value="">-- Error loading --</option>';
+        showError(Homey.__('pair.load_devices_error') + ': ' + e.message);
+        deviceSelect.innerHTML = `<option value="">${Homey.__('pair.error_loading')}</option>`;
       }
       
       updateSummary();
@@ -383,7 +359,7 @@
       const deviceSelect = document.getElementById(`device-${inputId}`);
       const capabilitySelect = document.getElementById(`capability-${inputId}`);
       
-      capabilitySelect.innerHTML = '<option value="">-- Select capability --</option>';
+      capabilitySelect.innerHTML = `<option value="">${Homey.__('pair.select_capability')}</option>`;
       capabilitySelect.disabled = true;
       
       if (deviceId) {
@@ -406,7 +382,7 @@
 
     async function saveConfigToBackend() {
       const inputLinks = [];
-      const deviceName = document.getElementById('deviceName').value || 'Logic Device';
+      const deviceName = document.getElementById('deviceName').value || Homey.__('pair.name_placeholder');
       
       for (let i = 0; i < numInputs; i++) {
         const inputId = letters[i].toLowerCase();
@@ -415,15 +391,14 @@
         const capability = document.getElementById(`capability-${inputId}`)?.value;
         
         if (deviceId && capability) {
-          // Hent device name
           const selectedOption = deviceSelect.options[deviceSelect.selectedIndex];
-          const deviceName = selectedOption?.text || 'Unknown Device';
+          const deviceName = selectedOption?.text || Homey.__('pair.unknown_device');
           
           inputLinks.push({ 
             input: inputId, 
             deviceId, 
             capability,
-            deviceName  // Inkluder device name
+            deviceName
           });
         }
       }
@@ -452,14 +427,14 @@
         if (deviceId && capability) {
           if (statusEl) {
             statusEl.className = 'status complete';
-            statusEl.textContent = '✓ Configured';
+            statusEl.textContent = '✓ ' + Homey.__('pair.configured');
           }
           if (configDiv) configDiv.classList.add('complete');
           configuredCount++;
         } else {
           if (statusEl) {
             statusEl.className = 'status incomplete';
-            statusEl.textContent = '⚠️ Not configured';
+            statusEl.textContent = '⚠️ ' + Homey.__('pair.not_configured');
           }
           if (configDiv) configDiv.classList.remove('complete');
           allConfigured = false;
@@ -468,21 +443,62 @@
 
       const summaryEl = document.getElementById('summary');
       if (summaryEl) {
-        summaryEl.innerHTML = `<strong>Status:</strong> ${configuredCount} of ${numInputs} inputs configured`;
+        summaryEl.innerHTML = `<strong>${Homey.__('pair.status_label')}</strong> ${configuredCount} ${Homey.__('pair.of')} ${numInputs} ${Homey.__('pair.inputs_configured')}`;
       }
 
       const btn = document.getElementById('complete-btn');
       if (allConfigured) {
         saveConfigToBackend();
-        btn.innerHTML = "Save and complete"
+        btn.textContent = Homey.__('pair.save_complete');
         btn.className = "btn-enabled";
       } else {
-        btn.innerHTML = "..."
+        btn.textContent = "...";
         btn.className = "btn-disabled";
       }
     }
 
-    init();
+    async function visVarsel() {
+      try {
+        const inputLinks = [];
+        const deviceName = document.getElementById('deviceName').value || Homey.__('pair.name_placeholder');
+        
+        for (let i = 0; i < numInputs; i++) {
+          const inputId = letters[i].toLowerCase();
+          const deviceSelect = document.getElementById(`device-${inputId}`);
+          const deviceId = deviceSelect?.value;
+          const capability = document.getElementById(`capability-${inputId}`)?.value;
+          
+          if (deviceId && capability) {
+            const selectedOption = deviceSelect.options[deviceSelect.selectedIndex];
+            const deviceName = selectedOption?.text || Homey.__('pair.unknown_device');
+            
+            inputLinks.push({ 
+              input: inputId, 
+              deviceId, 
+              capability,
+              deviceName
+            });
+          }
+        }
+        
+        if (inputLinks.length !== numInputs) {
+          await Homey.alert(Homey.__('pair.configure_all_inputs'), 'warning');
+          return;
+        }
+        
+        await Homey.emit('set_input_links', { inputLinks });
+        await Homey.emit('set_device_name', { name: deviceName });
+        
+        const deviceData = await Homey.emit('create_device');
+        await Homey.createDevice(deviceData);
+        
+        await Homey.done();
+        
+      } catch (e) {
+        console.error('Error:', e);
+        await Homey.alert(Homey.__('errors.generic') + ': ' + e.message, 'error');
+      }
+    }
 </script>
 </body>
 </html>

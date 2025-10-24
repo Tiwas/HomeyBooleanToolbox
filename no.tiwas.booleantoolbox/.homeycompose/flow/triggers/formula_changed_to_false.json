@@ -7,7 +7,7 @@
     "fr": "Formule changée en FAUX",
     "da": "Formel ændret til FALSK",
     "fi": "Kaava muuttui EPÄTODEKSI",
-    "sv": "Formel ändrades till OSANN",
+    "sv": "Formel ändrades till FALSK",
     "pl": "Formuła zmieniona na FAŁSZ",
     "it": "Formula cambiata in FALSO",
     "es": "Fórmula cambiada a FALSO"
@@ -20,7 +20,7 @@
     "fr": "Formule [[formula]] changée en FAUX",
     "da": "Formel [[formula]] ændret til FALSK",
     "fi": "Kaava [[formula]] muuttui EPÄTODEKSI",
-    "sv": "Formel [[formula]] ändrades till OSANN",
+    "sv": "Formel [[formula]] ändrades till FALSK",
     "pl": "Formuła [[formula]] zmieniona na FAŁSZ",
     "it": "Formula [[formula]] cambiata in FALSO",
     "es": "Fórmula [[formula]] cambiada a FALSO"
@@ -36,11 +36,29 @@
       "name": "formula",
       "title": {
         "en": "Formula",
-        "no": "Formel"
+        "no": "Formel",
+        "de": "Formel",
+        "nl": "Formule",
+        "fr": "Formule",
+        "da": "Formel",
+        "fi": "Kaava",
+        "sv": "Formel",
+        "pl": "Formuła",
+        "it": "Formula",
+        "es": "Fórmula"
       },
       "placeholder": {
         "en": "Select formula",
-        "no": "Velg formel"
+        "no": "Velg formel",
+        "de": "Wähle Formel",
+        "nl": "Selecteer formule",
+        "fr": "Sélectionner la formule",
+        "da": "Vælg formel",
+        "fi": "Valitse kaava",
+        "sv": "Välj formel",
+        "pl": "Wybierz formułę",
+        "it": "Seleziona formula",
+        "es": "Seleccionar fórmula"
       }
     }
   ]

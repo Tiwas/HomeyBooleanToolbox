@@ -1,0 +1,237 @@
+{
+  "settings": {
+    "title": "Innstillinger",
+    "description": "Konfigurer din Boolean Toolbox logiske enhet",
+    "save": "Lagre",
+    "cancel": "Avbryt",
+    "reset": "Tilbakestill til standard",
+    "saved": "Innstillinger lagret",
+    "error": "Kunne ikke lagre innstillinger",
+    "changed": "Innstillinger endret:",
+    "applied": "Innstillinger anvendt vellykket",
+    "formatting": "Vil auto-formatere {type} JSON",
+    "applying_formatted": "Anvender auto-formaterte innstillinger...",
+    "auto_formatted": "Innstillinger auto-formatert",
+    "format_failed": "Klarte ikke å auto-formatere innstillinger:"
+  },
+  "pair": {
+    "title": "Legg til logisk enhet",
+    "intro": "Opprett en ny logisk enhet for å evaluere komplekse formler",
+    "name": "Enhetsnavn",
+    "name_placeholder": "Min logiske enhet",
+    "configure": "Konfigurer enhet",
+    "add": "Legg til enhet",
+    "success": "Enhet lagt til",
+    "error": "Kunne ikke legge til enhet",
+    "session_started": "Parkoblingsøkt startet",
+    "get_num_inputs": "[PAIR] get_num_inputs kalt",
+    "set_num_inputs": "[PAIR] set_num_inputs kalt med data:",
+    "get_zones": "[PAIR] get_zones kalt",
+    "get_zones_error": "[PAIR] FEIL i get_zones:",
+    "get_devices_in_zone": "[PAIR] get_devices_in_zone kalt for sone: {zone}",
+    "get_devices_error": "[PAIR] FEIL i get_devices_in_zone:",
+    "set_input_links": "[PAIR] set_input_links kalt",
+    "set_device_name": "[PAIR] set_device_name kalt med:",
+    "create_device": "[PAIR] create_device kalt",
+    "creating_device": "[PAIR] Oppretter enhet:",
+    "handlers_registered": "Parkoblingshåndterere registrert"
+  },
+  "device": {
+    "ready": "Enhet klar: {name}",
+    "initializing": "Logisk enhet '{name}' initialiserer.",
+    "initialized": "Logisk enhet '{name}' initialisert med {count} innganger",
+    "capacity_expanded": "Oppdaget {detected} innganger nødvendig (opprinnelig {original}). Utvider kapasitet.",
+    "capacity_updated": "Oppdaterer kapasitet: {old} → {new} innganger",
+    "max_input_detected": "Oppdaget maks inngang: {input} ({count} innganger nødvendig)",
+    "capability_readonly": "Satt onoff som skrivebeskyttet",
+    "capability_options_failed": "Kunne ikke sette kapabilitetsalternativer:",
+    "capability_update_failed": "Kapabilitetsoppdatering feilet for {capability}:",
+    "capability_skip_deleted": "(trygt) Hopper over {capability} – enheten eksisterer ikke lenger.",
+    "deleted_cleanup": "Enhet slettet — rydder opp lyttere og timere",
+    "cleanup_complete": "Opprydding fullført",
+    "logic_unit_name": "Logisk enhet ({count} innganger)"
+  },
+  "formula": {
+    "default_name": "Hovedformel",
+    "default_name_alt": "Formel 1",
+    "initialized": "Initialiserte {count} formler",
+    "details": "  - {name}: \"{expression}\" (aktivert: {enabled})",
+    "reinitialized": "Re-initialiserte {count} formler",
+    "timed_out": "Formel '{name}' fikk tidsavbrudd etter {timeout}s",
+    "evaluated_count": "Evaluerte {count} formler",
+    "expression_empty": "Uttrykk kan ikke være tomt",
+    "invalid_tokens": "Ugyldige tokens i uttrykk: \"{tokens}\"",
+    "invalid_syntax": "Ugyldig uttrykkssyntaks: {message}",
+    "no_expression": "(ingen uttrykk)",
+    "error_validation": "Formel '{name}': {error}",
+    "result_debug": "getFormulaResult: Formel '{name}' ({id}) resultat = {result} (type: {type})",
+    "name": "Formel",
+    "expression": "Uttrykk",
+    "result": "Resultat",
+    "input": "Inngang",
+    "output": "Utgang",
+    "evaluation": "Evaluering",
+    "evaluating": "Evaluerer formel...",
+    "evaluated": "Formel evaluert",
+    "error": "Formelfeil",
+    "timeout": "Formelevaluering timeout",
+    "invalid": "Ugyldig formel",
+    "syntax_error": "Syntaksfeil i formel"
+  },
+  "devicelinks": {
+    "setting_up": "Setter opp enhetskoblinger...",
+    "complete": "Enhetskoblinger fullført",
+    "count": "Setter opp {count} enhetskoblinger",
+    "unregistered": "Avregistrerte lytter: {key}",
+    "error_unregister": "Feil ved avregistrering av lytter:",
+    "setup_failed": "Klarte ikke å sette opp lytter for inngang {input}:",
+    "error_cleanup": "Feil ved opprydding av lytter:"
+  },
+  "flow": {
+    "triggered": "Trigger flow for formel '{name}' endret til {result}"
+  },
+  "initial": {
+    "fetching_all": "Henter initialverdier for alle innganger...",
+    "api_unavailable": "App-API ikke tilgjengelig for henting av initialverdier",
+    "fetching_input": "[{input}] Henter initialverdi...",
+    "device_not_found": "[{input}] Enhet ikke funnet",
+    "capability_not_found": "[{input}] Kapabilitet {capability} ikke funnet",
+    "value_received": "[{input}] Initialverdi: {value} → {boolean}",
+    "error": "[{input}] Feil ved henting av initialverdi:"
+  },
+  "evaluation": {
+    "running_initial": "Kjører initial formelevaluering...",
+    "initial_complete": "Initial evaluering av alle formler..."
+  },
+  "listener": {
+    "registered": "[{input}] Lytter til enhet {device} kapabilitet {capability}",
+    "device_not_found": "[{input}] Enhet {device} ikke funnet",
+    "capability_not_exist": "[{input}] Kapabilitet {capability} eksisterer ikke på enhet {device}",
+    "polling_setup": "[{input}] Satt opp polling for {device} ({capability})",
+    "capability_changed": "[{input}] Kapabilitet '{capability}' endret: {value} → {boolean}",
+    "error_setup": "Feil ved oppsett av lytter for inngang {input}:"
+  },
+  "polling": {
+    "all_inputs": "Poller alle koblede enhetsinnganger...",
+    "no_links": "Ingen inputLinks tilgjengelig for polling",
+    "api_unavailable": "App-API ikke tilgjengelig for polling",
+    "input": "Poller inngang \"{input}\" fra enhet \"{device}\" kapabilitet \"{capability}\"",
+    "device_not_found": "Enhet ikke funnet: {device}",
+    "no_value": "Ingen verdi for {input} ({capability})",
+    "value_received": "Pollet {input}: {value} → {boolean}",
+    "failed": "Klarte ikke å polle {input}:"
+  },
+  "parse": {
+    "error_formulas": "Klarte ikke å parse formler:",
+    "error_input_links": "Klarte ikke å parse input_links:",
+    "error_formulas_json": "Kunne ikke parse formler:",
+    "error_formulas_invalid": "Ugyldig formler JSON: {message}",
+    "error_input_links_invalid": "Ugyldig input_links JSON: {message}",
+    "error_detecting_inputs": "Feil ved deteksjon av nødvendige innganger:"
+  },
+  "refetch": {
+    "reason": "Henter innganger på nytt (årsak: {reason})..."
+  },
+  "timeout": {
+    "error": "Feil ved utløsing av tidsavbrudd:"
+  },
+  "driver": {
+    "ready": "Driver klar",
+    "ensure_unique_failed": "ensureUniqueDeviceName feilet:"
+  },
+  "debug": {
+    "raw_formulas": "Rå formler inngang fra innstillinger:",
+    "raw_input_links": "Rå input_links fra innstillinger:"
+  },
+  "app": {
+    "athom_api_loaded": "athom-api lastet vellykket",
+    "homey_api_extracted": "HomeyAPI hentet ut, type:",
+    "initializing_homey_api": "Initialiserer HomeyAPI.forCurrentHomey...",
+    "homey_api_not_function": "HomeyAPI.forCurrentHomey er ikke en funksjon",
+    "homey_api_methods": "HomeyAPI-metoder:",
+    "error_stack": "Feil-stakk:",
+    "getting_zones": "Henter tilgjengelige soner...",
+    "found_zones": "Fant {count} soner",
+    "error_getting_zones": "Feil ved henting av soner:",
+    "getting_devices_for_zone": "Henter enheter for sone-ID: {zoneId}",
+    "found_devices_in_zone": "Fant {count} enheter i sone {zoneId}",
+    "error_getting_devices": "Feil ved henting av enheter for sone {zoneId}:",
+    "registering_flow_cards": "Registrerer flytkort...",
+    "condition_check": "Betingelsessjekk: Formel '{formulaName}' resultat = {result}, sjekker om det er '{expected}'",
+    "formula_not_evaluated": "Betingelse: Formel '{formulaName}' har ikke blitt evaluert enda (resultat er {result})",
+    "running_evaluation": "Kjører evaluering. Inndata: {input}, Regler: '{rules}'",
+    "evaluation_finished": "Evaluering fullført. Utdata: {output}",
+    "value_outside_logic": "Verdi {input} er utenfor den definerte logikken.",
+    "checking_for_error": "Sjekker for feil. Inndata: '{textInput}', Har feil: {hasError}",
+    "flow_cards_registered": "Flytkort registrert"
+  },
+  "errors": {
+    "generic": "En feil oppstod",
+    "timeout": "Operasjon tidsavbrudd",
+    "invalid_input": "Ugyldig inngangsverdi",
+    "invalid_formula": "Ugyldig formeluttrykk",
+    "evaluation_failed": "Formelevaluering feilet",
+    "device_not_found": "Enhet ikke funnet",
+    "permission_denied": "Tilgang nektet",
+    "connection_failed": "Tilkobling feilet",
+    "unknown": "Ukjent feil oppstod"
+  },
+  "notifications": {
+    "formula_updated": "Formel oppdatert",
+    "input_received": "Inngang mottatt",
+    "output_changed": "Utgang endret",
+    "error_cleared": "Feilstatus fjernet",
+    "device_ready": "Enhet er klar",
+    "reevaluating": "Gentag evaluering av alle formler..."
+  },
+  "common": {
+    "yes": "Ja",
+    "no": "Nei",
+    "true": "Sant",
+    "false": "Usant",
+    "enabled": "Aktivert",
+    "disabled": "Deaktivert",
+    "on": "På",
+    "off": "Av",
+    "unknown": "Ukjent",
+    "loading": "Laster...",
+    "processing": "Behandler...",
+    "done": "Ferdig",
+    "failed": "Feilet",
+    "success": "Vellykket",
+    "warning": "Advarsel",
+    "info": "Informasjon",
+    "min": "Minimum",
+    "max": "Maksimum",
+    "value": "Verdi",
+    "name": "Navn",
+    "type": "Type",
+    "state": "Tilstand"
+  },
+  "inputs": {
+    "label": "Inngang",
+    "value": "Verdi",
+    "locked": "Inngang låst",
+    "unlocked": "Inngang låst opp",
+    "first_impression": "Førsteinntrykk-modus",
+    "timeout_detected": "Tidsavbrudd oppdaget på inngang",
+    "waiting": "Venter på inngang..."
+  },
+  "operators": {
+    "and": "OG",
+    "or": "ELLER",
+    "not": "IKKE",
+    "greater_than": "Større enn",
+    "less_than": "Mindre enn",
+    "equal": "Lik",
+    "not_equal": "Ikke lik",
+    "greater_or_equal": "Større enn eller lik",
+    "less_or_equal": "Mindre enn eller lik"
+  },
+  "help": {
+    "formula_syntax": "Bruk logiske operatorer som OG, ELLER, IKKE for å opprette formelen din",
+    "input_values": "Inngangsverdier oppdateres automatisk når tilkoblede enheter endres",
+    "timeout_warning": "Hvis en inngang ikke oppdateres innen tidsavbruddsperioden, vil den bli markert",
+    "first_impression": "Førsteinntrykk-modus låser innganger ved deres første mottatte verdi"
+  }
+}

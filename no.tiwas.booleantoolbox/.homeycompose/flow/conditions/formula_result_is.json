@@ -36,11 +36,29 @@
       "name": "formula",
       "title": {
         "en": "Formula",
-        "no": "Formel"
+        "no": "Formel",
+        "de": "Formel",
+        "nl": "Formule",
+        "fr": "Formule",
+        "da": "Formel",
+        "fi": "Kaava",
+        "sv": "Formel",
+        "pl": "Formuła",
+        "it": "Formula",
+        "es": "Fórmula"
       },
       "placeholder": {
         "en": "Select formula",
-        "no": "Velg formel"
+        "no": "Velg formel",
+        "de": "Wähle Formel",
+        "nl": "Selecteer formule",
+        "fr": "Sélectionner la formule",
+        "da": "Vælg formel",
+        "fi": "Valitse kaava",
+        "sv": "Välj formel",
+        "pl": "Wybierz formułę",
+        "it": "Seleziona formula",
+        "es": "Seleccionar fórmula"
       }
     },
     {
@@ -48,21 +66,48 @@
       "name": "what_is",
       "title": {
         "en": "Value",
-        "no": "Verdi"
+        "no": "Verdi",
+        "de": "Wert",
+        "nl": "Waarde",
+        "fr": "Valeur",
+        "da": "Værdi",
+        "fi": "Arvo",
+        "sv": "Värde",
+        "pl": "Wartość",
+        "it": "Valore",
+        "es": "Valor"
       },
       "values": [
         {
           "id": "true",
           "title": {
             "en": "TRUE",
-            "no": "SANN"
+            "no": "SANN",
+            "de": "WAHR",
+            "nl": "WAAR",
+            "fr": "VRAI",
+            "da": "SAND",
+            "fi": "TOSI",
+            "sv": "SANT",
+            "pl": "PRAWDA",
+            "it": "VERO",
+            "es": "VERDADERO"
           }
         },
         {
           "id": "false",
           "title": {
             "en": "FALSE",
-            "no": "USANN"
+            "no": "USANN",
+            "de": "FALSCH",
+            "nl": "ONWAAR",
+            "fr": "FAUX",
+            "da": "FALSK",
+            "fi": "EPÄTOSI",
+            "sv": "FALSKT",
+            "pl": "FAŁSZ",
+            "it": "FALSO",
+            "es": "FALSO"
           }
         }
       ]

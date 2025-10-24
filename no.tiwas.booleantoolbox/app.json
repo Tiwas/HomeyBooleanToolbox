@@ -2,7 +2,7 @@
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.tiwas.booleantoolbox",
   "support": "https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "permissions": [
@@ -67,7 +67,7 @@
           "fr": "Formule changée en FAUX",
           "da": "Formel ændret til FALSK",
           "fi": "Kaava muuttui EPÄTODEKSI",
-          "sv": "Formel ändrades till OSANN",
+          "sv": "Formel ändrades till FALSK",
           "pl": "Formuła zmieniona na FAŁSZ",
           "it": "Formula cambiata in FALSO",
           "es": "Fórmula cambiada a FALSO"
@@ -80,7 +80,7 @@
           "fr": "Formule [[formula]] changée en FAUX",
           "da": "Formel [[formula]] ændret til FALSK",
           "fi": "Kaava [[formula]] muuttui EPÄTODEKSI",
-          "sv": "Formel [[formula]] ändrades till OSANN",
+          "sv": "Formel [[formula]] ändrades till FALSK",
           "pl": "Formuła [[formula]] zmieniona na FAŁSZ",
           "it": "Formula [[formula]] cambiata in FALSO",
           "es": "Fórmula [[formula]] cambiada a FALSO"
@@ -96,11 +96,29 @@
             "name": "formula",
             "title": {
               "en": "Formula",
-              "no": "Formel"
+              "no": "Formel",
+              "de": "Formel",
+              "nl": "Formule",
+              "fr": "Formule",
+              "da": "Formel",
+              "fi": "Kaava",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "it": "Formula",
+              "es": "Fórmula"
             },
             "placeholder": {
               "en": "Select formula",
-              "no": "Velg formel"
+              "no": "Velg formel",
+              "de": "Wähle Formel",
+              "nl": "Selecteer formule",
+              "fr": "Sélectionner la formule",
+              "da": "Vælg formel",
+              "fi": "Valitse kaava",
+              "sv": "Välj formel",
+              "pl": "Wybierz formułę",
+              "it": "Seleziona formula",
+              "es": "Seleccionar fórmula"
             }
           }
         ],
@@ -144,11 +162,29 @@
             "name": "formula",
             "title": {
               "en": "Formula",
-              "no": "Formel"
+              "no": "Formel",
+              "de": "Formel",
+              "nl": "Formule",
+              "fr": "Formule",
+              "da": "Formel",
+              "fi": "Kaava",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "it": "Formula",
+              "es": "Fórmula"
             },
             "placeholder": {
               "en": "Select formula",
-              "no": "Velg formel"
+              "no": "Velg formel",
+              "de": "Wähle Formel",
+              "nl": "Selecteer formule",
+              "fr": "Sélectionner la formule",
+              "da": "Vælg formel",
+              "fi": "Valitse kaava",
+              "sv": "Välj formel",
+              "pl": "Wybierz formułę",
+              "it": "Seleziona formula",
+              "es": "Seleccionar fórmula"
             }
           }
         ],
@@ -192,11 +228,29 @@
             "name": "formula",
             "title": {
               "en": "Formula",
-              "no": "Formel"
+              "no": "Formel",
+              "de": "Formel",
+              "nl": "Formule",
+              "fr": "Formule",
+              "da": "Formel",
+              "fi": "Kaava",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "it": "Formula",
+              "es": "Fórmula"
             },
             "placeholder": {
               "en": "Select formula",
-              "no": "Velg formel"
+              "no": "Velg formel",
+              "de": "Wähle Formel",
+              "nl": "Selecteer formule",
+              "fr": "Sélectionner la formule",
+              "da": "Vælg formel",
+              "fi": "Valitse kaava",
+              "sv": "Välj formel",
+              "pl": "Wybierz formułę",
+              "it": "Seleziona formula",
+              "es": "Seleccionar fórmula"
             }
           }
         ],
@@ -263,11 +317,29 @@
       {
         "title": {
           "en": "Formula !{{has|has not}} timed out",
-          "no": "Formel !{{har|har ikke}} fått timeout"
+          "no": "Formel !{{har|har ikke}} fått timeout",
+          "de": "Formel !{{hat|hat nicht}} Zeitüberschreitung",
+          "nl": "Formule !{{is|is niet}} verlopen",
+          "fr": "Formule !{{a|n'a pas}} expiré",
+          "da": "Formel !{{har|har ikke}} fået timeout",
+          "fi": "Kaava !{{on|ei ole}} aikakatkaistu",
+          "sv": "Formel !{{har|har inte}} fått timeout",
+          "pl": "Formuła !{{przekroczyła|nie przekroczyła}} limit czasu",
+          "it": "Formula !{{ha|non ha}} timeout",
+          "es": "Fórmula !{{ha|no ha}} expirado"
         },
         "titleFormatted": {
           "en": "Formula [[formula]] !{{has|has not}} timed out",
-          "no": "Formel [[formula]] !{{har|har ikke}} fått timeout"
+          "no": "Formel [[formula]] !{{har|har ikke}} fått timeout",
+          "de": "Formel [[formula]] !{{hat|hat nicht}} Zeitüberschreitung",
+          "nl": "Formule [[formula]] !{{is|is niet}} verlopen",
+          "fr": "Formule [[formula]] !{{a|n'a pas}} expiré",
+          "da": "Formel [[formula]] !{{har|har ikke}} fået timeout",
+          "fi": "Kaava [[formula]] !{{on|ei ole}} aikakatkaistu",
+          "sv": "Formel [[formula]] !{{har|har inte}} fått timeout",
+          "pl": "Formuła [[formula]] !{{przekroczyła|nie przekroczyła}} limit czasu",
+          "it": "Formula [[formula]] !{{ha|non ha}} timeout",
+          "es": "Fórmula [[formula]] !{{ha|no ha}} expirado"
         },
         "args": [
           {
@@ -280,11 +352,29 @@
             "name": "formula",
             "title": {
               "en": "Formula",
-              "no": "Formel"
+              "no": "Formel",
+              "de": "Formel",
+              "nl": "Formule",
+              "fr": "Formule",
+              "da": "Formel",
+              "fi": "Kaava",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "it": "Formula",
+              "es": "Fórmula"
             },
             "placeholder": {
               "en": "Select formula",
-              "no": "Velg formel"
+              "no": "Velg formel",
+              "de": "Wähle Formel",
+              "nl": "Selecteer formule",
+              "fr": "Sélectionner la formule",
+              "da": "Vælg formel",
+              "fi": "Valitse kaava",
+              "sv": "Välj formel",
+              "pl": "Wybierz formułę",
+              "it": "Seleziona formula",
+              "es": "Seleccionar fórmula"
             }
           }
         ],
@@ -293,11 +383,29 @@
       {
         "title": {
           "en": "Formula is FALSE",
-          "no": "Formel er USANN"
+          "no": "Formel er USANN",
+          "de": "Formel ist FALSCH",
+          "nl": "Formule is ONWAAR",
+          "fr": "La formule est FAUSSE",
+          "da": "Formel er FALSK",
+          "fi": "Kaava on EPÄTOSI",
+          "sv": "Formeln är FALSK",
+          "pl": "Formuła jest FAŁSZYWA",
+          "it": "Formula è FALSA",
+          "es": "Fórmula es FALSA"
         },
         "titleFormatted": {
           "en": "Formula [[formula]] is FALSE",
-          "no": "Formel [[formula]] er USANN"
+          "no": "Formel [[formula]] er USANN",
+          "de": "Formel [[formula]] ist FALSCH",
+          "nl": "Formule [[formula]] is ONWAAR",
+          "fr": "La formule [[formula]] est FAUSSE",
+          "da": "Formel [[formula]] er FALSK",
+          "fi": "Kaava [[formula]] on EPÄTOSI",
+          "sv": "Formeln [[formula]] är FALSK",
+          "pl": "Formuła [[formula]] jest FAŁSZYWA",
+          "it": "Formula [[formula]] è FALSA",
+          "es": "Fórmula [[formula]] es FALSA"
         },
         "args": [
           {
@@ -310,11 +418,29 @@
             "name": "formula",
             "title": {
               "en": "Formula",
-              "no": "Formel"
+              "no": "Formel",
+              "de": "Formel",
+              "nl": "Formule",
+              "fr": "Formule",
+              "da": "Formel",
+              "fi": "Kaava",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "it": "Formula",
+              "es": "Fórmula"
             },
             "placeholder": {
               "en": "Select formula",
-              "no": "Velg formel"
+              "no": "Velg formel",
+              "de": "Wähle Formel",
+              "nl": "Selecteer formule",
+              "fr": "Sélectionner la formule",
+              "da": "Vælg formel",
+              "fi": "Valitse kaava",
+              "sv": "Välj formel",
+              "pl": "Wybierz formułę",
+              "it": "Seleziona formula",
+              "es": "Seleccionar fórmula"
             }
           }
         ],
@@ -323,11 +449,29 @@
       {
         "title": {
           "en": "Formula is !{{TRUE|FALSE}}",
-          "no": "Formel er !{{SANN|USANN}}"
+          "no": "Formel er !{{SANN|USANN}}",
+          "de": "Formel ist !{{WAHR|FALSCH}}",
+          "nl": "Formule is !{{WAAR|ONWAAR}}",
+          "fr": "La formule est !{{VRAIE|FAUSSE}}",
+          "da": "Formel er !{{SAND|FALSK}}",
+          "fi": "Kaava on !{{TOSI|EPÄTOSI}}",
+          "sv": "Formeln är !{{SANN|FALSK}}",
+          "pl": "Formuła jest !{{PRAWDA|FAŁSZ}}",
+          "it": "Formula è !{{VERA|FALSA}}",
+          "es": "Fórmula es !{{VERDADERA|FALSA}}"
         },
         "titleFormatted": {
           "en": "Formula [[formula]] is !{{TRUE|FALSE}}",
-          "no": "Formel [[formula]] er !{{SANN|USANN}}"
+          "no": "Formel [[formula]] er !{{SANN|USANN}}",
+          "de": "Formel [[formula]] ist !{{WAHR|FALSCH}}",
+          "nl": "Formule [[formula]] is !{{WAAR|ONWAAR}}",
+          "fr": "La formule [[formula]] est !{{VRAIE|FAUSSE}}",
+          "da": "Formel [[formula]] er !{{SAND|FALSK}}",
+          "fi": "Kaava [[formula]] on !{{TOSI|EPÄTOSI}}",
+          "sv": "Formeln [[formula]] är !{{SANN|FALSK}}",
+          "pl": "Formuła [[formula]] jest !{{PRAWDA|FAŁSZ}}",
+          "it": "Formula [[formula]] è !{{VERA|FALSA}}",
+          "es": "Fórmula [[formula]] es !{{VERDADERA|FALSA}}"
         },
         "args": [
           {
@@ -340,11 +484,29 @@
             "name": "formula",
             "title": {
               "en": "Formula",
-              "no": "Formel"
+              "no": "Formel",
+              "de": "Formel",
+              "nl": "Formule",
+              "fr": "Formule",
+              "da": "Formel",
+              "fi": "Kaava",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "it": "Formula",
+              "es": "Fórmula"
             },
             "placeholder": {
               "en": "Select formula",
-              "no": "Velg formel"
+              "no": "Velg formel",
+              "de": "Wähle Formel",
+              "nl": "Selecteer formule",
+              "fr": "Sélectionner la formule",
+              "da": "Vælg formel",
+              "fi": "Valitse kaava",
+              "sv": "Välj formel",
+              "pl": "Wybierz formułę",
+              "it": "Seleziona formula",
+              "es": "Seleccionar fórmula"
             }
           }
         ],
@@ -388,11 +550,29 @@
             "name": "formula",
             "title": {
               "en": "Formula",
-              "no": "Formel"
+              "no": "Formel",
+              "de": "Formel",
+              "nl": "Formule",
+              "fr": "Formule",
+              "da": "Formel",
+              "fi": "Kaava",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "it": "Formula",
+              "es": "Fórmula"
             },
             "placeholder": {
               "en": "Select formula",
-              "no": "Velg formel"
+              "no": "Velg formel",
+              "de": "Wähle Formel",
+              "nl": "Selecteer formule",
+              "fr": "Sélectionner la formule",
+              "da": "Vælg formel",
+              "fi": "Valitse kaava",
+              "sv": "Välj formel",
+              "pl": "Wybierz formułę",
+              "it": "Seleziona formula",
+              "es": "Seleccionar fórmula"
             }
           },
           {
@@ -400,21 +580,48 @@
             "name": "what_is",
             "title": {
               "en": "Value",
-              "no": "Verdi"
+              "no": "Verdi",
+              "de": "Wert",
+              "nl": "Waarde",
+              "fr": "Valeur",
+              "da": "Værdi",
+              "fi": "Arvo",
+              "sv": "Värde",
+              "pl": "Wartość",
+              "it": "Valore",
+              "es": "Valor"
             },
             "values": [
               {
                 "id": "true",
                 "title": {
                   "en": "TRUE",
-                  "no": "SANN"
+                  "no": "SANN",
+                  "de": "WAHR",
+                  "nl": "WAAR",
+                  "fr": "VRAI",
+                  "da": "SAND",
+                  "fi": "TOSI",
+                  "sv": "SANT",
+                  "pl": "PRAWDA",
+                  "it": "VERO",
+                  "es": "VERDADERO"
                 }
               },
               {
                 "id": "false",
                 "title": {
                   "en": "FALSE",
-                  "no": "USANN"
+                  "no": "USANN",
+                  "de": "FALSCH",
+                  "nl": "ONWAAR",
+                  "fr": "FAUX",
+                  "da": "FALSK",
+                  "fi": "EPÄTOSI",
+                  "sv": "FALSKT",
+                  "pl": "FAŁSZ",
+                  "it": "FALSO",
+                  "es": "FALSO"
                 }
               }
             ]
@@ -425,11 +632,29 @@
       {
         "title": {
           "en": "Device !{{has|has no}} error",
-          "no": "Enhet !{{har|har ingen}} feil"
+          "no": "Enhet !{{har|har ingen}} feil",
+          "de": "Gerät !{{hat|hat keinen}} Fehler",
+          "nl": "Apparaat !{{heeft|heeft geen}} fout",
+          "fr": "Appareil !{{a|n'a pas}} d'erreur",
+          "da": "Enhed !{{har|har ingen}} fejl",
+          "fi": "Laite !{{on|ei ole}} virheellinen",
+          "sv": "Enhet !{{har|har inget}} fel",
+          "pl": "Urządzenie !{{ma|nie ma}} błędu",
+          "it": "Dispositivo !{{ha|non ha}} errori",
+          "es": "Dispositivo !{{tiene|no tiene}} error"
         },
         "titleFormatted": {
           "en": "Device !{{has|has no}} error",
-          "no": "Enhet !{{har|har ingen}} feil"
+          "no": "Enhet !{{har|har ingen}} feil",
+          "de": "Gerät !{{hat|hat keinen}} Fehler",
+          "nl": "Apparaat !{{heeft|heeft geen}} fout",
+          "fr": "Appareil !{{a|n'a pas}} d'erreur",
+          "da": "Enhed !{{har|har ingen}} fejl",
+          "fi": "Laite !{{on|ei ole}} virheellinen",
+          "sv": "Enhet !{{har|har inget}} fel",
+          "pl": "Urządzenie !{{ma|nie ma}} błędu",
+          "it": "Dispositivo !{{ha|non ha}} errori",
+          "es": "Dispositivo !{{tiene|no tiene}} error"
         },
         "args": [
           {
@@ -473,11 +698,29 @@
             "name": "text_input",
             "title": {
               "en": "Error message",
-              "no": "Feilmelding"
+              "no": "Feilmelding",
+              "de": "Fehlermeldung",
+              "nl": "Foutmelding",
+              "fr": "Message d'erreur",
+              "da": "Fejlmeddelelse",
+              "fi": "Virheilmoitus",
+              "sv": "Felmeddelande",
+              "pl": "Komunikat o błędzie",
+              "it": "Messaggio di errore",
+              "es": "Mensaje de error"
             },
             "placeholder": {
               "en": "Enter error message or token",
-              "no": "Skriv inn feilmelding eller token"
+              "no": "Skriv inn feilmelding eller token",
+              "de": "Fehlermeldung oder Token eingeben",
+              "nl": "Voer foutmelding of token in",
+              "fr": "Entrez le message d'erreur ou le jeton",
+              "da": "Indtast fejlmeddelelse eller token",
+              "fi": "Anna virheilmoitus tai tunniste",
+              "sv": "Ange felmeddelande eller token",
+              "pl": "Wprowadź komunikat o błędzie lub token",
+              "it": "Inserisci messaggio di errore o token",
+              "es": "Introducir mensaje de error o token"
             }
           }
         ],
@@ -523,11 +766,29 @@
             "name": "formula",
             "title": {
               "en": "Formula",
-              "no": "Formel"
+              "no": "Formel",
+              "de": "Formel",
+              "nl": "Formule",
+              "fr": "Formule",
+              "da": "Formel",
+              "fi": "Kaava",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "it": "Formula",
+              "es": "Fórmula"
             },
             "placeholder": {
               "en": "Select formula",
-              "no": "Velg formel"
+              "no": "Velg formel",
+              "de": "Wähle Formel",
+              "nl": "Selecteer formule",
+              "fr": "Sélectionner la formule",
+              "da": "Vælg formel",
+              "fi": "Valitse kaava",
+              "sv": "Välj formel",
+              "pl": "Wybierz formułę",
+              "it": "Seleziona formula",
+              "es": "Seleccionar fórmula"
             }
           }
         ],
@@ -602,11 +863,29 @@
             "name": "input",
             "title": {
               "en": "Input value",
-              "no": "Inngangsverdi"
+              "no": "Inngangsverdi",
+              "de": "Eingangswert",
+              "nl": "Invoerwaarde",
+              "fr": "Valeur d'entrée",
+              "da": "Indgangsværdi",
+              "fi": "Tuloarvo",
+              "sv": "Ingångsvärde",
+              "pl": "Wartość wejściowa",
+              "it": "Valore di input",
+              "es": "Valor de entrada"
             },
             "placeholder": {
               "en": "Enter number",
-              "no": "Skriv inn tall"
+              "no": "Skriv inn tall",
+              "de": "Nummer eingeben",
+              "nl": "Voer nummer in",
+              "fr": "Entrez un nombre",
+              "da": "Indtast tal",
+              "fi": "Anna numero",
+              "sv": "Ange nummer",
+              "pl": "Wprowadź numer",
+              "it": "Inserisci numero",
+              "es": "Introducir número"
             }
           },
           {
@@ -614,11 +893,29 @@
             "name": "rules",
             "title": {
               "en": "Rules",
-              "no": "Regler"
+              "no": "Regler",
+              "de": "Regeln",
+              "nl": "Regels",
+              "fr": "Règles",
+              "da": "Regler",
+              "fi": "Säännöt",
+              "sv": "Regler",
+              "pl": "Reguły",
+              "it": "Regole",
+              "es": "Reglas"
             },
             "placeholder": {
               "en": "min,max,output; ...",
-              "no": "min,maks,utgang; ..."
+              "no": "min,maks,utgang; ...",
+              "de": "min,max,ausgabe; ...",
+              "nl": "min,max,uitvoer; ...",
+              "fr": "min,max,sortie; ...",
+              "da": "min,maks,output; ...",
+              "fi": "min,max,lähtö; ...",
+              "sv": "min,max,utgång; ...",
+              "pl": "min,max,wyjście; ...",
+              "it": "min,max,uscita; ...",
+              "es": "min,max,salida; ..."
             }
           },
           {
@@ -626,7 +923,16 @@
             "name": "op1",
             "title": {
               "en": "First operator",
-              "no": "Første operator"
+              "no": "Første operator",
+              "de": "Erster Operator",
+              "nl": "Eerste operator",
+              "fr": "Premier opérateur",
+              "da": "Første operatør",
+              "fi": "Ensimmäinen operaattori",
+              "sv": "Första operator",
+              "pl": "Pierwszy operator",
+              "it": "Primo operatore",
+              "es": "Primer operador"
             },
             "values": [
               {
@@ -664,7 +970,16 @@
             "name": "op2",
             "title": {
               "en": "Second operator",
-              "no": "Andre operator"
+              "no": "Andre operator",
+              "de": "Zweiter Operator",
+              "nl": "Tweede operator",
+              "fr": "Deuxième opérateur",
+              "da": "Anden operatør",
+              "fi": "Toinen operaattori",
+              "sv": "Andra operator",
+              "pl": "Drugi operator",
+              "it": "Secondo operatore",
+              "es": "Segundo operador"
             },
             "values": [
               {
@@ -702,21 +1017,48 @@
             "name": "logical_op",
             "title": {
               "en": "Logical operator",
-              "no": "Logisk operator"
+              "no": "Logisk operator",
+              "de": "Logischer Operator",
+              "nl": "Logische operator",
+              "fr": "Opérateur logique",
+              "da": "Logisk operatør",
+              "fi": "Looginen operaattori",
+              "sv": "Logisk operator",
+              "pl": "Operator logiczny",
+              "it": "Operatore logico",
+              "es": "Operador lógico"
             },
             "values": [
               {
                 "id": "AND",
                 "title": {
                   "en": "AND",
-                  "no": "OG"
+                  "no": "OG",
+                  "de": "UND",
+                  "nl": "EN",
+                  "fr": "ET",
+                  "da": "OG",
+                  "fi": "JA",
+                  "sv": "OCH",
+                  "pl": "I",
+                  "it": "E",
+                  "es": "Y"
                 }
               },
               {
                 "id": "OR",
                 "title": {
                   "en": "OR",
-                  "no": "ELLER"
+                  "no": "ELLER",
+                  "de": "ODER",
+                  "nl": "OF",
+                  "fr": "OU",
+                  "da": "ELLER",
+                  "fi": "TAI",
+                  "sv": "ELLER",
+                  "pl": "LUB",
+                  "it": "O",
+                  "es": "O"
                 }
               }
             ]
@@ -728,7 +1070,16 @@
             "type": "number",
             "title": {
               "en": "Output value",
-              "no": "Utgangsverdi"
+              "no": "Utgangsverdi",
+              "de": "Ausgabewert",
+              "nl": "Uitvoerwaarde",
+              "fr": "Valeur de sortie",
+              "da": "Udgangsværdi",
+              "fi": "Lähtöarvo",
+              "sv": "Utgångsvärde",
+              "pl": "Wartość wyjściowa",
+              "it": "Valore di output",
+              "es": "Valor de salida"
             },
             "example": 100
           },
@@ -737,7 +1088,16 @@
             "type": "string",
             "title": {
               "en": "Error message",
-              "no": "Feilmelding"
+              "no": "Feilmelding",
+              "de": "Fehlermeldung",
+              "nl": "Foutmelding",
+              "fr": "Message d'erreur",
+              "da": "Fejlmeddelelse",
+              "fi": "Virheilmoitus",
+              "sv": "Felmeddelande",
+              "pl": "Komunikat o błędzie",
+              "it": "Messaggio di errore",
+              "es": "Mensaje de error"
             },
             "example": "No error"
           }
@@ -747,11 +1107,29 @@
       {
         "title": {
           "en": "Evaluate specific formula",
-          "no": "Evaluer spesifikk formel"
+          "no": "Evaluer spesifikk formel",
+          "de": "Spezifische Formel auswerten",
+          "nl": "Specifieke formule evalueren",
+          "fr": "Évaluer la formule spécifique",
+          "da": "Evaluer specifik formel",
+          "fi": "Arvioi tietty kaava",
+          "sv": "Utvärdera specifik formel",
+          "pl": "Oceń konkretną formułę",
+          "it": "Valuta formula specifica",
+          "es": "Evaluar fórmula específica"
         },
         "titleFormatted": {
           "en": "Evaluate formula [[formula]]",
-          "no": "Evaluer formel [[formula]]"
+          "no": "Evaluer formel [[formula]]",
+          "de": "Formel [[formula]] auswerten",
+          "nl": "Formule [[formula]] evalueren",
+          "fr": "Évaluer la formule [[formula]]",
+          "da": "Evaluer formel [[formula]]",
+          "fi": "Arvioi kaava [[formula]]",
+          "sv": "Utvärdera formel [[formula]]",
+          "pl": "Oceń formułę [[formula]]",
+          "it": "Valuta formula [[formula]]",
+          "es": "Evaluar fórmula [[formula]]"
         },
         "args": [
           {
@@ -764,11 +1142,29 @@
             "name": "formula",
             "title": {
               "en": "Formula",
-              "no": "Formel"
+              "no": "Formel",
+              "de": "Formel",
+              "nl": "Formule",
+              "fr": "Formule",
+              "da": "Formel",
+              "fi": "Kaava",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "it": "Formula",
+              "es": "Fórmula"
             },
             "placeholder": {
               "en": "Select formula",
-              "no": "Velg formel"
+              "no": "Velg formel",
+              "de": "Wähle Formel",
+              "nl": "Selecteer formule",
+              "fr": "Sélectionner la formule",
+              "da": "Vælg formel",
+              "fi": "Valitse kaava",
+              "sv": "Välj formel",
+              "pl": "Wybierz formułę",
+              "it": "Seleziona formula",
+              "es": "Seleccionar fórmula"
             }
           }
         ],
@@ -777,11 +1173,29 @@
       {
         "title": {
           "en": "Re-evaluate all formulas",
-          "no": "Re-evaluer alle formler"
+          "no": "Re-evaluer alle formler",
+          "de": "Alle Formeln neu bewerten",
+          "nl": "Alle formules opnieuw evalueren",
+          "fr": "Réévaluer toutes les formules",
+          "da": "Gentag evaluering af alle formler",
+          "fi": "Arvioi kaikki kaavat uudelleen",
+          "sv": "Omvärdera alla formler",
+          "pl": "Ponownie oceń wszystkie formuły",
+          "it": "Rivaluta tutte le formule",
+          "es": "Re-evaluar todas las fórmulas"
         },
         "titleFormatted": {
           "en": "Re-evaluate all formulas",
-          "no": "Re-evaluer alle formler"
+          "no": "Re-evaluer alle formler",
+          "de": "Alle Formeln neu bewerten",
+          "nl": "Alle formules opnieuw evalueren",
+          "fr": "Réévaluer toutes les formules",
+          "da": "Gentag evaluering af alle formler",
+          "fi": "Arvioi kaikki kaavat uudelleen",
+          "sv": "Omvärdera alla formler",
+          "pl": "Ponownie oceń wszystkie formuły",
+          "it": "Rivaluta tutte le formule",
+          "es": "Re-evaluar todas las fórmulas"
         },
         "args": [
           {
@@ -795,11 +1209,29 @@
       {
         "title": {
           "en": "Set all inputs from JSON",
-          "no": "Sett alle innganger fra JSON"
+          "no": "Sett alle innganger fra JSON",
+          "de": "Alle Eingänge von JSON setzen",
+          "nl": "Alle ingangen instellen vanuit JSON",
+          "fr": "Définir toutes les entrées depuis JSON",
+          "da": "Indstil alle indgange fra JSON",
+          "fi": "Aseta kaikki tulot JSON-muodosta",
+          "sv": "Ställ in alla ingångar från JSON",
+          "pl": "Ustaw wszystkie wejścia z JSON",
+          "it": "Imposta tutti gli input da JSON",
+          "es": "Establecer todas las entradas desde JSON"
         },
         "titleFormatted": {
           "en": "Set all inputs from JSON: [[values]]",
-          "no": "Sett alle innganger fra JSON: [[values]]"
+          "no": "Sett alle innganger fra JSON: [[values]]",
+          "de": "Alle Eingänge von JSON setzen: [[values]]",
+          "nl": "Alle ingangen instellen vanuit JSON: [[values]]",
+          "fr": "Définir toutes les entrées depuis JSON : [[values]]",
+          "da": "Indstil alle indgange fra JSON: [[values]]",
+          "fi": "Aseta kaikki tulot JSON-muodosta: [[values]]",
+          "sv": "Ställ in alla ingångar från JSON: [[values]]",
+          "pl": "Ustaw wszystkie wejścia z JSON: [[values]]",
+          "it": "Imposta tutti gli input da JSON: [[values]]",
+          "es": "Establecer todas las entradas desde JSON: [[values]]"
         },
         "args": [
           {
@@ -812,11 +1244,29 @@
             "name": "values",
             "title": {
               "en": "JSON values",
-              "no": "JSON-verdier"
+              "no": "JSON-verdier",
+              "de": "JSON-Werte",
+              "nl": "JSON-waarden",
+              "fr": "Valeurs JSON",
+              "da": "JSON-værdier",
+              "fi": "JSON-arvot",
+              "sv": "JSON-värden",
+              "pl": "Wartości JSON",
+              "it": "Valori JSON",
+              "es": "Valores JSON"
             },
             "placeholder": {
               "en": "{\"A\": true, \"B\": false}",
-              "no": "{\"A\": true, \"B\": false}"
+              "no": "{\"A\": true, \"B\": false}",
+              "de": "{\"A\": true, \"B\": false}",
+              "nl": "{\"A\": true, \"B\": false}",
+              "fr": "{\"A\": true, \"B\": false}",
+              "da": "{\"A\": true, \"B\": false}",
+              "fi": "{\"A\": true, \"B\": false}",
+              "sv": "{\"A\": true, \"B\": false}",
+              "pl": "{\"A\": true, \"B\": false}",
+              "it": "{\"A\": true, \"B\": false}",
+              "es": "{\"A\": true, \"B\": false}"
             }
           }
         ],
@@ -825,11 +1275,29 @@
       {
         "title": {
           "en": "Set input value (all formulas)",
-          "no": "Sett inngangsverdi (alle formler)"
+          "no": "Sett inngangsverdi (alle formler)",
+          "de": "Eingangswert setzen (alle Formeln)",
+          "nl": "Ingangswaarde instellen (alle formules)",
+          "fr": "Définir la valeur d'entrée (toutes formules)",
+          "da": "Indstil indgangsværdi (alle formler)",
+          "fi": "Aseta tuloarvo (kaikki kaavat)",
+          "sv": "Ställ in ingångsvärde (alla formler)",
+          "pl": "Ustaw wartość wejściową (wszystkie formuły)",
+          "it": "Imposta valore input (tutte le formule)",
+          "es": "Establecer valor de entrada (todas las fórmulas)"
         },
         "titleFormatted": {
           "en": "Set input [[input]] to [[value]]",
-          "no": "Sett inngang [[input]] til [[value]]"
+          "no": "Sett inngang [[input]] til [[value]]",
+          "de": "Eingang [[input]] auf [[value]] setzen",
+          "nl": "Ingang [[input]] instellen op [[value]]",
+          "fr": "Mettre l'entrée [[input]] à [[value]]",
+          "da": "Indstil indgang [[input]] til [[value]]",
+          "fi": "Aseta tulo [[input]] arvoon [[value]]",
+          "sv": "Ställ in ingång [[input]] till [[value]]",
+          "pl": "Ustaw wejście [[input]] na [[value]]",
+          "it": "Imposta input [[input]] a [[value]]",
+          "es": "Establecer entrada [[input]] a [[value]]"
         },
         "args": [
           {
@@ -842,11 +1310,29 @@
             "name": "input",
             "title": {
               "en": "Input",
-              "no": "Inngang"
+              "no": "Inngang",
+              "de": "Eingang",
+              "nl": "Ingang",
+              "fr": "Entrée",
+              "da": "Indgang",
+              "fi": "Tulo",
+              "sv": "Ingång",
+              "pl": "Wejście",
+              "it": "Input",
+              "es": "Entrada"
             },
             "placeholder": {
               "en": "Select input",
-              "no": "Velg inngang"
+              "no": "Velg inngang",
+              "de": "Eingang wählen",
+              "nl": "Selecteer ingang",
+              "fr": "Sélectionner l'entrée",
+              "da": "Vælg indgang",
+              "fi": "Valitse tulo",
+              "sv": "Välj ingång",
+              "pl": "Wybierz wejście",
+              "it": "Seleziona input",
+              "es": "Seleccionar entrada"
             }
           },
           {
@@ -854,21 +1340,48 @@
             "name": "value",
             "title": {
               "en": "Value",
-              "no": "Verdi"
+              "no": "Verdi",
+              "de": "Wert",
+              "nl": "Waarde",
+              "fr": "Valeur",
+              "da": "Værdi",
+              "fi": "Arvo",
+              "sv": "Värde",
+              "pl": "Wartość",
+              "it": "Valore",
+              "es": "Valor"
             },
             "values": [
               {
                 "id": "true",
                 "title": {
                   "en": "TRUE",
-                  "no": "SANN"
+                  "no": "SANN",
+                  "de": "WAHR",
+                  "nl": "WAAR",
+                  "fr": "VRAI",
+                  "da": "SAND",
+                  "fi": "TOSI",
+                  "sv": "SANT",
+                  "pl": "PRAWDA",
+                  "it": "VERO",
+                  "es": "VERDADERO"
                 }
               },
               {
                 "id": "false",
                 "title": {
                   "en": "FALSE",
-                  "no": "USANN"
+                  "no": "USANN",
+                  "de": "FALSCH",
+                  "nl": "ONWAAR",
+                  "fr": "FAUX",
+                  "da": "FALSK",
+                  "fi": "EPÄTOSI",
+                  "sv": "FALSKT",
+                  "pl": "FAŁSZ",
+                  "it": "FALSO",
+                  "es": "FALSO"
                 }
               }
             ]
@@ -879,11 +1392,29 @@
       {
         "title": {
           "en": "Set input value for formula",
-          "no": "Sett inngangsverdi for formel"
+          "no": "Sett inngangsverdi for formel",
+          "de": "Eingangswert für Formel setzen",
+          "nl": "Ingangswaarde instellen voor formule",
+          "fr": "Définir la valeur d'entrée pour la formule",
+          "da": "Indstil indgangsværdi for formel",
+          "fi": "Aseta tuloarvo kaavalle",
+          "sv": "Ställ in ingångsvärde för formel",
+          "pl": "Ustaw wartość wejściową dla formuły",
+          "it": "Imposta valore input per formula",
+          "es": "Establecer valor de entrada para fórmula"
         },
         "titleFormatted": {
           "en": "Set input [[input]] to [[value]] for formula [[formula]]",
-          "no": "Sett inngang [[input]] til [[value]] for formel [[formula]]"
+          "no": "Sett inngang [[input]] til [[value]] for formel [[formula]]",
+          "de": "Eingang [[input]] auf [[value]] für Formel [[formula]] setzen",
+          "nl": "Ingang [[input]] instellen op [[value]] voor formule [[formula]]",
+          "fr": "Mettre l'entrée [[input]] à [[value]] pour la formule [[formula]]",
+          "da": "Indstil indgang [[input]] til [[value]] for formel [[formula]]",
+          "fi": "Aseta tulo [[input]] arvoon [[value]] kaavalle [[formula]]",
+          "sv": "Ställ in ingång [[input]] till [[value]] för formel [[formula]]",
+          "pl": "Ustaw wejście [[input]] na [[value]] dla formuły [[formula]]",
+          "it": "Imposta input [[input]] a [[value]] per formula [[formula]]",
+          "es": "Establecer entrada [[input]] a [[value]] para fórmula [[formula]]"
         },
         "args": [
           {
@@ -896,11 +1427,29 @@
             "name": "formula",
             "title": {
               "en": "Formula",
-              "no": "Formel"
+              "no": "Formel",
+              "de": "Formel",
+              "nl": "Formule",
+              "fr": "Formule",
+              "da": "Formel",
+              "fi": "Kaava",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "it": "Formula",
+              "es": "Fórmula"
             },
             "placeholder": {
               "en": "Select formula",
-              "no": "Velg formel"
+              "no": "Velg formel",
+              "de": "Wähle Formel",
+              "nl": "Selecteer formule",
+              "fr": "Sélectionner la formule",
+              "da": "Vælg formel",
+              "fi": "Valitse kaava",
+              "sv": "Välj formel",
+              "pl": "Wybierz formułę",
+              "it": "Seleziona formula",
+              "es": "Seleccionar fórmula"
             }
           },
           {
@@ -908,11 +1457,29 @@
             "name": "input",
             "title": {
               "en": "Input",
-              "no": "Inngang"
+              "no": "Inngang",
+              "de": "Eingang",
+              "nl": "Ingang",
+              "fr": "Entrée",
+              "da": "Indgang",
+              "fi": "Tulo",
+              "sv": "Ingång",
+              "pl": "Wejście",
+              "it": "Input",
+              "es": "Entrada"
             },
             "placeholder": {
               "en": "Select input",
-              "no": "Velg inngang"
+              "no": "Velg inngang",
+              "de": "Eingang wählen",
+              "nl": "Selecteer ingang",
+              "fr": "Sélectionner l'entrée",
+              "da": "Vælg indgang",
+              "fi": "Valitse tulo",
+              "sv": "Välj ingång",
+              "pl": "Wybierz wejście",
+              "it": "Seleziona input",
+              "es": "Seleccionar entrada"
             }
           },
           {
@@ -920,21 +1487,48 @@
             "name": "value",
             "title": {
               "en": "Value",
-              "no": "Verdi"
+              "no": "Verdi",
+              "de": "Wert",
+              "nl": "Waarde",
+              "fr": "Valeur",
+              "da": "Værdi",
+              "fi": "Arvo",
+              "sv": "Värde",
+              "pl": "Wartość",
+              "it": "Valore",
+              "es": "Valor"
             },
             "values": [
               {
                 "id": "true",
                 "title": {
                   "en": "TRUE",
-                  "no": "SANN"
+                  "no": "SANN",
+                  "de": "WAHR",
+                  "nl": "WAAR",
+                  "fr": "VRAI",
+                  "da": "SAND",
+                  "fi": "TOSI",
+                  "sv": "SANT",
+                  "pl": "PRAWDA",
+                  "it": "VERO",
+                  "es": "VERDADERO"
                 }
               },
               {
                 "id": "false",
                 "title": {
                   "en": "FALSE",
-                  "no": "USANN"
+                  "no": "USANN",
+                  "de": "FALSCH",
+                  "nl": "ONWAAR",
+                  "fr": "FAUX",
+                  "da": "FALSK",
+                  "fi": "EPÄTOSI",
+                  "sv": "FALSKT",
+                  "pl": "FAŁSZ",
+                  "it": "FALSO",
+                  "es": "FALSO"
                 }
               }
             ]

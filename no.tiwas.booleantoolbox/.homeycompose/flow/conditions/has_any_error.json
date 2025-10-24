@@ -1,11 +1,29 @@
 {
   "title": {
     "en": "Device !{{has|has no}} error",
-    "no": "Enhet !{{har|har ingen}} feil"
+    "no": "Enhet !{{har|har ingen}} feil",
+    "de": "Gerät !{{hat|hat keinen}} Fehler",
+    "nl": "Apparaat !{{heeft|heeft geen}} fout",
+    "fr": "Appareil !{{a|n'a pas}} d'erreur",
+    "da": "Enhed !{{har|har ingen}} fejl",
+    "fi": "Laite !{{on|ei ole}} virheellinen",
+    "sv": "Enhet !{{har|har inget}} fel",
+    "pl": "Urządzenie !{{ma|nie ma}} błędu",
+    "it": "Dispositivo !{{ha|non ha}} errori",
+    "es": "Dispositivo !{{tiene|no tiene}} error"
   },
   "titleFormatted": {
     "en": "Device !{{has|has no}} error",
-    "no": "Enhet !{{har|har ingen}} feil"
+    "no": "Enhet !{{har|har ingen}} feil",
+    "de": "Gerät !{{hat|hat keinen}} Fehler",
+    "nl": "Apparaat !{{heeft|heeft geen}} fout",
+    "fr": "Appareil !{{a|n'a pas}} d'erreur",
+    "da": "Enhed !{{har|har ingen}} fejl",
+    "fi": "Laite !{{on|ei ole}} virheellinen",
+    "sv": "Enhet !{{har|har inget}} fel",
+    "pl": "Urządzenie !{{ma|nie ma}} błędu",
+    "it": "Dispositivo !{{ha|non ha}} errori",
+    "es": "Dispositivo !{{tiene|no tiene}} error"
   },
   "args": [
     {

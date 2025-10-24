@@ -13,6 +13,7 @@ node_modules/
 .DS_Store
 node_modules/
 npm-debug.log
+patch-files/
 
 # Old version
 no.tiwas.booleantoolbox.old/

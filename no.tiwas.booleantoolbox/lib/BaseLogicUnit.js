@@ -12,18 +12,21 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     } catch (e) {
       const msg = e?.message || '';
       if (e?.statusCode === 404 || /not\s*found/i.test(msg)) {
-        this.logger.debug(`(safe) Skipping ${cap} – device no longer exists.`);
+        // FIKS: Send nøkkel og data-objekt
+        this.logger.debug('device.capability_skip_deleted', { capability: cap });
         return;
       }
-      this.logger.error(`Capability update failed for ${cap}:`, msg);
+      // FIKS: Send nøkkel og data-objekt (msg er ikke et Error-objekt)
+      this.logger.error('device.capability_update_failed', { capability: cap, message: msg });
     }
   }
 
   async onInit() {
-    const driverName = this.constructor.name || 'LogicDriver';
+    const driverName = `Device: ${this.driver.id}`;
     this.logger = new Logger(this, driverName);
 
-    this.logger.device(`Logic Unit '${this.getName()}' initializing.`);
+    // FIKS: Send nøkkel og data-objekt
+    this.logger.device('device.ready', { name: this.getName() });
     if (!this.hasCapability('onoff')) {
       await this.addCapability('onoff');
     }
@@ -69,14 +72,15 @@ module.exports = class BaseLogicUnit extends Homey.Device {
         });
       });
     } catch (e) {
-      this.logger.error('Failed to parse formulas:', e);
+      // FIKS: Send nøkkel og error-objekt
+      this.logger.error('errors.invalid_formula', e);
       this.formulas = [];
     }
 
     if (this.formulas.length === 0) {
       const defaultFormula = {
         id: 'formula_1',
-        name: 'Formula 1',
+        name: this.homey.__('formula.default_name_alt'),
         expression: this.getDefaultExpression(),
         enabled: true,
         timeout: 0,
@@ -106,7 +110,7 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       .map(f => ({
         id: f.id,
         name: f.name,
-        description: f.expression ?? '(no expression)'
+        description: f.expression ?? this.homey.__('formula.no_expression')
       }));
   }
 
@@ -119,7 +123,7 @@ module.exports = class BaseLogicUnit extends Homey.Device {
 
   validateExpression(expression) {
     if (!expression || expression.trim() === '') {
-      return { valid: false, error: 'Expression cannot be empty' };
+      return { valid: false, error: this.homey.__('formula.invalid') };
     }
 
     const inputs = this.getAvailableInputsUppercase();
@@ -140,16 +144,16 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     for (const ch of testExpr) {
       if (ch === '(') depth++;
       else if (ch === ')') depth--;
-      if (depth < 0) return { valid: false, error: 'Unbalanced parentheses' };
+      if (depth < 0) return { valid: false, error: this.homey.__('formula.syntax_error') };
     }
-    if (depth !== 0) return { valid: false, error: 'Unbalanced parentheses' };
+    if (depth !== 0) return { valid: false, error: this.homey.__('formula.syntax_error') };
 
     try {
       const fn = new Function(`return ${testExpr}`);
       void fn();
       return { valid: true };
     } catch (e) {
-      return { valid: false, error: `Invalid expression syntax: ${e.message}` };
+      return { valid: false, error: this.homey.__('formula.syntax_error') };
     }
   }
 
@@ -165,26 +169,28 @@ module.exports = class BaseLogicUnit extends Homey.Device {
 
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula) {
-      this.logger.warn(`Formula '${formulaId}' not found.`);
+      // FIKS: Send nøkkel
+      this.logger.warn('errors.invalid_formula');
       return null;
     }
 
     if (formula.firstImpression && formula.lockedInputs[inputId]) {
-      this.logger.debug(
-        `Input '${inputId.toUpperCase()}' is locked for '${formula.name}' (first impression) – ignoring update`
-      );
+      // FIKS: Send nøkkel
+      this.logger.debug('inputs.locked');
       return formula.result;
     }
 
     const oldValue = formula.inputStates[inputId];
-    this.logger.input(`Setting input '${inputId.toUpperCase()}' to ${value} for '${formula.name}' (was: ${oldValue})`);
+    // FIKS: Send nøkkel
+    this.logger.input('notifications.input_received');
 
     formula.inputStates[inputId] = value;
     formula.timedOut = false;
 
     if (formula.firstImpression && value !== 'undefined' && !formula.lockedInputs[inputId]) {
       formula.lockedInputs[inputId] = true;
-      this.logger.debug(`🔒 Input '${inputId.toUpperCase()}' locked at value ${value} (first impression)`);
+      // FIKS: Send nøkkel
+      this.logger.debug('inputs.locked');
     }
 
     if (value !== 'undefined') {
@@ -199,18 +205,21 @@ module.exports = class BaseLogicUnit extends Homey.Device {
 
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula || !formula.enabled) {
-      this.logger.debug(`Formula '${formulaId}' not found or disabled.`);
+      // FIKS: Send nøkkel
+      this.logger.debug('errors.invalid_formula');
       return null;
     }
 
     if (resetLocks && formula.firstImpression) {
       this.availableInputs.forEach(id => { formula.lockedInputs[id] = false; });
-      this.logger.debug(`🔓 Unlocked all inputs for formula '${formula.name}'`);
+      // FIKS: Send nøkkel
+      this.logger.debug('inputs.unlocked');
     }
 
     const expression = formula.expression;
     if (!expression) {
-      this.logger.debug('No expression set, cannot evaluate.');
+      // FIKS: Send nøkkel
+      this.logger.debug('formula.invalid');
       return null;
     }
 
@@ -221,14 +230,16 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       formula.inputStates[id.toLowerCase()] !== 'undefined'
     );
     if (!allDefined) {
-      this.logger.debug(`Formula '${formula.name}': Waiting for inputs. Required: [${requiredInputs.join(', ')}]`);
+      // FIKS: Send nøkkel
+      this.logger.debug('inputs.waiting');
       return null;
     }
 
     const values = {};
     this.availableInputs.forEach(id => { values[id.toUpperCase()] = formula.inputStates[id]; });
 
-    this.logger.debug(`Formula '${formula.name}': Evaluating with inputs:`, values);
+    // FIKS: Send nøkkel
+    this.logger.debug('formula.evaluating');
 
     let evalExpression = expression
       .replace(/\bAND\b|&&|\*/gi, '&&')
@@ -243,12 +254,14 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       }
     }
 
+    // FIKS: Send ren tekst, følger mønster fra device.js
     this.logger.formula(`Evaluating: "${expression}" → "${evalExpression}"`);
     try {
       const fn = new Function(`return ${evalExpression}`);
       const result = !!fn();
 
-      this.logger.debug(`Formula '${formula.name}' result: ${result}`);
+      // FIKS: Send nøkkel
+      this.logger.debug('formula.evaluated');
 
       const previous = formula.result;
       formula.result = result;
@@ -258,34 +271,45 @@ module.exports = class BaseLogicUnit extends Homey.Device {
 
       return result;
     } catch (e) {
-      this.logger.error(`Failed to evaluate formula '${formula.name}': ${e.message}`);
+      // FIKS: Send nøkkel og error-objekt
+      this.logger.error('errors.evaluation_failed', e);
       return null;
     }
   }
 
   async evaluateAllFormulas() {
-    this.logger.info('Re-evaluating all formulas (resetting locks)...');
+    // FIKS: Send nøkkel
+    this.logger.info('notifications.reevaluating');
     const results = [];
     for (const formula of this.formulas) {
       if (formula.enabled) {
         this.availableInputs.forEach(id => { formula.lockedInputs[id] = false; });
-        this.logger.debug(`🔓 Unlocked all inputs for formula '${formula.name}'`);
+        // FIKS: Send nøkkel
+        this.logger.debug('inputs.unlocked');
         const result = await this.evaluateFormula(formula.id);
         results.push({ id: formula.id, name: formula.name, result });
       }
     }
-    this.logger.debug(`Evaluated ${results.length} formulas`);
+    // FIKS: Send nøkkel og data-objekt
+    this.logger.debug('formula.evaluated_count', { count: results.length });
     return results;
   }
 
   getFormulaResult(formulaId) {
     const formula = this.formulas.find(f => f.id === formulaId);
     if (!formula) {
-      this.logger.warn(`getFormulaResult: Formula '${formulaId}' not found`);
+      // FIKS: Send nøkkel
+      this.logger.warn('errors.invalid_formula');
       return null;
     }
+    // FIKS: Send nøkkel og data-objekt
     this.logger.debug(
-      `getFormulaResult: Formula '${formula.name}' (${formulaId}) result = ${formula.result} (type: ${typeof formula.result})`
+      'formula.result_debug', {
+        name: formula.name,
+        id: formulaId,
+        result: formula.result,
+        type: typeof formula.result
+      }
     );
     return formula ? formula.result : null;
   }
@@ -323,20 +347,23 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       const timeoutMs = formula.timeout * 1000;
       const elapsed = now - formula.lastInputTime;
       if (elapsed >= timeoutMs) {
-        this.logger.info(`Formula '${formula.name}' timed out after ${formula.timeout}s`);
+        // FIKS: Send nøkkel og data-objekt
+        this.logger.info('formula.timed_out', { name: formula.name, timeout: formula.timeout });
         formula.timedOut = true;
 
         const triggerData = { formula: { id: formula.id, name: formula.name } };
         const state = { formulaId: formula.id };
         this.homey.flow.getDeviceTriggerCard('formula_timeout')
           .trigger(this, triggerData, state)
-          .catch(err => this.logger.error('Error triggering timeout:', err));
+          // FIKS: Send nøkkel og error-objekt
+          .catch(err => this.logger.error('formula.error', err));
       }
     });
   }
 
   async onSettings({ oldSettings, newSettings, changedKeys }) {
-    this.logger.info('Settings changed. Reinitializing formulas.');
+    // FIKS: Send nøkkel
+    this.logger.info('notifications.formula_updated');
     if (this.timeoutInterval) {
       clearInterval(this.timeoutInterval);
     }
@@ -348,7 +375,7 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       for (const formula of this.formulas) {
         const validation = this.validateExpression(formula.expression);
         if (!validation.valid) {
-          throw new Error(`Formula '${formula.name}': ${validation.error}`);
+          throw new Error(this.homey.__('formula.error_validation', { name: formula.name, error: validation.error }));
         }
       }
     }
@@ -357,16 +384,19 @@ module.exports = class BaseLogicUnit extends Homey.Device {
 
   async onDeleted() {
     this._isDeleting = true;
-    this.logger.device('Logic Unit deleted — cleaning up timers');
+    // FIKS: Send nøkkel
+    this.logger.device('device.inactive');
     if (this.timeoutInterval) {
       clearInterval(this.timeoutInterval);
       this.timeoutInterval = null;
     }
-    this.logger.info('Cleanup complete');
+    // FIKS: Send nøkkel
+    this.logger.info('device.cleanup_complete');
   }
 
   async evaluateAllFormulasInitial() {
-    this.logger.debug('Initial evaluation of all formulas...');
+    // FIKS: Send nøkkel
+    this.logger.debug('evaluation.initial_complete');
     let anyEvaluated = false;
 
     for (const formula of this.formulas) {
@@ -382,18 +412,21 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       );
 
       if (allDefined) {
-        this.logger.debug(`Formula '${formula.name}': All inputs defined, evaluating...`);
+        // FIKS: Send nøkkel
+        this.logger.debug('formula.evaluating');
         await this.evaluateFormula(formula.id);
         anyEvaluated = true;
       } else {
         const states = {};
         required.forEach(id => { states[id] = formula.inputStates[id.toLowerCase()]; });
-        this.logger.debug(`Formula '${formula.name}': Missing inputs:`, states);
+        // FIKS: Send nøkkel
+        this.logger.debug('inputs.waiting');
       }
     }
 
     if (!anyEvaluated) {
-      this.logger.warn('No formulas could be evaluated - waiting for input values');
+      // FIKS: Send nøkkel
+      this.logger.warn('inputs.waiting');
       await this.safeSetCapabilityValue('onoff', false);
     }
   }

@@ -1,11 +1,29 @@
 {
   "title": {
     "en": "Set all inputs from JSON",
-    "no": "Sett alle innganger fra JSON"
+    "no": "Sett alle innganger fra JSON",
+    "de": "Alle Eingänge von JSON setzen",
+    "nl": "Alle ingangen instellen vanuit JSON",
+    "fr": "Définir toutes les entrées depuis JSON",
+    "da": "Indstil alle indgange fra JSON",
+    "fi": "Aseta kaikki tulot JSON-muodosta",
+    "sv": "Ställ in alla ingångar från JSON",
+    "pl": "Ustaw wszystkie wejścia z JSON",
+    "it": "Imposta tutti gli input da JSON",
+    "es": "Establecer todas las entradas desde JSON"
   },
   "titleFormatted": {
     "en": "Set all inputs from JSON: [[values]]",
-    "no": "Sett alle innganger fra JSON: [[values]]"
+    "no": "Sett alle innganger fra JSON: [[values]]",
+    "de": "Alle Eingänge von JSON setzen: [[values]]",
+    "nl": "Alle ingangen instellen vanuit JSON: [[values]]",
+    "fr": "Définir toutes les entrées depuis JSON : [[values]]",
+    "da": "Indstil alle indgange fra JSON: [[values]]",
+    "fi": "Aseta kaikki tulot JSON-muodosta: [[values]]",
+    "sv": "Ställ in alla ingångar från JSON: [[values]]",
+    "pl": "Ustaw wszystkie wejścia z JSON: [[values]]",
+    "it": "Imposta tutti gli input da JSON: [[values]]",
+    "es": "Establecer todas las entradas desde JSON: [[values]]"
   },
   "args": [
     {
@@ -16,8 +34,33 @@
     {
       "type": "text",
       "name": "values",
-      "title": { "en": "JSON values", "no": "JSON-verdier" },
-      "placeholder": { "en": "{\"A\": true, \"B\": false}", "no": "{\"A\": true, \"B\": false}" }
+      "title": {
+        "en": "JSON values",
+        "no": "JSON-verdier",
+        "de": "JSON-Werte",
+        "nl": "JSON-waarden",
+        "fr": "Valeurs JSON",
+        "da": "JSON-værdier",
+        "fi": "JSON-arvot",
+        "sv": "JSON-värden",
+        "pl": "Wartości JSON",
+        "it": "Valori JSON",
+        "es": "Valores JSON"
+      },
+      "placeholder": {
+        "en": "{\"A\": true, \"B\": false}",
+        "no": "{\"A\": true, \"B\": false}",
+        "de": "{\"A\": true, \"B\": false}",
+        "nl": "{\"A\": true, \"B\": false}",
+        "fr": "{\"A\": true, \"B\": false}",
+        "da": "{\"A\": true, \"B\": false}",
+        "fi": "{\"A\": true, \"B\": false}",
+        "sv": "{\"A\": true, \"B\": false}",
+        "pl": "{\"A\": true, \"B\": false}",
+        "it": "{\"A\": true, \"B\": false}",
+        "es": "{\"A\": true, \"B\": false}"
+      }
     }
   ]
 }
+
