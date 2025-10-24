@@ -49,6 +49,8 @@
     "capability_skip_deleted": "(säkert) Hoppar över {capability} – enheten finns inte längre.",
     "deleted_cleanup": "Enhet raderad — rensar lyssnare & timers",
     "cleanup_complete": "Rensning klar",
+    "deleted_skip_update": "Enhet raderad, hoppar över kapabilitetsuppdatering",
+    "deleted_skip_flow": "Enhet raderad, hoppar över flödesutlösare",
     "logic_unit_name": "Logisk enhet ({count} ingångar)"
   },
   "formula": {
@@ -65,9 +67,18 @@
     "no_expression": "(inget uttryck)",
     "error_validation": "Formel '{name}': {error}",
     "result_debug": "getFormulaResult: Formel '{name}' ({id}) resultat = {result} (typ: {type})",
+    "not_found_or_disabled": "Formel '{id}' hittades inte eller är inaktiverad.",
+    "unlocked_inputs": "🔓 Låste upp alla ingångar för formel '{name}'",
+    "waiting_for_inputs": "Formel '{name}': Väntar på ingångar. Krävs: [{required}]",
+    "evaluating_expression": "Utvärderar: \"{expression}\" → \"{evalExpression}\"",
+    "result": "Formel '{name}' resultat: {result}",
+    "all_inputs_defined": "Formel '{name}': Alla ingångar definierade, utvärderar...",
+    "missing_inputs": "Formel '{name}': Saknade ingångar:",
+    "evaluation_failed": "Kunde inte utvärdera formel '{name}': {message}",
+    "get_result_not_found": "getFormulaResult: Formel '{id}' hittades inte",
+    "set_input_error": "setInputForFormula fel:",
     "name": "Formel",
     "expression": "Uttryck",
-    "result": "Resultat",
     "input": "Ingång",
     "output": "Utgång",
     "evaluation": "Utvärdering",
@@ -94,11 +105,15 @@
     "device_not_found": "[{input}] Enhet hittades inte",
     "capability_not_found": "[{input}] Kapacitet {capability} hittades inte",
     "value_received": "[{input}] Initialvärde: {value} → {boolean}",
+    "received_value": "[{input}] Mottog initialvärde: {value}",
+    "no_value_waiting": "[{input}] Inget initialvärde hittades - väntar på första händelse",
     "error": "[{input}] Fel vid hämtning av initialvärde:"
   },
   "evaluation": {
     "running_initial": "Kör initial formelutvärdering...",
-    "initial_complete": "Initial utvärdering av alla formler..."
+    "initial_complete": "Initial utvärdering av alla formler...",
+    "no_formulas_ready": "Inga formler kunde utvärderas - väntar på ingångsvärden",
+    "reevaluating_all": "Omvärderar alla formler (återställer lås)..."
   },
   "listener": {
     "registered": "[{input}] Lyssnar på enhet {device} kapacitet {capability}",
@@ -106,7 +121,14 @@
     "capability_not_exist": "[{input}] Kapacitet {capability} finns inte på enhet {device}",
     "polling_setup": "[{input}] Ställde in pollning för {device} ({capability})",
     "capability_changed": "[{input}] Kapacitet '{capability}' ändrades: {value} → {boolean}",
-    "error_setup": "Fel vid inställning av lyssnare för ingång {input}:"
+    "error_setup": "Fel vid inställning av lyssnare för ingång {input}:",
+    "setting_up": "Ställer in lyssnare för ingång {input}",
+    "invalid_config": "Ogiltig länkkonfiguration för ingång {input}",
+    "api_unavailable": "App-API inte tillgängligt för lyssnarinställning",
+    "device_found": "Hittade enhet: {device}",
+    "capability_found": "Enhet har kapacitet: {capability}",
+    "event_received": "Händelse mottagen för ingång {input}",
+    "registering": "Registrerar kapacitetslyssnare för {capability}..."
   },
   "polling": {
     "all_inputs": "Pollar alla länkade enhetsingångar...",
@@ -127,10 +149,18 @@
     "error_detecting_inputs": "Fel vid identifiering av nödvändiga ingångar:"
   },
   "refetch": {
-    "reason": "Hämtar ingångar igen (anledning: {reason})..."
+    "reason": "Hämtar ingångar igen (anledning: {reason})...",
+    "invoked": "Ome-hämtning och utvärdering anropad (källa={source})",
+    "parse_failed": "Kunde inte parsa input_links under om-hämtning:",
+    "no_links": "Inga ingångslänkar tillgängliga under om-hämtning; hoppar över värdehämtning.",
+    "fetching_values": "Hämtar initialvärden igen före utvärdering..."
   },
   "timeout": {
     "error": "Fel vid utlösning av timeout:"
+  },
+  "flow": {
+    "triggered": "Utlöser flöde för formel '{name}' ändring till {result}",
+    "trigger_error": "Fel vid utlösning av flöde:"
   },
   "driver": {
     "ready": "Drivrutin redo",
@@ -166,7 +196,7 @@
     "generic": "Ett fel uppstod",
     "timeout": "Operation timeout",
     "invalid_input": "Ogiltigt ingångsvärde",
-    "invalid_formula": "Ogiltigt formeluttryck",
+    "invalid_formula": "Ogiltigt formeluttrykk",
     "evaluation_failed": "Formelutvärdering misslyckades",
     "device_not_found": "Enhet hittades inte",
     "permission_denied": "Åtkomst nekad",
@@ -210,6 +240,9 @@
     "value": "Värde",
     "locked": "Ingång låst",
     "unlocked": "Ingång olåst",
+    "locked_first_impression": "Ingång '{input}' låst för formel '{formula}' (första intryck läge)",
+    "setting_value": "Ställer in ingång '{input}' till {value} för formel '{formula}' (var: {oldValue})",
+    "locked_at_value": "🔒 Ingång '{input}' låst vid värde {value} (första intryck läge)",
     "first_impression": "Första intryck läge",
     "timeout_detected": "Timeout detekterad på ingång",
     "waiting": "Väntar på ingång..."

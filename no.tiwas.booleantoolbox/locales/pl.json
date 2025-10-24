@@ -49,6 +49,8 @@
     "capability_skip_deleted": "(bezpiecznie) Pomijanie {capability} – urządzenie już nie istnieje.",
     "deleted_cleanup": "Urządzenie usunięte — czyszczenie słuchaczy i timerów",
     "cleanup_complete": "Czyszczenie zakończone",
+    "deleted_skip_update": "Urządzenie usunięte, pomijanie aktualizacji zdolności",
+    "deleted_skip_flow": "Urządzenie usunięte, pomijanie wyzwalacza przepływu",
     "logic_unit_name": "Jednostka logiczna ({count} wejść)"
   },
   "formula": {
@@ -65,9 +67,18 @@
     "no_expression": "(brak wyrażenia)",
     "error_validation": "Formuła '{name}': {error}",
     "result_debug": "getFormulaResult: Formuła '{name}' ({id}) wynik = {result} (typ: {type})",
+    "not_found_or_disabled": "Formuła '{id}' nie znaleziona lub wyłączona.",
+    "unlocked_inputs": "🔓 Odblokowano wszystkie wejścia dla formuły '{name}'",
+    "waiting_for_inputs": "Formuła '{name}': Oczekiwanie na wejścia. Wymagane: [{required}]",
+    "evaluating_expression": "Ocenianie: \"{expression}\" → \"{evalExpression}\"",
+    "result": "Formuła '{name}' wynik: {result}",
+    "all_inputs_defined": "Formuła '{name}': Wszystkie wejścia zdefiniowane, ocenianie...",
+    "missing_inputs": "Formuła '{name}': Brakujące wejścia:",
+    "evaluation_failed": "Nie udało się ocenić formuły '{name}': {message}",
+    "get_result_not_found": "getFormulaResult: Formuła '{id}' nie znaleziona",
+    "set_input_error": "Błąd setInputForFormula:",
     "name": "Formuła",
     "expression": "Wyrażenie",
-    "result": "Wynik",
     "input": "Wejście",
     "output": "Wyjście",
     "evaluation": "Ocena",
@@ -94,11 +105,15 @@
     "device_not_found": "[{input}] Urządzenie nie znalezione",
     "capability_not_found": "[{input}] Zdolność {capability} nie znaleziona",
     "value_received": "[{input}] Wartość początkowa: {value} → {boolean}",
+    "received_value": "[{input}] Otrzymano wartość początkową: {value}",
+    "no_value_waiting": "[{input}] Nie znaleziono wartości początkowej - oczekiwanie na pierwsze zdarzenie",
     "error": "[{input}] Błąd pobierania wartości początkowej:"
   },
   "evaluation": {
     "running_initial": "Uruchamianie wstępnej oceny formuły...",
-    "initial_complete": "Wstępna ocena wszystkich formuł..."
+    "initial_complete": "Wstępna ocena wszystkich formuł...",
+    "no_formulas_ready": "Nie można było ocenić żadnych formuł - oczekiwanie na wartości wejściowe",
+    "reevaluating_all": "Ponowna ocena wszystkich formuł (resetowanie blokad)..."
   },
   "listener": {
     "registered": "[{input}] Nasłuchiwanie urządzenia {device} zdolność {capability}",
@@ -106,7 +121,14 @@
     "capability_not_exist": "[{input}] Zdolność {capability} nie istnieje na urządzeniu {device}",
     "polling_setup": "[{input}] Skonfigurowano odpytywanie dla {device} ({capability})",
     "capability_changed": "[{input}] Zdolność '{capability}' zmieniona: {value} → {boolean}",
-    "error_setup": "Błąd podczas konfigurowania słuchacza dla wejścia {input}:"
+    "error_setup": "Błąd podczas konfigurowania słuchacza dla wejścia {input}:",
+    "setting_up": "Konfigurowanie słuchacza dla wejścia {input}",
+    "invalid_config": "Nieprawidłowa konfiguracja linku dla wejścia {input}",
+    "api_unavailable": "API aplikacji niedostępne do konfiguracji słuchacza",
+    "device_found": "Znaleziono urządzenie: {device}",
+    "capability_found": "Urządzenie ma zdolność: {capability}",
+    "event_received": "Odebrano zdarzenie dla wejścia {input}",
+    "registering": "Rejestrowanie słuchacza zdolności dla {capability}..."
   },
   "polling": {
     "all_inputs": "Odpytywanie wszystkich podłączonych wejść urządzeń...",
@@ -127,10 +149,18 @@
     "error_detecting_inputs": "Błąd wykrywania wymaganych wejść:"
   },
   "refetch": {
-    "reason": "Ponowne pobieranie wejść (powód: {reason})..."
+    "reason": "Ponowne pobieranie wejść (powód: {reason})...",
+    "invoked": "Ponowne pobieranie i ocena wywołane (źródło={source})",
+    "parse_failed": "Nie udało się sparsować input_links podczas ponownego pobierania:",
+    "no_links": "Brak dostępnych linków wejściowych podczas ponownego pobierania; pomijanie pobierania wartości.",
+    "fetching_values": "Ponowne pobieranie wartości początkowych przed oceną..."
   },
   "timeout": {
     "error": "Błąd wyzwalania przekroczenia czasu:"
+  },
+  "flow": {
+    "triggered": "Wyzwalanie przepływu dla zmiany formuły '{name}' na {result}",
+    "trigger_error": "Błąd wyzwalania przepływu:"
   },
   "driver": {
     "ready": "Sterownik gotowy",
@@ -210,6 +240,9 @@
     "value": "Wartość",
     "locked": "Wejście zablokowane",
     "unlocked": "Wejście odblokowane",
+    "locked_first_impression": "Wejście '{input}' zablokowane dla formuły '{formula}' (tryb pierwszego wrażenia)",
+    "setting_value": "Ustawianie wejścia '{input}' na {value} dla formuły '{formula}' (było: {oldValue})",
+    "locked_at_value": "🔒 Wejście '{input}' zablokowane na wartości {value} (tryb pierwszego wrażenia)",
     "first_impression": "Tryb pierwszego wrażenia",
     "timeout_detected": "Wykryto przekroczenie czasu na wejściu",
     "waiting": "Oczekiwanie na wejście..."

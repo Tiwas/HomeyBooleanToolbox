@@ -49,6 +49,8 @@
     "capability_skip_deleted": "(sicuro) Saltando {capability} – dispositivo non più esistente.",
     "deleted_cleanup": "Dispositivo eliminato — pulizia listener e timer",
     "cleanup_complete": "Pulizia completata",
+    "deleted_skip_update": "Dispositivo eliminato, salto aggiornamento capacità",
+    "deleted_skip_flow": "Dispositivo eliminato, salto attivazione flow",
     "logic_unit_name": "Unità logica ({count} input)"
   },
   "formula": {
@@ -65,9 +67,18 @@
     "no_expression": "(nessuna espressione)",
     "error_validation": "Formula '{name}': {error}",
     "result_debug": "getFormulaResult: Formula '{name}' ({id}) risultato = {result} (tipo: {type})",
+    "not_found_or_disabled": "Formula '{id}' non trovata o disabilitata.",
+    "unlocked_inputs": "🔓 Sbloccati tutti gli input per la formula '{name}'",
+    "waiting_for_inputs": "Formula '{name}': In attesa di input. Richiesti: [{required}]",
+    "evaluating_expression": "Valutazione: \"{expression}\" → \"{evalExpression}\"",
+    "result": "Formula '{name}' risultato: {result}",
+    "all_inputs_defined": "Formula '{name}': Tutti gli input definiti, valutazione...",
+    "missing_inputs": "Formula '{name}': Input mancanti:",
+    "evaluation_failed": "Impossibile valutare la formula '{name}': {message}",
+    "get_result_not_found": "getFormulaResult: Formula '{id}' non trovata",
+    "set_input_error": "Errore setInputForFormula:",
     "name": "Formula",
     "expression": "Espressione",
-    "result": "Risultato",
     "input": "Input",
     "output": "Output",
     "evaluation": "Valutazione",
@@ -83,9 +94,9 @@
     "complete": "Impostazione collegamenti dispositivo completata",
     "count": "Impostazione di {count} collegamenti dispositivo",
     "unregistered": "Listener non registrato: {key}",
-    "error_unregister": "Errore durante la deregistrazione del listener:",
+    "error_unregister": "Errore during la deregistrazione del listener:",
     "setup_failed": "Impossibile impostare il listener per l'input {input}:",
-    "error_cleanup": "Errore durante la pulizia del listener:"
+    "error_cleanup": "Errore during la pulizia del listener:"
   },
   "initial": {
     "fetching_all": "Recupero valori iniziali per tutti gli input...",
@@ -94,11 +105,15 @@
     "device_not_found": "[{input}] Dispositivo non trovato",
     "capability_not_found": "[{input}] Capacità {capability} non trovata",
     "value_received": "[{input}] Valore iniziale: {value} → {boolean}",
+    "received_value": "[{input}] Ricevuto valore iniziale: {value}",
+    "no_value_waiting": "[{input}] Nessun valore iniziale trovato - in attesa del primo evento",
     "error": "[{input}] Errore nel recupero del valore iniziale:"
   },
   "evaluation": {
     "running_initial": "Esecuzione valutazione formula iniziale...",
-    "initial_complete": "Valutazione iniziale di tutte le formule..."
+    "initial_complete": "Valutazione iniziale di tutte le formule...",
+    "no_formulas_ready": "Nessuna formula valutabile - in attesa dei valori di input",
+    "reevaluating_all": "Rivalutazione di tutte le formule (ripristino blocchi)..."
   },
   "listener": {
     "registered": "[{input}] In ascolto del dispositivo {device} capacità {capability}",
@@ -106,7 +121,14 @@
     "capability_not_exist": "[{input}] La capacità {capability} non esiste sul dispositivo {device}",
     "polling_setup": "[{input}] Impostato polling per {device} ({capability})",
     "capability_changed": "[{input}] Capacità '{capability}' modificata: {value} → {boolean}",
-    "error_setup": "Errore nell'impostazione del listener per l'input {input}:"
+    "error_setup": "Errore nell'impostazione del listener per l'input {input}:",
+    "setting_up": "Impostazione listener per l'input {input}",
+    "invalid_config": "Configurazione link non valida per l'input {input}",
+    "api_unavailable": "API app non disponibile per l'impostazione del listener",
+    "device_found": "Dispositivo trovato: {device}",
+    "capability_found": "Il dispositivo ha la capacità: {capability}",
+    "event_received": "Evento ricevuto per l'input {input}",
+    "registering": "Registrazione listener capacità per {capability}..."
   },
   "polling": {
     "all_inputs": "Polling di tutti gli input dei dispositivi collegati...",
@@ -127,10 +149,18 @@
     "error_detecting_inputs": "Errore nel rilevamento degli input richiesti:"
   },
   "refetch": {
-    "reason": "Recupero nuovamente gli input (motivo: {reason})..."
+    "reason": "Recupero nuovamente gli input (motivo: {reason})...",
+    "invoked": "Richiamata e valutazione invocate (sorgente={source})",
+    "parse_failed": "Impossibile analizzare input_links durante il recupero:",
+    "no_links": "Nessun link di input disponibile durante il recupero; salto recupero valori.",
+    "fetching_values": "Recupero valori iniziali prima della valutazione..."
   },
   "timeout": {
     "error": "Errore nell'attivazione del timeout:"
+  },
+  "flow": {
+    "triggered": "Attivazione flow per formula '{name}' modificata in {result}",
+    "trigger_error": "Errore during l'attivazione del flow:"
   },
   "driver": {
     "ready": "Driver pronto",
@@ -210,6 +240,9 @@
     "value": "Valore",
     "locked": "Input bloccato",
     "unlocked": "Input sbloccato",
+    "locked_first_impression": "Input '{input}' bloccato per la formula '{formula}' (modalità prima impressione)",
+    "setting_value": "Impostazione input '{input}' a {value} per la formula '{formula}' (era: {oldValue})",
+    "locked_at_value": "🔒 Input '{input}' bloccato al valore {value} (modalità prima impressione)",
     "first_impression": "Modalità prima impressione",
     "timeout_detected": "Timeout rilevato sull'input",
     "waiting": "In attesa di input..."

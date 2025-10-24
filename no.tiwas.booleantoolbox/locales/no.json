@@ -49,6 +49,8 @@
     "capability_skip_deleted": "(trygt) Hopper over {capability} – enheten eksisterer ikke lenger.",
     "deleted_cleanup": "Enhet slettet — rydder opp lyttere og timere",
     "cleanup_complete": "Opprydding fullført",
+    "deleted_skip_update": "Enhet slettet, hopper over kapabilitetsoppdatering",
+    "deleted_skip_flow": "Enhet slettet, hopper over flow-utløser",
     "logic_unit_name": "Logisk enhet ({count} innganger)"
   },
   "formula": {
@@ -62,12 +64,21 @@
     "expression_empty": "Uttrykk kan ikke være tomt",
     "invalid_tokens": "Ugyldige tokens i uttrykk: \"{tokens}\"",
     "invalid_syntax": "Ugyldig uttrykkssyntaks: {message}",
-    "no_expression": "(ingen uttrykk)",
+    "no_expression": "(inget uttrykk)",
     "error_validation": "Formel '{name}': {error}",
     "result_debug": "getFormulaResult: Formel '{name}' ({id}) resultat = {result} (type: {type})",
+    "not_found_or_disabled": "Formel '{id}' ikke funnet eller deaktivert.",
+    "unlocked_inputs": "🔓 Låste opp alle innganger for formel '{name}'",
+    "waiting_for_inputs": "Formel '{name}': Venter på innganger. Kreves: [{required}]",
+    "evaluating_expression": "Evaluerer: \"{expression}\" → \"{evalExpression}\"",
+    "result": "Formel '{name}' resultat: {result}",
+    "all_inputs_defined": "Formel '{name}': Alle innganger definert, evaluerer...",
+    "missing_inputs": "Formel '{name}': Manglende innganger:",
+    "evaluation_failed": "Klarte ikke å evaluere formel '{name}': {message}",
+    "get_result_not_found": "getFormulaResult: Formel '{id}' ikke funnet",
+    "set_input_error": "setInputForFormula feil:",
     "name": "Formel",
     "expression": "Uttrykk",
-    "result": "Resultat",
     "input": "Inngang",
     "output": "Utgang",
     "evaluation": "Evaluering",
@@ -88,7 +99,8 @@
     "error_cleanup": "Feil ved opprydding av lytter:"
   },
   "flow": {
-    "triggered": "Trigger flow for formel '{name}' endret til {result}"
+    "triggered": "Trigger flow for formel '{name}' endret til {result}",
+    "trigger_error": "Feil ved utløsning av flow:"
   },
   "initial": {
     "fetching_all": "Henter initialverdier for alle innganger...",
@@ -97,11 +109,15 @@
     "device_not_found": "[{input}] Enhet ikke funnet",
     "capability_not_found": "[{input}] Kapabilitet {capability} ikke funnet",
     "value_received": "[{input}] Initialverdi: {value} → {boolean}",
+    "received_value": "[{input}] Mottok initialverdi: {value}",
+    "no_value_waiting": "[{input}] Ingen initialverdi funnet - venter på første hendelse",
     "error": "[{input}] Feil ved henting av initialverdi:"
   },
   "evaluation": {
     "running_initial": "Kjører initial formelevaluering...",
-    "initial_complete": "Initial evaluering av alle formler..."
+    "initial_complete": "Initial evaluering av alle formler...",
+    "no_formulas_ready": "Ingen formler kunne evalueres - venter på inngangsverdier",
+    "reevaluating_all": "Re-evaluerer alle formler (tilbakestiller låser)..."
   },
   "listener": {
     "registered": "[{input}] Lytter til enhet {device} kapabilitet {capability}",
@@ -109,7 +125,14 @@
     "capability_not_exist": "[{input}] Kapabilitet {capability} eksisterer ikke på enhet {device}",
     "polling_setup": "[{input}] Satt opp polling for {device} ({capability})",
     "capability_changed": "[{input}] Kapabilitet '{capability}' endret: {value} → {boolean}",
-    "error_setup": "Feil ved oppsett av lytter for inngang {input}:"
+    "error_setup": "Feil ved oppsett av lytter for inngang {input}:",
+    "setting_up": "Setter opp lytter for inngang {input}",
+    "invalid_config": "Ugyldig koblingskonfigurasjon for inngang {input}",
+    "api_unavailable": "App-API ikke tilgjengelig for lytteroppsett",
+    "device_found": "Fant enhet: {device}",
+    "capability_found": "Enhet har kapabilitet: {capability}",
+    "event_received": "Hendelse mottatt for inngang {input}",
+    "registering": "Registrerer kapabilitetslytter for {capability}..."
   },
   "polling": {
     "all_inputs": "Poller alle koblede enhetsinnganger...",
@@ -130,7 +153,11 @@
     "error_detecting_inputs": "Feil ved deteksjon av nødvendige innganger:"
   },
   "refetch": {
-    "reason": "Henter innganger på nytt (årsak: {reason})..."
+    "reason": "Henter innganger på nytt (årsak: {reason})...",
+    "invoked": "Re-henting og evaluering påkalt (kilde={source})",
+    "parse_failed": "Klarte ikke å parse input_links under re-henting:",
+    "no_links": "Ingen inngangskoblinger tilgjengelig under re-henting; hopper over verdihenting.",
+    "fetching_values": "Henter initialverdier på nytt før evaluering..."
   },
   "timeout": {
     "error": "Feil ved utløsing av tidsavbrudd:"
@@ -213,6 +240,9 @@
     "value": "Verdi",
     "locked": "Inngang låst",
     "unlocked": "Inngang låst opp",
+    "locked_first_impression": "Inngang '{input}' låst for formel '{formula}' (førsteinntrykk-modus)",
+    "setting_value": "Setter inngang '{input}' til {value} for formel '{formula}' (var: {oldValue})",
+    "locked_at_value": "🔒 Inngang '{input}' låst til verdi {value} (førsteinntrykk-modus)",
     "first_impression": "Førsteinntrykk-modus",
     "timeout_detected": "Tidsavbrudd oppdaget på inngang",
     "waiting": "Venter på inngang..."

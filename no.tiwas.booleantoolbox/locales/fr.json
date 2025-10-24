@@ -49,6 +49,8 @@
     "capability_skip_deleted": "(sûr) Ignorer {capability} – l'appareil n'existe plus.",
     "deleted_cleanup": "Appareil supprimé — nettoyage des écouteurs et des minuteurs",
     "cleanup_complete": "Nettoyage terminé",
+    "deleted_skip_update": "Appareil supprimé, mise à jour de capacité ignorée",
+    "deleted_skip_flow": "Appareil supprimé, déclencheur de flow ignoré",
     "logic_unit_name": "Unité logique ({count} entrées)"
   },
   "formula": {
@@ -65,9 +67,18 @@
     "no_expression": "(aucune expression)",
     "error_validation": "Formule '{name}' : {error}",
     "result_debug": "getFormulaResult : Formule '{name}' ({id}) résultat = {result} (type : {type})",
+    "not_found_or_disabled": "Formule '{id}' non trouvée ou désactivée.",
+    "unlocked_inputs": "🔓 Toutes les entrées déverrouillées pour la formule '{name}'",
+    "waiting_for_inputs": "Formule '{name}' : En attente d'entrées. Requis : [{required}]",
+    "evaluating_expression": "Évaluation : \"{expression}\" → \"{evalExpression}\"",
+    "result": "Résultat de la formule '{name}' : {result}",
+    "all_inputs_defined": "Formule '{name}' : Toutes les entrées définies, évaluation...",
+    "missing_inputs": "Formule '{name}' : Entrées manquantes :",
+    "evaluation_failed": "Échec de l'évaluation de la formule '{name}' : {message}",
+    "get_result_not_found": "getFormulaResult : Formule '{id}' non trouvée",
+    "set_input_error": "Erreur setInputForFormula :",
     "name": "Formule",
     "expression": "Expression",
-    "result": "Résultat",
     "input": "Entrée",
     "output": "Sortie",
     "evaluation": "Évaluation",
@@ -94,11 +105,15 @@
     "device_not_found": "[{input}] Appareil non trouvé",
     "capability_not_found": "[{input}] Capacité {capability} non trouvée",
     "value_received": "[{input}] Valeur initiale : {value} → {boolean}",
+    "received_value": "[{input}] Valeur initiale reçue : {value}",
+    "no_value_waiting": "[{input}] Aucune valeur initiale trouvée - en attente du premier événement",
     "error": "[{input}] Erreur lors de la récupération de la valeur initiale :"
   },
   "evaluation": {
     "running_initial": "Exécution de l'évaluation initiale des formules...",
-    "initial_complete": "Évaluation initiale de toutes les formules..."
+    "initial_complete": "Évaluation initiale de toutes les formules...",
+    "no_formulas_ready": "Aucune formule n'a pu être évaluée - en attente des valeurs d'entrée",
+    "reevaluating_all": "Réévaluation de toutes les formules (réinitialisation des verrous)..."
   },
   "listener": {
     "registered": "[{input}] Écoute de l'appareil {device} capacité {capability}",
@@ -106,7 +121,14 @@
     "capability_not_exist": "[{input}] La capacité {capability} n'existe pas sur l'appareil {device}",
     "polling_setup": "[{input}] Configuration de l'interrogation pour {device} ({capability})",
     "capability_changed": "[{input}] Capacité '{capability}' modifiée : {value} → {boolean}",
-    "error_setup": "Erreur lors de la configuration de l'écouteur pour l'entrée {input} :"
+    "error_setup": "Erreur lors de la configuration de l'écouteur pour l'entrée {input} :",
+    "setting_up": "Configuration de l'écouteur pour l'entrée {input}",
+    "invalid_config": "Configuration de lien invalide pour l'entrée {input}",
+    "api_unavailable": "API de l'application non disponible pour la configuration de l'écouteur",
+    "device_found": "Appareil trouvé : {device}",
+    "capability_found": "L'appareil a la capacité : {capability}",
+    "event_received": "Événement reçu pour l'entrée {input}",
+    "registering": "Enregistrement de l'écouteur de capacité pour {capability}..."
   },
   "polling": {
     "all_inputs": "Interrogation de toutes les entrées d'appareils liées...",
@@ -127,10 +149,18 @@
     "error_detecting_inputs": "Erreur lors de la détection des entrées requises :"
   },
   "refetch": {
-    "reason": "Nouvelle récupération des entrées (raison : {reason})..."
+    "reason": "Nouvelle récupération des entrées (raison : {reason})...",
+    "invoked": "Récupération et évaluation invoquées (source={source})",
+    "parse_failed": "Échec de l'analyse des input_links lors de la nouvelle récupération :",
+    "no_links": "Aucun lien d'entrée disponible lors de la nouvelle récupération ; récupération des valeurs ignorée.",
+    "fetching_values": "Nouvelle récupération des valeurs initiales avant évaluation..."
   },
   "timeout": {
     "error": "Erreur lors du déclenchement du délai d'attente :"
+  },
+  "flow": {
+    "triggered": "Déclenchement du flow pour le changement de la formule '{name}' à {result}",
+    "trigger_error": "Erreur lors du déclenchement du flow :"
   },
   "driver": {
     "ready": "Pilote prêt",
@@ -210,6 +240,9 @@
     "value": "Valeur",
     "locked": "Entrée verrouillée",
     "unlocked": "Entrée déverrouillée",
+    "locked_first_impression": "Entrée '{input}' verrouillée pour la formule '{formula}' (mode première impression)",
+    "setting_value": "Définition de l'entrée '{input}' à {value} pour la formule '{formula}' (était : {oldValue})",
+    "locked_at_value": "🔒 Entrée '{input}' verrouillée à la valeur {value} (mode première impression)",
     "first_impression": "Mode première impression",
     "timeout_detected": "Délai d'attente détecté sur l'entrée",
     "waiting": "En attente d'entrée..."
@@ -227,7 +260,7 @@
   },
   "help": {
     "formula_syntax": "Utilisez des opérateurs logiques comme ET, OU, NON pour créer votre formule",
-    "input_values": "Les valeurs d'entrée sont automatiquement mises à jour lorsque les appareils connectés changent",
+    "input_values": "Les valeurs d'entrée sont automatically mises à jour lorsque les appareils connectés changent",
     "timeout_warning": "Si une entrée n'est pas mise à jour dans le délai imparti, elle sera signalée",
     "first_impression": "Le mode première impression verrouille les entrées à leur première valeur reçue"
   }

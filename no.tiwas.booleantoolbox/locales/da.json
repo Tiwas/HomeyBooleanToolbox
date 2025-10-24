@@ -49,6 +49,8 @@
     "capability_skip_deleted": "(sikkert) Spring over {capability} – enheden eksisterer ikke længere.",
     "deleted_cleanup": "Enhed slettet — rydder op lyttere og timere",
     "cleanup_complete": "Oprydning færdig",
+    "deleted_skip_update": "Enhed slettet, springer over kapabilitetsopdatering",
+    "deleted_skip_flow": "Enhed slettet, springer over flow-trigger",
     "logic_unit_name": "Logisk enhed ({count} indgange)"
   },
   "formula": {
@@ -65,9 +67,18 @@
     "no_expression": "(intet udtryk)",
     "error_validation": "Formel '{name}': {error}",
     "result_debug": "getFormulaResult: Formel '{name}' ({id}) resultat = {result} (type: {type})",
+    "not_found_or_disabled": "Formel '{id}' ikke fundet eller deaktiveret.",
+    "unlocked_inputs": "🔓 Låste alle indgange op for formel '{name}'",
+    "waiting_for_inputs": "Formel '{name}': Venter på indgange. Påkrævet: [{required}]",
+    "evaluating_expression": "Evaluerer: \"{expression}\" → \"{evalExpression}\"",
+    "result": "Formel '{name}' resultat: {result}",
+    "all_inputs_defined": "Formel '{name}': Alle indgange defineret, evaluerer...",
+    "missing_inputs": "Formel '{name}': Manglende indgange:",
+    "evaluation_failed": "Kunne ikke evaluere formel '{name}': {message}",
+    "get_result_not_found": "getFormulaResult: Formel '{id}' ikke fundet",
+    "set_input_error": "setInputForFormula fejl:",
     "name": "Formel",
     "expression": "Udtryk",
-    "result": "Resultat",
     "input": "Indgang",
     "output": "Udgang",
     "evaluation": "Evaluering",
@@ -94,11 +105,15 @@
     "device_not_found": "[{input}] Enhed ikke fundet",
     "capability_not_found": "[{input}] Kapabilitet {capability} ikke fundet",
     "value_received": "[{input}] Startværdi: {value} → {boolean}",
+    "received_value": "[{input}] Modtog startværdi: {value}",
+    "no_value_waiting": "[{input}] Ingen startværdi fundet - venter på første hændelse",
     "error": "[{input}] Fejl ved hentning af startværdi:"
   },
   "evaluation": {
     "running_initial": "Kører initial formelevaluering...",
-    "initial_complete": "Initial evaluering af alle formler..."
+    "initial_complete": "Initial evaluering af alle formler...",
+    "no_formulas_ready": "Ingen formler kunne evalueres - venter på indgangsværdier",
+    "reevaluating_all": "Gen-evaluerer alle formler (nulstiller låse)..."
   },
   "listener": {
     "registered": "[{input}] Lytter til enhed {device} kapabilitet {capability}",
@@ -106,7 +121,14 @@
     "capability_not_exist": "[{input}] Kapabilitet {capability} eksisterer ikke på enhed {device}",
     "polling_setup": "[{input}] Opsatte polling for {device} ({capability})",
     "capability_changed": "[{input}] Kapabilitet '{capability}' ændret: {value} → {boolean}",
-    "error_setup": "Fejl ved opsætning af lytter for indgang {input}:"
+    "error_setup": "Fejl ved opsætning af lytter for indgang {input}:",
+    "setting_up": "Opsætter lytter for indgang {input}",
+    "invalid_config": "Ugyldig link-konfiguration for indgang {input}",
+    "api_unavailable": "App API ikke tilgængelig for opsætning af lytter",
+    "device_found": "Fandt enhed: {device}",
+    "capability_found": "Enhed har kapabilitet: {capability}",
+    "event_received": "Hændelse modtaget for indgang {input}",
+    "registering": "Registrerer kapabilitetslytter for {capability}..."
   },
   "polling": {
     "all_inputs": "Afsøger alle tilsluttede enhedsindgange...",
@@ -127,10 +149,18 @@
     "error_detecting_inputs": "Fejl ved registrering af nødvendige indgange:"
   },
   "refetch": {
-    "reason": "Henter indgange igen (årsag: {reason})..."
+    "reason": "Henter indgange igen (årsag: {reason})...",
+    "invoked": "Genhentning og evaluering påkaldt (kilde={source})",
+    "parse_failed": "Kunne ikke parse input_links under genhentning:",
+    "no_links": "Ingen input links tilgængelige under genhentning; springer over værdihentning.",
+    "fetching_values": "Henter startværdier igen før evaluering..."
   },
   "timeout": {
     "error": "Fejl ved udløsning af timeout:"
+  },
+  "flow": {
+    "triggered": "Udløser flow for formel '{name}' ændring til {result}",
+    "trigger_error": "Fejl ved udløsning af flow:"
   },
   "driver": {
     "ready": "Driver klar",
@@ -210,6 +240,9 @@
     "value": "Værdi",
     "locked": "Indgang låst",
     "unlocked": "Indgang låst op",
+    "locked_first_impression": "Indgang '{input}' låst for formel '{formula}' (første indtryk tilstand)",
+    "setting_value": "Sætter indgang '{input}' til {value} for formel '{formula}' (var: {oldValue})",
+    "locked_at_value": "🔒 Indgang '{input}' låst til værdi {value} (første indtryk tilstand)",
     "first_impression": "Første indtryk tilstand",
     "timeout_detected": "Timeout registreret på indgang",
     "waiting": "Venter på indgang..."
@@ -232,3 +265,4 @@
     "first_impression": "Første indtryk tilstand låser indgange ved deres første modtagne værdi"
   }
 }
+

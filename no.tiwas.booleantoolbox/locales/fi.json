@@ -49,6 +49,8 @@
     "capability_skip_deleted": "(turvallinen) Ohitetaan {capability} – laitetta ei enää ole.",
     "deleted_cleanup": "Laite poistettu — siivotaan kuuntelijat ja ajastimet",
     "cleanup_complete": "Siivous valmis",
+    "deleted_skip_update": "Laite poistettu, ohitetaan kyvykkyyspäivitys",
+    "deleted_skip_flow": "Laite poistettu, ohitetaan flow-käynnistin",
     "logic_unit_name": "Logiikkayksikkö ({count} tuloa)"
   },
   "formula": {
@@ -65,9 +67,18 @@
     "no_expression": "(ei lauseketta)",
     "error_validation": "Kaava '{name}': {error}",
     "result_debug": "getFormulaResult: Kaava '{name}' ({id}) tulos = {result} (tyyppi: {type})",
+    "not_found_or_disabled": "Kaavaa '{id}' ei löydy tai se on poistettu käytöstä.",
+    "unlocked_inputs": "🔓 Kaikki tulot avattu kaavalle '{name}'",
+    "waiting_for_inputs": "Kaava '{name}': Odotetaan tuloja. Vaaditut: [{required}]",
+    "evaluating_expression": "Arvioidaan: \"{expression}\" → \"{evalExpression}\"",
+    "result": "Kaavan '{name}' tulos: {result}",
+    "all_inputs_defined": "Kaava '{name}': Kaikki tulot määritelty, arvioidaan...",
+    "missing_inputs": "Kaava '{name}': Puuttuvat tulot:",
+    "evaluation_failed": "Kaavan '{name}' arviointi epäonnistui: {message}",
+    "get_result_not_found": "getFormulaResult: Kaavaa '{id}' ei löydy",
+    "set_input_error": "setInputForFormula virhe:",
     "name": "Kaava",
     "expression": "Lauseke",
-    "result": "Tulos",
     "input": "Tulo",
     "output": "Lähtö",
     "evaluation": "Arviointi",
@@ -94,11 +105,15 @@
     "device_not_found": "[{input}] Laitetta ei löydy",
     "capability_not_found": "[{input}] Kyvykkyyttä {capability} ei löydy",
     "value_received": "[{input}] Alkuarvo: {value} → {boolean}",
+    "received_value": "[{input}] Vastaanotettu alkuarvo: {value}",
+    "no_value_waiting": "[{input}] Alkuarvoa ei löytynyt - odotetaan ensimmäistä tapahtumaa",
     "error": "[{input}] Virhe alkuarvon hakemisessa:"
   },
   "evaluation": {
     "running_initial": "Ajetaan kaavojen alkuarviointi...",
-    "initial_complete": "Kaikkien kaavojen alkuarviointi..."
+    "initial_complete": "Kaikkien kaavojen alkuarviointi...",
+    "no_formulas_ready": "Kaavoja ei voitu arvioida - odotetaan tuloarvoja",
+    "reevaluating_all": "Arvioidaan kaikki kaavat uudelleen (nollataan lukot)..."
   },
   "listener": {
     "registered": "[{input}] Kuunnellaan laitetta {device} kyvykkyyttä {capability}",
@@ -106,7 +121,14 @@
     "capability_not_exist": "[{input}] Kyvykkyyttä {capability} ei ole laitteessa {device}",
     "polling_setup": "[{input}] Määritetty pollaus laitteelle {device} ({capability})",
     "capability_changed": "[{input}] Kyvykkyys '{capability}' muuttui: {value} → {boolean}",
-    "error_setup": "Virhe kuuntelijan määrittämisessä tulolle {input}:"
+    "error_setup": "Virhe kuuntelijan määrittämisessä tulolle {input}:",
+    "setting_up": "Määritetään kuuntelijaa tulolle {input}",
+    "invalid_config": "Virheellinen linkkimääritys tulolle {input}",
+    "api_unavailable": "Sovelluksen API ei ole käytettävissä kuuntelijan määritykseen",
+    "device_found": "Laite löydetty: {device}",
+    "capability_found": "Laitteella on kyvykkyys: {capability}",
+    "event_received": "Tapahtuma vastaanotettu tulolle {input}",
+    "registering": "Rekisteröidään kyvykkyyskuuntelijaa kohteelle {capability}..."
   },
   "polling": {
     "all_inputs": "Pollataan kaikkia linkitettyjä laitetuloja...",
@@ -127,10 +149,18 @@
     "error_detecting_inputs": "Virhe tarvittavien tulojen tunnistamisessa:"
   },
   "refetch": {
-    "reason": "Haetaan tulot uudelleen (syy: {reason})..."
+    "reason": "Haetaan tulot uudelleen (syy: {reason})...",
+    "invoked": "Uudelleenhaku ja arviointi käynnistetty (lähde={source})",
+    "parse_failed": "input_links-määritysten jäsentäminen epäonnistui uudelleenhaun aikana:",
+    "no_links": "Ei syöttölinkkejä saatavilla uudelleenhaun aikana; ohitetaan arvojen haku.",
+    "fetching_values": "Haetaan alkuarvot uudelleen ennen arviointia..."
   },
   "timeout": {
     "error": "Virhe aikakatkaisun laukaisemisessa:"
+  },
+  "flow": {
+    "triggered": "Käynnistetään flow kaavan '{name}' muutokselle arvoon {result}",
+    "trigger_error": "Virhe flow'n käynnistämisessä:"
   },
   "driver": {
     "ready": "Ajuri valmis",
@@ -210,6 +240,9 @@
     "value": "Arvo",
     "locked": "Tulo lukittu",
     "unlocked": "Tulon lukitus avattu",
+    "locked_first_impression": "Tulo '{input}' lukittu kaavalle '{formula}' (ensivaikutelman tila)",
+    "setting_value": "Asetetaan tulo '{input}' arvoon {value} kaavalle '{formula}' (oli: {oldValue})",
+    "locked_at_value": "🔒 Tulo '{input}' lukittu arvoon {value} (ensivaikutelman tila)",
     "first_impression": "Ensivaikutelman tila",
     "timeout_detected": "Aikakatkaisu havaittu tulossa",
     "waiting": "Odotetaan tuloa..."

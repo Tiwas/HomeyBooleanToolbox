@@ -49,6 +49,8 @@
     "capability_skip_deleted": "(seguro) Omitiendo {capability} – el dispositivo ya no existe.",
     "deleted_cleanup": "Dispositivo eliminado — limpiando oyentes y temporizadores",
     "cleanup_complete": "Limpieza completa",
+    "deleted_skip_update": "Dispositivo eliminado, omitiendo actualización de capacidad",
+    "deleted_skip_flow": "Dispositivo eliminado, omitiendo disparador de flow",
     "logic_unit_name": "Unidad lógica ({count} entradas)"
   },
   "formula": {
@@ -65,9 +67,18 @@
     "no_expression": "(sin expresión)",
     "error_validation": "Fórmula '{name}': {error}",
     "result_debug": "getFormulaResult: Fórmula '{name}' ({id}) resultado = {result} (tipo: {type})",
+    "not_found_or_disabled": "Fórmula '{id}' no encontrada o deshabilitada.",
+    "unlocked_inputs": "🔓 Se desbloquearon todas las entradas para la fórmula '{name}'",
+    "waiting_for_inputs": "Fórmula '{name}': Esperando entradas. Requeridas: [{required}]",
+    "evaluating_expression": "Evaluando: \"{expression}\" → \"{evalExpression}\"",
+    "result": "Fórmula '{name}' resultado: {result}",
+    "all_inputs_defined": "Fórmula '{name}': Todas las entradas definidas, evaluando...",
+    "missing_inputs": "Fórmula '{name}': Entradas faltantes:",
+    "evaluation_failed": "Error al evaluar la fórmula '{name}': {message}",
+    "get_result_not_found": "getFormulaResult: Fórmula '{id}' no encontrada",
+    "set_input_error": "Error en setInputForFormula:",
     "name": "Fórmula",
     "expression": "Expresión",
-    "result": "Resultado",
     "input": "Entrada",
     "output": "Salida",
     "evaluation": "Evaluación",
@@ -94,11 +105,15 @@
     "device_not_found": "[{input}] Dispositivo no encontrado",
     "capability_not_found": "[{input}] Capacidad {capability} no encontrada",
     "value_received": "[{input}] Valor inicial: {value} → {boolean}",
+    "received_value": "[{input}] Valor inicial recibido: {value}",
+    "no_value_waiting": "[{input}] No se encontró valor inicial - esperando primer evento",
     "error": "[{input}] Error al obtener el valor inicial:"
   },
   "evaluation": {
     "running_initial": "Ejecutando evaluación inicial de fórmulas...",
-    "initial_complete": "Evaluación inicial de todas las fórmulas..."
+    "initial_complete": "Evaluación inicial de todas las fórmulas...",
+    "no_formulas_ready": "No se pudieron evaluar fórmulas - esperando valores de entrada",
+    "reevaluating_all": "Re-evaluando todas las fórmulas (reiniciando bloqueos)..."
   },
   "listener": {
     "registered": "[{input}] Escuchando al dispositivo {device} capacidad {capability}",
@@ -106,7 +121,14 @@
     "capability_not_exist": "[{input}] La capacidad {capability} no existe en el dispositivo {device}",
     "polling_setup": "[{input}] Se configuró el sondeo para {device} ({capability})",
     "capability_changed": "[{input}] Capacidad '{capability}' cambiada: {value} → {boolean}",
-    "error_setup": "Error al configurar el oyente para la entrada {input}:"
+    "error_setup": "Error al configurar el oyente para la entrada {input}:",
+    "setting_up": "Configurando oyente para entrada {input}",
+    "invalid_config": "Configuración de enlace inválida para la entrada {input}",
+    "api_unavailable": "API de la aplicación no disponible para configuración de oyente",
+    "device_found": "Dispositivo encontrado: {device}",
+    "capability_found": "El dispositivo tiene capacidad: {capability}",
+    "event_received": "Evento recibido para la entrada {input}",
+    "registering": "Registrando oyente de capacidad para {capability}..."
   },
   "polling": {
     "all_inputs": "Sondeando todas las entradas de dispositivos vinculados...",
@@ -127,10 +149,18 @@
     "error_detecting_inputs": "Error al detectar las entradas requeridas:"
   },
   "refetch": {
-    "reason": "Volviendo a obtener entradas (razón: {reason})..."
+    "reason": "Volviendo a obtener entradas (razón: {reason})...",
+    "invoked": "Re-obtener y evaluar invocado (fuente={source})",
+    "parse_failed": "Error al analizar input_links durante la re-obtención:",
+    "no_links": "No hay enlaces de entrada disponibles durante la re-obtención; omitiendo obtención de valores.",
+    "fetching_values": "Re-obteniendo valores iniciales antes de la evaluación..."
   },
   "timeout": {
     "error": "Error al activar el tiempo de espera:"
+  },
+  "flow": {
+    "triggered": "Disparando flow por cambio de fórmula '{name}' a {result}",
+    "trigger_error": "Error al disparar el flow:"
   },
   "driver": {
     "ready": "Controlador listo",
@@ -210,6 +240,9 @@
     "value": "Valor",
     "locked": "Entrada bloqueada",
     "unlocked": "Entrada desbloqueada",
+    "locked_first_impression": "Entrada '{input}' bloqueada para la fórmula '{formula}' (modo primera impresión)",
+    "setting_value": "Estableciendo entrada '{input}' a {value} para la fórmula '{formula}' (era: {oldValue})",
+    "locked_at_value": "🔒 Entrada '{input}' bloqueada en el valor {value} (modo primera impresión)",
     "first_impression": "Modo primera impresión",
     "timeout_detected": "Tiempo de espera detectado en la entrada",
     "waiting": "Esperando entrada..."

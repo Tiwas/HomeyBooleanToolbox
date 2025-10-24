@@ -49,6 +49,8 @@
     "capability_skip_deleted": "(sicher) Überspringe {capability} – Gerät existiert nicht mehr.",
     "deleted_cleanup": "Gerät gelöscht — Listener & Timer werden bereinigt",
     "cleanup_complete": "Bereinigung abgeschlossen",
+    "deleted_skip_update": "Gerät gelöscht, überspringe Capability-Update",
+    "deleted_skip_flow": "Gerät gelöscht, überspringe Flow-Auslöser",
     "logic_unit_name": "Logikeinheit ({count} Eingänge)"
   },
   "formula": {
@@ -65,9 +67,18 @@
     "no_expression": "(kein Ausdruck)",
     "error_validation": "Formel '{name}': {error}",
     "result_debug": "getFormulaResult: Formel '{name}' ({id}) Ergebnis = {result} (Typ: {type})",
+    "not_found_or_disabled": "Formel '{id}' nicht gefunden oder deaktiviert.",
+    "unlocked_inputs": "🔓 Alle Eingänge für Formel '{name}' entsperrt",
+    "waiting_for_inputs": "Formel '{name}': Warte auf Eingänge. Erforderlich: [{required}]",
+    "evaluating_expression": "Werte aus: \"{expression}\" → \"{evalExpression}\"",
+    "result": "Formel '{name}' Ergebnis: {result}",
+    "all_inputs_defined": "Formel '{name}': Alle Eingänge definiert, Auswertung...",
+    "missing_inputs": "Formel '{name}': Fehlende Eingänge:",
+    "evaluation_failed": "Auswertung der Formel '{name}' fehlgeschlagen: {message}",
+    "get_result_not_found": "getFormulaResult: Formel '{id}' nicht gefunden",
+    "set_input_error": "setInputForFormula Fehler:",
     "name": "Formel",
     "expression": "Ausdruck",
-    "result": "Ergebnis",
     "input": "Eingang",
     "output": "Ausgang",
     "evaluation": "Auswertung",
@@ -94,11 +105,15 @@
     "device_not_found": "[{input}] Gerät nicht gefunden",
     "capability_not_found": "[{input}] Capability {capability} nicht gefunden",
     "value_received": "[{input}] Anfangswert: {value} → {boolean}",
+    "received_value": "[{input}] Anfangswert empfangen: {value}",
+    "no_value_waiting": "[{input}] Kein Anfangswert gefunden - warte auf erstes Ereignis",
     "error": "[{input}] Fehler beim Abrufen des Anfangswerts:"
   },
   "evaluation": {
     "running_initial": "Erste Formelauswertung läuft...",
-    "initial_complete": "Erste Auswertung aller Formeln..."
+    "initial_complete": "Erste Auswertung aller Formeln...",
+    "no_formulas_ready": "Keine Formeln konnten ausgewertet werden - warte auf Eingangswerte",
+    "reevaluating_all": "Alle Formeln werden neu ausgewertet (Sperren zurückgesetzt)..."
   },
   "listener": {
     "registered": "[{input}] Überwacht Gerät {device} Capability {capability}",
@@ -106,7 +121,14 @@
     "capability_not_exist": "[{input}] Capability {capability} existiert nicht auf Gerät {device}",
     "polling_setup": "[{input}] Polling für {device} ({capability}) eingerichtet",
     "capability_changed": "[{input}] Capability '{capability}' geändert: {value} → {boolean}",
-    "error_setup": "Fehler beim Einrichten des Listeners für Eingang {input}:"
+    "error_setup": "Fehler beim Einrichten des Listeners für Eingang {input}:",
+    "setting_up": "Richte Listener für Eingang {input} ein",
+    "invalid_config": "Ungültige Link-Konfiguration für Eingang {input}",
+    "api_unavailable": "App-API für Listener-Setup nicht verfügbar",
+    "device_found": "Gerät gefunden: {device}",
+    "capability_found": "Gerät hat Capability: {capability}",
+    "event_received": "Ereignis für Eingang {input} empfangen",
+    "registering": "Registriere Capability-Listener für {capability}..."
   },
   "polling": {
     "all_inputs": "Abfrage aller verknüpften Geräteeingänge...",
@@ -127,10 +149,18 @@
     "error_detecting_inputs": "Fehler beim Erkennen erforderlicher Eingänge:"
   },
   "refetch": {
-    "reason": "Eingänge werden erneut abgerufen (Grund: {reason})..."
+    "reason": "Eingänge werden erneut abgerufen (Grund: {reason})...",
+    "invoked": "Erneutes Abrufen und Auswerten aufgerufen (Quelle={source})",
+    "parse_failed": "Parsen von input_links während des erneuten Abrufens fehlgeschlagen:",
+    "no_links": "Keine Input-Links während des erneuten Abrufens verfügbar; Abrufen von Werten wird übersprungen.",
+    "fetching_values": "Rufe Anfangswerte vor der Auswertung erneut ab..."
   },
   "timeout": {
     "error": "Fehler beim Auslösen der Zeitüberschreitung:"
+  },
+  "flow": {
+    "triggered": "Löse Flow aus für Formel '{name}' Änderung zu {result}",
+    "trigger_error": "Fehler beim Auslösen des Flows:"
   },
   "driver": {
     "ready": "Treiber bereit",
@@ -210,6 +240,9 @@
     "value": "Wert",
     "locked": "Eingang gesperrt",
     "unlocked": "Eingang entsperrt",
+    "locked_first_impression": "Eingang '{input}' für Formel '{formula}' gesperrt (Erster-Eindruck-Modus)",
+    "setting_value": "Setze Eingang '{input}' auf {value} für Formel '{formula}' (war: {oldValue})",
+    "locked_at_value": "🔒 Eingang '{input}' auf Wert {value} gesperrt (Erster-Eindruck-Modus)",
     "first_impression": "Erster-Eindruck-Modus",
     "timeout_detected": "Zeitüberschreitung am Eingang erkannt",
     "waiting": "Warte auf Eingang..."
@@ -228,7 +261,8 @@
   "help": {
     "formula_syntax": "Verwenden Sie logische Operatoren wie UND, ODER, NICHT, um Ihre Formel zu erstellen",
     "input_values": "Eingangswerte werden automatisch aktualisiert, wenn sich verbundene Geräte ändern",
-    "timeout_warning": "Wenn ein Eingang nicht innerhalb der Zeitüberschreitung aktualisiert wird, wird er markiert",
+    "timeout_warning": "Wenn ein Eingang nicht innerhalb der Zeitüberschreitung aktualisiert wird, wird er markert",
     "first_impression": "Der Erster-Eindruck-Modus sperrt Eingänge bei ihrem ersten empfangenen Wert"
   }
 }
+

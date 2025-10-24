@@ -49,6 +49,8 @@
     "capability_skip_deleted": "(veilig) Overslaan {capability} – apparaat bestaat niet meer.",
     "deleted_cleanup": "Apparaat verwijderd — listeners & timers opschonen",
     "cleanup_complete": "Opschonen voltooid",
+    "deleted_skip_update": "Apparaat verwijderd, capability-update overslaan",
+    "deleted_skip_flow": "Apparaat verwijderd, flow-trigger overslaan",
     "logic_unit_name": "Logische eenheid ({count} ingangen)"
   },
   "formula": {
@@ -65,9 +67,18 @@
     "no_expression": "(geen expressie)",
     "error_validation": "Formule '{name}': {error}",
     "result_debug": "getFormulaResult: Formule '{name}' ({id}) resultaat = {result} (type: {type})",
+    "not_found_or_disabled": "Formule '{id}' niet gevonden of uitgeschakeld.",
+    "unlocked_inputs": "🔓 Alle ingangen ontgrendeld voor formule '{name}'",
+    "waiting_for_inputs": "Formule '{name}': Wachten op ingangen. Vereist: [{required}]",
+    "evaluating_expression": "Evalueren: \"{expression}\" → \"{evalExpression}\"",
+    "result": "Formule '{name}' resultaat: {result}",
+    "all_inputs_defined": "Formule '{name}': Alle ingangen gedefinieerd, evalueren...",
+    "missing_inputs": "Formule '{name}': Ontbrekende ingangen:",
+    "evaluation_failed": "Evaluatie van formule '{name}' mislukt: {message}",
+    "get_result_not_found": "getFormulaResult: Formule '{id}' niet gevonden",
+    "set_input_error": "setInputForFormula fout:",
     "name": "Formule",
     "expression": "Uitdrukking",
-    "result": "Resultaat",
     "input": "Ingang",
     "output": "Uitgang",
     "evaluation": "Evaluatie",
@@ -94,11 +105,15 @@
     "device_not_found": "[{input}] Apparaat niet gevonden",
     "capability_not_found": "[{input}] Capability {capability} niet gevonden",
     "value_received": "[{input}] Beginwaarde: {value} → {boolean}",
+    "received_value": "[{input}] Beginwaarde ontvangen: {value}",
+    "no_value_waiting": "[{input}] Geen beginwaarde gevonden - wachten op eerste gebeurtenis",
     "error": "[{input}] Fout bij ophalen beginwaarde:"
   },
   "evaluation": {
     "running_initial": "Initiële formule-evaluatie uitvoeren...",
-    "initial_complete": "Initiële evaluatie van alle formules..."
+    "initial_complete": "Initiële evaluatie van alle formules...",
+    "no_formulas_ready": "Geen formules konden worden geëvalueerd - wachten op ingangswaarden",
+    "reevaluating_all": "Alle formules opnieuw evalueren (vergrendelingen resetten)..."
   },
   "listener": {
     "registered": "[{input}] Luisteren naar apparaat {device} capability {capability}",
@@ -106,7 +121,14 @@
     "capability_not_exist": "[{input}] Capability {capability} bestaat niet op apparaat {device}",
     "polling_setup": "[{input}] Polling ingesteld voor {device} ({capability})",
     "capability_changed": "[{input}] Capability '{capability}' gewijzigd: {value} → {boolean}",
-    "error_setup": "Fout bij instellen listener for ingang {input}:"
+    "error_setup": "Fout bij instellen listener for ingang {input}:",
+    "setting_up": "Listener instellen voor ingang {input}",
+    "invalid_config": "Ongeldige linkconfiguratie voor ingang {input}",
+    "api_unavailable": "App API niet beschikbaar voor listener setup",
+    "device_found": "Apparaat gevonden: {device}",
+    "capability_found": "Apparaat heeft capability: {capability}",
+    "event_received": "Gebeurtenis ontvangen voor ingang {input}",
+    "registering": "Capability listener registreren voor {capability}..."
   },
   "polling": {
     "all_inputs": "Alle gekoppelde apparaatingangen pollen...",
@@ -127,10 +149,18 @@
     "error_detecting_inputs": "Fout bij detecteren vereiste ingangen:"
   },
   "refetch": {
-    "reason": "Ingangen opnieuw ophalen (reden: {reason})..."
+    "reason": "Ingangen opnieuw ophalen (reden: {reason})...",
+    "invoked": "Opnieuw ophalen en evalueren aangeroepen (bron={source})",
+    "parse_failed": "Parsen van input_links mislukt tijdens opnieuw ophalen:",
+    "no_links": "Geen input links beschikbaar tijdens opnieuw ophalen; ophalen van waarden overgeslagen.",
+    "fetching_values": "Beginwaarden opnieuw ophalen voor evaluatie..."
   },
   "timeout": {
     "error": "Fout bij activeren time-out:"
+  },
+  "flow": {
+    "triggered": "Flow triggeren voor formule '{name}' wijziging naar {result}",
+    "trigger_error": "Fout bij triggeren van flow:"
   },
   "driver": {
     "ready": "Driver gereed",
@@ -210,6 +240,9 @@
     "value": "Waarde",
     "locked": "Ingang vergrendeld",
     "unlocked": "Ingang ontgrendeld",
+    "locked_first_impression": "Ingang '{input}' vergrendeld voor formule '{formula}' (eerste indruk modus)",
+    "setting_value": "Ingang '{input}' instellen op {value} voor formule '{formula}' (was: {oldValue})",
+    "locked_at_value": "🔒 Ingang '{input}' vergrendeld op waarde {value} (eerste indruk modus)",
     "first_impression": "Eerste indruk modus",
     "timeout_detected": "Time-out gedetecteerd op ingang",
     "waiting": "Wachten op ingang..."
