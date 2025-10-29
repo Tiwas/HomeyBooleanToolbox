@@ -1,0 +1,11 @@
+# Ignore Homey build directory
+.homeybuild/
+
+# Ignore existing incomplete tests until they are fixed
+tests/device.test.js
+
+# Ignore node modules
+node_modules/
+
+# Ignore coverage reports
+coverage/

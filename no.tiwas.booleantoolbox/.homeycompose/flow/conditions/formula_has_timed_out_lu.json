@@ -1,0 +1,66 @@
+{
+  "id": "formula_has_timed_out_lu",
+  "title": {
+    "en": "Formula !{{has|has not}} timed out",
+    "no": "Formel !{{har|har ikke}} fått timeout",
+    "de": "Formel !{{hat|hat nicht}} Zeitüberschreitung",
+    "nl": "Formule !{{is|is niet}} verlopen",
+    "fr": "Formule !{{a|n'a pas}} expiré",
+    "da": "Formel !{{har|har ikke}} fået timeout",
+    "fi": "Kaava !{{on|ei ole}} aikakatkaistu",
+    "sv": "Formel !{{har|har inte}} fått timeout",
+    "pl": "Formuła !{{przekroczyła|nie przekroczyła}} limit czasu",
+    "it": "Formula !{{ha|non ha}} timeout",
+    "es": "Fórmula !{{ha|no ha}} expirado"
+  },
+  "titleFormatted": {
+    "en": "Formula [[formula]] !{{has|has not}} timed out",
+    "no": "Formel [[formula]] !{{har|har ikke}} fått timeout",
+    "de": "Formel [[formula]] !{{hat|hat nicht}} Zeitüberschreitung",
+    "nl": "Formule [[formula]] !{{is|is niet}} verlopen",
+    "fr": "Formule [[formula]] !{{a|n'a pas}} expiré",
+    "da": "Formel [[formula]] !{{har|har ikke}} fået timeout",
+    "fi": "Kaava [[formula]] !{{on|ei ole}} aikakatkaistu",
+    "sv": "Formel [[formula]] !{{har|har inte}} fått timeout",
+    "pl": "Formuła [[formula]] !{{przekroczyła|nie przekroczyła}} limit czasu",
+    "it": "Formula [[formula]] !{{ha|non ha}} timeout",
+    "es": "Fórmula [[formula]] !{{ha|no ha}} expirado"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-unit|logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+    },
+    {
+      "type": "autocomplete",
+      "name": "formula",
+      "title": {
+        "en": "Formula",
+        "no": "Formel",
+        "de": "Formel",
+        "nl": "Formule",
+        "fr": "Formule",
+        "da": "Formel",
+        "fi": "Kaava",
+        "sv": "Formel",
+        "pl": "Formuła",
+        "it": "Formula",
+        "es": "Fórmula"
+      },
+      "placeholder": {
+        "en": "Select formula",
+        "no": "Velg formel",
+        "de": "Wähle Formel",
+        "nl": "Selecteer formule",
+        "fr": "Sélectionner la formule",
+        "da": "Vælg formel",
+        "fi": "Valitse kaava",
+        "sv": "Välj formel",
+        "pl": "Wybierz formułę",
+        "it": "Seleziona formula",
+        "es": "Seleccionar fórmula"
+      }
+    }
+  ]
+}

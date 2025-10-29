@@ -1,0 +1,23 @@
+{
+  "id": "formula_has_timed_out_ld",
+  "title": {
+    "en": "Has an error",
+    "nl": "Heeft een fout",
+    "sv": "Har ett fel",
+    "no": "Har en feil",
+    "it": "Ha un errore",
+    "de": "Hat einen Fehler",
+    "da": "Har en fejl",
+    "es": "Tiene un error",
+    "fi": "Sisältää virheen",
+    "fr": "A une erreur",
+    "pl": "Wystąpił błąd"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    }
+  ]
+}

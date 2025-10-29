@@ -1,0 +1,57 @@
+{
+  "id": "formula_result_is_ld",
+  "title": {
+    "en": "The result is...",
+    "nl": "Het resultaat is...",
+    "sv": "Resultatet är...",
+    "no": "Resultatet er...",
+    "it": "Il risultato è...",
+    "de": "Das Ergebnis ist...",
+    "da": "Resultatet er...",
+    "es": "El resultado es...",
+    "fi": "Tulos on...",
+    "fr": "Le résultat est...",
+    "pl": "Wynik to..."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device",
+      "values": [
+        {
+          "id": "true",
+          "title": {
+            "en": "True (Yes)",
+            "nl": "Waar (Ja)",
+            "sv": "Sant (Ja)",
+            "no": "Sant (Ja)",
+            "it": "Vero (Sì)",
+            "de": "Wahr (Ja)",
+            "da": "Sand (Ja)",
+            "es": "Verdadero (Sí)",
+            "fi": "Tosi (Kyllä)",
+            "fr": "Vrai (Oui)",
+            "pl": "Prawda (Tak)"
+          }
+        },
+        {
+          "id": "false",
+          "title": {
+            "en": "False (No)",
+            "nl": "Niet waar (Nee)",
+            "sv": "Falskt (Nej)",
+            "no": "Usant (Nei)",
+            "it": "Falso (No)",
+            "de": "Falsch (Nein)",
+            "da": "Falsk (Nej)",
+            "es": "Falso (No)",
+            "fi": "Epätosi (Ei)",
+            "fr": "Faux (Non)",
+            "pl": "Fałsz (Nie)"
+          }
+        }
+      ]
+    }
+  ]
+}

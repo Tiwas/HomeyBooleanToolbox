@@ -69,7 +69,7 @@
   <div class="container">
     <h2 data-i18n="pair.select_inputs_title">Select number of inputs</h2>
     <p class="description" data-i18n="pair.select_inputs_description">How many devices do you want to connect to this logic device?</p>
-    
+
     <div class="input-selector">
       <input type="number" id="numInputs" class="input-number" min="2" max="10" value="2">
       <div class="range-info" data-i18n="pair.inputs_range">Choose between 2 and 10 inputs</div>
@@ -78,44 +78,124 @@
     <button id="continue-btn" data-i18n="pair.next">Next →</button>
   </div>
 
-  <script>
+<script>
     const numInputsEl = document.getElementById('numInputs');
-    
-    function onHomeyReady(Homey) {
-      // Apply translations
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        el.textContent = Homey.__(key);
-      });
+    let homeyRef; // Bør bli satt globalt av Homey-miljøet
 
-      init();
-      
+    // Logger til nettleserkonsoll
+    function logToConsole(message, data) {
+      const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
+      const logMessage = `[VIEW][${timestamp}] ${message}`;
+      console.log(logMessage, data || '');
+    }
+
+    // Funksjon for å bruke oversettelser
+    function applyTranslations() {
+        logToConsole('Attempting to apply translations...');
+        try {
+            // Sjekk om Homey.__ er tilgjengelig
+            if (typeof Homey === 'undefined' || typeof Homey.__ !== 'function') {
+                logToConsole('Homey.__ is not available yet.');
+                return; // Avbryt hvis funksjonen ikke finnes
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                try {
+                    el.textContent = Homey.__(key);
+                } catch (e) {
+                   logToConsole(`Error translating key '${key}':`, e);
+                   el.textContent = key; // Fallback
+                }
+            });
+            logToConsole('Translations applied (or attempted).');
+        } catch (e) {
+            logToConsole('Error during translation loop:', e);
+        }
+    }
+
+    // --- Kjør koden direkte ---
+    logToConsole('Script tag started.');
+
+    // Initialiseringslogikk
+    async function init() {
+      logToConsole('init() started.');
+      try {
+        // Anta at Homey.emit er tilgjengelig globalt
+        logToConsole("Emitting 'get_num_inputs'...");
+        const result = await Homey.emit('get_num_inputs');
+        logToConsole("'get_num_inputs' received result:", result);
+        numInputsEl.value = result.numInputs || 2;
+        logToConsole(`Initial numInputs value set to: ${numInputsEl.value}`);
+      } catch (e) {
+        logToConsole("Error in init() during emit:", e);
+        // Vis feil hvis alert er tilgjengelig
+        if (typeof Homey !== 'undefined' && Homey.alert) {
+             Homey.alert(Homey.__('pair.error_loading_initial_data', { error: (e.message || e) }), 'error');
+        }
+      }
+      logToConsole('init() finished.');
+    }
+
+    // Event listeners
+    try {
+      logToConsole('Adding change listener for numInputs...');
       numInputsEl.addEventListener('change', async (e) => {
+        logToConsole('numInputs change triggered.');
         let value = parseInt(e.target.value);
         if (isNaN(value) || value < 2) value = 2;
         if (value > 10) value = 10;
         e.target.value = value;
-        
+        logToConsole(`Input value validated: ${value}`);
         try {
+          if (typeof Homey === 'undefined' || typeof Homey.emit !== 'function') {
+             throw new Error(Homey.__('pair.error_homey_emit_unavailable'));
+          }
+          logToConsole(`Emitting 'set_num_inputs' with value: ${value}`);
           await Homey.emit('set_num_inputs', { numInputs: value });
+          logToConsole("'set_num_inputs' emitted successfully.");
         } catch (e) {
-          console.error('Error setting num inputs:', e);
+          logToConsole('Error emitting set_num_inputs:', e);
+           if (typeof Homey !== 'undefined' && Homey.alert) {
+               Homey.alert(Homey.__('pair.error_saving_input_number', { error: (e.message || e) }), 'error');
+           }
         }
       });
+      logToConsole('numInputs listener added.');
 
+      logToConsole('Adding click listener for continue-btn...');
       document.getElementById('continue-btn').addEventListener('click', () => {
-        Homey.nextView();
+        logToConsole('continue-btn clicked.');
+        try {
+          if (typeof Homey === 'undefined' || typeof Homey.nextView !== 'function') {
+             throw new Error(Homey.__('pair.error_homey_nextview_unavailable'));
+          }
+          logToConsole('Calling Homey.nextView()...');
+          Homey.nextView();
+        } catch (e) {
+          logToConsole('Error calling Homey.nextView():', e);
+          if (typeof Homey !== 'undefined' && Homey.alert) {
+             Homey.alert(Homey.__('pair.error_navigating', { error: (e.message || e) }), 'error');
+          }
+        }
       });
+      logToConsole('continue-btn listener added.');
+
+    } catch (e) {
+       logToConsole('Error adding event listeners:', e);
+       if (typeof Homey !== 'undefined' && Homey.alert) {
+           Homey.alert(Homey.__('pair.error_setting_up_interactions', { error: (e.message || e) }), 'error');
+       }
     }
-    
-    async function init() {
-      try {
-        const result = await Homey.emit('get_num_inputs');
-        numInputsEl.value = result.numInputs || 2;
-      } catch (e) {
-        console.error('Init error:', e);
-      }
-    }
+
+    // Kall init umiddelbart
+    init();
+
+    // Forsøk å kjøre oversettelser etter en kort forsinkelse
+    logToConsole('Scheduling translations check...');
+    setTimeout(applyTranslations, 500); // Prøv etter 500ms
+
+    logToConsole('Script tag finished.');
   </script>
 </body>
 </html>

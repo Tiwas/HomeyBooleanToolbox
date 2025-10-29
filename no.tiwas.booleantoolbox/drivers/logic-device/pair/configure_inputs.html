@@ -187,15 +187,41 @@
       max-height: 200px;
       overflow-y: auto;
     }
+    .formula-section {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #e3f2fd; /* Match summary */
+      border-radius: 8px;
+      border-left: 4px solid #2196F3; /* Match summary */
+    }
+    .formula-section label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+    }
+    .formula-section input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    .formula-section input:focus {
+      outline: none;
+      border-color: #2196F3; /* Match summary */
+      box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2 data-i18n="pair.configure_inputs_title">Configure inputs</h2>
     <p class="description" data-i18n="pair.configure_inputs_description">Select which device and capability each input should follow:</p>
-    
-    <div id="loading" class="loading"></div>
-    
+
+    <div id="loading" class="loading" data-i18n="common.loading">Loading...</div>
+
     <div id="inputs-container" style="display: none;"></div>
 
     <div id="device-name-section" class="device-name-section" style="display: none;">
@@ -203,302 +229,267 @@
       <input type="text" id="deviceName" value="">
     </div>
 
+    <div id="formula-section" class="formula-section" style="display: none;">
+      <label for="formulaInput" data-i18n="pair.formula_label">Angi formel:</label>
+      <input type="text" id="formulaInput" value="">
+    </div>
+
     <div id="summary" class="summary" style="display: none;"></div>
 
     <div id="error-message" class="error" style="display: none;"></div>
-    
+
     <button id="complete-btn">...</button>
   </div>
 
 <script>
-    let Homey;
+    // Globale variabler
     let zones = [];
     let numInputs = 2;
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+    // Ingen homeyRef her, vi bruker 'Homey' globalt
 
-    function onHomeyReady(homey) {
-      Homey = homey;
-
-      // Apply translations
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        el.textContent = Homey.__(key);
-      });
-
-      // Set translated placeholder
-      const deviceNameInput = document.getElementById('deviceName');
-      deviceNameInput.placeholder = Homey.__('pair.device_name_placeholder');
-      deviceNameInput.value = Homey.__('pair.name_placeholder');
-
-      // Set loading text
-      document.getElementById('loading').textContent = Homey.__('common.loading');
-
-      // Set button handler
-      document.getElementById('complete-btn').addEventListener('click', visVarsel);
-
-      init();
-    }
-
-    function log(message, data) {
+    // Logger til både nettleserkonsoll og Homey-logg hvis mulig
+    function logToConsole(message, data) {
       const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
-      const logMessage = `[${timestamp}] ${message}`;
-      console.log(logMessage, data || '');
+      const logMessage = `[VIEW][${timestamp}] ${message}`;
+      console.log(logMessage, data || ''); // Alltid til nettleserkonsoll
+      
+      // Bruk global 'Homey' hvis tilgjengelig
+      if (typeof Homey !== 'undefined' && typeof Homey.log === 'function') {
+         try { Homey.log(logMessage, data || ''); } catch(e) { console.warn("Could not log to global Homey:", e); }
+      }
     }
 
     function showError(message) {
+      logToConsole('showError called with:', message);
       const errorEl = document.getElementById('error-message');
-      errorEl.textContent = message;
-      errorEl.style.display = 'block';
+      if (errorEl) {
+          errorEl.textContent = message;
+          errorEl.style.display = 'block';
+      } else {
+          console.error("[VIEW] Error element not found!");
+      }
+      // Bruk global 'Homey' hvis tilgjengelig
+      if (typeof Homey !== 'undefined' && typeof Homey.alert === 'function') {
+           try { Homey.alert(message, 'error'); } catch(e) { console.warn("Could not show global Homey alert:", e); }
+      }
     }
 
-    async function init() {
-      try {
-        const numInputsResult = await Homey.emit('get_num_inputs');
-        numInputs = numInputsResult.numInputs || 2;
-        
-        log('Fetching zones...');
-        zones = await Homey.emit('get_zones');
-        if (!zones || zones.length === 0) {
-          showError(Homey.__('pair.no_zones_error'));
-          document.getElementById('loading').style.display = 'none';
-          return;
-        }
-        log('Zones fetched successfully', zones.length);
+    // --- Funksjoner ---
+    // Disse bruker nå 'Homey' globalt
 
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('inputs-container').style.display = 'block';
-        document.getElementById('device-name-section').style.display = 'block';
-        document.getElementById('summary').style.display = 'block';
-        
-        renderInputs();
-        
-        setTimeout(() => {
-          updateSummary();
-        }, 100);
-      } catch (e) {
-        console.error('Init error:', e);
-        showError(Homey.__('pair.init_error') + ': ' + e.message);
-        document.getElementById('loading').style.display = 'none';
-      }
+    async function handleCompleteClick() {
+       if (typeof Homey === 'undefined') { logToConsole('handleCompleteClick called before Homey was ready!'); alert(Homey.__('pair.error_system_not_ready')); return; }
+       logToConsole('handleCompleteClick started.');
+       try {
+         const inputLinks = [];
+         const defaultName = Homey.__('pair.name_placeholder');
+         const deviceName = document.getElementById('deviceName').value || defaultName;
+         logToConsole(`Device name to use: ${deviceName}`);
+         
+         const defaultFormula = letters.slice(0, numInputs).join(' AND ');
+         const formula = document.getElementById('formulaInput').value || defaultFormula;
+         logToConsole(`Formula to use: ${formula}`);
+
+         for (let i = 0; i < numInputs; i++) {
+           const inputId = letters[i].toLowerCase();
+           const deviceSelect = document.getElementById(`device-${inputId}`);
+           const deviceId = deviceSelect?.value;
+           const capability = document.getElementById(`capability-${inputId}`)?.value;
+           if (deviceId && capability) {
+             const selectedOption = deviceSelect.options[deviceSelect.selectedIndex];
+             const linkedDeviceName = selectedOption?.textContent || Homey.__('pair.unknown_device');
+             inputLinks.push({ input: inputId, deviceId, capability, deviceName: linkedDeviceName });
+             logToConsole(`Input ${inputId.toUpperCase()} configured:`, { deviceId, capability, linkedDeviceName });
+           } else { logToConsole(`Input ${inputId.toUpperCase()} is not fully configured.`); }
+         }
+         if (inputLinks.length !== numInputs) { logToConsole('Not all inputs configured. Showing alert.'); await Homey.alert(Homey.__('pair.configure_all_inputs'), 'warning'); return; }
+         logToConsole('All inputs configured. Emitting data to driver...');
+         await Homey.emit('set_input_links', { inputLinks });
+         logToConsole('set_input_links emitted.');
+         await Homey.emit('set_device_name', { name: deviceName });
+         logToConsole('set_device_name emitted.');
+         await Homey.emit('set_device_formula', { formula: formula });
+         logToConsole('set_device_formula emitted.');
+         logToConsole('Emitting create_device...');
+         const deviceData = await Homey.emit('create_device');
+         logToConsole('create_device received data:', deviceData);
+         logToConsole('Calling Homey.createDevice...');
+         await Homey.createDevice(deviceData);
+         logToConsole('Homey.createDevice finished.');
+         logToConsole('Calling Homey.done()...');
+         await Homey.done();
+         logToConsole('Homey.done() called.');
+       } catch (e) { logToConsole('Error in handleCompleteClick:', e); showError(Homey.__('pair.error_completing_setup', { error: (e.message || e) })); }
     }
 
     function renderInputs() {
-      const container = document.getElementById('inputs-container');
-      container.innerHTML = '';
-      
-      let zoneOptions = `<option value="">${Homey.__('pair.select_zone')}</option>`;
-      zones.forEach(zone => {
-        zoneOptions += `<option value="${zone.id}">${zone.name}</option>`;
-      });
-
-      for (let i = 0; i < numInputs; i++) {
-        const letter = letters[i];
-        const inputId = letter.toLowerCase();
-
-        const div = document.createElement('div');
-        div.className = 'input-config';
-        div.id = `input-config-${inputId}`;
-        
-        div.innerHTML = `
-          <h3>${Homey.__('pair.input')} ${letter}</h3>
-          <label>${Homey.__('pair.zone_label')}</label>
-          <select id="zone-${inputId}" data-input="${inputId}">${zoneOptions}</select>
-          <label>${Homey.__('pair.device_label')}</label>
-          <select id="device-${inputId}" data-input="${inputId}" disabled><option value="">${Homey.__('pair.select_zone_first')}</option></select>
-          <label>${Homey.__('pair.capability_label')}</label>
-          <select id="capability-${inputId}" data-input="${inputId}" disabled><option value="">${Homey.__('pair.select_device_first')}</option></select>
-          <div class="status incomplete" id="status-${inputId}">⚠️ ${Homey.__('pair.not_configured')}</div>
-        `;
-        container.appendChild(div);
-
-        document.getElementById(`zone-${inputId}`).addEventListener('change', (e) => onZoneChange(inputId, e.target.value));
-        document.getElementById(`device-${inputId}`).addEventListener('change', (e) => onDeviceChange(inputId, e.target.value));
-        document.getElementById(`capability-${inputId}`).addEventListener('change', updateSummary);
-      }
+       if (typeof Homey === 'undefined') { logToConsole('renderInputs called before Homey was ready!'); return; }
+       logToConsole(`renderInputs called for ${numInputs} inputs.`);
+       const container = document.getElementById('inputs-container');
+       container.innerHTML = '';
+       const selectZoneText = Homey.__('pair.select_zone'); const inputLabel = Homey.__('pair.input'); const zoneLabel = Homey.__('pair.zone_label'); const deviceLabel = Homey.__('pair.device_label'); const capabilityLabel = Homey.__('pair.capability_label'); const selectZoneFirst = Homey.__('pair.select_zone_first'); const selectDeviceFirst = Homey.__('pair.select_device_first'); const notConfigured = Homey.__('pair.not_configured');
+       let zoneOptions = `<option value="">${selectZoneText}</option>`; zones.forEach(zone => { zoneOptions += `<option value="${zone.id}">${zone.name}</option>`; });
+       for (let i = 0; i < numInputs; i++) {
+         const letter = letters[i]; const inputId = letter.toLowerCase(); const div = document.createElement('div'); div.className = 'input-config'; div.id = `input-config-${inputId}`;
+         div.innerHTML = `<h3>${inputLabel} ${letter}</h3> <label>${zoneLabel}</label> <select id="zone-${inputId}" data-input="${inputId}">${zoneOptions}</select> <label>${deviceLabel}</label> <select id="device-${inputId}" data-input="${inputId}" disabled><option value="">${selectZoneFirst}</option></select> <label>${capabilityLabel}</label> <select id="capability-${inputId}" data-input="${inputId}" disabled><option value="">${selectDeviceFirst}</option></select> <div class="status incomplete" id="status-${inputId}">⚠️ ${notConfigured}</div>`; container.appendChild(div);
+         try { document.getElementById(`zone-${inputId}`).addEventListener('change', (e) => onZoneChange(inputId, e.target.value)); document.getElementById(`device-${inputId}`).addEventListener('change', (e) => onDeviceChange(inputId, e.target.value)); document.getElementById(`capability-${inputId}`).addEventListener('change', updateSummary); } catch(e) { logToConsole(`Error adding listener for input ${inputId}:`, e); }
+       } logToConsole('renderInputs finished.');
     }
 
     async function onZoneChange(inputId, zoneId) {
-      log(`Zone changed for input ${inputId}`, zoneId);
-      const deviceSelect = document.getElementById(`device-${inputId}`);
-      const capabilitySelect = document.getElementById(`capability-${inputId}`);
-      
-      deviceSelect.innerHTML = `<option value="">${Homey.__('common.loading')}</option>`;
-      deviceSelect.disabled = true;
-      capabilitySelect.innerHTML = `<option value="">${Homey.__('pair.select_device_first')}</option>`;
-      capabilitySelect.disabled = true;
-      
-      if (!zoneId) {
-        deviceSelect.innerHTML = `<option value="">${Homey.__('pair.select_zone_first')}</option>`;
+        if (typeof Homey === 'undefined') return; logToConsole(`Zone changed for input ${inputId}: ${zoneId}`);
+        const deviceSelect = document.getElementById(`device-${inputId}`); const capabilitySelect = document.getElementById(`capability-${inputId}`); const loadingText = Homey.__('common.loading'); const selectDeviceFirst = Homey.__('pair.select_device_first'); const selectZoneFirst = Homey.__('pair.select_zone_first'); const selectDevice = Homey.__('pair.select_device'); const errorLoading = Homey.__('pair.error_loading');
+        deviceSelect.innerHTML = `<option value="">${loadingText}</option>`; deviceSelect.disabled = true; capabilitySelect.innerHTML = `<option value="">${selectDeviceFirst}</option>`; capabilitySelect.disabled = true;
+        if (!zoneId) { deviceSelect.innerHTML = `<option value="">${selectZoneFirst}</option>`; updateSummary(); return; }
+        try { logToConsole(`Emitting 'get_devices_in_zone' for zone ${zoneId}...`); const devicesInZone = await Homey.emit('get_devices_in_zone', { zoneId }); logToConsole(`Found ${devicesInZone.length} devices in zone ${zoneId}`); deviceSelect.innerHTML = `<option value="">${selectDevice}</option>`; devicesInZone.forEach(d => { const option = document.createElement('option'); option.value = d.id; option.dataset.capabilities = JSON.stringify(Array.isArray(d.capabilities) ? d.capabilities : []); option.textContent = `${d.name} (${d.driverName || 'Unknown Driver'})`; deviceSelect.appendChild(option); }); deviceSelect.disabled = false; } catch (e) { logToConsole(`Error in onZoneChange for input ${inputId}:`, e); const loadDevicesError = Homey.__('pair.load_devices_error'); showError(`${loadDevicesError}: ${e.message || e}`); deviceSelect.innerHTML = `<option value="">${errorLoading}</option>`; }
         updateSummary();
-        return;
-      }
-
-      try {
-        const devicesInZone = await Homey.emit('get_devices_in_zone', { zoneId });
-        log(`Found ${devicesInZone.length} devices in zone ${zoneId}`);
-        
-        deviceSelect.innerHTML = `<option value="">${Homey.__('pair.select_device')}</option>`;
-        devicesInZone.forEach(d => {
-          const option = document.createElement('option');
-          option.value = d.id;
-          option.dataset.capabilities = JSON.stringify(d.capabilities);
-          option.textContent = `${d.name} (${d.driverName})`;
-          deviceSelect.appendChild(option);
-        });
-        deviceSelect.disabled = false;
-      } catch (e) {
-        showError(Homey.__('pair.load_devices_error') + ': ' + e.message);
-        deviceSelect.innerHTML = `<option value="">${Homey.__('pair.error_loading')}</option>`;
-      }
-      
-      updateSummary();
     }
 
     function onDeviceChange(inputId, deviceId) {
-      log(`Device changed for input ${inputId}`, deviceId);
-      const deviceSelect = document.getElementById(`device-${inputId}`);
-      const capabilitySelect = document.getElementById(`capability-${inputId}`);
-      
-      capabilitySelect.innerHTML = `<option value="">${Homey.__('pair.select_capability')}</option>`;
-      capabilitySelect.disabled = true;
-      
-      if (deviceId) {
-        const selectedOption = deviceSelect.querySelector(`option[value="${deviceId}"]`);
-        if (selectedOption && selectedOption.dataset.capabilities) {
-          const capabilities = JSON.parse(selectedOption.dataset.capabilities);
-          
-          capabilities.forEach(cap => {
-            const option = document.createElement('option');
-            option.value = cap.id;
-            option.textContent = `${cap.name} (${cap.id})`;
-            capabilitySelect.appendChild(option);
-          });
-          capabilitySelect.disabled = false;
-        }
-      }
-      
-      updateSummary();
+        if (typeof Homey === 'undefined') return; logToConsole(`Device changed for input ${inputId}: ${deviceId}`);
+        const deviceSelect = document.getElementById(`device-${inputId}`); const capabilitySelect = document.getElementById(`capability-${inputId}`); const selectCapability = Homey.__('pair.select_capability'); capabilitySelect.innerHTML = `<option value="">${selectCapability}</option>`; capabilitySelect.disabled = true;
+        if (deviceId) { const selectedOption = deviceSelect.querySelector(`option[value="${deviceId}"]`); if (selectedOption && selectedOption.dataset.capabilities) { try { const capabilities = JSON.parse(selectedOption.dataset.capabilities); if(Array.isArray(capabilities)) { capabilities.forEach(cap => { const option = document.createElement('option'); option.value = cap.id || 'unknown_id'; const capName = cap.title || cap.name || Homey.__('pair.unknown_capability_fallback'); option.textContent = `${capName} (${cap.id || 'N/A'})`; capabilitySelect.appendChild(option); }); if (capabilities.length > 0) { capabilitySelect.disabled = false; } } else { logToConsole(`Capabilities data for device ${deviceId} is not an array:`, capabilities); } } catch(e) { logToConsole(`Error parsing capabilities for device ${deviceId}:`, e); showError(Homey.__('pair.error_loading_capabilities', { error: (e.message || e) })); } } else { logToConsole(`Could not find selected option or capabilities data for device ${deviceId}`); } }
+        updateSummary();
     }
 
     async function saveConfigToBackend() {
-      const inputLinks = [];
-      const deviceName = document.getElementById('deviceName').value || Homey.__('pair.name_placeholder');
-      
-      for (let i = 0; i < numInputs; i++) {
-        const inputId = letters[i].toLowerCase();
-        const deviceSelect = document.getElementById(`device-${inputId}`);
-        const deviceId = deviceSelect?.value;
-        const capability = document.getElementById(`capability-${inputId}`)?.value;
-        
-        if (deviceId && capability) {
-          const selectedOption = deviceSelect.options[deviceSelect.selectedIndex];
-          const deviceName = selectedOption?.text || Homey.__('pair.unknown_device');
-          
-          inputLinks.push({ 
-            input: inputId, 
-            deviceId, 
-            capability,
-            deviceName
-          });
-        }
-      }
-      
-      if (inputLinks.length === numInputs) {
-        try {
-          await Homey.emit('set_input_links', { inputLinks });
-          await Homey.emit('set_device_name', { name: deviceName });
-        } catch (e) {
-          console.error('Error saving config:', e);
-        }
-      }
-    }    
+        if (typeof Homey === 'undefined') return; logToConsole('saveConfigToBackend called.');
+        const inputLinks = []; const defaultName = Homey.__('pair.name_placeholder'); const deviceName = document.getElementById('deviceName').value || defaultName;
+        for (let i = 0; i < numInputs; i++) { const inputId = letters[i].toLowerCase(); const deviceSelect = document.getElementById(`device-${inputId}`); const deviceId = deviceSelect?.value; const capability = document.getElementById(`capability-${inputId}`)?.value; if (deviceId && capability) { const selectedOption = deviceSelect.options[deviceSelect.selectedIndex]; const linkedDeviceName = selectedOption?.textContent || 'Unknown Device'; inputLinks.push({ input: inputId, deviceId, capability, deviceName: linkedDeviceName }); } }
+        if (inputLinks.length === numInputs) { logToConsole('All inputs configured, attempting to save...'); try { await Homey.emit('set_input_links', { inputLinks }); logToConsole('set_input_links emitted successfully.'); await Homey.emit('set_device_name', { name: deviceName }); logToConsole('set_device_name emitted successfully.'); } catch (e) { logToConsole('Error saving config to backend:', e); showError(Homey.__('pair.error_saving_config', { error: (e.message || e) })); } } else { logToConsole('Not saving config, not all inputs are configured.'); }
+    }
 
     function updateSummary() {
-      let allConfigured = true;
-      let configuredCount = 0;
-
-      for (let i = 0; i < numInputs; i++) {
-        const inputId = letters[i].toLowerCase();
-        const deviceId = document.getElementById(`device-${inputId}`)?.value;
-        const capability = document.getElementById(`capability-${inputId}`)?.value;
-        const statusEl = document.getElementById(`status-${inputId}`);
-        const configDiv = document.getElementById(`input-config-${inputId}`);
-        
-        if (deviceId && capability) {
-          if (statusEl) {
-            statusEl.className = 'status complete';
-            statusEl.textContent = '✓ ' + Homey.__('pair.configured');
-          }
-          if (configDiv) configDiv.classList.add('complete');
-          configuredCount++;
-        } else {
-          if (statusEl) {
-            statusEl.className = 'status incomplete';
-            statusEl.textContent = '⚠️ ' + Homey.__('pair.not_configured');
-          }
-          if (configDiv) configDiv.classList.remove('complete');
-          allConfigured = false;
-        }
-      }
-
-      const summaryEl = document.getElementById('summary');
-      if (summaryEl) {
-        summaryEl.innerHTML = `<strong>${Homey.__('pair.status_label')}</strong> ${configuredCount} ${Homey.__('pair.of')} ${numInputs} ${Homey.__('pair.inputs_configured')}`;
-      }
-
-      const btn = document.getElementById('complete-btn');
-      if (allConfigured) {
-        saveConfigToBackend();
-        btn.textContent = Homey.__('pair.save_complete');
-        btn.className = "btn-enabled";
-      } else {
-        btn.textContent = "...";
-        btn.className = "btn-disabled";
-      }
+        if (typeof Homey === 'undefined') return; logToConsole('updateSummary called.');
+        let allConfigured = true; let configuredCount = 0; const configuredText = Homey.__('pair.configured'); const notConfiguredText = Homey.__('pair.not_configured'); const statusLabel = Homey.__('pair.status_label'); const ofText = Homey.__('pair.of'); const inputsConfiguredText = Homey.__('pair.inputs_configured'); const saveCompleteText = Homey.__('pair.save_complete');
+        for (let i = 0; i < numInputs; i++) { const inputId = letters[i].toLowerCase(); const deviceId = document.getElementById(`device-${inputId}`)?.value; const capability = document.getElementById(`capability-${inputId}`)?.value; const statusEl = document.getElementById(`status-${inputId}`); const configDiv = document.getElementById(`input-config-${inputId}`); if (deviceId && capability) { if (statusEl) { statusEl.className = 'status complete'; statusEl.textContent = `✓ ${configuredText}`; } if (configDiv) configDiv.classList.add('complete'); configuredCount++; } else { if (statusEl) { statusEl.className = 'status incomplete'; statusEl.textContent = `⚠️ ${notConfiguredText}`; } if (configDiv) configDiv.classList.remove('complete'); allConfigured = false; } }
+        const summaryEl = document.getElementById('summary'); if (summaryEl) { summaryEl.innerHTML = `<strong>${statusLabel}</strong> ${configuredCount} ${ofText} ${numInputs} ${inputsConfiguredText}`; }
+        const btn = document.getElementById('complete-btn'); if(btn) { if (allConfigured) { logToConsole('All inputs configured, enabling button.'); saveConfigToBackend(); btn.textContent = saveCompleteText; btn.className = "btn-enabled"; } else { logToConsole('Not all inputs configured, disabling button.'); btn.textContent = "..."; btn.className = "btn-disabled"; } } else { logToConsole("Could not find complete-btn to update status!"); }
+        logToConsole('updateSummary finished.');
     }
 
-    async function visVarsel() {
+
+    // --- Hovedlogikk (kjøres umiddelbart) ---
+    logToConsole('>>> [configure_inputs] Script started.');
+
+    // 1. Apply translations AND Set Default Name
+    try {
+      logToConsole('[configure_inputs] Applying translations and setting default name...');
+      if (typeof Homey === 'undefined' || typeof Homey.__ !== 'function') {
+        throw new Error(Homey.__('pair.error_i18n_unavailable'));
+      }
+      let defaultDeviceName = 'Logic Device'; // Fallback
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+         const key = el.getAttribute('data-i18n');
+         try {
+           const translatedText = Homey.__(key); // BRUKER Homey
+           el.textContent = translatedText;
+           if (key === 'pair.name_placeholder' && el.id === 'deviceName') {
+             defaultDeviceName = translatedText;
+             el.value = defaultDeviceName;
+             el.placeholder = translatedText;
+           } else if (key === 'common.loading' && el.id === 'loading') {
+             el.textContent = translatedText;
+           }
+         } catch (e) {
+           logToConsole(`[configure_inputs] Error translating key '${key}':`, e);
+           el.textContent = key;
+         }
+      });
+      const deviceNameInput = document.getElementById('deviceName');
+      if (deviceNameInput && !deviceNameInput.value) {
+        deviceNameInput.value = defaultDeviceName;
+      }
+      logToConsole('[configure_inputs] Translations applied and default name set.');
+    } catch (e) {
+      logToConsole('[configure_inputs] Error applying translations/setting name:', e);
+      // Ikke vis feil her, la init() håndtere store feil
+    }
+
+    // 2. Initialiseringslogikk (async)
+    async function init() {
+      logToConsole('>>> [configure_inputs] init() started.');
       try {
-        const inputLinks = [];
-        const deviceName = document.getElementById('deviceName').value || Homey.__('pair.name_placeholder');
-        
-        for (let i = 0; i < numInputs; i++) {
-          const inputId = letters[i].toLowerCase();
-          const deviceSelect = document.getElementById(`device-${inputId}`);
-          const deviceId = deviceSelect?.value;
-          const capability = document.getElementById(`capability-${inputId}`)?.value;
-          
-          if (deviceId && capability) {
-            const selectedOption = deviceSelect.options[deviceSelect.selectedIndex];
-            const deviceName = selectedOption?.text || Homey.__('pair.unknown_device');
-            
-            inputLinks.push({ 
-              input: inputId, 
-              deviceId, 
-              capability,
-              deviceName
-            });
-          }
+        if (typeof Homey === 'undefined' || typeof Homey.emit !== 'function' || typeof Homey.__ !== 'function') {
+          throw new Error(Homey.__('pair.error_homey_object_unavailable'));
         }
-        
-        if (inputLinks.length !== numInputs) {
-          await Homey.alert(Homey.__('pair.configure_all_inputs'), 'warning');
+        logToConsole("[configure_inputs] Emitting 'get_num_inputs'...");
+        const numInputsResult = await Homey.emit('get_num_inputs'); // BRUKER Homey
+        numInputs = numInputsResult ? numInputsResult.numInputs : 2;
+        logToConsole(`[configure_inputs] Number of inputs set to: ${numInputs}`);
+
+        // Generate default formula based on numInputs
+        const defaultFormula = letters.slice(0, numInputs).join(' AND ');
+        const formulaInput = document.getElementById('formulaInput');
+        if (formulaInput) {
+            formulaInput.value = defaultFormula;
+            formulaInput.placeholder = defaultFormula;
+        }
+        logToConsole(`[configure_inputs] Default formula set to: ${defaultFormula}`);
+
+        logToConsole('[configure_inputs] Fetching zones...');
+        zones = await Homey.emit('get_zones'); // BRUKER Homey
+
+        if (!Array.isArray(zones) || zones.length === 0) {
+          logToConsole('[configure_inputs] No zones received or zones is not an array:', zones);
+          showError(Homey.__('pair.no_zones_error')); // BRUKER Homey
+          const loadingEl = document.getElementById('loading');
+          if (loadingEl) loadingEl.style.display = 'none';
           return;
         }
-        
-        await Homey.emit('set_input_links', { inputLinks });
-        await Homey.emit('set_device_name', { name: deviceName });
-        
-        const deviceData = await Homey.emit('create_device');
-        await Homey.createDevice(deviceData);
-        
-        await Homey.done();
-        
+        logToConsole('[configure_inputs] Zones fetched successfully:', zones.length);
+
+        logToConsole('[configure_inputs] Hiding loading indicator, showing content...');
+        const loadingEl = document.getElementById('loading');
+        if (loadingEl) loadingEl.style.display = 'none';
+        const inputsContainer = document.getElementById('inputs-container');
+        if (inputsContainer) inputsContainer.style.display = 'block';
+        const nameSection = document.getElementById('device-name-section');
+        if (nameSection) nameSection.style.display = 'block';
+        const formulaSection = document.getElementById('formula-section');
+        if (formulaSection) formulaSection.style.display = 'block';
+        const summaryEl = document.getElementById('summary');
+        if (summaryEl) summaryEl.style.display = 'block';
+        logToConsole('[configure_inputs] Content should be visible.');
+
+        logToConsole('[configure_inputs] Calling renderInputs()...');
+        renderInputs(); // Denne bruker nå global Homey
+
+        logToConsole('[configure_inputs] Scheduling updateSummary...');
+        setTimeout(updateSummary, 100); // Denne bruker nå global Homey
+
+        logToConsole('>>> [configure_inputs] init() finished successfully.');
       } catch (e) {
-        console.error('Error:', e);
-        await Homey.alert(Homey.__('errors.generic') + ': ' + e.message, 'error');
+        logToConsole('>>> [configure_inputs] init() failed:', e);
+        showError(Homey.__('pair.error_loading_initial_data', { error: (e.message || e) }));
+        const loadingEl = document.getElementById('loading');
+        if (loadingEl) loadingEl.style.display = 'none';
       }
     }
+
+    // 3. Legg til lytter for fullfør-knappen
+    try {
+      logToConsole('[configure_inputs] Adding event listener for complete-btn click...');
+      const completeBtn = document.getElementById('complete-btn');
+      if (!completeBtn) throw new Error(Homey.__('pair.error_button_not_found'));
+      completeBtn.addEventListener('click', handleCompleteClick); // Denne bruker nå global Homey
+      logToConsole('[configure_inputs] complete-btn click listener added.');
+    } catch (e) {
+       logToConsole('[configure_inputs] Error adding complete-btn listener:', e);
+       showError(Homey.__('pair.error_setting_up_interactions', { error: (e.message || e) }));
+    }
+
+    // 4. Kall init for å starte datainnhenting og rendering
+    init();
+
+    logToConsole('>>> [configure_inputs] Script tag finished.');
+
 </script>
+
+
+
 </body>
 </html>
+
+

@@ -14,7 +14,7 @@
 module.exports = {
   // Default log level for any logger not specified below.
   // Options: 'DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE'
-  defaultLevel: 'INFO',
+  defaultLevel: 'debug',
 
   // Override log levels for specific categories (class names).
   // This helps in reducing noise or enabling detailed logs for specific parts of the app.
@@ -23,11 +23,11 @@ module.exports = {
     // 'MyDeviceName': 'DEBUG',
 
     // Reduce noise from base classes which are generally stable.
-    'BaseLogicDriver': 'INFO',
-    'BaseLogicUnit': 'INFO',
+    // 'BaseLogicDriver': 'INFO',
+    // 'BaseLogicUnit': 'INFO',
 
     // Always show important app-level messages.
-    'App': 'INFO',
+    // 'App': 'INFO',
   },
 
   // Global options (rarely needed).

@@ -1,268 +1,510 @@
 {
-  "settings": {
-    "title": "Einstellungen",
-    "description": "Konfigurieren Sie Ihr Boolean Toolbox Logikgerät",
-    "save": "Speichern",
-    "cancel": "Abbrechen",
-    "reset": "Auf Standard zurücksetzen",
-    "saved": "Einstellungen gespeichert",
-    "error": "Einstellungen konnten nicht gespeichert werden",
-    "changed": "Einstellungen geändert:",
-    "applied": "Einstellungen erfolgreich angewendet",
-    "formatting": "Wird {type} JSON automatisch formatieren",
-    "applying_formatted": "Wende automatisch formatierte Einstellungen an...",
-    "auto_formatted": "Einstellungen automatisch formatiert",
-    "format_failed": "Automatisches Formatieren der Einstellungen fehlgeschlagen:"
-  },
-  "pair": {
-    "title": "Logikgerät hinzufügen",
-    "intro": "Erstellen Sie ein neues Logikgerät zur Auswertung komplexer Formeln",
-    "name": "Gerätename",
-    "name_placeholder": "Mein Logikgerät",
-    "configure": "Gerät konfigurieren",
-    "add": "Gerät hinzufügen",
-    "success": "Gerät erfolgreich hinzugefügt",
-    "error": "Gerät konnte nicht hinzugefügt werden",
-    "session_started": "Pairing-Sitzung gestartet",
-    "get_num_inputs": "[PAIR] get_num_inputs aufgerufen",
-    "set_num_inputs": "[PAIR] set_num_inputs mit Daten aufgerufen:",
-    "get_zones": "[PAIR] get_zones aufgerufen",
-    "get_zones_error": "[PAIR] FEHLER in get_zones:",
-    "get_devices_in_zone": "[PAIR] get_devices_in_zone für Zone aufgerufen: {zone}",
-    "get_devices_error": "[PAIR] FEHLER in get_devices_in_zone:",
-    "set_input_links": "[PAIR] set_input_links aufgerufen",
-    "set_device_name": "[PAIR] set_device_name aufgerufen mit:",
-    "create_device": "[PAIR] create_device aufgerufen",
-    "creating_device": "[PAIR] Gerät wird erstellt:",
-    "handlers_registered": "Pairing-Handler registriert"
-  },
-  "device": {
-    "ready": "Gerät bereit: {name}",
-    "initializing": "Logikgerät '{name}' wird initialisiert.",
-    "initialized": "Logikgerät '{name}' mit {count} Eingängen initialisiert",
-    "capacity_expanded": "{detected} Eingänge erkannt (ursprünglich {original}). Kapazität wird erweitert.",
-    "capacity_updated": "Kapazität wird aktualisiert: {old} → {new} Eingänge",
-    "max_input_detected": "Maximaler Eingang erkannt: {input} ({count} Eingänge erforderlich)",
-    "capability_readonly": "onoff als schreibgeschützt gesetzt",
-    "capability_options_failed": "Capability-Optionen konnten nicht gesetzt werden:",
-    "capability_update_failed": "Capability-Update für {capability} fehlgeschlagen:",
-    "capability_skip_deleted": "(sicher) Überspringe {capability} – Gerät existiert nicht mehr.",
-    "deleted_cleanup": "Gerät gelöscht — Listener & Timer werden bereinigt",
-    "cleanup_complete": "Bereinigung abgeschlossen",
-    "deleted_skip_update": "Gerät gelöscht, überspringe Capability-Update",
-    "deleted_skip_flow": "Gerät gelöscht, überspringe Flow-Auslöser",
-    "logic_unit_name": "Logikeinheit ({count} Eingänge)"
-  },
-  "formula": {
-    "default_name": "Hauptformel",
-    "default_name_alt": "Formel 1",
-    "initialized": "{count} Formeln initialisiert",
-    "details": "  - {name}: \"{expression}\" (aktiviert: {enabled})",
-    "reinitialized": "{count} Formeln neu initialisiert",
-    "timed_out": "Formel '{name}' Zeitüberschreitung nach {timeout}s",
-    "evaluated_count": "{count} Formeln ausgewertet",
-    "expression_empty": "Ausdruck darf nicht leer sein",
-    "invalid_tokens": "Ungültige Tokens im Ausdruck: \"{tokens}\"",
-    "invalid_syntax": "Ungültige Ausdruckssyntax: {message}",
-    "no_expression": "(kein Ausdruck)",
-    "error_validation": "Formel '{name}': {error}",
-    "result_debug": "getFormulaResult: Formel '{name}' ({id}) Ergebnis = {result} (Typ: {type})",
-    "not_found_or_disabled": "Formel '{id}' nicht gefunden oder deaktiviert.",
-    "unlocked_inputs": "🔓 Alle Eingänge für Formel '{name}' entsperrt",
-    "waiting_for_inputs": "Formel '{name}': Warte auf Eingänge. Erforderlich: [{required}]",
-    "evaluating_expression": "Werte aus: \"{expression}\" → \"{evalExpression}\"",
-    "result": "Formel '{name}' Ergebnis: {result}",
-    "all_inputs_defined": "Formel '{name}': Alle Eingänge definiert, Auswertung...",
-    "missing_inputs": "Formel '{name}': Fehlende Eingänge:",
-    "evaluation_failed": "Auswertung der Formel '{name}' fehlgeschlagen: {message}",
-    "get_result_not_found": "getFormulaResult: Formel '{id}' nicht gefunden",
-    "set_input_error": "setInputForFormula Fehler:",
-    "name": "Formel",
-    "expression": "Ausdruck",
-    "input": "Eingang",
-    "output": "Ausgang",
-    "evaluation": "Auswertung",
-    "evaluating": "Formel wird ausgewertet...",
-    "evaluated": "Formel ausgewertet",
-    "error": "Formelfehler",
-    "timeout": "Formelauswertung Zeitüberschreitung",
-    "invalid": "Ungültige Formel",
-    "syntax_error": "Syntaxfehler in Formel"
-  },
-  "devicelinks": {
-    "setting_up": "Geräteverbindungen werden eingerichtet...",
-    "complete": "Geräteverbindungen eingerichtet",
-    "count": "{count} Geräteverbindungen werden eingerichtet",
-    "unregistered": "Listener deregistriert: {key}",
-    "error_unregister": "Fehler beim Deregistrieren des Listeners:",
-    "setup_failed": "Listener für Eingang {input} konnte nicht eingerichtet werden:",
-    "error_cleanup": "Fehler beim Bereinigen des Listeners:"
-  },
-  "initial": {
-    "fetching_all": "Abrufen der Anfangswerte für alle Eingänge...",
-    "api_unavailable": "App-API zum Abrufen von Anfangswerten nicht verfügbar",
-    "fetching_input": "[{input}] Anfangswert wird abgerufen...",
-    "device_not_found": "[{input}] Gerät nicht gefunden",
-    "capability_not_found": "[{input}] Capability {capability} nicht gefunden",
-    "value_received": "[{input}] Anfangswert: {value} → {boolean}",
-    "received_value": "[{input}] Anfangswert empfangen: {value}",
-    "no_value_waiting": "[{input}] Kein Anfangswert gefunden - warte auf erstes Ereignis",
-    "error": "[{input}] Fehler beim Abrufen des Anfangswerts:"
-  },
-  "evaluation": {
-    "running_initial": "Erste Formelauswertung läuft...",
-    "initial_complete": "Erste Auswertung aller Formeln...",
-    "no_formulas_ready": "Keine Formeln konnten ausgewertet werden - warte auf Eingangswerte",
-    "reevaluating_all": "Alle Formeln werden neu ausgewertet (Sperren zurückgesetzt)..."
-  },
-  "listener": {
-    "registered": "[{input}] Überwacht Gerät {device} Capability {capability}",
-    "device_not_found": "[{input}] Gerät {device} nicht gefunden",
-    "capability_not_exist": "[{input}] Capability {capability} existiert nicht auf Gerät {device}",
-    "polling_setup": "[{input}] Polling für {device} ({capability}) eingerichtet",
-    "capability_changed": "[{input}] Capability '{capability}' geändert: {value} → {boolean}",
-    "error_setup": "Fehler beim Einrichten des Listeners für Eingang {input}:",
-    "setting_up": "Richte Listener für Eingang {input} ein",
-    "invalid_config": "Ungültige Link-Konfiguration für Eingang {input}",
-    "api_unavailable": "App-API für Listener-Setup nicht verfügbar",
-    "device_found": "Gerät gefunden: {device}",
-    "capability_found": "Gerät hat Capability: {capability}",
-    "event_received": "Ereignis für Eingang {input} empfangen",
-    "registering": "Registriere Capability-Listener für {capability}..."
-  },
-  "polling": {
-    "all_inputs": "Abfrage aller verknüpften Geräteeingänge...",
-    "no_links": "Keine inputLinks für Abfrage verfügbar",
-    "api_unavailable": "App-API für Abfrage nicht verfügbar",
-    "input": "Abfrage von Eingang \"{input}\" von Gerät \"{device}\" Capability \"{capability}\"",
-    "device_not_found": "Gerät nicht gefunden: {device}",
-    "no_value": "Kein Wert für {input} ({capability})",
-    "value_received": "Abgefragt {input}: {value} → {boolean}",
-    "failed": "Abfrage von {input} fehlgeschlagen:"
-  },
-  "parse": {
-    "error_formulas": "Formeln konnten nicht geparst werden:",
-    "error_input_links": "input_links konnten nicht geparst werden:",
-    "error_formulas_json": "Formeln konnten nicht geparst werden:",
-    "error_formulas_invalid": "Ungültiges Formeln-JSON: {message}",
-    "error_input_links_invalid": "Ungültiges input_links-JSON: {message}",
-    "error_detecting_inputs": "Fehler beim Erkennen erforderlicher Eingänge:"
-  },
-  "refetch": {
-    "reason": "Eingänge werden erneut abgerufen (Grund: {reason})...",
-    "invoked": "Erneutes Abrufen und Auswerten aufgerufen (Quelle={source})",
-    "parse_failed": "Parsen von input_links während des erneuten Abrufens fehlgeschlagen:",
-    "no_links": "Keine Input-Links während des erneuten Abrufens verfügbar; Abrufen von Werten wird übersprungen.",
-    "fetching_values": "Rufe Anfangswerte vor der Auswertung erneut ab..."
-  },
-  "timeout": {
-    "error": "Fehler beim Auslösen der Zeitüberschreitung:"
-  },
-  "flow": {
-    "triggered": "Löse Flow aus für Formel '{name}' Änderung zu {result}",
-    "trigger_error": "Fehler beim Auslösen des Flows:"
-  },
-  "driver": {
-    "ready": "Treiber bereit",
-    "ensure_unique_failed": "ensureUniqueDeviceName fehlgeschlagen:"
-  },
-  "debug": {
-    "raw_formulas": "Rohe Formeleingabe aus Einstellungen:",
-    "raw_input_links": "Rohe input_links aus Einstellungen:"
-  },
   "app": {
     "athom_api_loaded": "athom-api erfolgreich geladen",
-    "homey_api_extracted": "HomeyAPI extrahiert, Typ:",
-    "initializing_homey_api": "Initialisiere HomeyAPI.forCurrentHomey...",
-    "homey_api_not_function": "HomeyAPI.forCurrentHomey ist keine Funktion",
-    "homey_api_methods": "HomeyAPI-Methoden:",
-    "error_stack": "Fehler-Stack:",
-    "getting_zones": "Verfügbare Zonen werden abgerufen...",
-    "found_zones": "{count} Zonen gefunden",
-    "error_getting_zones": "Fehler beim Abrufen der Zonen:",
-    "getting_devices_for_zone": "Geräte für Zonen-ID {zoneId} werden abgerufen",
-    "found_devices_in_zone": "{count} Geräte in Zone {zoneId} gefunden",
-    "error_getting_devices": "Fehler beim Abrufen der Geräte für Zone {zoneId}:",
-    "registering_flow_cards": "Flow-Karten werden registriert...",
-    "condition_check": "Bedingungsprüfung: Formel '{formulaName}' Ergebnis = {result}, prüfe, ob es '{expected}' ist",
-    "formula_not_evaluated": "Bedingung: Formel '{formulaName}' wurde noch nicht ausgewertet (Ergebnis ist {result})",
-    "running_evaluation": "Führe Auswertung durch. Eingabe: {input}, Regeln: '{rules}'",
-    "evaluation_finished": "Auswertung abgeschlossen. Ausgabe: {output}",
-    "value_outside_logic": "Wert {input} liegt außerhalb der definierten Logik.",
     "checking_for_error": "Prüfe auf Fehler. Eingabe: '{textInput}', Hat Fehler: {hasError}",
-    "flow_cards_registered": "Flow-Karten registriert"
+    "condition_check": "Bedingungsprüfung: Formel '{formulaName}' Ergebnis = {result}, prüfe, ob es '{expected}' ist",
+    "error_getting_devices": "Fehler beim Abrufen der Geräte für Zone {zoneId}:",
+    "error_getting_zones": "Fehler beim Abrufen der Zonen:",
+    "error_stack": "Fehler-Stack:",
+    "evaluation_finished": "Auswertung abgeschlossen. Ausgabe: {output}",
+    "flow_cards_registered": "Flow-Karten registriert",
+    "formula_not_evaluated": "Bedingung: Formel '{formulaName}' wurde noch nicht ausgewertet (Ergebnis ist {result})",
+    "found_devices_in_zone": "{count} Geräte in Zone {zoneId} gefunden",
+    "found_zones": "{count} Zonen gefunden",
+    "getting_devices_for_zone": "Geräte für Zonen-ID {zoneId} werden abgerufen",
+    "getting_zones": "Verfügbare Zonen werden abgerufen...",
+    "homey_api_extracted": "HomeyAPI extrahiert, Typ:",
+    "homey_api_methods": "HomeyAPI-Methoden:",
+    "homey_api_not_function": "HomeyAPI.forCurrentHomey ist keine Funktion",
+    "initializing_homey_api": "Initialisiere HomeyAPI.forCurrentHomey...",
+    "registering_flow_cards": "Flow-Karten werden registriert...",
+    "running_evaluation": "Führe Auswertung durch. Eingabe: {input}, Regeln: '{rules}'",
+    "value_outside_logic": "Wert {input} liegt außerhalb der definierten Logik."
   },
-  "errors": {
-    "generic": "Ein Fehler ist aufgetreten",
-    "timeout": "Zeitüberschreitung der Operation",
-    "invalid_input": "Ungültiger Eingabewert",
-    "invalid_formula": "Ungültiger Formelausdruck",
-    "evaluation_failed": "Formelauswertung fehlgeschlagen",
-    "device_not_found": "Gerät nicht gefunden",
-    "permission_denied": "Zugriff verweigert",
-    "connection_failed": "Verbindung fehlgeschlagen",
-    "unknown": "Unbekannter Fehler aufgetreten"
-  },
-  "notifications": {
-    "formula_updated": "Formel aktualisiert",
-    "input_received": "Eingang empfangen",
-    "output_changed": "Ausgang geändert",
-    "error_cleared": "Fehlerstatus gelöscht",
-    "device_ready": "Gerät ist bereit",
-    "reevaluating": "Alle Formeln werden neu bewertet..."
+  "capability": {
+    "logic_state": {
+      "title": "Logikzustand"
+    }
   },
   "common": {
-    "yes": "Ja",
-    "no": "Nein",
-    "true": "Wahr",
-    "false": "Falsch",
-    "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
-    "on": "Ein",
-    "off": "Aus",
-    "unknown": "Unbekannt",
-    "loading": "Lädt...",
-    "processing": "Verarbeitung...",
     "done": "Fertig",
+    "enabled": "Aktiviert",
     "failed": "Fehlgeschlagen",
-    "success": "Erfolg",
-    "warning": "Warnung",
+    "false": "Falsch",
     "info": "Information",
-    "min": "Minimum",
+    "loading": "Lädt...",
     "max": "Maximum",
-    "value": "Wert",
+    "min": "Minimum",
     "name": "Name",
+    "no": "Nein",
+    "off": "Aus",
+    "on": "Ein",
+    "processing": "Verarbeitung...",
+    "state": "Status",
+    "success": "Erfolg",
+    "true": "Wahr",
     "type": "Typ",
-    "state": "Status"
+    "unknown": "Unbekannt",
+    "value": "Wert",
+    "warning": "Warnung",
+    "yes": "Ja"
+  },
+  "debug": {
+    "checking_formula": "Prüfe Formel: {name} (\"{expression}\")",
+    "raw_formulas": "Rohe Formeleingabe aus Einstellungen:",
+    "raw_input_links": "Rohe input_links aus Einstellungen:",
+    "required_inputs": "  - Erforderliche Eingänge: {inputs}"
+  },
+  "device": {
+    "capability_options_failed": "Capability-Optionen konnten nicht gesetzt werden:",
+    "capability_readonly": "onoff als schreibgeschützt gesetzt",
+    "capability_skip_deleted": "(sicher) Überspringe {capability} – Gerät existiert nicht mehr.",
+    "capability_update_failed": "Capability-Update für {capability} fehlgeschlagen:",
+    "capacity_expanded": "{detected} Eingänge erkannt (ursprünglich {original}). Kapazität wird erweitert.",
+    "capacity_updated": "Kapazität wird aktualisiert: {old} → {new} Eingänge",
+    "cleanup_complete": "Bereinigung abgeschlossen",
+    "deleted_cleanup": "Gerät gelöscht — Listener & Timer werden bereinigt",
+    "deleted_skip_flow": "Gerät gelöscht, überspringe Flow-Auslöser",
+    "deleted_skip_update": "Gerät gelöscht, überspringe Capability-Update",
+    "initialized": "Logikgerät '{name}' mit {count} Eingängen initialisiert",
+    "initializing": "Logikgerät '{name}' wird initialisiert.",
+    "logic_unit_dynamic_name": "Logikeinheit",
+    "logic_unit_dynamic_name_fallback": "Logikeinheit",
+    "logic_unit_name": "Logikeinheit ({count} Eingänge)",
+    "logic_unit_name_fallback": "Logikeinheit ({count} Eingänge)",
+    "max_input_detected": "Maximaler Eingang erkannt: {input} ({count} Eingänge erforderlich)",
+    "ready": "Gerät bereit: {name}"
+  },
+  "devicelinks": {
+    "complete": "Geräteverbindungen eingerichtet",
+    "count": "{count} Geräteverbindungen werden eingerichtet",
+    "error_cleanup": "Fehler beim Bereinigen des Listeners:",
+    "error_unregister": "Fehler beim Deregistrieren des Listeners:",
+    "setting_up": "Geräteverbindungen werden eingerichtet...",
+    "setup_failed": "Listener für Eingang {input} konnte nicht eingerichtet werden:",
+    "unregistered": "Listener deregistriert: {key}"
+  },
+  "driver": {
+    "ensure_unique_failed": "ensureUniqueDeviceName fehlgeschlagen:",
+    "ready": "Treiber bereit",
+    "registering_flow_cards": "Registriere Treiber-Flow-Karten..."
+  },
+  "errors": {
+    "connection_failed": "Verbindung fehlgeschlagen",
+    "device_not_found": "Gerät nicht gefunden",
+    "evaluation_failed": "Formelauswertung fehlgeschlagen",
+    "generic": "Ein Fehler ist aufgetreten",
+    "helper_not_function": "Helferfunktion für '{argName}' ist keine Funktion.",
+    "invalid_device_instance": "Ungültige Geräteinstanz",
+    "invalid_formula": "Ungültiger Formelausdruck",
+    "invalid_input": "Ungültiger Eingabewert",
+    "method_missing_on_device": "Methode '{methodName}' fehlt auf dem Gerät",
+    "notification_failed_invalid_formula": "Benachrichtigung für ungültige Formel konnte nicht erstellt werden",
+    "permission_denied": "Zugriff verweigert",
+    "timeout": "Zeitüberschreitung der Operation",
+    "trigger_timeout_card_failed": "Fehler beim Abrufen/Auslösen der formula_timeout-Karte",
+    "unknown": "Unbekannter Fehler aufgetreten"
+  },
+  "evaluation": {
+    "initial_complete": "Erste Auswertung aller Formeln...",
+    "no_formulas_ready": "Keine Formeln konnten ausgewertet werden - warte auf Eingangswerte",
+    "reevaluating_all": "Alle Formeln werden neu ausgewertet (Sperren zurückgesetzt)...",
+    "running_initial": "Erste Formelauswertung läuft..."
+  },
+  "flow": {
+    "actions": {
+      "clear_error_state_lu": {
+        "title": "Formel-Fehlerstatus löschen",
+        "titleFormatted": "Fehlerstatus für Formel [[formula]] löschen"
+      },
+      "clear_error_state_ld": {
+        "title": "Formel-Fehlerstatus löschen",
+        "titleFormatted": "Fehlerstatus löschen"
+      },
+      "evaluate_all_formula_lu": {
+        "title": "Alle Formeln neu bewerten",
+        "titleFormatted": "Alle Formeln neu bewerten"
+      },
+      "evaluate_expression": {
+        "title": "Ausdruck auswerten",
+        "titleFormatted": "Bewerte [[input]] [[op1]] min [[logical_op]] [[op2]] max mit Regeln [[rules]]"
+      },
+      "evaluate_formula_lu": {
+        "title": "Spezifische Formel auswerten",
+        "titleFormatted": "Formel [[formula]] auswerten"
+      },
+      "evaluate_formula_ld": {
+        "title": "Gerätestatus erneut prüfen",
+        "titleFormatted": "Status erneut prüfen"
+      },
+      "reevaluate_formulas": {
+        "title": "Alle Formeln neu bewerten",
+        "titleFormatted": "Alle Formeln neu bewerten"
+      },
+      "set_all_inputs_lu": {
+        "title": "Alle Eingänge von JSON setzen",
+        "titleFormatted": "Alle Eingänge von JSON setzen: [[values]]"
+      },
+      "set_input_lu": {
+        "title": "Eingangswert setzen (alle Formeln)",
+        "titleFormatted": "Eingang [[input]] auf [[value]] setzen"
+      },
+      "set_input_value_lu": {
+        "title": "Eingangswert für Formel setzen",
+        "titleFormatted": "Eingang [[input]] auf [[value]] für Formel [[formula]] setzen"
+      }
+    },
+    "args": {
+      "formula": {
+        "placeholder": "Wähle Formel",
+        "title": "Formel"
+      },
+      "input": {
+        "placeholder": "Eingang wählen",
+        "title": "Eingang"
+      },
+      "logical_op": {
+        "AND": "UND",
+        "OR": "ODER",
+        "title": "Logischer Operator"
+      },
+      "number_input": {
+        "placeholder": "Nummer eingeben",
+        "title": "Eingangswert"
+      },
+      "op1": {
+        "gt": ">",
+        "gte": "≥",
+        "lt": "<",
+        "lte": "≤",
+        "title": "Erster Operator"
+      },
+      "op2": {
+        "gt": ">",
+        "gte": "≥",
+        "lt": "<",
+        "lte": "≤",
+        "title": "Zweiter Operator"
+      },
+      "rules": {
+        "placeholder": "min,max,ausgabe;...",
+        "title": "Regeln"
+      },
+      "text_input": {
+        "placeholder": "Fehlermeldung oder Token eingeben",
+        "title": "Fehlermeldung"
+      },
+      "value": {
+        "false": "FALSCH",
+        "title": "Wert",
+        "true": "WAHR"
+      },
+      "values": {
+        "placeholder": "{\"A\": true, \"B\": false}",
+        "title": "JSON-Werte"
+      },
+      "what_is": {
+        "false": "FALSCH",
+        "title": "Wert",
+        "true": "WAHR"
+      }
+    },
+    "conditions": {
+      "formula_has_timed_out_lu": {
+        "title": "Formel !{{hat|hat nicht}} Zeitüberschreitung",
+        "titleFormatted": "Formel [[formula]] !{{hat|hat nicht}} Zeitüberschreitung"
+      },
+      "formula_has_timed_out_ld": {
+        "title": "Formel !{{hat|hat nicht}} Zeitüberschreitung",
+        "titleFormatted": "Formel !{{hat|hat nicht}} Zeitüberschreitung"
+      },
+      "formula_result_is_lu": {
+        "title": "Formelergebnis ist...",
+        "titleFormatted": "Formel [[formula]] Ergebnis ist [[what_is]]"
+      },
+      "formula_result_is_ld": {
+        "title": "Formelergebnis ist...",
+        "titleFormatted": "Formelergebnis ist [[what_is]]"
+      },
+      "has_any_error_lu": {
+        "title": "Gerät !{{hat|hat keinen}} Fehler",
+        "titleFormatted": "Gerät !{{hat|hat keinen}} Fehler"
+      },
+      "has_any_error_ld": {
+        "title": "Gerät !{{hat|hat keinen}} Fehler",
+        "titleFormatted": "Gerät !{{hat|hat keinen}} Fehler"
+      },
+      "has_error": {
+        "title": "!{{Hat|Hat keinen}} Fehler",
+        "titleFormatted": "!{{Hat|Hat keinen}} Fehler in [[text_input]]"
+      }
+    },
+    "tokens": {
+      "errorMessage": {
+        "title": "Fehlermeldung"
+      },
+      "outputValue": {
+        "title": "Ausgabewert"
+      },
+      "state": {
+        "title": "Zustand"
+      }
+    },
+    "trigger_error": "Fehler beim Auslösen des Flows:",
+    "triggered": "Löse Flow aus für Formel '{name}' Änderung zu {result}",
+    "triggers": {
+      "device_state_changed": {
+        "hint": "Wird ausgelöst, wenn sich der Zustand des Logikgeräts ändert (ein/aus)",
+        "title": "Zustand geändert",
+        "titleFormatted": "Zustand geändert auf [[state]]"
+      },
+      "device_state_changed_ld": {
+        "hint": "Wird ausgelöst, wenn sich der Zustand des Logikgeräts ändert (ein/aus)",
+        "title": "Zustand geändert",
+        "titleFormatted": "Zustand geändert"
+      },
+      "formula_changed_to_false_lu": {
+        "title": "Formel auf FALSCH geändert",
+        "titleFormatted": "Formel [[formula]] auf FALSCH geändert"
+      },
+      "formula_changed_to_true_lu": {
+        "title": "Formel auf WAHR geändert",
+        "titleFormatted": "Formel [[formula]] auf WAHR geändert"
+      },
+      "formula_timeout_lu": {
+        "title": "Formel-Zeitüberschreitung",
+        "titleFormatted": "Formel [[formula]] Zeitüberschreitung"
+      },
+      "state_changed_ld": {
+        "title": "Zustand geändert",
+        "titleFormatted": "Zustand geändert"
+      }
+    }
+  },
+  "formula": {
+    "all_inputs_defined": "Formel '{name}': Alle Eingänge definiert, Auswertung...",
+    "default_name": "Hauptformel",
+    "default_name_alt": "Formel 1",
+    "default_name_alt_fallback": "Standardformel",
+    "details": "  - {name}: \"{expression}\" (aktiviert: {enabled})",
+    "error": "Formelfehler",
+    "error_inputs_used_but_none_configured": "Ausdruck verwendet Eingänge, aber es sind keine Eingänge für dieses Gerät konfiguriert.",
+    "error_no_inputs": "Keine Eingänge verfügbar",
+    "error_unbalanced_parentheses": "Unausgeglichene Klammern",
+    "error_validation": "Formel '{name}': {error}",
+    "evaluated": "Formel ausgewertet",
+    "evaluated_count": "{count} Formeln ausgewertet",
+    "evaluating": "Formel wird ausgewertet...",
+    "evaluating_expression": "Werte aus: \"{expression}\" → \"{evalExpression}\"",
+    "evaluation": "Auswertung",
+    "evaluation_failed": "Auswertung der Formel '{name}' fehlgeschlagen: {message}",
+    "expression": "Ausdruck",
+    "expression_empty": "Ausdruck darf nicht leer sein",
+    "get_result_not_found": "getFormulaResult: Formel '{id}' nicht gefunden",
+    "initialized": "{count} Formeln initialisiert",
+    "input": "Eingang",
+    "invalid": "Ungültige Formel",
+    "invalid_syntax": "Ungültige Ausdruckssyntax: {message}",
+    "invalid_tokens": "Ungültige Tokens im Ausdruck: \"{tokens}\"",
+    "missing_inputs": "Formel '{name}': Fehlende Eingänge:",
+    "name": "Formel",
+    "no_expression": "(kein Ausdruck)",
+    "not_found_or_disabled": "Formel '{id}' nicht gefunden oder deaktiviert.",
+    "output": "Ausgang",
+    "reinitialized": "{count} Formeln neu initialisiert",
+    "result": "Formel '{name}' Ergebnis: {result}",
+    "result_debug": "getFormulaResult: Formel '{name}' ({id}) Ergebnis = {result} (Typ: {type})",
+    "set_input_error": "setInputForFormula Fehler:",
+    "syntax_error": "Syntaxfehler in Formel",
+    "timed_out": "Formel '{name}' Zeitüberschreitung nach {timeout}s",
+    "timeout": "Formelauswertung Zeitüberschreitung",
+    "unlocked_inputs": "🔓 Alle Eingänge für Formel '{name}' entsperrt",
+    "unnamed_formula": "Unbenannte Formel",
+    "waiting_for_input": "Formel '{formula}' wartet auf undefinierte Eingänge: {error}",
+    "waiting_for_inputs": "Formel '{name}': Warte auf Eingänge. Erforderlich: [{required}]"
+  },
+  "help": {
+    "first_impression": "Der Erster-Eindruck-Modus sperrt Eingänge bei ihrem ersten empfangenen Wert",
+    "formula_syntax": "Verwenden Sie logische Operatoren wie UND, ODER, NICHT, um Ihre Formel zu erstellen",
+    "input_values": "Eingangswerte werden automatisch aktualisiert, wenn sich verbundene Geräte ändern",
+    "timeout_warning": "Wenn ein Eingang nicht innerhalb der Zeitüberschreitung aktualisiert wird, wird er markert"
+  },
+  "initial": {
+    "api_unavailable": "App-API zum Abrufen von Anfangswerten nicht verfügbar",
+    "capability_not_found": "[{input}] Capability {capability} nicht gefunden",
+    "device_not_found": "[{input}] Gerät nicht gefunden",
+    "error": "[{input}] Fehler beim Abrufen des Anfangswerts:",
+    "fetching_all": "Abrufen der Anfangswerte für alle Eingänge...",
+    "fetching_input": "[{input}] Anfangswert wird abgerufen...",
+    "no_value_waiting": "[{input}] Kein Anfangswert gefunden - warte auf erstes Ereignis",
+    "received_value": "[{input}] Anfangswert empfangen: {value}",
+    "value_received": "[{input}] Anfangswert: {value} → {boolean}"
+  },
+  "input_options": {
+    "context_specific": "Eingabeoptionen gefiltert für Formel: {formula} ({expression})"
   },
   "inputs": {
+    "first_impression": "Erster-Eindruck-Modus",
     "label": "Eingang",
-    "value": "Wert",
     "locked": "Eingang gesperrt",
-    "unlocked": "Eingang entsperrt",
+    "locked_at_value": "🔒 Eingang '{input}' auf Wert {value} gesperrt (Erster-Eindruck-Modus)",
     "locked_first_impression": "Eingang '{input}' für Formel '{formula}' gesperrt (Erster-Eindruck-Modus)",
     "setting_value": "Setze Eingang '{input}' auf {value} für Formel '{formula}' (war: {oldValue})",
-    "locked_at_value": "🔒 Eingang '{input}' auf Wert {value} gesperrt (Erster-Eindruck-Modus)",
-    "first_impression": "Erster-Eindruck-Modus",
     "timeout_detected": "Zeitüberschreitung am Eingang erkannt",
+    "unlocked": "Eingang entsperrt",
+    "unused_warning": "Warnung: Eingang {input} wird in keiner Formel verwendet. Verwendet: {usedInputs}",
+    "value": "Wert",
     "waiting": "Warte auf Eingang..."
+  },
+  "listener": {
+    "api_unavailable": "App-API für Listener-Setup nicht verfügbar",
+    "capability_changed": "[{input}] Capability '{capability}' geändert: {value} → {boolean}",
+    "capability_found": "Gerät hat Capability: {capability}",
+    "capability_not_exist": "[{input}] Capability {capability} existiert nicht auf Gerät {device}",
+    "device_found": "Gerät gefunden: {device}",
+    "device_not_found": "[{input}] Gerät {device} nicht gefunden",
+    "error_setup": "Fehler beim Einrichten des Listeners für Eingang {input}:",
+    "event_received": "Ereignis für Eingang {input} empfangen",
+    "invalid_config": "Ungültige Link-Konfiguration für Eingang {input}",
+    "polling_setup": "[{input}] Polling für {device} ({capability}) eingerichtet",
+    "registered": "[{input}] Überwacht Gerät {device} Capability {capability}",
+    "registering": "Registriere Capability-Listener für {capability}...",
+    "setting_up": "Richte Listener für Eingang {input} ein"
+  },
+  "notifications": {
+    "device_ready": "Gerät ist bereit",
+    "error_cleared": "Fehlerstatus gelöscht",
+    "error_cleared_all": "Fehlerstatus für alle Formeln gelöscht",
+    "formula_updated": "Formel aktualisiert",
+    "input_received": "Eingang empfangen",
+    "invalid_formula_config": "Ungültige Formel '{formulaName}': {error}",
+    "output_changed": "Ausgang geändert",
+    "reevaluating": "Alle Formeln werden neu bewertet..."
   },
   "operators": {
     "and": "UND",
-    "or": "ODER",
-    "not": "NICHT",
-    "greater_than": "Größer als",
-    "less_than": "Kleiner als",
     "equal": "Gleich",
-    "not_equal": "Nicht gleich",
     "greater_or_equal": "Größer oder gleich",
-    "less_or_equal": "Kleiner oder gleich"
+    "greater_than": "Größer als",
+    "less_or_equal": "Kleiner oder gleich",
+    "less_than": "Kleiner als",
+    "not": "NICHT",
+    "not_equal": "Nicht gleich",
+    "or": "ODER"
   },
-  "help": {
-    "formula_syntax": "Verwenden Sie logische Operatoren wie UND, ODER, NICHT, um Ihre Formel zu erstellen",
-    "input_values": "Eingangswerte werden automatisch aktualisiert, wenn sich verbundene Geräte ändern",
-    "timeout_warning": "Wenn ein Eingang nicht innerhalb der Zeitüberschreitung aktualisiert wird, wird er markert",
-    "first_impression": "Der Erster-Eindruck-Modus sperrt Eingänge bei ihrem ersten empfangenen Wert"
+  "pair": {
+    "add": "Gerät hinzufügen",
+    "capability_label": "Fähigkeit:",
+    "configure": "Gerät konfigurieren",
+    "configure_all_inputs": "Bitte konfigurieren Sie zuerst alle Eingänge!",
+    "configure_inputs_description": "Wählen Sie aus, welchem Gerät und welcher Fähigkeit jeder Eingang folgen soll:",
+    "configure_inputs_title": "Eingänge konfigurieren",
+    "configured": "Konfiguriert",
+    "create_device": "[PAIR] create_device aufgerufen",
+    "creating_device": "[PAIR] Gerät wird erstellt:",
+    "default_formula_name": "Meine Formel",
+    "device_label": "Gerät:",
+    "device_name_label": "Geben Sie dem Gerät einen Namen:",
+    "device_name_placeholder": "Mein Logikgerät",
+    "error": "Gerät konnte nicht hinzugefügt werden",
+    "error_button_not_found": "Fertig-Button im DOM nicht gefunden!",
+    "error_completing_setup": "Fehler beim Abschließen der Einrichtung: {error}",
+    "error_homey_emit_unavailable": "Homey.emit ist nicht verfügbar",
+    "error_homey_nextview_unavailable": "Homey.nextView ist nicht verfügbar",
+    "error_homey_object_unavailable": "Homey-Objekt oder erforderliche Funktionen (emit, __) sind nicht verfügbar.",
+    "error_i18n_unavailable": "Homey-Übersetzungsfunktion (__) ist nicht verfügbar.",
+    "error_loading": "-- Ladefehler --",
+    "error_loading_capabilities": "Fehler beim Laden der Fähigkeiten: {error}",
+    "error_loading_initial_data": "Fehler beim Laden der Initialdaten: {error}",
+    "error_navigating": "Fehler beim Navigieren: {error}",
+    "error_saving_config": "Fehler beim Speichern der Konfiguration: {error}",
+    "error_saving_input_number": "Fehler beim Speichern der Eingangsanzahl: {error}",
+    "error_setting_up_interactions": "Fehler beim Einrichten der Seiteninteraktionen: {error}",
+    "error_system_not_ready": "Fehler: Pairing-System nicht bereit.",
+    "formula_label": "Formel eingeben:",
+    "get_devices_error": "[PAIR] FEHLER in get_devices_in_zone:",
+    "get_devices_in_zone": "[PAIR] get_devices_in_zone für Zone aufgerufen: {zone}",
+    "get_num_inputs": "[PAIR] get_num_inputs aufgerufen",
+    "get_zones": "[PAIR] get_zones aufgerufen",
+    "get_zones_error": "[PAIR] FEHLER in get_zones:",
+    "handlers_registered": "Pairing-Handler registriert",
+    "input": "Eingang",
+    "inputs_configured": "Eingänge konfiguriert",
+    "inputs_range": "Wählen Sie zwischen 2 und 10 Eingängen",
+    "intro": "Erstellen Sie ein neues Logikgerät zur Auswertung komplexer Formeln",
+    "load_devices_error": "Geräte für Zone konnten nicht geladen werden",
+    "name": "Gerätename",
+    "name_placeholder": "Mein Logikgerät",
+    "next": "Weiter →",
+    "no_zones_error": "Keine Zonen gefunden. Bitte erstellen Sie zuerst Zonen in Ihrem Homey.",
+    "not_configured": "Nicht konfiguriert",
+    "of": "von",
+    "save_complete": "Speichern und abschließen",
+    "select_capability": "-- Fähigkeit wählen --",
+    "select_device": "-- Gerät wählen --",
+    "select_device_first": "-- Zuerst Gerät wählen --",
+    "select_inputs_description": "Wie viele Geräte möchten Sie mit diesem Logikgerät verbinden?",
+    "select_inputs_title": "Anzahl der Eingänge wählen",
+    "select_zone": "-- Zone/Raum wählen --",
+    "select_zone_first": "-- Zuerst Zone wählen --",
+    "session_started": "Pairing-Sitzung gestartet",
+    "set_device_formula": "[PAIR] set_device_formula aufgerufen mit: {formula}",
+    "set_device_name": "[PAIR] set_device_name aufgerufen mit:",
+    "set_input_links": "[PAIR] set_input_links aufgerufen",
+    "set_num_inputs": "[PAIR] set_num_inputs mit Daten aufgerufen:",
+    "status_label": "Status:",
+    "success": "Gerät erfolgreich hinzugefügt",
+    "title": "Logikgerät hinzufügen",
+    "unknown_capability_fallback": "Unbekannte Fähigkeit",
+    "unknown_device": "Unbekanntes Gerät",
+    "zone_label": "Zone/Raum:"
+  },
+  "parse": {
+    "error_detecting_inputs": "Fehler beim Erkennen erforderlicher Eingänge:",
+    "error_formulas": "Formeln konnten nicht geparst werden:",
+    "error_formulas_invalid": "Ungültiges Formeln-JSON: {message}",
+    "error_formulas_json": "Formeln konnten nicht geparst werden:",
+    "error_input_links": "input_links konnten nicht geparst werden:",
+    "error_input_links_invalid": "Ungültiges input_links-JSON: {message}"
+  },
+  "polling": {
+    "all_inputs": "Abfrage aller verknüpften Geräteeingänge...",
+    "api_unavailable": "App-API für Abfrage nicht verfügbar",
+    "device_not_found": "Gerät nicht gefunden: {device}",
+    "failed": "Abfrage von {input} fehlgeschlagen:",
+    "input": "Abfrage von Eingang \"{input}\" von Gerät \"{device}\" Capability \"{capability}\"",
+    "no_links": "Keine inputLinks für Abfrage verfügbar",
+    "no_value": "Kein Wert für {input} ({capability})",
+    "value_received": "Abgefragt {input}: {value} → {boolean}"
+  },
+  "refetch": {
+    "fetching_values": "Rufe Anfangswerte vor der Auswertung erneut ab...",
+    "invoked": "Erneutes Abrufen und Auswerten aufgerufen (Quelle={source})",
+    "no_links": "Keine Input-Links während des erneuten Abrufens verfügbar; Abrufen von Werten wird übersprungen.",
+    "parse_failed": "Parsen von input_links während des erneuten Abrufens fehlgeschlagen:",
+    "reason": "Eingänge werden erneut abgerufen (Grund: {reason})..."
+  },
+  "settings": {
+    "applied": "Einstellungen erfolgreich angewendet",
+    "applying_formatted": "Wende automatisch formatierte Einstellungen an...",
+    "auto_formatted": "Einstellungen automatisch formatiert",
+    "cancel": "Abbrechen",
+    "changed": "Einstellungen geändert:",
+    "changed_dynamic": "Einstellungen geändert (dynamisches Gerät):",
+    "description": "Konfigurieren Sie Ihr Boolean Toolbox Logikgerät",
+    "error": "Einstellungen konnten nicht gespeichert werden",
+    "expanded": "Kapazität auf {numInputs} Eingänge erweitert: {availableInputs}",
+    "expanding_capacity": "Erweitere Kapazität: {from} -> {to} (Grund: {reason})",
+    "expansion_failed": "Automatische Kapazitätserweiterung fehlgeschlagen:",
+    "format_failed": "Automatisches Formatieren der Einstellungen fehlgeschlagen:",
+    "formatting": "Wird {type} JSON automatisch formatieren",
+    "reset": "Auf Standard zurücksetzen",
+    "save": "Speichern",
+    "saved": "Einstellungen gespeichert",
+    "title": "Einstellungen"
+  },
+  "timeout": {
+    "error": "Fehler beim Auslösen der Zeitüberschreitung:"
   }
 }
-

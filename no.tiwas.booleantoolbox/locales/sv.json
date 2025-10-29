@@ -1,267 +1,510 @@
 {
-  "settings": {
-    "title": "Inställningar",
-    "description": "Konfigurera din Boolean Toolbox logisk enhet",
-    "save": "Spara",
-    "cancel": "Avbryt",
-    "reset": "Återställ till standard",
-    "saved": "Inställningar sparade",
-    "error": "Kunde inte spara inställningar",
-    "changed": "Inställningar ändrade:",
-    "applied": "Inställningar tillämpade framgångsrikt",
-    "formatting": "Kommer auto-formatera {type} JSON",
-    "applying_formatted": "Tillämpar auto-formaterade inställningar...",
-    "auto_formatted": "Inställningar auto-formaterade",
-    "format_failed": "Kunde inte auto-formatera inställningar:"
-  },
-  "pair": {
-    "title": "Lägg till logisk enhet",
-    "intro": "Skapa en ny logisk enhet för att utvärdera komplexa formler",
-    "name": "Enhetsnamn",
-    "name_placeholder": "Min logiska enhet",
-    "configure": "Konfigurera enhet",
-    "add": "Lägg till enhet",
-    "success": "Enhet tillagd",
-    "error": "Kunde inte lägga till enhet",
-    "session_started": "Parkopplingssession startad",
-    "get_num_inputs": "[PAIR] get_num_inputs anropad",
-    "set_num_inputs": "[PAIR] set_num_inputs anropad med data:",
-    "get_zones": "[PAIR] get_zones anropad",
-    "get_zones_error": "[PAIR] FEL i get_zones:",
-    "get_devices_in_zone": "[PAIR] get_devices_in_zone anropad för zon: {zone}",
-    "get_devices_error": "[PAIR] FEL i get_devices_in_zone:",
-    "set_input_links": "[PAIR] set_input_links anropad",
-    "set_device_name": "[PAIR] set_device_name anropad med:",
-    "create_device": "[PAIR] create_device anropad",
-    "creating_device": "[PAIR] Skapar enhet:",
-    "handlers_registered": "Parkopplingshanterare registrerade"
-  },
-  "device": {
-    "ready": "Enhet redo: {name}",
-    "initializing": "Logisk enhet '{name}' initialiserar.",
-    "initialized": "Logisk enhet '{name}' initialiserad med {count} ingångar",
-    "capacity_expanded": "Upptäckte {detected} ingångar behövs (ursprungligen {original}). Utökar kapacitet.",
-    "capacity_updated": "Uppdaterar kapacitet: {old} → {new} ingångar",
-    "max_input_detected": "Upptäckte max ingång: {input} ({count} ingångar behövs)",
-    "capability_readonly": "Ställde in onoff som skrivskyddad",
-    "capability_options_failed": "Kunde inte ställa in kapacitetsinställningar:",
-    "capability_update_failed": "Kapacitetsuppdatering misslyckades för {capability}:",
-    "capability_skip_deleted": "(säkert) Hoppar över {capability} – enheten finns inte längre.",
-    "deleted_cleanup": "Enhet raderad — rensar lyssnare & timers",
-    "cleanup_complete": "Rensning klar",
-    "deleted_skip_update": "Enhet raderad, hoppar över kapabilitetsuppdatering",
-    "deleted_skip_flow": "Enhet raderad, hoppar över flödesutlösare",
-    "logic_unit_name": "Logisk enhet ({count} ingångar)"
-  },
-  "formula": {
-    "default_name": "Huvudformel",
-    "default_name_alt": "Formel 1",
-    "initialized": "Initialiserade {count} formler",
-    "details": "  - {name}: \"{expression}\" (aktiverad: {enabled})",
-    "reinitialized": "Ominitialiserade {count} formler",
-    "timed_out": "Formel '{name}' fick timeout efter {timeout}s",
-    "evaluated_count": "Utvärderade {count} formler",
-    "expression_empty": "Uttryck kan inte vara tomt",
-    "invalid_tokens": "Ogiltiga tokens i uttryck: \"{tokens}\"",
-    "invalid_syntax": "Ogiltig uttryckssyntax: {message}",
-    "no_expression": "(inget uttryck)",
-    "error_validation": "Formel '{name}': {error}",
-    "result_debug": "getFormulaResult: Formel '{name}' ({id}) resultat = {result} (typ: {type})",
-    "not_found_or_disabled": "Formel '{id}' hittades inte eller är inaktiverad.",
-    "unlocked_inputs": "🔓 Låste upp alla ingångar för formel '{name}'",
-    "waiting_for_inputs": "Formel '{name}': Väntar på ingångar. Krävs: [{required}]",
-    "evaluating_expression": "Utvärderar: \"{expression}\" → \"{evalExpression}\"",
-    "result": "Formel '{name}' resultat: {result}",
-    "all_inputs_defined": "Formel '{name}': Alla ingångar definierade, utvärderar...",
-    "missing_inputs": "Formel '{name}': Saknade ingångar:",
-    "evaluation_failed": "Kunde inte utvärdera formel '{name}': {message}",
-    "get_result_not_found": "getFormulaResult: Formel '{id}' hittades inte",
-    "set_input_error": "setInputForFormula fel:",
-    "name": "Formel",
-    "expression": "Uttryck",
-    "input": "Ingång",
-    "output": "Utgång",
-    "evaluation": "Utvärdering",
-    "evaluating": "Utvärderar formel...",
-    "evaluated": "Formel utvärderad",
-    "error": "Formelfel",
-    "timeout": "Formelutvärdering timeout",
-    "invalid": "Ogiltig formel",
-    "syntax_error": "Syntaxfel i formel"
-  },
-  "devicelinks": {
-    "setting_up": "Ställer in enhetslänkar...",
-    "complete": "Enhetslänkar inställda",
-    "count": "Ställer in {count} enhetslänkar",
-    "unregistered": "Avregistrerade lyssnare: {key}",
-    "error_unregister": "Fel vid avregistrering av lyssnare:",
-    "setup_failed": "Kunde inte ställa in lyssnare för ingång {input}:",
-    "error_cleanup": "Fel vid rensning av lyssnare:"
-  },
-  "initial": {
-    "fetching_all": "Hämtar initialvärden för alla ingångar...",
-    "api_unavailable": "App-API inte tillgängligt för hämtning av initialvärden",
-    "fetching_input": "[{input}] Hämtar initialvärde...",
-    "device_not_found": "[{input}] Enhet hittades inte",
-    "capability_not_found": "[{input}] Kapacitet {capability} hittades inte",
-    "value_received": "[{input}] Initialvärde: {value} → {boolean}",
-    "received_value": "[{input}] Mottog initialvärde: {value}",
-    "no_value_waiting": "[{input}] Inget initialvärde hittades - väntar på första händelse",
-    "error": "[{input}] Fel vid hämtning av initialvärde:"
-  },
-  "evaluation": {
-    "running_initial": "Kör initial formelutvärdering...",
-    "initial_complete": "Initial utvärdering av alla formler...",
-    "no_formulas_ready": "Inga formler kunde utvärderas - väntar på ingångsvärden",
-    "reevaluating_all": "Omvärderar alla formler (återställer lås)..."
-  },
-  "listener": {
-    "registered": "[{input}] Lyssnar på enhet {device} kapacitet {capability}",
-    "device_not_found": "[{input}] Enhet {device} hittades inte",
-    "capability_not_exist": "[{input}] Kapacitet {capability} finns inte på enhet {device}",
-    "polling_setup": "[{input}] Ställde in pollning för {device} ({capability})",
-    "capability_changed": "[{input}] Kapacitet '{capability}' ändrades: {value} → {boolean}",
-    "error_setup": "Fel vid inställning av lyssnare för ingång {input}:",
-    "setting_up": "Ställer in lyssnare för ingång {input}",
-    "invalid_config": "Ogiltig länkkonfiguration för ingång {input}",
-    "api_unavailable": "App-API inte tillgängligt för lyssnarinställning",
-    "device_found": "Hittade enhet: {device}",
-    "capability_found": "Enhet har kapacitet: {capability}",
-    "event_received": "Händelse mottagen för ingång {input}",
-    "registering": "Registrerar kapacitetslyssnare för {capability}..."
-  },
-  "polling": {
-    "all_inputs": "Pollar alla länkade enhetsingångar...",
-    "no_links": "Inga inputLinks tillgängliga för pollning",
-    "api_unavailable": "App-API inte tillgängligt för pollning",
-    "input": "Pollar ingång \"{input}\" från enhet \"{device}\" kapacitet \"{capability}\"",
-    "device_not_found": "Enhet hittades inte: {device}",
-    "no_value": "Inget värde för {input} ({capability})",
-    "value_received": "Pollat {input}: {value} → {boolean}",
-    "failed": "Kunde inte polla {input}:"
-  },
-  "parse": {
-    "error_formulas": "Kunde inte parsa formler:",
-    "error_input_links": "Kunde inte parsa input_links:",
-    "error_formulas_json": "Kunde inte parsa formler:",
-    "error_formulas_invalid": "Ogiltig formler JSON: {message}",
-    "error_input_links_invalid": "Ogiltig input_links JSON: {message}",
-    "error_detecting_inputs": "Fel vid identifiering av nödvändiga ingångar:"
-  },
-  "refetch": {
-    "reason": "Hämtar ingångar igen (anledning: {reason})...",
-    "invoked": "Ome-hämtning och utvärdering anropad (källa={source})",
-    "parse_failed": "Kunde inte parsa input_links under om-hämtning:",
-    "no_links": "Inga ingångslänkar tillgängliga under om-hämtning; hoppar över värdehämtning.",
-    "fetching_values": "Hämtar initialvärden igen före utvärdering..."
-  },
-  "timeout": {
-    "error": "Fel vid utlösning av timeout:"
-  },
-  "flow": {
-    "triggered": "Utlöser flöde för formel '{name}' ändring till {result}",
-    "trigger_error": "Fel vid utlösning av flöde:"
-  },
-  "driver": {
-    "ready": "Drivrutin redo",
-    "ensure_unique_failed": "ensureUniqueDeviceName misslyckades:"
-  },
-  "debug": {
-    "raw_formulas": "Råa formler indata från inställningar:",
-    "raw_input_links": "Råa input_links från inställningar:"
-  },
-  "app": {
-    "athom_api_loaded": "athom-api laddades framgångsrikt",
-    "homey_api_extracted": "HomeyAPI extraherad, typ:",
-    "initializing_homey_api": "Initialiserar HomeyAPI.forCurrentHomey...",
-    "homey_api_not_function": "HomeyAPI.forCurrentHomey är inte en funktion",
-    "homey_api_methods": "HomeyAPI-metoder:",
-    "error_stack": "Felstack:",
-    "getting_zones": "Hämtar tillgängliga zoner...",
-    "found_zones": "Hittade {count} zoner",
-    "error_getting_zones": "Fel vid hämtning av zoner:",
-    "getting_devices_for_zone": "Hämtar enheter för zon-ID: {zoneId}",
-    "found_devices_in_zone": "Hittade {count} enheter i zon {zoneId}",
-    "error_getting_devices": "Fel vid hämtning av enheter för zon {zoneId}:",
-    "registering_flow_cards": "Registrerar flödeskort...",
-    "condition_check": "Villkorskontroll: Formel '{formulaName}' resultat = {result}, kontrollerar om det är '{expected}'",
-    "formula_not_evaluated": "Villkor: Formel '{formulaName}' har inte utvärderats än (resultat är {result})",
-    "running_evaluation": "Kör utvärdering. Indata: {input}, Regler: '{rules}'",
-    "evaluation_finished": "Utvärdering slutförd. Utdata: {output}",
-    "value_outside_logic": "Värdet {input} ligger utanför den definierade logiken.",
-    "checking_for_error": "Söker efter fel. Indata: '{textInput}', Har fel: {hasError}",
-    "flow_cards_registered": "Flödeskort registrerade"
-  },
-  "errors": {
-    "generic": "Ett fel uppstod",
-    "timeout": "Operation timeout",
-    "invalid_input": "Ogiltigt ingångsvärde",
-    "invalid_formula": "Ogiltigt formeluttrykk",
-    "evaluation_failed": "Formelutvärdering misslyckades",
-    "device_not_found": "Enhet hittades inte",
-    "permission_denied": "Åtkomst nekad",
-    "connection_failed": "Anslutning misslyckades",
-    "unknown": "Okänt fel uppstod"
-  },
-  "notifications": {
-    "formula_updated": "Formel uppdaterad",
-    "input_received": "Ingång mottagen",
-    "output_changed": "Utgång ändrad",
-    "error_cleared": "Felstatus rensad",
-    "device_ready": "Enhet är redo",
-    "reevaluating": "Omvärdera alla formler..."
-  },
-  "common": {
-    "yes": "Ja",
-    "no": "Nej",
-    "true": "Sant",
-    "false": "Falskt",
-    "enabled": "Aktiverad",
-    "disabled": "Inaktiverad",
-    "on": "På",
-    "off": "Av",
-    "unknown": "Okänd",
-    "loading": "Laddar...",
-    "processing": "Behandlar...",
-    "done": "Klar",
-    "failed": "Misslyckades",
-    "success": "Lyckades",
-    "warning": "Varning",
-    "info": "Information",
-    "min": "Minimum",
-    "max": "Maximum",
-    "value": "Värde",
-    "name": "Namn",
-    "type": "Typ",
-    "state": "Status"
-  },
-  "inputs": {
-    "label": "Ingång",
-    "value": "Värde",
-    "locked": "Ingång låst",
-    "unlocked": "Ingång olåst",
-    "locked_first_impression": "Ingång '{input}' låst för formel '{formula}' (första intryck läge)",
-    "setting_value": "Ställer in ingång '{input}' till {value} för formel '{formula}' (var: {oldValue})",
-    "locked_at_value": "🔒 Ingång '{input}' låst vid värde {value} (första intryck läge)",
-    "first_impression": "Första intryck läge",
-    "timeout_detected": "Timeout detekterad på ingång",
-    "waiting": "Väntar på ingång..."
-  },
-  "operators": {
-    "and": "OCH",
-    "or": "ELLER",
-    "not": "INTE",
-    "greater_than": "Större än",
-    "less_than": "Mindre än",
-    "equal": "Lika med",
-    "not_equal": "Inte lika med",
-    "greater_or_equal": "Större än eller lika med",
-    "less_or_equal": "Mindre än eller lika med"
-  },
-  "help": {
-    "formula_syntax": "Använd logiska operatorer som OCH, ELLER, INTE för att skapa din formel",
-    "input_values": "Ingångsvärden uppdateras automatiskt när anslutna enheter ändras",
-    "timeout_warning": "Om en ingång inte uppdateras inom timeout-perioden kommer den att markeras",
-    "first_impression": "Första intryck läge låser ingångar vid deras första mottagna värde"
-  }
+    "app": {
+        "athom_api_loaded": "athom-api laddades framgångsrikt",
+        "checking_for_error": "Söker efter fel. Indata: '{textInput}', Har fel: {hasError}",
+        "condition_check": "Villkorskontroll: Formel '{formulaName}' resultat = {result}, kontrollerar om det är '{expected}'",
+        "error_getting_devices": "Fel vid hämtning av enheter för zon {zoneId}:",
+        "error_getting_zones": "Fel vid hämtning av zoner:",
+        "error_stack": "Felstack:",
+        "evaluation_finished": "Utvärdering slutförd. Utdata: {output}",
+        "flow_cards_registered": "Flödeskort registrerade",
+        "formula_not_evaluated": "Villkor: Formel '{formulaName}' har inte utvärderats än (resultat är {result})",
+        "found_devices_in_zone": "Hittade {count} enheter i zon {zoneId}",
+        "found_zones": "Hittade {count} zoner",
+        "getting_devices_for_zone": "Hämtar enheter för zon-ID: {zoneId}",
+        "getting_zones": "Hämtar tillgängliga zoner...",
+        "homey_api_extracted": "HomeyAPI extraherad, typ:",
+        "homey_api_methods": "HomeyAPI-metoder:",
+        "homey_api_not_function": "HomeyAPI.forCurrentHomey är inte en funktion",
+        "initializing_homey_api": "Initialiserar HomeyAPI.forCurrentHomey...",
+        "registering_flow_cards": "Registrerar flödeskort...",
+        "running_evaluation": "Kör utvärdering. Indata: {input}, Regler: '{rules}'",
+        "value_outside_logic": "Värdet {input} ligger utanför den definierade logiken."
+    },
+    "capability": {
+        "logic_state": {
+            "title": "Logiskt tillstånd"
+        }
+    },
+    "common": {
+        "disabled": "Inaktiverad",
+        "done": "Klar",
+        "enabled": "Aktiverad",
+        "failed": "Misslyckades",
+        "false": "Falskt",
+        "info": "Information",
+        "loading": "Laddar...",
+        "max": "Maximum",
+        "min": "Minimum",
+        "name": "Namn",
+        "no": "Nej",
+        "off": "Av",
+        "on": "På",
+        "processing": "Behandlar...",
+        "state": "Status",
+        "success": "Lyckades",
+        "true": "Sant",
+        "type": "Typ",
+        "unknown": "Okänd",
+        "value": "Värde",
+        "warning": "Varning",
+        "yes": "Ja"
+    },
+    "debug": {
+        "checking_formula": "Kontrollerar formel: {name} (\"{expression}\")",
+        "raw_formulas": "Råa formler indata från inställningar:",
+        "raw_input_links": "Råa input_links från inställningar:",
+        "required_inputs": "  - Nödvändiga ingångar: {inputs}"
+    },
+    "device": {
+        "capability_options_failed": "Kunde inte ställa in kapacitetsinställningar:",
+        "capability_readonly": "Ställde in onoff som skrivskyddad",
+        "capability_skip_deleted": "(säkert) Hoppar över {capability} – enheten finns inte längre.",
+        "capability_update_failed": "Kapacitetsuppdatering misslyckades för {capability}:",
+        "capacity_expanded": "Upptäckte {detected} ingångar behövs (ursprungligen {original}). Utökar kapacitet.",
+        "capacity_updated": "Uppdaterar kapacitet: {old} → {new} ingångar",
+        "cleanup_complete": "Rensning klar",
+        "deleted_cleanup": "Enhet raderad — rensar lyssnare & timers",
+        "deleted_skip_flow": "Enhet raderad, hoppar över flödesutlösare",
+        "deleted_skip_update": "Enhet raderad, hoppar över kapabilitetsuppdatering",
+        "initialized": "Logisk enhet '{name}' initialiserad med {count} ingångar",
+        "initializing": "Logisk enhet '{name}' initialiserar.",
+        "logic_unit_dynamic_name": "Logikenhet",
+        "logic_unit_dynamic_name_fallback": "Logikenhet",
+        "logic_unit_name": "Logisk enhet ({count} ingångar)",
+        "logic_unit_name_fallback": "Logisk enhet ({count} ingångar)",
+        "max_input_detected": "Upptäckte max ingång: {input} ({count} ingångar behövs)",
+        "ready": "Enhet redo: {name}"
+    },
+    "devicelinks": {
+        "complete": "Enhetslänkar inställda",
+        "count": "Ställer in {count} enhetslänkar",
+        "error_cleanup": "Fel vid rensning av lyssnare:",
+        "error_unregister": "Fel vid avregistrering av lyssnare:",
+        "setting_up": "Ställer in enhetslänkar...",
+        "setup_failed": "Kunde inte ställa in lyssnare för ingång {input}:",
+        "unregistered": "Avregistrerade lyssnare: {key}"
+    },
+    "driver": {
+        "ensure_unique_failed": "ensureUniqueDeviceName misslyckades:",
+        "ready": "Drivrutin redo",
+        "registering_flow_cards": "Registrerar drivrutinsflödeskort..."
+    },
+    "errors": {
+        "connection_failed": "Anslutning misslyckades",
+        "device_not_found": "Enhet hittades inte",
+        "evaluation_failed": "Formelutvärdering misslyckades",
+        "generic": "Ett fel uppstod",
+        "helper_not_function": "Hjälpfunktion för '{argName}' är inte en funktion.",
+        "invalid_device_instance": "Ogiltig enhetsinstans",
+        "invalid_formula": "Ogiltigt formeluttrykk",
+        "invalid_input": "Ogiltigt ingångsvärde",
+        "method_missing_on_device": "Metod '{methodName}' saknas på enheten",
+        "notification_failed_invalid_formula": "Kunde inte skapa avisering för ogiltig formel",
+        "permission_denied": "Åtkomst nekad",
+        "timeout": "Operation timeout",
+        "trigger_timeout_card_failed": "Fel vid hämtning/utlösning av formula_timeout-kort",
+        "unknown": "Okänt fel uppstod"
+    },
+    "evaluation": {
+        "initial_complete": "Initial utvärdering av alla formler...",
+        "no_formulas_ready": "Inga formler kunde utvärderas - väntar på ingångsvärden",
+        "reevaluating_all": "Omvärderar alla formler (återställer lås)...",
+        "running_initial": "Kör initial formelutvärdering..."
+    },
+    "flow": {
+        "actions": {
+            "clear_error_state_lu": {
+                "title": "Rensa formelfelstatus",
+                "titleFormatted": "Rensa felstatus för formel [[formula]]"
+            },
+            "clear_error_state_ld": {
+                "title": "Rensa formelfelstatus",
+                "titleFormatted": "Rensa felstatus"
+            },
+            "evaluate_all_formula_lu": {
+                "title": "Omvärdera alla formler",
+                "titleFormatted": "Omvärdera alla formler"
+            },
+            "evaluate_expression": {
+                "title": "Utvärdera uttryck",
+                "titleFormatted": "Utvärdera [[input]] [[op1]] min [[logical_op]] [[op2]] max med regler [[rules]]"
+            },
+            "evaluate_formula_lu": {
+                "title": "Utvärdera specifik formel",
+                "titleFormatted": "Utvärdera formel [[formula]]"
+            },
+            "evaluate_formula_ld": {
+                "title": "Kontrollera enhetsstatus igen",
+                "titleFormatted": "Kontrollera status igen"
+            },
+            "reevaluate_formulas": {
+                "title": "Omvärdera alla formler",
+                "titleFormatted": "Omvärdera alla formler"
+            },
+            "set_all_inputs_lu": {
+                "title": "Ställ in alla ingångar från JSON",
+                "titleFormatted": "Ställ in alla ingångar från JSON: [[values]]"
+            },
+            "set_input_lu": {
+                "title": "Ställ in ingångsvärde (alla formler)",
+                "titleFormatted": "Ställ in ingång [[input]] till [[value]]"
+            },
+            "set_input_value_lu": {
+                "title": "Ställ in ingångsvärde för formel",
+                "titleFormatted": "Ställ in ingång [[input]] till [[value]] för formel [[formula]]"
+            }
+        },
+        "args": {
+            "formula": {
+                "placeholder": "Välj formel",
+                "title": "Formel"
+            },
+            "input": {
+                "placeholder": "Välj ingång",
+                "title": "Ingång"
+            },
+            "logical_op": {
+                "AND": "OCH",
+                "OR": "ELLER",
+                "title": "Logisk operator"
+            },
+            "number_input": {
+                "placeholder": "Ange nummer",
+                "title": "Ingångsvärde"
+            },
+            "op1": {
+                "gt": ">",
+                "gte": "≥",
+                "lt": "<",
+                "lte": "≤",
+                "title": "Första operator"
+            },
+            "op2": {
+                "gt": ">",
+                "gte": "≥",
+                "lt": "<",
+                "lte": "≤",
+                "title": "Andra operator"
+            },
+            "rules": {
+                "placeholder": "min,max,utgång;...",
+                "title": "Regler"
+            },
+            "text_input": {
+                "placeholder": "Ange felmeddelande eller token",
+                "title": "Felmeddelande"
+            },
+            "value": {
+                "false": "FALSKT",
+                "title": "Värde",
+                "true": "SANT"
+            },
+            "values": {
+                "placeholder": "{\"A\": true, \"B\": false}",
+                "title": "JSON-värden"
+            },
+            "what_is": {
+                "false": "FALSKT",
+                "title": "Värde",
+                "true": "SANT"
+            }
+        },
+        "conditions": {
+            "formula_has_timed_out_lu": {
+                "title": "Formel !{{har|har inte}} fått timeout",
+                "titleFormatted": "Formel [[formula]] !{{har|har inte}} fått timeout"
+            },
+            "formula_has_timed_out_ld": {
+                "title": "Formel !{{har|har inte}} fått timeout",
+                "titleFormatted": "Formel !{{har|har inte}} fått timeout"
+            },
+            "formula_result_is_lu": {
+                "title": "Formelresultat är...",
+                "titleFormatted": "Formel [[formula]] resultat är [[what_is]]"
+            },
+            "formula_result_is_ld": {
+                "title": "Formelresultat är...",
+                "titleFormatted": "Formelresultat är [[what_is]]"
+            },
+            "has_any_error_lu": {
+                "title": "Enhet !{{har|har inget}} fel",
+                "titleFormatted": "Enhet !{{har|har inget}} fel"
+            },
+            "has_any_error_ld": {
+                "title": "Enhet !{{har|har inget}} fel",
+                "titleFormatted": "Enhet !{{har|har inget}} fel"
+            },
+            "has_error": {
+                "title": "!{{Har|Har inget}} fel",
+                "titleFormatted": "!{{Har|Har inget}} fel i [[text_input]]"
+            }
+        },
+        "tokens": {
+            "errorMessage": {
+                "title": "Felmeddelande"
+            },
+            "outputValue": {
+                "title": "Utgångsvärde"
+            },
+            "state": {
+                "title": "Tillstånd"
+            }
+        },
+        "trigger_error": "Fel vid utlösning av flöde:",
+        "triggered": "Utlöser flöde för formel '{name}' ändring till {result}",
+        "triggers": {
+            "device_state_changed": {
+                "hint": "Utlöses när tillståndet för Logikenheten ändras (på/av)",
+                "title": "Tillstånd ändrat",
+                "titleFormatted": "Tillstånd ändrat till [[state]]"
+            },
+            "device_state_changed_ld": {
+                "hint": "Utlöses när tillståndet för Logikenheten ändras (på/av)",
+                "title": "Tillstånd ändrat",
+                "titleFormatted": "Tillstånd ändrat"
+            },
+            "formula_changed_to_false_lu": {
+                "title": "Formel ändrades till FALSK",
+                "titleFormatted": "Formel [[formula]] ändrades till FALSK"
+            },
+            "formula_changed_to_true_lu": {
+                "title": "Formel ändrades till SANN",
+                "titleFormatted": "Formel [[formula]] ändrades till SANN"
+            },
+            "formula_timeout_lu": {
+                "title": "Formel fick timeout",
+                "titleFormatted": "Formel [[formula]] fick timeout"
+            },
+            "state_changed_ld": {
+                "title": "Tillstånd ändrat",
+                "titleFormatted": "Tillstånd ändrat"
+            }
+        }
+    },
+    "formula": {
+        "all_inputs_defined": "Formel '{name}': Alla ingångar definierade, utvärderar...",
+        "default_name": "Huvudformel",
+        "default_name_alt": "Formel 1",
+        "default_name_alt_fallback": "Standardformel",
+        "details": "  - {name}: \"{expression}\" (aktiverad: {enabled})",
+        "error": "Formelfel",
+        "error_inputs_used_but_none_configured": "Uttrycket använder ingångar, men inga ingångar är konfigurerade för denna enhet.",
+        "error_no_inputs": "Inga ingångar tillgängliga",
+        "error_unbalanced_parentheses": "Obalanserade parenteser",
+        "error_validation": "Formel '{name}': {error}",
+        "evaluated": "Formel utvärderad",
+        "evaluated_count": "Utvärderade {count} formler",
+        "evaluating": "Utvärderar formel...",
+        "evaluating_expression": "Utvärderar: \"{expression}\" → \"{evalExpression}\"",
+        "evaluation": "Utvärdering",
+        "evaluation_failed": "Kunde inte utvärdera formel '{name}': {message}",
+        "expression": "Uttryck",
+        "expression_empty": "Uttryck kan inte vara tomt",
+        "get_result_not_found": "getFormulaResult: Formel '{id}' hittades inte",
+        "initialized": "Initialiserade {count} formler",
+        "input": "Ingång",
+        "invalid": "Ogiltig formel",
+        "invalid_syntax": "Ogiltig uttryckssyntax: {message}",
+        "invalid_tokens": "Ogiltiga tokens i uttryck: \"{tokens}\"",
+        "missing_inputs": "Formel '{name}': Saknade ingångar:",
+        "name": "Formel",
+        "no_expression": "(inget uttryck)",
+        "not_found_or_disabled": "Formel '{id}' hittades inte eller är inaktiverad.",
+        "output": "Utgång",
+        "reinitialized": "Ominitialiserade {count} formler",
+        "result": "Formel '{name}' resultat: {result}",
+        "result_debug": "getFormulaResult: Formel '{name}' ({id}) resultat = {result} (typ: {type})",
+        "set_input_error": "setInputForFormula fel:",
+        "syntax_error": "Syntaxfel i formel",
+        "timed_out": "Formel '{name}' fick timeout efter {timeout}s",
+        "timeout": "Formelutvärdering timeout",
+        "unlocked_inputs": "🔓 Låste upp alla ingångar för formel '{name}'",
+        "unnamed_formula": "Namnlös formel",
+        "waiting_for_input": "Formel '{formula}' väntar på odefinierade ingångar: {error}",
+        "waiting_for_inputs": "Formel '{name}': Väntar på ingångar. Krävs: [{required}]"
+    },
+    "help": {
+        "first_impression": "Första intryck läge låser ingångar vid deras första mottagna värde",
+        "formula_syntax": "Använd logiska operatorer som OCH, ELLER, INTE för att skapa din formel",
+        "input_values": "Ingångsvärden uppdateras automatiskt när anslutna enheter ändras",
+        "timeout_warning": "Om en ingång inte uppdateras inom timeout-perioden kommer den att markeras"
+    },
+    "initial": {
+        "api_unavailable": "App-API inte tillgängligt för hämtning av initialvärden",
+        "capability_not_found": "[{input}] Kapacitet {capability} hittades inte",
+        "device_not_found": "[{input}] Enhet hittades inte",
+        "error": "[{input}] Fel vid hämtning av initialvärde:",
+        "fetching_all": "Hämtar initialvärden för alla ingångar...",
+        "fetching_input": "[{input}] Hämtar initialvärde...",
+        "no_value_waiting": "[{input}] Inget initialvärde hittades - väntar på första händelse",
+        "received_value": "[{input}] Mottog initialvärde: {value}",
+        "value_received": "[{input}] Initialvärde: {value} → {boolean}"
+    },
+    "input_options": {
+        "context_specific": "Ingångsalternativ filtrerade för formel: {formula} ({expression})"
+    },
+    "inputs": {
+        "first_impression": "Första intryck läge",
+        "label": "Ingång",
+        "locked": "Ingång låst",
+        "locked_at_value": "🔒 Ingång '{input}' låst vid värde {value} (första intryck läge)",
+        "locked_first_impression": "Ingång '{input}' låst för formel '{formula}' (första intryck läge)",
+        "setting_value": "Ställer in ingång '{input}' till {value} för formel '{formula}' (var: {oldValue})",
+        "timeout_detected": "Timeout detekterad på ingång",
+        "unlocked": "Ingång olåst",
+        "unused_warning": "Varning: Ingång {input} används inte i någon formel. Använda: {usedInputs}",
+        "value": "Värde",
+        "waiting": "Väntar på ingång..."
+    },
+    "listener": {
+        "api_unavailable": "App-API inte tillgängligt för lyssnarinställning",
+        "capability_changed": "[{input}] Kapacitet '{capability}' ändrades: {value} → {boolean}",
+        "capability_found": "Enhet har kapacitet: {capability}",
+        "capability_not_exist": "[{input}] Kapacitet {capability} finns inte på enhet {device}",
+        "device_found": "Hittade enhet: {device}",
+        "device_not_found": "[{input}] Enhet {device} hittades inte",
+        "error_setup": "Fel vid inställning av lyssnare för ingång {input}:",
+        "event_received": "Händelse mottagen för ingång {input}",
+        "invalid_config": "Ogiltig länkkonfiguration för ingång {input}",
+        "polling_setup": "[{input}] Ställde in pollning för {device} ({capability})",
+        "registered": "[{input}] Lyssnar på enhet {device} kapacitet {capability}",
+        "registering": "Registrerar kapacitetslyssnare för {capability}...",
+        "setting_up": "Ställer in lyssnare för ingång {input}"
+    },
+    "notifications": {
+        "device_ready": "Enhet är redo",
+        "error_cleared": "Felstatus rensad",
+        "error_cleared_all": "Felstatus rensad för alla formler",
+        "formula_updated": "Formel uppdaterad",
+        "input_received": "Ingång mottagen",
+        "invalid_formula_config": "Ogiltig formel '{formulaName}': {error}",
+        "output_changed": "Utgång ändrad",
+        "reevaluating": "Omvärdera alla formler..."
+    },
+    "operators": {
+        "and": "OCH",
+        "equal": "Lika med",
+        "greater_or_equal": "Större än eller lika med",
+        "greater_than": "Större än",
+        "less_or_equal": "Mindre än eller lika med",
+        "less_than": "Mindre än",
+        "not": "INTE",
+        "not_equal": "Inte lika med",
+        "or": "ELLER"
+    },
+    "pair": {
+        "add": "Lägg till enhet",
+        "capability_label": "Kapacitet:",
+        "configure": "Konfigurera enhet",
+        "configure_all_inputs": "Vänligen konfigurera alla ingångar först!",
+        "configure_inputs_description": "Välj vilken enhet och kapacitet varje ingång ska följa:",
+        "configure_inputs_title": "Konfigurera ingångar",
+        "configured": "Konfigurerad",
+        "create_device": "[PAIR] create_device anropad",
+        "creating_device": "[PAIR] Skapar enhet:",
+        "default_formula_name": "Min Formel",
+        "device_label": "Enhet:",
+        "device_name_label": "Ge enheten ett namn:",
+        "device_name_placeholder": "Min logiska enhet",
+        "error": "Kunde inte lägga till enhet",
+        "error_button_not_found": "Slutför-knappen hittades inte i DOM!",
+        "error_completing_setup": "Fel vid slutförande av konfiguration: {error}",
+        "error_homey_emit_unavailable": "Homey.emit är inte tillgänglig",
+        "error_homey_nextview_unavailable": "Homey.nextView är inte tillgänglig",
+        "error_homey_object_unavailable": "Homey-objekt eller nödvändiga funktioner (emit, __) är inte tillgängliga.",
+        "error_i18n_unavailable": "Homey översättningsfunktion (__) är inte tillgänglig.",
+        "error_loading": "-- Fel vid laddning --",
+        "error_loading_capabilities": "Fel vid laddning av kapaciteter: {error}",
+        "error_loading_initial_data": "Fel vid laddning av initialdata: {error}",
+        "error_navigating": "Fel vid navigering: {error}",
+        "error_saving_config": "Fel vid sparande av konfiguration: {error}",
+        "error_saving_input_number": "Fel vid sparande av antal ingångar: {error}",
+        "error_setting_up_interactions": "Fel vid inställning av sidinteraktioner: {error}",
+        "error_system_not_ready": "Fel: Parkopplingssystemet är inte redo.",
+        "formula_label": "Ange formel:",
+        "get_devices_error": "[PAIR] FEL i get_devices_in_zone:",
+        "get_devices_in_zone": "[PAIR] get_devices_in_zone anropad för zon: {zone}",
+        "get_num_inputs": "[PAIR] get_num_inputs anropad",
+        "get_zones": "[PAIR] get_zones anropad",
+        "get_zones_error": "[PAIR] FEL i get_zones:",
+        "handlers_registered": "Parkopplingshanterare registrerade",
+        "input": "Ingång",
+        "inputs_configured": "ingångar konfigurerade",
+        "inputs_range": "Välj mellan 2 och 10 ingångar",
+        "intro": "Skapa en ny logisk enhet för att utvärdera komplexa formler",
+        "load_devices_error": "Kunde inte ladda enheter för zon",
+        "name": "Enhetsnamn",
+        "name_placeholder": "Min logiska enhet",
+        "next": "Nästa →",
+        "no_zones_error": "Inga zoner hittades. Vänligen skapa zoner i din Homey först.",
+        "not_configured": "Inte konfigurerad",
+        "of": "av",
+        "save_complete": "Spara och slutför",
+        "select_capability": "-- Välj kapacitet --",
+        "select_device": "-- Välj enhet --",
+        "select_device_first": "-- Välj enhet först --",
+        "select_inputs_description": "Hur många enheter vill du ansluta till denna logiska enhet?",
+        "select_inputs_title": "Välj antal ingångar",
+        "select_zone": "-- Välj zon/rum --",
+        "select_zone_first": "-- Välj zon först --",
+        "session_started": "Parkopplingssession startad",
+        "set_device_formula": "[PAIR] set_device_formula anropad med: {formula}",
+        "set_device_name": "[PAIR] set_device_name anropad med:",
+        "set_input_links": "[PAIR] set_input_links anropad",
+        "set_num_inputs": "[PAIR] set_num_inputs anropad med data:",
+        "status_label": "Status:",
+        "success": "Enhet tillagd",
+        "title": "Lägg till logisk enhet",
+        "unknown_capability_fallback": "Okänd kapacitet",
+        "unknown_device": "Okänd enhet",
+        "zone_label": "Zon/Rum:"
+    },
+    "parse": {
+        "error_detecting_inputs": "Fel vid identifiering av nödvändiga ingångar:",
+        "error_formulas": "Kunde inte parsa formler:",
+        "error_formulas_invalid": "Ogiltig formler JSON: {message}",
+        "error_formulas_json": "Kunde inte parsa formler:",
+        "error_input_links": "Kunde inte parsa input_links:",
+        "error_input_links_invalid": "Ogiltig input_links JSON: {message}"
+    },
+    "polling": {
+        "all_inputs": "Pollar alla länkade enhetsingångar...",
+        "api_unavailable": "App-API inte tillgängligt för pollning",
+        "device_not_found": "Enhet hittades inte: {device}",
+        "failed": "Kunde inte polla {input}:",
+        "input": "Pollar ingång \"{input}\" från enhet \"{device}\" kapacitet \"{capability}\"",
+        "no_links": "Inga inputLinks tillgängliga för pollning",
+        "no_value": "Inget värde för {input} ({capability})",
+        "value_received": "Pollat {input}: {value} → {boolean}"
+    },
+    "refetch": {
+        "fetching_values": "Hämtar initialvärden igen före utvärdering...",
+        "invoked": "Ome-hämtning och utvärdering anropad (källa={source})",
+        "no_links": "Inga ingångslänkar tillgängliga under om-hämtning; hoppar över värdehämtning.",
+        "parse_failed": "Kunde inte parsa input_links under om-hämtning:",
+        "reason": "Hämtar ingångar igen (anledning: {reason})..."
+    },
+    "settings": {
+        "applied": "Inställningar tillämpade framgångsrikt",
+        "applying_formatted": "Tillämpar auto-formaterade inställningar...",
+        "auto_formatted": "Inställningar auto-formaterade",
+        "cancel": "Avbryt",
+        "changed": "Inställningar ändrade:",
+        "changed_dynamic": "Inställningar ändrade (dynamisk enhet):",
+        "description": "Konfigurera din Boolean Toolbox logisk enhet",
+        "error": "Kunde inte spara inställningar",
+        "expanded": "Kapacitet utökad till {numInputs} ingångar: {availableInputs}",
+        "expanding_capacity": "Utökar kapacitet: {from} -> {to} (anledning: {reason})",
+        "expansion_failed": "Kunde inte auto-utöka kapacitet:",
+        "format_failed": "Kunde inte auto-formatera inställningar:",
+        "formatting": "Kommer auto-formatera {type} JSON",
+        "reset": "Återställ till standard",
+        "save": "Spara",
+        "saved": "Inställningar sparade",
+        "title": "Inställningar"
+    },
+    "timeout": {
+        "error": "Fel vid utlösning av timeout:"
+    }
 }

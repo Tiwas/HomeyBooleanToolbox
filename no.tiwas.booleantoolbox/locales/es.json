@@ -1,267 +1,510 @@
 {
-  "settings": {
-    "title": "Configuración",
-    "description": "Configure su dispositivo lógico Boolean Toolbox",
-    "save": "Guardar",
-    "cancel": "Cancelar",
-    "reset": "Restablecer valores predeterminados",
-    "saved": "Configuración guardada",
-    "error": "No se pudo guardar la configuración",
-    "changed": "Configuración modificada:",
-    "applied": "Configuración aplicada correctamente",
-    "formatting": "Se auto-formateará {type} JSON",
-    "applying_formatted": "Aplicando configuración auto-formateada...",
-    "auto_formatted": "Configuración auto-formateada",
-    "format_failed": "Error al auto-formatear la configuración:"
-  },
-  "pair": {
-    "title": "Agregar dispositivo lógico",
-    "intro": "Cree un nuevo dispositivo lógico para evaluar fórmulas complejas",
-    "name": "Nombre del dispositivo",
-    "name_placeholder": "Mi dispositivo lógico",
-    "configure": "Configurar dispositivo",
-    "add": "Agregar dispositivo",
-    "success": "Dispositivo agregado exitosamente",
-    "error": "No se pudo agregar el dispositivo",
-    "session_started": "Sesión de emparejamiento iniciada",
-    "get_num_inputs": "[PAIR] get_num_inputs llamado",
-    "set_num_inputs": "[PAIR] set_num_inputs llamado con datos:",
-    "get_zones": "[PAIR] get_zones llamado",
-    "get_zones_error": "[PAIR] ERROR en get_zones:",
-    "get_devices_in_zone": "[PAIR] get_devices_in_zone llamado para zona: {zone}",
-    "get_devices_error": "[PAIR] ERROR en get_devices_in_zone:",
-    "set_input_links": "[PAIR] set_input_links llamado",
-    "set_device_name": "[PAIR] set_device_name llamado con:",
-    "create_device": "[PAIR] create_device llamado",
-    "creating_device": "[PAIR] Creando dispositivo:",
-    "handlers_registered": "Manejadores de emparejamiento registrados"
-  },
-  "device": {
-    "ready": "Dispositivo listo: {name}",
-    "initializing": "Dispositivo lógico '{name}' inicializando.",
-    "initialized": "Dispositivo lógico '{name}' inicializado con {count} entradas",
-    "capacity_expanded": "Se detectaron {detected} entradas necesarias (originalmente {original}). Expandiendo capacidad.",
-    "capacity_updated": "Actualizando capacidad: {old} → {new} entradas",
-    "max_input_detected": "Entrada máxima detectada: {input} ({count} entradas necesarias)",
-    "capability_readonly": "Se estableció onoff como solo lectura",
-    "capability_options_failed": "No se pudieron establecer las opciones de capacidad:",
-    "capability_update_failed": "Actualización de capacidad fallida para {capability}:",
-    "capability_skip_deleted": "(seguro) Omitiendo {capability} – el dispositivo ya no existe.",
-    "deleted_cleanup": "Dispositivo eliminado — limpiando oyentes y temporizadores",
-    "cleanup_complete": "Limpieza completa",
-    "deleted_skip_update": "Dispositivo eliminado, omitiendo actualización de capacidad",
-    "deleted_skip_flow": "Dispositivo eliminado, omitiendo disparador de flow",
-    "logic_unit_name": "Unidad lógica ({count} entradas)"
-  },
-  "formula": {
-    "default_name": "Fórmula principal",
-    "default_name_alt": "Fórmula 1",
-    "initialized": "Se inicializaron {count} fórmulas",
-    "details": "  - {name}: \"{expression}\" (habilitado: {enabled})",
-    "reinitialized": "Se reinicializaron {count} fórmulas",
-    "timed_out": "Fórmula '{name}' agotó el tiempo de espera después de {timeout}s",
-    "evaluated_count": "Se evaluaron {count} fórmulas",
-    "expression_empty": "La expresión no puede estar vacía",
-    "invalid_tokens": "Tokens inválidos en la expresión: \"{tokens}\"",
-    "invalid_syntax": "Sintaxis de expresión inválida: {message}",
-    "no_expression": "(sin expresión)",
-    "error_validation": "Fórmula '{name}': {error}",
-    "result_debug": "getFormulaResult: Fórmula '{name}' ({id}) resultado = {result} (tipo: {type})",
-    "not_found_or_disabled": "Fórmula '{id}' no encontrada o deshabilitada.",
-    "unlocked_inputs": "🔓 Se desbloquearon todas las entradas para la fórmula '{name}'",
-    "waiting_for_inputs": "Fórmula '{name}': Esperando entradas. Requeridas: [{required}]",
-    "evaluating_expression": "Evaluando: \"{expression}\" → \"{evalExpression}\"",
-    "result": "Fórmula '{name}' resultado: {result}",
-    "all_inputs_defined": "Fórmula '{name}': Todas las entradas definidas, evaluando...",
-    "missing_inputs": "Fórmula '{name}': Entradas faltantes:",
-    "evaluation_failed": "Error al evaluar la fórmula '{name}': {message}",
-    "get_result_not_found": "getFormulaResult: Fórmula '{id}' no encontrada",
-    "set_input_error": "Error en setInputForFormula:",
-    "name": "Fórmula",
-    "expression": "Expresión",
-    "input": "Entrada",
-    "output": "Salida",
-    "evaluation": "Evaluación",
-    "evaluating": "Evaluando fórmula...",
-    "evaluated": "Fórmula evaluada",
-    "error": "Error de fórmula",
-    "timeout": "Tiempo de espera de evaluación de fórmula",
-    "invalid": "Fórmula inválida",
-    "syntax_error": "Error de sintaxis en la fórmula"
-  },
-  "devicelinks": {
-    "setting_up": "Configurando enlaces de dispositivos...",
-    "complete": "Configuración de enlaces de dispositivos completa",
-    "count": "Configurando {count} enlaces de dispositivos",
-    "unregistered": "Oyente desregistrado: {key}",
-    "error_unregister": "Error al desregistrar el oyente:",
-    "setup_failed": "No se pudo configurar el oyente para la entrada {input}:",
-    "error_cleanup": "Error al limpiar el oyente:"
-  },
-  "initial": {
-    "fetching_all": "Obteniendo valores iniciales para todas las entradas...",
-    "api_unavailable": "API de la aplicación no disponible para obtener valores iniciales",
-    "fetching_input": "[{input}] Obteniendo valor inicial...",
-    "device_not_found": "[{input}] Dispositivo no encontrado",
-    "capability_not_found": "[{input}] Capacidad {capability} no encontrada",
-    "value_received": "[{input}] Valor inicial: {value} → {boolean}",
-    "received_value": "[{input}] Valor inicial recibido: {value}",
-    "no_value_waiting": "[{input}] No se encontró valor inicial - esperando primer evento",
-    "error": "[{input}] Error al obtener el valor inicial:"
-  },
-  "evaluation": {
-    "running_initial": "Ejecutando evaluación inicial de fórmulas...",
-    "initial_complete": "Evaluación inicial de todas las fórmulas...",
-    "no_formulas_ready": "No se pudieron evaluar fórmulas - esperando valores de entrada",
-    "reevaluating_all": "Re-evaluando todas las fórmulas (reiniciando bloqueos)..."
-  },
-  "listener": {
-    "registered": "[{input}] Escuchando al dispositivo {device} capacidad {capability}",
-    "device_not_found": "[{input}] Dispositivo {device} no encontrado",
-    "capability_not_exist": "[{input}] La capacidad {capability} no existe en el dispositivo {device}",
-    "polling_setup": "[{input}] Se configuró el sondeo para {device} ({capability})",
-    "capability_changed": "[{input}] Capacidad '{capability}' cambiada: {value} → {boolean}",
-    "error_setup": "Error al configurar el oyente para la entrada {input}:",
-    "setting_up": "Configurando oyente para entrada {input}",
-    "invalid_config": "Configuración de enlace inválida para la entrada {input}",
-    "api_unavailable": "API de la aplicación no disponible para configuración de oyente",
-    "device_found": "Dispositivo encontrado: {device}",
-    "capability_found": "El dispositivo tiene capacidad: {capability}",
-    "event_received": "Evento recibido para la entrada {input}",
-    "registering": "Registrando oyente de capacidad para {capability}..."
-  },
-  "polling": {
-    "all_inputs": "Sondeando todas las entradas de dispositivos vinculados...",
-    "no_links": "No hay inputLinks disponibles para sondear",
-    "api_unavailable": "API de la aplicación no disponible para sondear",
-    "input": "Sondeando entrada \"{input}\" del dispositivo \"{device}\" capacidad \"{capability}\"",
-    "device_not_found": "Dispositivo no encontrado: {device}",
-    "no_value": "Sin valor para {input} ({capability})",
-    "value_received": "Sondeado {input}: {value} → {boolean}",
-    "failed": "No se pudo sondear {input}:"
-  },
-  "parse": {
-    "error_formulas": "No se pudieron analizar las fórmulas:",
-    "error_input_links": "No se pudieron analizar los input_links:",
-    "error_formulas_json": "No se pudieron analizar las fórmulas:",
-    "error_formulas_invalid": "JSON de fórmulas inválido: {message}",
-    "error_input_links_invalid": "JSON de input_links inválido: {message}",
-    "error_detecting_inputs": "Error al detectar las entradas requeridas:"
-  },
-  "refetch": {
-    "reason": "Volviendo a obtener entradas (razón: {reason})...",
-    "invoked": "Re-obtener y evaluar invocado (fuente={source})",
-    "parse_failed": "Error al analizar input_links durante la re-obtención:",
-    "no_links": "No hay enlaces de entrada disponibles durante la re-obtención; omitiendo obtención de valores.",
-    "fetching_values": "Re-obteniendo valores iniciales antes de la evaluación..."
-  },
-  "timeout": {
-    "error": "Error al activar el tiempo de espera:"
-  },
-  "flow": {
-    "triggered": "Disparando flow por cambio de fórmula '{name}' a {result}",
-    "trigger_error": "Error al disparar el flow:"
-  },
-  "driver": {
-    "ready": "Controlador listo",
-    "ensure_unique_failed": "ensureUniqueDeviceName falló:"
-  },
-  "debug": {
-    "raw_formulas": "Datos crudos de fórmulas desde la configuración:",
-    "raw_input_links": "Datos crudos de input_links desde la configuración:"
-  },
   "app": {
     "athom_api_loaded": "athom-api cargada exitosamente",
-    "homey_api_extracted": "HomeyAPI extraída, tipo:",
-    "initializing_homey_api": "Inicializando HomeyAPI.forCurrentHomey...",
-    "homey_api_not_function": "HomeyAPI.forCurrentHomey no es una función",
-    "homey_api_methods": "Métodos de HomeyAPI:",
-    "error_stack": "Pila de errores:",
-    "getting_zones": "Obteniendo zonas disponibles...",
-    "found_zones": "Se encontraron {count} zonas",
-    "error_getting_zones": "Error al obtener zonas:",
-    "getting_devices_for_zone": "Obteniendo dispositivos para la zona ID: {zoneId}",
-    "found_devices_in_zone": "Se encontraron {count} dispositivos en la zona {zoneId}",
-    "error_getting_devices": "Error al obtener dispositivos para la zona {zoneId}:",
-    "registering_flow_cards": "Registrando tarjetas de flujo...",
-    "condition_check": "Comprobación de condición: Fórmula '{formulaName}' resultado = {result}, comprobando si es '{expected}'",
-    "formula_not_evaluated": "Condición: La fórmula '{formulaName}' aún no ha sido evaluada (el resultado es {result})",
-    "running_evaluation": "Ejecutando evaluación. Entrada: {input}, Reglas: '{rules}'",
-    "evaluation_finished": "Evaluación finalizada. Salida: {output}",
-    "value_outside_logic": "El valor {input} está fuera de la lógica definida.",
     "checking_for_error": "Comprobando error. Entrada: '{textInput}', Tiene error: {hasError}",
-    "flow_cards_registered": "Tarjetas de flujo registradas"
+    "condition_check": "Comprobación de condición: Fórmula '{formulaName}' resultado = {result}, comprobando si es '{expected}'",
+    "error_getting_devices": "Error al obtener dispositivos para la zona {zoneId}:",
+    "error_getting_zones": "Error al obtener zonas:",
+    "error_stack": "Pila de errores:",
+    "evaluation_finished": "Evaluación finalizada. Salida: {output}",
+    "flow_cards_registered": "Tarjetas de flujo registradas",
+    "formula_not_evaluated": "Condición: La fórmula '{formulaName}' aún no ha sido evaluada (el resultado es {result})",
+    "found_devices_in_zone": "Se encontraron {count} dispositivos en la zona {zoneId}",
+    "found_zones": "Se encontraron {count} zonas",
+    "getting_devices_for_zone": "Obteniendo dispositivos para la zona ID: {zoneId}",
+    "getting_zones": "Obteniendo zonas disponibles...",
+    "homey_api_extracted": "HomeyAPI extraída, tipo:",
+    "homey_api_methods": "Métodos de HomeyAPI:",
+    "homey_api_not_function": "HomeyAPI.forCurrentHomey no es una función",
+    "initializing_homey_api": "Inicializando HomeyAPI.forCurrentHomey...",
+    "registering_flow_cards": "Registrando tarjetas de flujo...",
+    "running_evaluation": "Ejecutando evaluación. Entrada: {input}, Reglas: '{rules}'",
+    "value_outside_logic": "El valor {input} está fuera de la lógica definida."
   },
-  "errors": {
-    "generic": "Ocurrió un error",
-    "timeout": "Tiempo de espera de operación agotado",
-    "invalid_input": "Valor de entrada inválido",
-    "invalid_formula": "Expresión de fórmula inválida",
-    "evaluation_failed": "La evaluación de la fórmula falló",
-    "device_not_found": "Dispositivo no encontrado",
-    "permission_denied": "Permiso denegado",
-    "connection_failed": "Conexión fallida",
-    "unknown": "Ocurrió un error desconocido"
-  },
-  "notifications": {
-    "formula_updated": "Fórmula actualizada",
-    "input_received": "Entrada recibida",
-    "output_changed": "Salida modificada",
-    "error_cleared": "Estado de error borrado",
-    "device_ready": "El dispositivo está listo",
-    "reevaluating": "Re-evaluar todas las fórmulas..."
+  "capability": {
+    "logic_state": {
+      "title": "Estado lógico"
+    }
   },
   "common": {
-    "yes": "Sí",
-    "no": "No",
-    "true": "Verdadero",
-    "false": "Falso",
-    "enabled": "Habilitado",
     "disabled": "Deshabilitado",
-    "on": "Encendido",
-    "off": "Apagado",
-    "unknown": "Desconocido",
-    "loading": "Cargando...",
-    "processing": "Procesando...",
     "done": "Hecho",
+    "enabled": "Habilitado",
     "failed": "Fallido",
-    "success": "Éxito",
-    "warning": "Advertencia",
+    "false": "Falso",
     "info": "Información",
-    "min": "Mínimo",
+    "loading": "Cargando...",
     "max": "Máximo",
-    "value": "Valor",
+    "min": "Mínimo",
     "name": "Nombre",
+    "no": "No",
+    "off": "Apagado",
+    "on": "Encendido",
+    "processing": "Procesando...",
+    "state": "Estado",
+    "success": "Éxito",
+    "true": "Verdadero",
     "type": "Tipo",
-    "state": "Estado"
+    "unknown": "Desconocido",
+    "value": "Valor",
+    "warning": "Advertencia",
+    "yes": "Sí"
+  },
+  "debug": {
+    "checking_formula": "Comprobando fórmula: {name} (\"{expression}\")",
+    "raw_formulas": "Datos crudos de fórmulas desde la configuración:",
+    "raw_input_links": "Datos crudos de input_links desde la configuración:",
+    "required_inputs": "  - Entradas requeridas: {inputs}"
+  },
+  "device": {
+    "capability_options_failed": "No se pudieron establecer las opciones de capacidad:",
+    "capability_readonly": "Se estableció onoff como solo lectura",
+    "capability_skip_deleted": "(seguro) Omitiendo {capability} – el dispositivo ya no existe.",
+    "capability_update_failed": "Actualización de capacidad fallida para {capability}:",
+    "capacity_expanded": "Se detectaron {detected} entradas necesarias (originalmente {original}). Expandiendo capacidad.",
+    "capacity_updated": "Actualizando capacidad: {old} → {new} entradas",
+    "cleanup_complete": "Limpieza completa",
+    "deleted_cleanup": "Dispositivo eliminado — limpiando oyentes y temporizadores",
+    "deleted_skip_flow": "Dispositivo eliminado, omitiendo disparador de flow",
+    "deleted_skip_update": "Dispositivo eliminado, omitiendo actualización de capacidad",
+    "initialized": "Dispositivo lógico '{name}' inicializado con {count} entradas",
+    "initializing": "Dispositivo lógico '{name}' inicializando.",
+    "logic_unit_dynamic_name": "Unidad Lógica",
+    "logic_unit_dynamic_name_fallback": "Unidad Lógica",
+    "logic_unit_name": "Unidad lógica ({count} entradas)",
+    "logic_unit_name_fallback": "Unidad lógica ({count} entradas)",
+    "max_input_detected": "Entrada máxima detectada: {input} ({count} entradas necesarias)",
+    "ready": "Dispositivo listo: {name}"
+  },
+  "devicelinks": {
+    "complete": "Configuración de enlaces de dispositivos completa",
+    "count": "Configurando {count} enlaces de dispositivos",
+    "error_cleanup": "Error al limpiar el oyente:",
+    "error_unregister": "Error al desregistrar el oyente:",
+    "setting_up": "Configurando enlaces de dispositivos...",
+    "setup_failed": "No se pudo configurar el oyente para la entrada {input}:",
+    "unregistered": "Oyente desregistrado: {key}"
+  },
+  "driver": {
+    "ensure_unique_failed": "ensureUniqueDeviceName falló:",
+    "ready": "Controlador listo",
+    "registering_flow_cards": "Registrando tarjetas de flujo del controlador..."
+  },
+  "errors": {
+    "connection_failed": "Conexión fallida",
+    "device_not_found": "Dispositivo no encontrado",
+    "evaluation_failed": "La evaluación de la fórmula falló",
+    "generic": "Ocurrió un error",
+    "helper_not_function": "La función de ayuda para '{argName}' no es una función.",
+    "invalid_device_instance": "Instancia de dispositivo no válida",
+    "invalid_formula": "Expresión de fórmula inválida",
+    "invalid_input": "Valor de entrada inválido",
+    "method_missing_on_device": "Método '{methodName}' faltante en el dispositivo",
+    "notification_failed_invalid_formula": "No se pudo crear la notificación para la fórmula no válida",
+    "permission_denied": "Permiso denegado",
+    "timeout": "Tiempo de espera de operación agotado",
+    "trigger_timeout_card_failed": "Error al obtener/activar la tarjeta formula_timeout",
+    "unknown": "Ocurrió un error desconocido"
+  },
+  "evaluation": {
+    "initial_complete": "Evaluación inicial de todas las fórmulas...",
+    "no_formulas_ready": "No se pudieron evaluar fórmulas - esperando valores de entrada",
+    "reevaluating_all": "Re-evaluando todas las fórmulas (reiniciando bloqueos)...",
+    "running_initial": "Ejecutando evaluación inicial de fórmulas..."
+  },
+  "flow": {
+    "actions": {
+      "clear_error_state_lu": {
+        "title": "Borrar estado de error de fórmula",
+        "titleFormatted": "Borrar estado de error para fórmula [[formula]]"
+      },
+      "clear_error_state_ld": {
+        "title": "Borrar error",
+        "titleFormatted": "Borrar estado de error"
+      },
+      "evaluate_all_formula_lu": {
+        "title": "Reevaluar todo",
+        "titleFormatted": "Reevaluar todas las fórmulas"
+      },
+      "evaluate_expression": {
+        "title": "Evaluar expresión",
+        "titleFormatted": "Evaluar [[input]] [[op1]] min [[logical_op]] [[op2]] max con reglas [[rules]]"
+      },
+      "evaluate_formula_lu": {
+        "title": "Evaluar fórmula específica",
+        "titleFormatted": "Evaluar fórmula [[formula]]"
+      },
+      "evaluate_formula_ld": {
+        "title": "Re-comprobar estado del dispositivo",
+        "titleFormatted": "Re-comprobar estado"
+      },
+      "reevaluate_formulas": {
+        "title": "Reevaluar todo",
+        "titleFormatted": "Reevaluar todas las fórmulas"
+      },
+      "set_all_inputs_lu": {
+        "title": "Establecer todas las entradas desde JSON",
+        "titleFormatted": "Establecer todas las entradas desde JSON: [[values]]"
+      },
+      "set_input_lu": {
+        "title": "Establecer valor de entrada (todas las fórmulas)",
+        "titleFormatted": "Establecer entrada [[input]] a [[value]]"
+      },
+      "set_input_value_lu": {
+        "title": "Establecer valor de entrada para fórmula",
+        "titleFormatted": "Establecer entrada [[input]] a [[value]] para fórmula [[formula]]"
+      }
+    },
+    "args": {
+      "formula": {
+        "placeholder": "Seleccionar fórmula",
+        "title": "Fórmula"
+      },
+      "input": {
+        "placeholder": "Seleccionar entrada",
+        "title": "Entrada"
+      },
+      "logical_op": {
+        "AND": "Y",
+        "OR": "O",
+        "title": "Operador lógico"
+      },
+      "number_input": {
+        "placeholder": "Ingresar número",
+        "title": "Valor de entrada"
+      },
+      "op1": {
+        "gt": ">",
+        "gte": "≥",
+        "lt": "<",
+        "lte": "≤",
+        "title": "Primer operador"
+      },
+      "op2": {
+        "gt": ">",
+        "gte": "≥",
+        "lt": "<",
+        "lte": "≤",
+        "title": "Segundo operador"
+      },
+      "rules": {
+        "placeholder": "min,max,output;...",
+        "title": "Reglas"
+      },
+      "text_input": {
+        "placeholder": "Ingrese mensaje de error o token",
+        "title": "Mensaje de error"
+      },
+      "value": {
+        "false": "FALSO",
+        "title": "Valor",
+        "true": "VERDADERO"
+      },
+      "values": {
+        "placeholder": "{\"A\": true, \"B\": false}",
+        "title": "Valores JSON"
+      },
+      "what_is": {
+        "false": "FALSO",
+        "title": "Valor",
+        "true": "VERDADERO"
+      }
+    },
+    "conditions": {
+      "formula_has_timed_out_lu": {
+        "title": "La fórmula !{{ha|no ha}} expirado",
+        "titleFormatted": "Fórmula [[formula]] !{{ha|no ha}} expirado"
+      },
+      "formula_has_timed_out_ld": {
+        "title": "Tiene un error (LD)",
+        "titleFormatted": "Fórmula !{{ha|no ha}} expirado"
+      },
+      "formula_result_is_lu": {
+        "title": "El resultado de la fórmula es...",
+        "titleFormatted": "El resultado de la fórmula [[formula]] es [[what_is]]"
+      },
+      "formula_result_is_ld": {
+        "title": "El resultado es... (LD)",
+        "titleFormatted": "El resultado de la fórmula es [[what_is]]"
+      },
+      "has_any_error_lu": {
+        "title": "El dispositivo !{{tiene|no tiene}} error",
+        "titleFormatted": "El dispositivo !{{tiene|no tiene}} error"
+      },
+      "has_any_error_ld": {
+        "title": "El dispositivo !{{tiene|no tiene}} error",
+        "titleFormatted": "El dispositivo !{{tiene|no tiene}} error"
+      },
+      "has_error": {
+        "title": "!{{Tiene|No tiene}} error",
+        "titleFormatted": "!{{Tiene|No tiene}} error en [[text_input]]"
+      }
+    },
+    "tokens": {
+      "errorMessage": {
+        "title": "Mensaje de error"
+      },
+      "outputValue": {
+        "title": "Valor de salida"
+      },
+      "state": {
+        "title": "Estado"
+      }
+    },
+    "trigger_error": "Error al disparar el flow:",
+    "triggered": "Disparando flow por cambio de fórmula '{name}' a {result}",
+    "triggers": {
+      "device_state_changed": {
+        "hint": "Se activa cuando el estado del dispositivo lógico cambia (encendido/apagado)",
+        "title": "Estado cambiado",
+        "titleFormatted": "Estado cambiado a [[state]]"
+      },
+      "device_state_changed_ld": {
+        "hint": "Se activa cuando el estado del dispositivo lógico cambia (encendido/apagado)",
+        "title": "Estado cambiado",
+        "titleFormatted": "Estado cambiado"
+      },
+      "formula_changed_to_false_lu": {
+        "title": "Fórmula cambió a FALSO",
+        "titleFormatted": "Fórmula [[formula]] cambió a FALSO"
+      },
+      "formula_changed_to_true_lu": {
+        "title": "Fórmula cambió a VERDADERO",
+        "titleFormatted": "Fórmula [[formula]] cambió a VERDADERO"
+      },
+      "formula_timeout_lu": {
+        "title": "Fórmula expiró",
+        "titleFormatted": "Fórmula [[formula]] expiró"
+      },
+      "state_changed_ld": {
+        "title": "Estado cambiado",
+        "titleFormatted": "Estado cambiado"
+      }
+    }
+  },
+  "formula": {
+    "all_inputs_defined": "Fórmula '{name}': Todas las entradas definidas, evaluando...",
+    "default_name": "Fórmula principal",
+    "default_name_alt": "Fórmula 1",
+    "default_name_alt_fallback": "Fórmula predeterminada",
+    "details": "  - {name}: \"{expression}\" (habilitado: {enabled})",
+    "error": "Error de fórmula",
+    "error_inputs_used_but_none_configured": "La expresión usa entradas, pero no hay entradas configuradas para este dispositivo.",
+    "error_no_inputs": "No hay entradas disponibles",
+    "error_unbalanced_parentheses": "Paréntesis no balanceados",
+    "error_validation": "Fórmula '{name}': {error}",
+    "evaluated": "Fórmula evaluada",
+    "evaluated_count": "Se evaluaron {count} fórmulas",
+    "evaluating": "Evaluando fórmula...",
+    "evaluating_expression": "Evaluando: \"{expression}\" → \"{evalExpression}\"",
+    "evaluation": "Evaluación",
+    "evaluation_failed": "Error al evaluar la fórmula '{name}': {message}",
+    "expression": "Expresión",
+    "expression_empty": "La expresión no puede estar vacía",
+    "get_result_not_found": "getFormulaResult: Fórmula '{id}' no encontrada",
+    "initialized": "Se inicializaron {count} fórmulas",
+    "input": "Entrada",
+    "invalid": "Fórmula inválida",
+    "invalid_syntax": "Sintaxis de expresión inválida: {message}",
+    "invalid_tokens": "Tokens inválidos en la expresión: \"{tokens}\"",
+    "missing_inputs": "Fórmula '{name}': Entradas faltantes:",
+    "name": "Fórmula",
+    "no_expression": "(sin expresión)",
+    "not_found_or_disabled": "Fórmula '{id}' no encontrada o deshabilitada.",
+    "output": "Salida",
+    "reinitialized": "Se reinicializaron {count} fórmulas",
+    "result": "Fórmula '{name}' resultado: {result}",
+    "result_debug": "getFormulaResult: Fórmula '{name}' ({id}) resultado = {result} (tipo: {type})",
+    "set_input_error": "Error en setInputForFormula:",
+    "syntax_error": "Error de sintaxis en la fórmula",
+    "timed_out": "Fórmula '{name}' agotó el tiempo de espera después de {timeout}s",
+    "timeout": "Tiempo de espera de evaluación de fórmula",
+    "unlocked_inputs": "🔓 Se desbloquearon todas las entradas para la fórmula '{name}'",
+    "unnamed_formula": "Fórmula sin nombre",
+    "waiting_for_input": "Fórmula '{formula}' esperando entradas indefinidas: {error}",
+    "waiting_for_inputs": "Fórmula '{name}': Esperando entradas. Requeridas: [{required}]"
+  },
+  "help": {
+    "first_impression": "El modo primera impresión bloquea las entradas en su primer valor recibido",
+    "formula_syntax": "Use operadores lógicos como Y, O, NO para crear su fórmula",
+    "input_values": "Los valores de entrada se actualizan automáticamente cuando los dispositivos conectados cambian",
+    "timeout_warning": "Si una entrada no se actualiza dentro del período de tiempo de espera, se marcará"
+  },
+  "initial": {
+    "api_unavailable": "API de la aplicación no disponible para obtener valores iniciales",
+    "capability_not_found": "[{input}] Capacidad {capability} no encontrada",
+    "device_not_found": "[{input}] Dispositivo no encontrado",
+    "error": "[{input}] Error al obtener el valor inicial:",
+    "fetching_all": "Obteniendo valores iniciales para todas las entradas...",
+    "fetching_input": "[{input}] Obteniendo valor inicial...",
+    "no_value_waiting": "[{input}] No se encontró valor inicial - esperando primer evento",
+    "received_value": "[{input}] Valor inicial recibido: {value}",
+    "value_received": "[{input}] Valor inicial: {value} → {boolean}"
+  },
+  "input_options": {
+    "context_specific": "Opciones de entrada filtradas para la fórmula: {formula} ({expression})"
   },
   "inputs": {
+    "first_impression": "Modo primera impresión",
     "label": "Entrada",
-    "value": "Valor",
     "locked": "Entrada bloqueada",
-    "unlocked": "Entrada desbloqueada",
+    "locked_at_value": "🔒 Entrada '{input}' bloqueada en el valor {value} (modo primera impresión)",
     "locked_first_impression": "Entrada '{input}' bloqueada para la fórmula '{formula}' (modo primera impresión)",
     "setting_value": "Estableciendo entrada '{input}' a {value} para la fórmula '{formula}' (era: {oldValue})",
-    "locked_at_value": "🔒 Entrada '{input}' bloqueada en el valor {value} (modo primera impresión)",
-    "first_impression": "Modo primera impresión",
     "timeout_detected": "Tiempo de espera detectado en la entrada",
+    "unlocked": "Entrada desbloqueada",
+    "unused_warning": "Advertencia: La entrada {input} no se usa en ninguna fórmula. Usadas: {usedInputs}",
+    "value": "Valor",
     "waiting": "Esperando entrada..."
+  },
+  "listener": {
+    "api_unavailable": "API de la aplicación no disponible para configuración de oyente",
+    "capability_changed": "[{input}] Capacidad '{capability}' cambiada: {value} → {boolean}",
+    "capability_found": "El dispositivo tiene capacidad: {capability}",
+    "capability_not_exist": "[{input}] La capacidad {capability} no existe en el dispositivo {device}",
+    "device_found": "Dispositivo encontrado: {device}",
+    "device_not_found": "[{input}] Dispositivo {device} no encontrado",
+    "error_setup": "Error al configurar el oyente para la entrada {input}:",
+    "event_received": "Evento recibido para la entrada {input}",
+    "invalid_config": "Configuración de enlace inválida para la entrada {input}",
+    "polling_setup": "[{input}] Se configuró el sondeo para {device} ({capability})",
+    "registered": "[{input}] Escuchando al dispositivo {device} capacidad {capability}",
+    "registering": "Registrando oyente de capacidad para {capability}...",
+    "setting_up": "Configurando oyente para entrada {input}"
+  },
+  "notifications": {
+    "device_ready": "El dispositivo está listo",
+    "error_cleared": "Estado de error borrado",
+    "error_cleared_all": "Estado de error borrado para todas las fórmulas",
+    "formula_updated": "Fórmula actualizada",
+    "input_received": "Entrada recibida",
+    "invalid_formula_config": "Fórmula no válida '{formulaName}': {error}",
+    "output_changed": "Salida modificada",
+    "reevaluating": "Re-evaluar todas las fórmulas..."
   },
   "operators": {
     "and": "Y",
-    "or": "O",
-    "not": "NO",
-    "greater_than": "Mayor que",
-    "less_than": "Menor que",
     "equal": "Igual a",
-    "not_equal": "Diferente de",
     "greater_or_equal": "Mayor o igual a",
-    "less_or_equal": "Menor o igual a"
+    "greater_than": "Mayor que",
+    "less_or_equal": "Menor o igual a",
+    "less_than": "Menor que",
+    "not": "NO",
+    "not_equal": "Diferente de",
+    "or": "O"
   },
-  "help": {
-    "formula_syntax": "Use operadores lógicos como Y, O, NO para crear su fórmula",
-    "input_values": "Los valores de entrada se actualizan automáticamente cuando los dispositivos conectados cambian",
-    "timeout_warning": "Si una entrada no se actualiza dentro del período de tiempo de espera, se marcará",
-    "first_impression": "El modo primera impresión bloquea las entradas en su primer valor recibido"
+  "pair": {
+    "add": "Agregar dispositivo",
+    "capability_label": "Capacidad:",
+    "configure": "Configurar dispositivo",
+    "configure_all_inputs": "¡Por favor configure todas las entradas primero!",
+    "configure_inputs_description": "Seleccione qué dispositivo y capacidad debe seguir cada entrada:",
+    "configure_inputs_title": "Configurar entradas",
+    "configured": "Configurado",
+    "create_device": "[PAIR] create_device llamado",
+    "creating_device": "[PAIR] Creando dispositivo:",
+    "default_formula_name": "Mi Fórmula",
+    "device_label": "Dispositivo:",
+    "device_name_label": "Dale un nombre al dispositivo:",
+    "device_name_placeholder": "Mi dispositivo lógico",
+    "error": "No se pudo agregar el dispositivo",
+    "error_button_not_found": "¡Botón Completar no encontrado en el DOM!",
+    "error_completing_setup": "Error al completar la configuración: {error}",
+    "error_homey_emit_unavailable": "Homey.emit no está disponible",
+    "error_homey_nextview_unavailable": "Homey.nextView no está disponible",
+    "error_homey_object_unavailable": "El objeto Homey o las funciones requeridas (emit, __) no están disponibles.",
+    "error_i18n_unavailable": "La función de traducción de Homey (__) no está disponible.",
+    "error_loading": "-- Error al cargar --",
+    "error_loading_capabilities": "Error al cargar capacidades: {error}",
+    "error_loading_initial_data": "Error al cargar datos iniciales: {error}",
+    "error_navigating": "Error al navegar: {error}",
+    "error_saving_config": "Error al guardar la configuración: {error}",
+    "error_saving_input_number": "Error al guardar el número de entrada: {error}",
+    "error_setting_up_interactions": "Error al configurar las interacciones de la página: {error}",
+    "error_system_not_ready": "Error: El sistema de emparejamiento no está listo.",
+    "formula_label": "Introducir fórmula:",
+    "get_devices_error": "[PAIR] ERROR en get_devices_in_zone:",
+    "get_devices_in_zone": "[PAIR] get_devices_in_zone llamado para zona: {zone}",
+    "get_num_inputs": "[PAIR] get_num_inputs llamado",
+    "get_zones": "[PAIR] get_zones llamado",
+    "get_zones_error": "[PAIR] ERROR en get_zones:",
+    "handlers_registered": "Manejadores de emparejamiento registrados",
+    "input": "Entrada",
+    "inputs_configured": "entradas configuradas",
+    "inputs_range": "Elija entre 2 y 10 entradas",
+    "intro": "Cree un nuevo dispositivo lógico para evaluar fórmulas complejas",
+    "load_devices_error": "No se pudieron cargar los dispositivos para la zona",
+    "name": "Nombre del dispositivo",
+    "name_placeholder": "Mi dispositivo lógico",
+    "next": "Siguiente →",
+    "no_zones_error": "No se encontraron zonas. Por favor, cree zonas en su Homey primero.",
+    "not_configured": "No configurado",
+    "of": "de",
+    "save_complete": "Guardar y completar",
+    "select_capability": "-- Seleccionar capacidad --",
+    "select_device": "-- Seleccionar dispositivo --",
+    "select_device_first": "-- Seleccione el dispositivo primero --",
+    "select_inputs_description": "¿Cuántos dispositivos desea conectar a este dispositivo lógico?",
+    "select_inputs_title": "Seleccionar número de entradas",
+    "select_zone": "-- Seleccionar zona/habitación --",
+    "select_zone_first": "-- Seleccione la zona primero --",
+    "session_started": "Sesión de emparejamiento iniciada",
+    "set_device_formula": "[PAIR] set_device_formula llamado con: {formula}",
+    "set_device_name": "[PAIR] set_device_name llamado con:",
+    "set_input_links": "[PAIR] set_input_links llamado",
+    "set_num_inputs": "[PAIR] set_num_inputs llamado con datos:",
+    "status_label": "Estado:",
+    "success": "Dispositivo agregado exitosamente",
+    "title": "Agregar dispositivo lógico",
+    "unknown_capability_fallback": "Capacidad desconocida",
+    "unknown_device": "Dispositivo desconocido",
+    "zone_label": "Zona/Habitación:"
+  },
+  "parse": {
+    "error_detecting_inputs": "Error al detectar las entradas requeridas:",
+    "error_formulas": "No se pudieron analizar las fórmulas:",
+    "error_formulas_invalid": "JSON de fórmulas inválido: {message}",
+    "error_formulas_json": "No se pudieron analizar las fórmulas:",
+    "error_input_links": "No se pudieron analizar los input_links:",
+    "error_input_links_invalid": "JSON de input_links inválido: {message}"
+  },
+  "polling": {
+    "all_inputs": "Sondeando todas las entradas de dispositivos vinculados...",
+    "api_unavailable": "API de la aplicación no disponible para sondear",
+    "device_not_found": "Dispositivo no encontrado: {device}",
+    "failed": "No se pudo sondear {input}:",
+    "input": "Sondeando entrada \"{input}\" del dispositivo \"{device}\" capacidad \"{capability}\"",
+    "no_links": "No hay inputLinks disponibles para sondear",
+    "no_value": "Sin valor para {input} ({capability})",
+    "value_received": "Sondeado {input}: {value} → {boolean}"
+  },
+  "refetch": {
+    "fetching_values": "Re-obteniendo valores iniciales antes de la evaluación...",
+    "invoked": "Re-obtener y evaluar invocado (fuente={source})",
+    "no_links": "No hay enlaces de entrada disponibles durante la re-obtención; omitiendo obtención de valores.",
+    "parse_failed": "Error al analizar input_links durante la re-obtención:",
+    "reason": "Volviendo a obtener entradas (razón: {reason})..."
+  },
+  "settings": {
+    "applied": "Configuración aplicada correctamente",
+    "applying_formatted": "Aplicando configuración auto-formateada...",
+    "auto_formatted": "Configuración auto-formateada",
+    "cancel": "Cancelar",
+    "changed": "Configuración modificada:",
+    "changed_dynamic": "Configuración modificada (dispositivo dinámico):",
+    "description": "Configure su dispositivo lógico Boolean Toolbox",
+    "error": "No se pudo guardar la configuración",
+    "expanded": "Capacidad expandida a {numInputs} entradas: {availableInputs}",
+    "expanding_capacity": "Expandiendo capacidad: {from} -> {to} (razón: {reason})",
+    "expansion_failed": "No se pudo auto-expandir la capacidad:",
+    "format_failed": "Error al auto-formatear la configuración:",
+    "formatting": "Se auto-formateará {type} JSON",
+    "reset": "Restablecer valores predeterminados",
+    "save": "Guardar",
+    "saved": "Configuración guardada",
+    "title": "Configuración"
+  },
+  "timeout": {
+    "error": "Error al activar el tiempo de espera:"
   }
 }

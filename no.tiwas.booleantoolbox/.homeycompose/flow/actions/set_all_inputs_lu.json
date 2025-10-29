@@ -1,0 +1,79 @@
+{
+  "id": "set_all_inputs_lu",
+  "title": {
+    "en": "Set all inputs from JSON (ALL formulas)",
+    "no": "Sett alle innganger fra JSON (ALLE formler)",
+    "de": "Alle Eingänge von JSON setzen (ALLE Formeln)",
+    "nl": "Alle ingangen instellen vanuit JSON (ALLE formules)",
+    "fr": "Définir toutes les entrées depuis JSON (TOUTES formules)",
+    "da": "Indstil alle indgange fra JSON (ALLE formler)",
+    "fi": "Aseta kaikki tulot JSON-muodosta (KAIKKI kaavat)",
+    "sv": "Ställ in alla ingångar från JSON (ALLA formler)",
+    "pl": "Ustaw wszystkie wejścia z JSON (WSZYSTKIE formuły)",
+    "it": "Imposta tutti gli input da JSON (TUTTE le formule)",
+    "es": "Establecer todas las entradas desde JSON (TODAS las fórmulas)"
+  },
+  "titleFormatted": {
+    "en": "Set all inputs from JSON: [[values]] (for ALL formulas)",
+    "no": "Sett alle innganger fra JSON: [[values]] (for ALLE formler)",
+    "de": "Alle Eingänge von JSON setzen: [[values]] (für ALLE Formeln)",
+    "nl": "Alle ingangen instellen vanuit JSON: [[values]] (voor ALLE formules)",
+    "fr": "Définir toutes les entrées depuis JSON : [[values]] (pour TOUTES les formules)",
+    "da": "Indstil alle indgange fra JSON: [[values]] (for ALLE formler)",
+    "fi": "Aseta kaikki tulot JSON-muodosta: [[values]] (KAIKILLE kaavoille)",
+    "sv": "Ställ in alla ingångar från JSON: [[values]] (för ALLA formler)",
+    "pl": "Ustaw wszystkie wejścia z JSON: [[values]] (dla WSZYSTKICH formuł)",
+    "it": "Imposta tutti gli input da JSON: [[values]] (per TUTTE le formule)",
+    "es": "Establecer todas las entradas desde JSON: [[values]] (para TODAS las fórmulas)"
+  },
+  "hint": {
+    "en": "⚠️ Sets ALL input values at once for ALL formulas in this Logic Unit from a JSON object. All formulas will receive the same input values. Use this when you want to update multiple inputs for all formulas simultaneously.",
+    "no": "⚠️ Setter ALLE inngangsverdier samtidig for ALLE formler i denne Logic Unit fra et JSON-objekt. Alle formler vil motta de samme inngangsverdiene. Bruk denne når du vil oppdatere flere innganger for alle formler samtidig.",
+    "de": "⚠️ Setzt ALLE Eingangswerte gleichzeitig für ALLE Formeln in dieser Logic Unit aus einem JSON-Objekt. Alle Formeln erhalten die gleichen Eingangswerte. Verwenden Sie dies, wenn Sie mehrere Eingänge für alle Formeln gleichzeitig aktualisieren möchten.",
+    "nl": "⚠️ Stelt ALLE ingangswaarden tegelijk in voor ALLE formules in deze Logic Unit vanuit een JSON-object. Alle formules ontvangen dezelfde ingangswaarden. Gebruik dit wanneer u meerdere ingangen voor alle formules tegelijk wilt bijwerken.",
+    "fr": "⚠️ Définit TOUTES les valeurs d'entrée en même temps pour TOUTES les formules de cette Logic Unit à partir d'un objet JSON. Toutes les formules recevront les mêmes valeurs d'entrée. Utilisez ceci lorsque vous souhaitez mettre à jour plusieurs entrées pour toutes les formules simultanément.",
+    "da": "⚠️ Indstiller ALLE indgangsværdier på én gang for ALLE formler i denne Logic Unit fra et JSON-objekt. Alle formler vil modtage de samme indgangsværdier. Brug dette, når du vil opdatere flere indgange for alle formler samtidigt.",
+    "fi": "⚠️ Asettaa KAIKKI tuloarvot kerralla KAIKILLE kaavoille tässä Logic Unitissa JSON-objektista. Kaikki kaavat saavat samat tuloarvot. Käytä tätä, kun haluat päivittää useita tuloja kaikille kaavoille samanaikaisesti.",
+    "sv": "⚠️ Ställer in ALLA ingångsvärden på en gång för ALLA formler i denna Logic Unit från ett JSON-objekt. Alla formler kommer att få samma ingångsvärden. Använd detta när du vill uppdatera flera ingångar för alla formler samtidigt.",
+    "pl": "⚠️ Ustawia WSZYSTKIE wartości wejściowe jednocześnie dla WSZYSTKICH formuł w tej Logic Unit z obiektu JSON. Wszystkie formuły otrzymają te same wartości wejściowe. Użyj tego, gdy chcesz zaktualizować wiele wejść dla wszystkich formuł jednocześnie.",
+    "it": "⚠️ Imposta TUTTI i valori di input contemporaneamente per TUTTE le formule in questa Logic Unit da un oggetto JSON. Tutte le formule riceveranno gli stessi valori di input. Usa questo quando vuoi aggiornare più input per tutte le formule simultaneamente.",
+    "es": "⚠️ Establece TODOS los valores de entrada a la vez para TODAS las fórmulas en esta Logic Unit desde un objeto JSON. Todas las fórmulas recibirán los mismos valores de entrada. Usa esto cuando quieras actualizar múltiples entradas para todas las fórmulas simultáneamente."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-unit|logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+    },
+    {
+      "type": "text",
+      "name": "values",
+      "title": {
+        "en": "JSON values",
+        "no": "JSON-verdier",
+        "de": "JSON-Werte",
+        "nl": "JSON-waarden",
+        "fr": "Valeurs JSON",
+        "da": "JSON-værdier",
+        "fi": "JSON-arvot",
+        "sv": "JSON-värden",
+        "pl": "Wartości JSON",
+        "it": "Valori JSON",
+        "es": "Valores JSON"
+      },
+      "placeholder": {
+        "en": "{\"A\": true, \"B\": false}",
+        "no": "{\"A\": true, \"B\": false}",
+        "de": "{\"A\": true, \"B\": false}",
+        "nl": "{\"A\": true, \"B\": false}",
+        "fr": "{\"A\": true, \"B\": false}",
+        "da": "{\"A\": true, \"B\": false}",
+        "fi": "{\"A\": true, \"B\": false}",
+        "sv": "{\"A\": true, \"B\": false}",
+        "pl": "{\"A\": true, \"B\": false}",
+        "it": "{\"A\": true, \"B\": false}",
+        "es": "{\"A\": true, \"B\": false}"
+      }
+    }
+  ]
+}

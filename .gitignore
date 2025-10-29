@@ -14,6 +14,7 @@ node_modules/
 node_modules/
 npm-debug.log
 patch-files/
+*.old/
 
 # Old version
 no.tiwas.booleantoolbox.old/
@@ -26,3 +27,5 @@ codebase.*
 codebase-manifest.*
 .codebaseignore
 *.rar
+*.tar.gz
+*.old

@@ -1,0 +1,66 @@
+{
+  "id": "clear_error_state_lu",
+  "title": {
+    "en": "Clear formula error state",
+    "no": "Fjern formel-feilstatus",
+    "de": "Formel-Fehlerstatus löschen",
+    "nl": "Formule-foutstatus wissen",
+    "fr": "Effacer l'état d'erreur de la formule",
+    "da": "Ryd formel fejlstatus",
+    "fi": "Tyhjennä kaavan virhetila",
+    "sv": "Rensa formelfelstatus",
+    "pl": "Wyczyść stan błędu formuły",
+    "it": "Cancella stato di errore formula",
+    "es": "Limpiar estado de error de fórmula"
+  },
+  "titleFormatted": {
+    "en": "Clear error state for formula [[formula]]",
+    "no": "Fjern feilstatus for formel [[formula]]",
+    "de": "Fehlerstatus für Formel [[formula]] löschen",
+    "nl": "Foutstatus voor formule [[formula]] wissen",
+    "fr": "Effacer l'erreur pour formule [[formula]]",
+    "da": "Ryd fejlstatus for formel [[formula]]",
+    "fi": "Tyhjennä virhetila kaavalle [[formula]]",
+    "sv": "Rensa felstatus för formel [[formula]]",
+    "pl": "Wyczyść stan błędu dla formuły [[formula]]",
+    "it": "Cancella errore per formula [[formula]]",
+    "es": "Limpiar error para fórmula [[formula]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-unit|logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+    },
+    {
+      "type": "autocomplete",
+      "name": "formula",
+      "title": {
+        "en": "Formula",
+        "no": "Formel",
+        "de": "Formel",
+        "nl": "Formule",
+        "fr": "Formule",
+        "da": "Formel",
+        "fi": "Kaava",
+        "sv": "Formel",
+        "pl": "Formuła",
+        "it": "Formula",
+        "es": "Fórmula"
+      },
+      "placeholder": {
+        "en": "Select formula",
+        "no": "Velg formel",
+        "de": "Wähle Formel",
+        "nl": "Selecteer formule",
+        "fr": "Sélectionner la formule",
+        "da": "Vælg formel",
+        "fi": "Valitse kaava",
+        "sv": "Välj formel",
+        "pl": "Wybierz formułę",
+        "it": "Seleziona formula",
+        "es": "Seleccionar fórmula"
+      }
+    }
+  ]
+}

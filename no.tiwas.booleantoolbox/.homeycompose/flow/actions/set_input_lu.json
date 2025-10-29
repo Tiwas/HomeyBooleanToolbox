@@ -1,0 +1,130 @@
+{
+  "id": "set_input_lu",
+  "title": {
+    "en": "Set input value (ALL formulas)",
+    "no": "Sett inngangsverdi (ALLE formler)",
+    "de": "Eingangswert setzen (ALLE Formeln)",
+    "nl": "Ingangswaarde instellen (ALLE formules)",
+    "fr": "Définir la valeur d'entrée (TOUTES formules)",
+    "da": "Indstil indgangsværdi (ALLE formler)",
+    "fi": "Aseta tuloarvo (KAIKKI kaavat)",
+    "sv": "Ställ in ingångsvärde (ALLA formler)",
+    "pl": "Ustaw wartość wejściową (WSZYSTKIE formuły)",
+    "it": "Imposta valore input (TUTTE le formule)",
+    "es": "Establecer valor de entrada (TODAS las fórmulas)"
+  },
+  "titleFormatted": {
+    "en": "Set input [[input]] to [[value]] (for ALL formulas)",
+    "no": "Sett inngang [[input]] til [[value]] (for ALLE formler)",
+    "de": "Eingang [[input]] auf [[value]] setzen (für ALLE Formeln)",
+    "nl": "Ingang [[input]] instellen op [[value]] (voor ALLE formules)",
+    "fr": "Mettre l'entrée [[input]] à [[value]] (pour TOUTES les formules)",
+    "da": "Indstil indgang [[input]] til [[value]] (for ALLE formler)",
+    "fi": "Aseta tulo [[input]] arvoon [[value]] (KAIKILLE kaavoille)",
+    "sv": "Ställ in ingång [[input]] till [[value]] (för ALLA formler)",
+    "pl": "Ustaw wejście [[input]] na [[value]] (dla WSZYSTKICH formuł)",
+    "it": "Imposta input [[input]] a [[value]] (per TUTTE le formule)",
+    "es": "Establecer entrada [[input]] a [[value]] (para TODAS las fórmulas)"
+  },
+  "hint": {
+    "en": "⚠️ Sets the same input value for ALL formulas in this Logic Unit. All formulas that use this input will be updated. Use this when you want to control multiple formulas together.",
+    "no": "⚠️ Setter samme inngangsverdi for ALLE formler i denne Logic Unit. Alle formler som bruker denne inngangen vil bli oppdatert. Bruk denne når du vil kontrollere flere formler sammen.",
+    "de": "⚠️ Setzt den gleichen Eingangswert für ALLE Formeln in dieser Logic Unit. Alle Formeln, die diesen Eingang verwenden, werden aktualisiert. Verwenden Sie dies, wenn Sie mehrere Formeln zusammen steuern möchten.",
+    "nl": "⚠️ Stelt dezelfde ingangswaarde in voor ALLE formules in deze Logic Unit. Alle formules die deze ingang gebruiken, worden bijgewerkt. Gebruik dit wanneer u meerdere formules samen wilt besturen.",
+    "fr": "⚠️ Définit la même valeur d'entrée pour TOUTES les formules de cette Logic Unit. Toutes les formules qui utilisent cette entrée seront mises à jour. Utilisez ceci lorsque vous souhaitez contrôler plusieurs formules ensemble.",
+    "da": "⚠️ Indstiller den samme indgangsværdi for ALLE formler i denne Logic Unit. Alle formler, der bruger denne indgang, vil blive opdateret. Brug dette, når du vil styre flere formler sammen.",
+    "fi": "⚠️ Asettaa saman tuloarvon KAIKILLE kaavoille tässä Logic Unitissa. Kaikki tätä tuloa käyttävät kaavat päivitetään. Käytä tätä, kun haluat hallita useita kaavoja yhdessä.",
+    "sv": "⚠️ Ställer in samma ingångsvärde för ALLA formler i denna Logic Unit. Alla formler som använder denna ingång kommer att uppdateras. Använd detta när du vill styra flera formler tillsammans.",
+    "pl": "⚠️ Ustawia tę samą wartość wejściową dla WSZYSTKICH formuł w tej Logic Unit. Wszystkie formuły używające tego wejścia zostaną zaktualizowane. Użyj tego, gdy chcesz kontrolować wiele formuł razem.",
+    "it": "⚠️ Imposta lo stesso valore di input per TUTTE le formule in questa Logic Unit. Tutte le formule che utilizzano questo input verranno aggiornate. Usa questo quando vuoi controllare più formule insieme.",
+    "es": "⚠️ Establece el mismo valor de entrada para TODAS las fórmulas en esta Logic Unit. Todas las fórmulas que usan esta entrada se actualizarán. Usa esto cuando quieras controlar múltiples fórmulas juntas."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-unit|logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+    },
+    {
+      "type": "autocomplete",
+      "name": "input",
+      "title": {
+        "en": "Input",
+        "no": "Inngang",
+        "de": "Eingang",
+        "nl": "Ingang",
+        "fr": "Entrée",
+        "da": "Indgang",
+        "fi": "Tulo",
+        "sv": "Ingång",
+        "pl": "Wejście",
+        "it": "Input",
+        "es": "Entrada"
+      },
+      "placeholder": {
+        "en": "Select input",
+        "no": "Velg inngang",
+        "de": "Eingang wählen",
+        "nl": "Selecteer ingang",
+        "fr": "Sélectionner l'entrée",
+        "da": "Vælg indgang",
+        "fi": "Valitse tulo",
+        "sv": "Välj ingång",
+        "pl": "Wybierz wejście",
+        "it": "Seleziona input",
+        "es": "Seleccionar entrada"
+      }
+    },
+    {
+      "type": "dropdown",
+      "name": "value",
+      "title": {
+        "en": "Value",
+        "no": "Verdi",
+        "de": "Wert",
+        "nl": "Waarde",
+        "fr": "Valeur",
+        "da": "Værdi",
+        "fi": "Arvo",
+        "sv": "Värde",
+        "pl": "Wartość",
+        "it": "Valore",
+        "es": "Valor"
+      },
+      "values": [
+        {
+          "id": "true",
+          "title": {
+            "en": "TRUE",
+            "no": "SANN",
+            "de": "WAHR",
+            "nl": "WAAR",
+            "fr": "VRAI",
+            "da": "SAND",
+            "fi": "TOSI",
+            "sv": "SANT",
+            "pl": "PRAWDA",
+            "it": "VERO",
+            "es": "VERDADERO"
+          }
+        },
+        {
+          "id": "false",
+          "title": {
+            "en": "FALSE",
+            "no": "USANN",
+            "de": "FALSCH",
+            "nl": "ONWAAR",
+            "fr": "FAUX",
+            "da": "FALSK",
+            "fi": "EPÄTOSI",
+            "sv": "FALSKT",
+            "pl": "FAŁSZ",
+            "it": "FALSO",
+            "es": "FALSO"
+          }
+        }
+      ]
+    }
+  ]
+}

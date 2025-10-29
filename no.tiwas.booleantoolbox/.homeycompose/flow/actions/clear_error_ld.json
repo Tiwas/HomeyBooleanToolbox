@@ -1,0 +1,23 @@
+{
+  "id": "clear_error_ld",
+  "title": {
+    "en": "Clear error",
+    "nl": "Fout wissen",
+    "sv": "Rensa fel",
+    "no": "Fjern feil",
+    "it": "Cancella errore",
+    "de": "Fehler löschen",
+    "da": "Ryd fejl",
+    "es": "Borrar error",
+    "fi": "Tyhjennä virhe",
+    "fr": "Effacer l'erreur",
+    "pl": "Wyczyść błąd"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    }
+  ]
+}

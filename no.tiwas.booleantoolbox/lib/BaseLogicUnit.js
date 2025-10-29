@@ -1,433 +1,1405 @@
-'use strict';
-const Homey = require('homey');
-const Logger = require('./Logger');
+"use strict";
+const FormulaEvaluator = require("./FormulaEvaluator");
+const Homey = require("homey");
+const Logger = require("./Logger");
 
 module.exports = class BaseLogicUnit extends Homey.Device {
-  // Safe capability update (ignores 404, stops on deletion)
+  // --- INTERN NAMESPACING (UNDER THE HOOD) ---
+  _nsId(formula) {
+    // Stabil og trygg ID for bruk i tokens
+    return String(formula.id || 'F').toUpperCase().replace(/[^A-Z0-9_]/g, '_');
+  }
+  _nsPrefix(formula) {
+    return `F_${this._nsId(formula)}_`;
+  }
+  /**
+   * Bytt A..J i uttrykket til namespacede tokens (kun internt for evaluering)
+   * Eks: "A AND B" -> "F_<FORMULAID>_A AND F_<FORMULAID>_B"
+ */
+  _namespaceExprForFormula(formula, upperExpr) {
+    const inputsU = this.getAvailableInputsUppercase(); // ["A","B",...]
+    if (inputsU.length === 0) return upperExpr;
+    const ns = this._nsPrefix(formula);
+    const tokenRe = new RegExp(`\\b(${inputsU.join("|")})\\b`, "g");
+    return upperExpr.replace(tokenRe, (_m, t) => `${ns}${t}`);
+  }
+  /**
+   * Bygg variabeltabell med namespacede nøkler for AST
+   */
+  _buildNsVariables(formula) {
+    const ns = this._nsPrefix(formula);
+    const vars = {};
+    this.availableInputs.forEach(id => {
+      const v = formula.inputStates[id];
+      if (v !== "undefined") {
+        vars[`${ns}${id.toUpperCase()}`] = (v === true);
+      }
+    });
+    return vars;
+  }
+
+  static MIGRATION_KEY = "migrated_onoff_v1";
+
   async safeSetCapabilityValue(cap, value) {
+    if (cap === "onoff" && value === false) {
+      this.logger.warn(
+        "Prevented setting onoff to false - Logic Units are always enabled",
+      );
+      return;
+    }
     if (this._isDeleting) return;
     try {
-      if (!this.hasCapability(cap)) return;
-      await this.setCapabilityValue(cap, value);
-    } catch (e) {
-      const msg = e?.message || '';
-      if (e?.statusCode === 404 || /not\s*found/i.test(msg)) {
-        // FIKS: Send nøkkel og data-objekt
-        this.logger.debug('device.capability_skip_deleted', { capability: cap });
+      if (!this.hasCapability(cap)) {
         return;
       }
-      // FIKS: Send nøkkel og data-objekt (msg er ikke et Error-objekt)
-      this.logger.error('device.capability_update_failed', { capability: cap, message: msg });
+      await this.setCapabilityValue(cap, value);
+    } catch (e) {
+      const msg = e?.message || String(e);
+      if (e?.statusCode === 404 || /not\s*found/i.test(msg)) {
+        this.logger.debug("device.capability_skip_deleted", {
+          capability: cap,
+        });
+      } else {
+        this.logger.error("device.capability_update_failed", {
+          capability: cap,
+          message: msg,
+        });
+      }
     }
   }
 
   async onInit() {
-    const driverName = `Device: ${this.driver.id}`;
+    const driverName = `Device: ${this.driver ? this.driver.id : "unknown-driver"}`;
     this.logger = new Logger(this, driverName);
 
-    // FIKS: Send nøkkel og data-objekt
-    this.logger.device('device.ready', { name: this.getName() });
-    if (!this.hasCapability('onoff')) {
-      await this.addCapability('onoff');
+    // Initialize AST-based formula evaluator for secure evaluation
+    this.formulaEvaluator = new FormulaEvaluator();
+
+    this.logger.device("device.initializing", {
+      name: this.getName(),
+    });
+
+    if (!(await this.getStoreValue(BaseLogicUnit.MIGRATION_KEY))) {
+      await this.migrateOnoffForExistingDevice();
     }
 
-    this.numInputs = this.getData().numInputs ?? 5;
-    this.availableInputs = this.getAvailableInputIds();
+    // ✅ STEP 1: Add capabilities FIRST
+    if (!this.hasCapability("onoff")) {
+      await this.addCapability("onoff").catch((e) =>
+        this.logger.error("Failed to add 'onoff' capability", e),
+      );
+    }
+    if (!this.hasCapability("alarm_generic")) {
+    }
 
-    this.initializeFormulas();
+    // ✅ STEP 2: ALWAYS force enabled - Logic Units are always on
+    // Forbedret logging og sjekk for eksisterende devices
+    let onoffValue = this.getCapabilityValue("onoff");
+    this.logger.info(
+      `📊 Initial onoff value: ${onoffValue} (type: ${typeof onoffValue})`,
+    );
+
+    if (onoffValue !== true) {
+      this.logger.info("🔧 Forcing Logic Unit to enabled (was ${onoffValue})");
+      await this.setCapabilityValue("onoff", true).catch((e) =>
+        this.logger.error("Failed to set onoff value", e),
+      );
+      onoffValue = true;
+    }
+
+    this.logger.info(`✅ Logic Unit: ENABLED (onoff: ${onoffValue})`);
+
+    // ✅ STEP 3: Make onoff READ-ONLY for Logic Units
+    try {
+      await this.setCapabilityOptions("onoff", {
+        setable: false, // READ-ONLY: Users cannot toggle
+        getable: true,
+      });
+      this.logger.debug("onoff capability set as read-only");
+    } catch (e) {
+      this.logger.error("Failed to set onoff options", e);
+    }
+
+    // ✅ STEP 4: Continue with normal initialization
+    this.numInputs = this.getData().numInputs ?? 2;
+    this.availableInputs = this.getAvailableInputIds();
+    this.logger.debug(
+      `Device initialized with ${this.numInputs} inputs: ${this.availableInputs.join(", ")}`,
+      {},
+    );
+
+    await this.initializeFormulas();
+
+    // Reset all formulas to prevent old values
+    this.formulas.forEach(formula => {
+      if (formula.enabled && formula.expression) {
+        const required = this.parseExpression(formula.expression);
+        if (required.length > 0) {
+          formula.result = null;  // TVING null ved oppstart
+          this.logger.debug("formula.reset_at_startup", {
+            name: formula.name,
+            reason: "waiting_for_inputs"
+          });
+        }
+      }
+    });
     await this.evaluateAllFormulasInitial();
     this.startTimeoutChecks();
+
+    this.logger.info("device.initialized", {
+      name: this.getName(),
+      count: this.numInputs,
+    });
+  }
+
+  areAllInputsDefined(formula) {
+    const usedVars = this.getUsedVariables([formula]); // Fra device.js
+    return usedVars.every((varLetter) => {
+      const inputId = varLetter.toLowerCase();
+      const value = formula.inputStates[inputId];
+      return value !== undefined && value !== "undefined";
+    });
+  }
+  async migrateOnoffForExistingDevice() {
+    this.logger.info(
+      "Migrering: Satt onoff = true og setable = false for eksisterende enhet",
+    );
+
+    try {
+      // 1. Sett onoff = true
+      await this.setCapabilityValue("onoff", true);
+
+      // 2. Gjør onoff read-only
+      await this.setCapabilityOptions("onoff", {
+        setable: false,
+        getable: true,
+      });
+
+      // 3. Merk som migrert (én gang)
+      await this.setStoreValue(BaseLogicUnit.MIGRATION_KEY, true);
+
+      this.logger.info("Migrering fullført: onoff = true, setable = false");
+    } catch (err) {
+      this.logger.error("Migrering feilet", err);
+    }
+  }
+
+  async onFlowCondition(args, state, checkType) {
+    // DEBUG: Log the condition check details
+    this.logger.info("🔍 DEBUG: onFlowCondition called", {
+      checkType: checkType,
+      formulaId: args.formula?.id,
+      formulaName: args.formula?.name,
+      cardId: args.cardId,
+      allFormulasState: this.formulas.map(f => ({
+        id: f.id,
+        name: f.name,
+        result: f.result,
+        timedOut: f.timedOut,
+        inputStates: { ...f.inputStates }
+      }))
+    });
+
+    this.logger.flow(`onFlowCondition called for checkType: '${checkType}'`, {
+      formulaId: args.formula?.id,
+    });
+
+    if (checkType === "has_error") {
+      const hasTimeout = this.formulas.some((f) => f.timedOut === true);
+      this.logger.flow(`Condition 'has_any_error' check result: ${hasTimeout}`);
+      return hasTimeout;
+    }
+
+    const cardIdFromArgs = args.cardId;
+    if (
+      (cardIdFromArgs === "formula_result_is_lu" ||
+        cardIdFromArgs === "formula_has_timed_out_lu") &&
+      !args.formula
+    ) {
+      this.logger.warn(
+        "onFlowCondition: _lu card called without formula on LU device. Checking first formula as fallback.",
+      );
+      if (this.formulas.length > 0) args.formula = this.formulas[0];
+      else return false;
+    }
+
+    if (!args.formula || !args.formula.id) {
+      this.logger.warn(
+        "onFlowCondition: No formula specified in args for formula-specific check.",
+        {
+          checkType,
+        },
+      );
+      return false;
+    }
+    const formulaId = args.formula.id;
+    const formula = this.formulas.find((f) => f.id === formulaId);
+
+    if (!formula) {
+      this.logger.warn("onFlowCondition: Invalid formula ID received.", {
+        formulaId,
+      });
+      return false;
+    }
+
+    if (checkType === "timeout") {
+      const isTimedOut = formula.timedOut === true;
+      this.logger.flow(
+        `Condition 'formula_has_timed_out' check for '${formula.name}': Result=${isTimedOut}`,
+      );
+      return isTimedOut;
+} else if (typeof checkType === "boolean") {
+  const desiredResult = checkType;
+
+  // Hvis formelen ikke er klar (result == null), vent til den blir klar eller til timeout slår inn.
+  if (formula.result === null) {
+    const maxWaitMs =
+      formula.timeout && formula.timeout > 0 ? formula.timeout * 1000 : 30000; // fallback-sikkerhetsnett
+
+    this.logger.debug("condition.waiting_for_formula", {
+      formula: formula.name,
+      timeoutMs: maxWaitMs,
+    });
+
+    await this._waitForFormulaResolution(formula, maxWaitMs);
+  }
+
+  // Etter venting: tre muligheter
+  if (formula.result === null || formula.timedOut === true) {
+    // Viktig: IKKE returner false ved timeout/ubestemt.
+    // Vi aborterer noden, så grenen ikke fortsetter "false-veien".
+    this.logger.debug("condition.aborting_due_to_timeout_or_undefined", {
+      formula: formula.name,
+      timedOut: !!formula.timedOut,
+    });
+    throw new Error("Formula timed out or is still undefined"); // ← aborterer noden
+  }
+
+  // Formelen er klar (true/false)
+  const currentResult = formula.result;
+  const evaluatedResult = currentResult === true;
+  const conditionMet = evaluatedResult === desiredResult;
+
+  this.logger.flow(
+    `Condition 'formula_result_is' check for '${formula.name}': Current=${currentResult}, Desired=${desiredResult}, Match=${conditionMet}`,
+  );
+
+  return conditionMet;
+
+    } else {
+      this.logger.error(
+        `onFlowCondition: Unknown checkType received: '${checkType}'`,
+      );
+      return false;
+    }
+  }
+
+  async onFlowActionSetInput(args, state) {
+    // DEBUG: Log a SAFE snapshot of the args (avoid circular JSON)
+    const safeArgs = {
+      formulaId: args?.formula?.id ?? null,
+      formulaName: args?.formula?.name ?? null,
+      inputId: args?.input?.id ?? null,
+      value: typeof args?.value === 'string' ? args.value : String(args?.value),
+      cardId: args?.cardId ?? null
+    };
+    this.logger.info("🔍 DEBUG: onFlowActionSetInput called", {
+      ...safeArgs,
+      availableFormulas: this.formulas.map(f => ({ id: f.id, name: f.name }))
+    });
+
+
+
+    if (!args.formula || !args.input || !args.formula.id || !args.input.id) {
+      this.logger.warn("onFlowActionSetInput: Missing formula or input ID.", { safeArgs });
+
+      return false;
+    }
+    const formulaId = args.formula.id;
+    const inputId = args.input.id;
+    const value = (args?.value === true || String(args?.value).toLowerCase() === "true");
+    this.logger.flow("onFlowActionSetInput: Setting input", {
+      formula: formulaId,
+      input: inputId,
+      value: value,
+    });
+    try {
+      await this.setInputForFormula(formulaId, inputId, value);
+      return true;
+    } catch (e) {
+      this.logger.error(
+        `Error during onFlowActionSetInput for ${formulaId}/${inputId}`,
+        e,
+      );
+      return false;
+    }
+  }
+
+  async onFlowActionEvaluateFormula(args, state) {
+    const cardIdFromArgs = args.cardId;
+    if (
+      (!args.formula || !args.formula.id) &&
+      cardIdFromArgs === "evaluate_formula_ld"
+    ) {
+      this.logger.warn(
+        `onFlowActionEvaluateFormula (LD) called on LU device ${this.getName()}. Falling back to re-evaluate all.`,
+      );
+      return this.onFlowActionReEvaluateAll(args, state);
+    }
+    
+    if (!args.formula || !args.formula.id) {
+      const safeArgs = { formulaId: args?.formula?.id ?? null, cardId: args?.cardId ?? null };
+      this.logger.warn("onFlowActionEvaluateFormula: Missing formula ID.", { safeArgs });
+
+      return false;
+    }
+    const formulaId = args.formula.id;
+    const formula = this.formulas.find((f) => f.id === formulaId);
+    if (!formula) {
+      this.logger.warn("onFlowActionEvaluateFormula: Invalid formula ID.", {
+        formulaId,
+      });
+      return false;
+    }
+    this.logger.flow(
+      `onFlowActionEvaluateFormula: Evaluating '${formula.name}' (Resetting locks)`,
+    );
+    try {
+      await this.evaluateFormula(formulaId, true);
+      return true;
+    } catch (e) {
+      this.logger.error(
+        `Error during onFlowActionEvaluateFormula for ${formulaId}`,
+        e,
+      );
+      return false;
+    }
+  }
+
+  async onFlowActionClearError(args, state) {
+    const cardIdFromArgs = args.cardId;
+    if (
+      (!args.formula || !args.formula.id) &&
+      cardIdFromArgs === "clear_error_ld"
+    ) {
+      this.logger.warn(
+        `onFlowActionClearError (LD) called on LU device ${this.getName()}. Clearing all formula timeouts.`,
+      );
+      this.formulas.forEach((f) => {
+        f.timedOut = false;
+      });
+      this.logger.info("notifications.error_cleared_all", {});
+      return true;
+    }
+    
+    if (!args.formula || !args.formula.id) {
+      const safeArgs = { formulaId: args?.formula?.id ?? null, cardId: args?.cardId ?? null };
+      this.logger.warn("onFlowActionClearError: Missing formula ID.", { safeArgs });
+
+      return false;
+    }
+    const formulaId = args.formula.id;
+    const formula = this.formulas.find((f) => f.id === formulaId);
+    if (!formula) {
+      this.logger.warn("onFlowActionClearError: Invalid formula ID.", {
+        formulaId,
+      });
+      return false;
+    }
+    this.logger.flow(
+      `onFlowActionClearError: Clearing timeout state for '${formula.name}'`,
+    );
+    formula.timedOut = false;
+    this.logger.info("notifications.error_cleared", {
+      formulaName: formula.name,
+    });
+    return true;
+  }
+
+  async onFlowActionReEvaluateAll(args, state) {
+    this.logger.flow(
+      "onFlowActionReEvaluateAll: Re-evaluating all formulas",
+      {},
+    );
+    try {
+      await this.evaluateAllFormulas();
+      return true;
+    } catch (e) {
+      this.logger.error("Error during onFlowActionReEvaluateAll", e);
+      return false;
+    }
+  }
+
+  async setAllInputsFromFlow(args, state) {
+    const device = this;
+    const valuesJson = args.values;
+    this.logger.flow(
+      `Executing Action 'set_all_inputs' on device '${device.getName()}'`,
+    );
+    if (typeof valuesJson !== "string" || valuesJson.trim() === "") {
+      this.logger.warn(
+        `RunListener set_all_inputs: Empty or invalid JSON provided.`,
+      );
+      return false;
+    }
+    try {
+      const values = JSON.parse(valuesJson);
+      if (typeof values !== "object" || values === null) {
+        throw new Error("Parsed JSON is not an object.");
+      }
+      const promises = [];
+      const inputs = device.getAvailableInputIds
+        ? device.getAvailableInputIds()
+        : [];
+      const formulas = Array.isArray(device.formulas) ? device.formulas : [];
+
+      for (const key in values) {
+        if (!inputs.includes(key.toLowerCase())) {
+          this.logger.warn(
+            `setAllInputsFromFlow: JSON contains invalid input key '${key}' for this device.`,
+          );
+        }
+      }
+
+      for (const inputId of inputs) {
+        const key = inputId.toUpperCase();
+        if (values.hasOwnProperty(key)) {
+          formulas.forEach((f) => {
+            if (
+              f &&
+              f.enabled &&
+              typeof device.setInputForFormula === "function"
+            ) {
+              const boolValue =
+                values[key] === true ||
+                String(values[key]).toLowerCase() === "true";
+              promises.push(
+                device.setInputForFormula(f.id, inputId, boolValue),
+              );
+            }
+          });
+        }
+      }
+      await Promise.all(promises);
+      this.logger.info(`set_all_inputs OK for ${device.getName()}`, {});
+      return true;
+    } catch (e) {
+      this.logger.error(`Error set_all_inputs for ${device.getName()}`, e);
+      return false;
+    }
+  }
+
+  async setInputForAllFormulasFromFlow(args, state) {
+    const device = this;
+    const inputId = args.input?.id;
+    const value = args.value === "true";
+
+    this.logger.flow(
+      `Executing Action 'set_input' on device '${device.getName()}'`,
+      {
+        input: inputId,
+        value,
+      },
+    );
+
+    if (!inputId || !this.availableInputs.includes(inputId)) {
+      this.logger.error(
+        `RunListener set_input: Invalid or missing input ID: ${inputId}. Available: ${this.availableInputs.join(",")}`,
+      );
+
+      return false;
+    }
+
+    const promises = [];
+    const formulas = Array.isArray(device.formulas) ? device.formulas : [];
+    try {
+      formulas.forEach((f) => {
+        if (f && f.enabled && typeof device.setInputForFormula === "function") {
+          promises.push(device.setInputForFormula(f.id, inputId, value));
+        }
+      });
+      await Promise.all(promises);
+      this.logger.info(`set_input OK for ${device.getName()}`, {});
+      return true;
+    } catch (e) {
+      this.logger.error(`Error set_input for ${device.getName()}`, e);
+      return false;
+    }
   }
 
   getAvailableInputIds() {
-    const allInputs = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
-    return allInputs.slice(0, this.numInputs);
+    const allInputs = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+    const count = Math.max(
+      0,
+      Math.min(allInputs.length, Number(this.numInputs) || 0),
+    );
+    return allInputs.slice(0, count);
   }
 
   getAvailableInputsUppercase() {
-    return this.availableInputs.map(i => i.toUpperCase());
+    return this.availableInputs.map((i) => i.toUpperCase());
   }
 
   initializeFormulas() {
+    this.logger.debug("Initializing formulas from settings...", {});
     const settings = this.getSettings();
     try {
-      const formulasData = settings.formulas ? JSON.parse(settings.formulas) : [];
-      this.formulas = formulasData.map(f => ({
-        id: f.id,
-        name: f.name,
-        expression: f.expression,
-        enabled: f.enabled !== false,
-        timeout: f.timeout ?? 0,
-        firstImpression: f.firstImpression !== false && f.firstImpression !== 0,
-        inputStates: {},
-        lockedInputs: {},
-        lastInputTime: null,
-        result: null,
-        timedOut: false
-      }));
-      this.formulas.forEach(formula => {
-        this.availableInputs.forEach(id => {
-          formula.inputStates[id] = 'undefined';
+      const formulasData = settings.formulas
+        ? JSON.parse(settings.formulas)
+        : [];
+      if (!Array.isArray(formulasData)) {
+        this.logger.error("errors.invalid_formula", {
+          message: "Formulas setting is not an array.",
+        });
+        this.formulas = [];
+      } else {
+        this.formulas = formulasData.map((f) => ({
+          id: f.id || `formula_${Math.random().toString(16).slice(2)}`,
+          name: f.name || this.homey.__("formula.unnamed_formula"),
+          expression: f.expression || "",
+          enabled: f.enabled !== false,
+          timeout: Number(f.timeout) || 0,
+          firstImpression: !!f.firstImpression,
+          inputStates: {},
+          lockedInputs: {},
+          lastInputTime: null,
+          result: null,
+          timedOut: false,
+          sessionComplete: false, // Track if all inputs have been set in current flow session
+        }));
+      }
+
+      this.formulas.forEach((formula) => {
+        this.availableInputs.forEach((id) => {
+          formula.inputStates[id] = "undefined";
           formula.lockedInputs[id] = false;
         });
       });
     } catch (e) {
-      // FIKS: Send nøkkel og error-objekt
-      this.logger.error('errors.invalid_formula', e);
+      this.logger.error("errors.invalid_formula", e);
       this.formulas = [];
     }
 
     if (this.formulas.length === 0) {
+      this.logger.warn(
+        "No valid formulas found in settings, creating default.",
+        {},
+      );
       const defaultFormula = {
-        id: 'formula_1',
-        name: this.homey.__('formula.default_name_alt'),
+        id: "formula_1",
+        name: this.homey.__
+          ? this.homey.__("formula.default_name_alt")
+          : this.homey.__("formula.default_name_alt_fallback"),
         expression: this.getDefaultExpression(),
         enabled: true,
         timeout: 0,
-        firstImpression: true,
+        firstImpression: false,
         inputStates: {},
         lockedInputs: {},
         lastInputTime: null,
         result: null,
-        timedOut: false
+        timedOut: false,
+        sessionComplete: false,
       };
-      this.availableInputs.forEach(id => {
-        defaultFormula.inputStates[id] = 'undefined';
+
+      this.availableInputs.forEach((id) => {
+        defaultFormula.inputStates[id] = "undefined";
         defaultFormula.lockedInputs[id] = false;
       });
       this.formulas = [defaultFormula];
     }
+    this.logger.info("formula.initialized", {
+      count: this.formulas.length,
+    });
+    this.formulas.forEach((f) =>
+      this.logger.debug("formula.details", {
+        name: f.name,
+        expression: f.expression,
+        enabled: f.enabled,
+      }),
+    );
   }
 
   getDefaultExpression() {
     const inputs = this.getAvailableInputsUppercase();
-    return inputs.join(' AND ');
+    return inputs.length > 0 ? inputs.join(" AND ") : "true";
   }
 
   getFormulas() {
     return this.formulas
-      .filter(f => f.enabled)
-      .map(f => ({
+      .filter((f) => f.enabled)
+      .map((f) => ({
         id: f.id,
         name: f.name,
-        description: f.expression ?? this.homey.__('formula.no_expression')
+        description:
+          f.expression ||
+          (this.homey.__
+            ? this.homey.__("formula.no_expression")
+            : "(no expression)"),
       }));
   }
 
   getInputOptions() {
-    return this.getAvailableInputsUppercase().map(input => ({
+    return this.getAvailableInputsUppercase().map((input) => ({
       id: input.toLowerCase(),
-      name: input
+      name: input,
     }));
   }
 
   validateExpression(expression) {
-    if (!expression || expression.trim() === '') {
-      return { valid: false, error: this.homey.__('formula.invalid') };
+    this.logger.debug(`Validating expression: "${expression || ""}"`, {});
+    if (
+      !expression ||
+      typeof expression !== "string" ||
+      expression.trim() === ""
+    ) {
+      return {
+        valid: false,
+        error: this.homey.__
+          ? this.homey.__("formula.expression_empty")
+          : "Expression empty",
+      };
     }
-
+    const upper = expression.toUpperCase();
     const inputs = this.getAvailableInputsUppercase();
+    if (!inputs.length && upper.match(/[A-J]/)) {
+      return {
+        valid: false,
+        error: this.homey.__("formula.error_inputs_used_but_none_configured"),
+      };
+    }
+    let validationInputs = inputs.length > 0 ? inputs : ["TEMP_VALIDATION_VAR"];
 
-    let testExpr = expression
-      .toUpperCase()
-      .replace(/\bAND\b|&&|\*/g, '&&')
-      .replace(/\bOR\b|\|\||\+/g, '||')
-      .replace(/\bXOR\b|\^|!=/g, '!=')
-      .replace(/\bNOT\b|!/g, '!');
-
-    for (const key of inputs) {
-      const regex = new RegExp(`\\b${key}\\b`, 'g');
-      testExpr = testExpr.replace(regex, 'true');
+    const tokenRe = new RegExp(
+      `\\b(?:AND|OR|XOR|NOT)\\b|&&|\\|\\||&|\\||\\^|!=|\\*|\\+|!|\\(|\\)|\\b(?:${validationInputs.join("|")})\\b|\\bTRUE\\b|\\bFALSE\\b`,
+      "gi",
+    );
+    const stripped = upper.replace(tokenRe, "").replace(/\s+/g, "");
+    if (stripped.length > 0) {
+      return {
+        valid: false,
+        error: this.homey.__
+          ? this.homey.__("formula.invalid_tokens", {
+              tokens: stripped,
+            })
+          : `Invalid tokens: ${stripped}`,
+      };
     }
 
     let depth = 0;
-    for (const ch of testExpr) {
-      if (ch === '(') depth++;
-      else if (ch === ')') depth--;
-      if (depth < 0) return { valid: false, error: this.homey.__('formula.syntax_error') };
+    for (const ch of upper) {
+      if (ch === "(") depth++;
+      else if (ch === ")") depth--;
+      if (depth < 0)
+        return {
+          valid: false,
+          error: this.homey.__("formula.error_unbalanced_parentheses"),
+        };
     }
-    if (depth !== 0) return { valid: false, error: this.homey.__('formula.syntax_error') };
+    if (depth !== 0)
+      return {
+        valid: false,
+        error: "Unbalanced parentheses",
+      };
 
+    // Normalize alternative syntax to standard keywords for AST evaluation
+    let normalizedExpr = upper
+      .replace(/&|\*/g, " AND ") // Convert & or * to AND
+      .replace(/\||\+/g, " OR ") // Convert | or + to OR
+      .replace(/\^|!=/g, " XOR ") // Convert ^ or != to XOR
+      .replace(/!/g, " NOT "); // Convert ! to NOT
+
+    // Clean up extra spaces
+    normalizedExpr = normalizedExpr.replace(/\s+/g, " ").trim();
+
+    // Try validating med AST, men med fiktiv FORMULA-ID (namespacet)
     try {
-      const fn = new Function(`return ${testExpr}`);
-      void fn();
-      return { valid: true };
+      
+      const fakeId = { id: "FAKE_FORMULA_VALIDATION" };
+      const nsExpr = this._namespaceExprForFormula(fakeId, normalizedExpr);
+      const testVars = {};
+      (validationInputs.length ? validationInputs : ["TEMP_VALIDATION_VAR"])
+        .forEach((input) => {
+          const name = `F_${this._nsId(fakeId)}_${input}`;
+          testVars[name] = true;
+        });
+      this.formulaEvaluator.evaluate(nsExpr, testVars);
+      
+      return {
+        valid: true,
+      };
     } catch (e) {
-      return { valid: false, error: this.homey.__('formula.syntax_error') };
+      return {
+        valid: false,
+        error: this.homey.__
+          ? this.homey.__("formula.invalid_syntax", {
+              message: e.message,
+            })
+          : `Syntax error: ${e.message}`,
+      };
     }
   }
 
   parseExpression(expression) {
+    if (!expression || typeof expression !== "string") return [];
     const inputs = this.getAvailableInputsUppercase();
-    const pattern = new RegExp(`\\b(${inputs.join('|')})\\b`, 'gi');
-    const matches = expression.match(pattern);
-    return matches ? [...new Set(matches.map(char => char.toUpperCase()))] : [];
+    if (!inputs.length) return [];
+    const varRe = new RegExp(`\\b(${inputs.join("|")})\\b`, "gi");
+    const matches = expression.match(varRe);
+    return matches ? [...new Set(matches.map((c) => c.toUpperCase()))] : [];
   }
 
   async setInputForFormula(formulaId, inputId, value) {
     if (this._isDeleting) return null;
-
-    const formula = this.formulas.find(f => f.id === formulaId);
+    const formula = this.formulas.find((f) => f.id === formulaId);
     if (!formula) {
-      // FIKS: Send nøkkel
-      this.logger.warn('errors.invalid_formula');
+      this.logger.warn("errors.invalid_formula", {
+        formulaId,
+      });
+      return null;
+    }
+    if (!this.availableInputs.includes(inputId)) {
+      this.logger.warn(
+        `setInputForFormula: Invalid inputId '${inputId}' for device with ${this.numInputs} inputs.`,
+      );
       return null;
     }
 
-    if (formula.firstImpression && formula.lockedInputs[inputId]) {
-      // FIKS: Send nøkkel
-      this.logger.debug('inputs.locked');
+    // DEBUG: Log current state of ALL formulas before any changes
+    this.logger.info("🔍 DEBUG: setInputForFormula BEFORE changes", {
+      targetFormula: formulaId,
+      targetInput: inputId,
+      targetValue: value,
+      allFormulasState: this.formulas.map(f => ({
+        id: f.id,
+        name: f.name,
+        inputStates: { ...f.inputStates },
+        lockedInputs: { ...f.lockedInputs },
+        sessionComplete: f.sessionComplete,
+        firstImpression: f.firstImpression,
+        result: f.result
+      }))
+    });
+
+    // NEW: If firstImpression mode and a complete session exists, reset for new flow run
+    if (
+      formula.firstImpression === true &&
+      formula.sessionComplete === true
+    ) {
+      this.logger.debug("inputs.new_flow_session", {
+        formula: formula.name,
+        resettingInputs: this.availableInputs.join(", "),
+      });
+      // Reset all locks AND input states for new flow session
+      this.availableInputs.forEach((id) => {
+        formula.lockedInputs[id] = false;
+        formula.inputStates[id] = "undefined"; // CRITICAL: Clear old values!
+      });
+      formula.sessionComplete = false;
+      
+      // DEBUG: Log state after reset
+      this.logger.info("🔍 DEBUG: Formula state AFTER reset", {
+        formula: formula.name,
+        inputStates: { ...formula.inputStates },
+        lockedInputs: { ...formula.lockedInputs }
+      });
+    }
+
+    if (
+      formula.firstImpression === true &&
+      formula.lockedInputs[inputId] === true
+    ) {
+      this.logger.debug("inputs.locked", {
+        input: inputId.toUpperCase(),
+        formula: formula.name,
+      });
       return formula.result;
     }
 
     const oldValue = formula.inputStates[inputId];
-    // FIKS: Send nøkkel
-    this.logger.input('notifications.input_received');
-
-    formula.inputStates[inputId] = value;
+    formula.inputStates[inputId] =
+      value === true || value === false ? value : "undefined";
     formula.timedOut = false;
 
-    if (formula.firstImpression && value !== 'undefined' && !formula.lockedInputs[inputId]) {
+    // DEBUG: Log the specific change
+    this.logger.info("🔍 DEBUG: Input value changed", {
+      formula: formula.name,
+      input: inputId,
+      oldValue: oldValue,
+      newValue: formula.inputStates[inputId]
+    });
+
+    if (
+      formula.firstImpression === true &&
+      formula.inputStates[inputId] !== "undefined" &&
+      formula.lockedInputs[inputId] !== true
+    ) {
       formula.lockedInputs[inputId] = true;
-      // FIKS: Send nøkkel
-      this.logger.debug('inputs.locked');
+      this.logger.debug("inputs.locked_at_value", {
+        input: inputId.toUpperCase(),
+        value: formula.inputStates[inputId],
+        formula: formula.name,
+      });
     }
 
-    if (value !== 'undefined') {
+    if (formula.inputStates[inputId] !== "undefined") {
       formula.lastInputTime = Date.now();
     }
 
-    return await this.evaluateFormula(formulaId);
+    // NEW: Check if all required inputs are now set in firstImpression mode
+    if (formula.firstImpression === true && formula.sessionComplete === false) {
+      const requiredInputs = this.parseExpression(formula.expression);
+      const allSet = requiredInputs.every(
+        (inputIdUpper) =>
+          formula.inputStates[inputIdUpper.toLowerCase()] !== "undefined"
+      );
+      if (allSet) {
+        formula.sessionComplete = true;
+        this.logger.debug("inputs.session_complete", {
+          formula: formula.name,
+        });
+      }
+    }
+
+    // DEBUG: Log current state of ALL formulas after changes
+    this.logger.info("🔍 DEBUG: setInputForFormula AFTER changes", {
+      targetFormula: formulaId,
+      allFormulasState: this.formulas.map(f => ({
+        id: f.id,
+        name: f.name,
+        inputStates: { ...f.inputStates },
+        lockedInputs: { ...f.lockedInputs },
+        sessionComplete: f.sessionComplete,
+        firstImpression: f.firstImpression,
+        result: f.result
+      }))
+    });
+
+    return await this.evaluateFormula(formulaId, false);
   }
 
   async evaluateFormula(formulaId, resetLocks = false) {
     if (this._isDeleting) return null;
-
-    const formula = this.formulas.find(f => f.id === formulaId);
+    const formula = this.formulas.find((f) => f.id === formulaId);
     if (!formula || !formula.enabled) {
-      // FIKS: Send nøkkel
-      this.logger.debug('errors.invalid_formula');
+      this.logger.debug("errors.invalid_formula", {
+        formulaId,
+      });
       return null;
     }
 
-    if (resetLocks && formula.firstImpression) {
-      this.availableInputs.forEach(id => { formula.lockedInputs[id] = false; });
-      // FIKS: Send nøkkel
-      this.logger.debug('inputs.unlocked');
+    if (resetLocks === true && formula.firstImpression === true) {
+      this.availableInputs.forEach((id) => {
+        formula.lockedInputs[id] = false;
+      });
+      formula.sessionComplete = false;
+      this.logger.debug("inputs.unlocked", {
+        formula: formula.name,
+      });
     }
 
     const expression = formula.expression;
     if (!expression) {
-      // FIKS: Send nøkkel
-      this.logger.debug('formula.invalid');
+      this.logger.debug("formula.invalid", {
+        formula: formula.name,
+        reason: "No expression",
+      });
+      formula.result = null;
       return null;
     }
 
     const requiredInputs = this.parseExpression(expression);
-    if (requiredInputs.length === 0) return null;
-
-    const allDefined = requiredInputs.every(id =>
-      formula.inputStates[id.toLowerCase()] !== 'undefined'
+    const allDefined = requiredInputs.every(
+      (inputIdUpper) =>
+        formula.inputStates[inputIdUpper.toLowerCase()] !== "undefined",
     );
-    if (!allDefined) {
-      // FIKS: Send nøkkel
-      this.logger.debug('inputs.waiting');
+
+    if (!allDefined && requiredInputs.length > 0) {
+      const missing = requiredInputs.filter(
+        (id) => formula.inputStates[id.toLowerCase()] === "undefined",
+      );
+      this.logger.debug("inputs.waiting", {
+        formula: formula.name,
+        missing: missing.join(", "),
+      });
+      const previous = formula.result;
+      formula.result = null;
+
       return null;
     }
 
-    const values = {};
-    this.availableInputs.forEach(id => { values[id.toUpperCase()] = formula.inputStates[id]; });
+    this.logger.debug("formula.evaluating", { formula: formula.name });
 
-    // FIKS: Send nøkkel
-    this.logger.debug('formula.evaluating');
-
-    let evalExpression = expression
-      .replace(/\bAND\b|&&|\*/gi, '&&')
-      .replace(/\bOR\b|\|\||\+/gi, '||')
-      .replace(/\bXOR\b|\^|!=/gi, '!=')
-      .replace(/\bNOT\b|!/gi, '!');
-
-    for (const key in values) {
-      if (values[key] !== 'undefined') {
-        const re = new RegExp(`\\b${key}\\b`, 'gi');
-        evalExpression = evalExpression.replace(re, values[key]);
-      }
-    }
-
-    // FIKS: Send ren tekst, følger mønster fra device.js
-    this.logger.formula(`Evaluating: "${expression}" → "${evalExpression}"`);
     try {
-      const fn = new Function(`return ${evalExpression}`);
-      const result = !!fn();
+      
+      // 1) Normaliser syntaks (AND/OR/XOR/NOT) uten å endre brukerens tekst
+      const normalizedExprBase = expression
+        .toUpperCase()
+        .replace(/&|\*/g, " AND ") // Convert & or * to AND
+        .replace(/\||\+/g, " OR ") // Convert | or + to OR
+        .replace(/\^|!=/g, " XOR ") // Convert ^ or != to XOR
+        .replace(/!/g, " NOT ") // Convert ! to NOT
+        .replace(/\s+/g, " ") // Clean up extra spaces
+        .trim();
 
-      // FIKS: Send nøkkel
-      this.logger.debug('formula.evaluated');
+      
+      // 2) Namespac’e input‑tokens (A..J) per formel
+      const nsExpr = this._namespaceExprForFormula(formula, normalizedExprBase);
+      // 3) Bygg variabler for AST med namespacede nøkler
+      const variables = this._buildNsVariables(formula);
+      this.logger.formula("formula.evaluating_expression", {
+        expression,
+        evalExpression: nsExpr
+      });
+      // 4) Evaluer med AST
+      const result = this.formulaEvaluator.evaluate(nsExpr, variables);
+
+
+      this.logger.debug("formula.evaluated", {
+        formula: formula.name,
+        result: result,
+      });
 
       const previous = formula.result;
       formula.result = result;
       formula.timedOut = false;
 
-      await this.safeSetCapabilityValue('onoff', result);
-
+      if (result !== previous && previous !== null) {
+        const triggerData = {
+          formula: {
+            id: formula.id,
+            name: formula.name,
+          },
+        };
+        const state = {
+          formulaId: formula.id,
+        };
+        const triggerCardId = result
+          ? "formula_changed_to_true"
+          : "formula_changed_to_false";
+        try {
+          this.logger.flow(
+            `Triggering flow '${triggerCardId}' for '${formula.name}'`,
+          );
+          const card = this.homey.flow.getDeviceTriggerCard(triggerCardId);
+          await card.trigger(this, triggerData, state);
+        } catch (e) {
+          if (e.message && e.message.includes("Invalid Flow Card ID")) {
+            this.logger.error(
+              `FATAL: Trigger card '${triggerCardId}' not found. Check app.json/compose flow definitions.`,
+              e,
+            );
+          } else {
+            this.logger.error("flow.trigger_error", e);
+          }
+        }
+      }
       return result;
     } catch (e) {
-      // FIKS: Send nøkkel og error-objekt
-      this.logger.error('errors.evaluation_failed', e);
+      // Check if error is due to undefined variable
+      if (e.message && e.message.includes("is not defined")) {
+        this.logger.debug("formula.waiting_for_input", {
+          formula: formula.name,
+          error: e.message,
+        });
+        formula.result = null;
+        return null;
+      }
+      this.logger.error("errors.evaluation_failed", e);
+      formula.result = null;
       return null;
     }
   }
 
   async evaluateAllFormulas() {
-    // FIKS: Send nøkkel
-    this.logger.info('notifications.reevaluating');
+    this.logger.info("notifications.reevaluating", {});
     const results = [];
     for (const formula of this.formulas) {
       if (formula.enabled) {
-        this.availableInputs.forEach(id => { formula.lockedInputs[id] = false; });
-        // FIKS: Send nøkkel
-        this.logger.debug('inputs.unlocked');
-        const result = await this.evaluateFormula(formula.id);
-        results.push({ id: formula.id, name: formula.name, result });
+        if (formula.firstImpression) {
+          this.availableInputs.forEach((id) => {
+            formula.lockedInputs[id] = false;
+          });
+          formula.sessionComplete = false;
+          this.logger.debug("inputs.unlocked", {
+            formula: formula.name,
+          });
+        }
+        const result = await this.evaluateFormula(formula.id, false);
+        results.push({
+          id: formula.id,
+          name: formula.name,
+          result,
+        });
+      } else {
+        formula.result = null;
       }
     }
-    // FIKS: Send nøkkel og data-objekt
-    this.logger.debug('formula.evaluated_count', { count: results.length });
+    // ✅ Calculate overall state (TRUE if any formula is TRUE)
+    const overallDeviceState = this.formulas.some(
+      (f) => f.enabled && f.result === true,
+    );
+
+    this.logger.debug("formula.evaluated_count", {
+      count: results.length,
+    });
     return results;
   }
 
+  async evaluateAllFormulasInitial() {
+    this.logger.info("evaluation.initial_complete", {});
+    let anyEvaluated = false;
+
+    for (const formula of this.formulas) {
+      if (!formula.enabled) {
+        formula.result = null;
+        continue;
+      }
+      const expr = formula.expression;
+      if (!expr) {
+        formula.result = null;
+        continue;
+      }
+      const required = this.parseExpression(expr);
+      this.logger.debug("debug.checking_formula", {
+        name: formula.name,
+        expression: expr,
+      });
+      if (required.length > 0) {
+        this.logger.debug("debug.required_inputs", {
+          inputs: required.join(", "),
+        });
+      }
+
+      const allDefined = required.every(
+        (id) => formula.inputStates[id.toLowerCase()] !== "undefined",
+      );
+
+      if (allDefined || required.length === 0) {
+        this.logger.debug("formula.all_inputs_defined", {
+          name: formula.name,
+        });
+        const result = await this.evaluateFormula(formula.id);
+        if (result !== null) {
+          anyEvaluated = true;
+        }
+      } else {
+        const missing = required.filter(
+          (id) => formula.inputStates[id.toLowerCase()] === "undefined",
+        );
+        this.logger.debug("inputs.waiting", {
+          formula: formula.name,
+          missing: missing.join(", "),
+        });
+        formula.result = null;
+      }
+    }
+
+    const finalState = this.formulas.some(
+      (f) => f.enabled && f.result === true,
+    );
+
+    this.logger.info(
+      `Initial evaluation complete. Final state: ${finalState} (anyEvaluated=${anyEvaluated})`,
+    );
+
+    if (
+      !anyEvaluated &&
+      this.formulas.some(
+        (f) =>
+          f.enabled &&
+          f.expression &&
+          this.parseExpression(f.expression).length > 0,
+      )
+    ) {
+      this.logger.warn("evaluation.no_formulas_ready", {});
+    }
+  }
+
   getFormulaResult(formulaId) {
-    const formula = this.formulas.find(f => f.id === formulaId);
+    const formula = this.formulas.find((f) => f.id === formulaId);
     if (!formula) {
-      // FIKS: Send nøkkel
-      this.logger.warn('errors.invalid_formula');
+      this.logger.warn("errors.invalid_formula", {
+        formulaId,
+      });
       return null;
     }
-    // FIKS: Send nøkkel og data-objekt
-    this.logger.debug(
-      'formula.result_debug', {
-        name: formula.name,
-        id: formulaId,
-        result: formula.result,
-        type: typeof formula.result
-      }
-    );
-    return formula ? formula.result : null;
+    this.logger.debug("formula.result_debug", {
+      name: formula.name,
+      id: formulaId,
+      result: formula.result,
+      type: typeof formula.result,
+    });
+    return formula.result === true;
   }
 
   hasFormulaTimedOut(formulaId) {
-    const formula = this.formulas.find(f => f.id === formulaId);
-    if (!formula) return false;
-    return formula.timedOut;
+    const formula = this.formulas.find((f) => f.id === formulaId);
+    return !!(formula && formula.timedOut);
   }
 
   startTimeoutChecks() {
+    if (this.timeoutInterval) {
+      clearInterval(this.timeoutInterval);
+    }
     this.timeoutInterval = setInterval(() => {
       this.checkTimeouts();
     }, 1000);
+    this.logger.debug("Started timeout check interval.", {});
   }
 
   checkTimeouts() {
     const now = Date.now();
-    this.formulas.forEach(formula => {
-      if (!formula.timeout || formula.timeout <= 0) return;
-      if (formula.timedOut || !formula.enabled) return;
-      if (!formula.lastInputTime) return;
-
-      const hasAnyInput = this.availableInputs.some(id =>
-        formula.inputStates[id] !== 'undefined'
-      );
-      if (!hasAnyInput) return;
+    this.formulas.forEach((formula) => {
+      if (
+        !formula.enabled ||
+        formula.timedOut ||
+        !formula.timeout ||
+        formula.timeout <= 0
+      )
+        return;
 
       const requiredInputs = this.parseExpression(formula.expression);
-      const allInputsDefined = requiredInputs.every(id =>
-        formula.inputStates[id.toLowerCase()] !== 'undefined'
-      );
-      if (allInputsDefined) return;
+      if (
+        requiredInputs.length === 0 ||
+        requiredInputs.every(
+          (id) => formula.inputStates[id.toLowerCase()] !== "undefined",
+        )
+      ) {
+        return;
+      }
+
+      if (!formula.lastInputTime) return;
 
       const timeoutMs = formula.timeout * 1000;
       const elapsed = now - formula.lastInputTime;
+
       if (elapsed >= timeoutMs) {
-        // FIKS: Send nøkkel og data-objekt
-        this.logger.info('formula.timed_out', { name: formula.name, timeout: formula.timeout });
+        this.logger.info("formula.timed_out", {
+          name: formula.name,
+          timeout: formula.timeout,
+        });
         formula.timedOut = true;
 
-        const triggerData = { formula: { id: formula.id, name: formula.name } };
-        const state = { formulaId: formula.id };
-        this.homey.flow.getDeviceTriggerCard('formula_timeout')
-          .trigger(this, triggerData, state)
-          // FIKS: Send nøkkel og error-objekt
-          .catch(err => this.logger.error('formula.error', err));
+        const triggerData = {
+          formula: {
+            id: formula.id,
+            name: formula.name,
+          },
+        };
+        const state = {
+          formulaId: formula.id,
+        };
+        try {
+          const card =
+            this.homey.flow.getDeviceTriggerCard("formula_timeout_lu");
+          card
+            .trigger(this, triggerData, state)
+            .catch((err) => this.logger.error("timeout.error", err));
+        } catch (e) {
+          if (e.message && e.message.includes("Invalid Flow Card ID")) {
+            this.logger.error(
+              `FATAL: Trigger card 'formula_timeout' not found. Check app.json/compose flow definitions.`,
+              e,
+            );
+          } else {
+            this.logger.error(
+              this.homey.__("errors.trigger_timeout_card_failed"),
+              e,
+            );
+          }
+        }
       }
     });
   }
 
   async onSettings({ oldSettings, newSettings, changedKeys }) {
-    // FIKS: Send nøkkel
-    this.logger.info('notifications.formula_updated');
-    if (this.timeoutInterval) {
-      clearInterval(this.timeoutInterval);
-    }
-
-    this.initializeFormulas();
-    await this.evaluateAllFormulasInitial();
-
-    if (changedKeys.includes('formulas')) {
-      for (const formula of this.formulas) {
-        const validation = this.validateExpression(formula.expression);
-        if (!validation.valid) {
-          throw new Error(this.homey.__('formula.error_validation', { name: formula.name, error: validation.error }));
-        }
-      }
-    }
-    this.startTimeoutChecks();
-  }
-
-  async onDeleted() {
-    this._isDeleting = true;
-    // FIKS: Send nøkkel
-    this.logger.device('device.inactive');
+    this.logger.info("settings.changed", {
+      keys: changedKeys.join(", "),
+    });
     if (this.timeoutInterval) {
       clearInterval(this.timeoutInterval);
       this.timeoutInterval = null;
     }
-    // FIKS: Send nøkkel
-    this.logger.info('device.cleanup_complete');
-  }
 
-  async evaluateAllFormulasInitial() {
-    // FIKS: Send nøkkel
-    this.logger.debug('evaluation.initial_complete');
-    let anyEvaluated = false;
-
-    for (const formula of this.formulas) {
-      if (!formula.enabled) continue;
-      const expr = formula.expression;
-      if (!expr) continue;
-
-      const required = this.parseExpression(expr);
-      if (!required.length) continue;
-
-      const allDefined = required.every(id =>
-        formula.inputStates[id.toLowerCase()] !== 'undefined'
+    // When formulas change, use newSettings directly instead of cached getSettings()
+    if (changedKeys.includes("formulas")) {
+      this.logger.debug(
+        "Initializing formulas from newSettings (not cached)...",
+        {},
       );
+      try {
+        const formulasData = newSettings.formulas
+          ? JSON.parse(newSettings.formulas)
+          : [];
+        if (!Array.isArray(formulasData)) {
+          this.logger.error("errors.invalid_formula", {
+            message: "Formulas setting is not an array.",
+          });
+          this.formulas = [];
+        } else {
+          this.formulas = formulasData.map((f) => ({
+            id: f.id || `formula_${Math.random().toString(16).slice(2)}`,
+            name: f.name || this.homey.__("formula.unnamed_formula"),
+            expression: f.expression || "",
+            enabled: f.enabled !== false,
+            timeout: Number(f.timeout) || 0,
+            firstImpression: !!f.firstImpression,
+            inputStates: {},
+            lockedInputs: {},
+            lastInputTime: null,
+            result: null,
+            timedOut: false,
+            sessionComplete: false,
+          }));
+        }
 
-      if (allDefined) {
-        // FIKS: Send nøkkel
-        this.logger.debug('formula.evaluating');
-        await this.evaluateFormula(formula.id);
-        anyEvaluated = true;
-      } else {
-        const states = {};
-        required.forEach(id => { states[id] = formula.inputStates[id.toLowerCase()]; });
-        // FIKS: Send nøkkel
-        this.logger.debug('inputs.waiting');
+        this.formulas.forEach((formula) => {
+          this.availableInputs.forEach((id) => {
+            formula.inputStates[id] = "undefined";
+            formula.lockedInputs[id] = false;
+          });
+        });
+      } catch (e) {
+        this.logger.error("errors.invalid_formula", e);
+        this.formulas = [];
+      }
+
+      if (this.formulas.length === 0) {
+        this.logger.warn(
+          "No valid formulas found in settings, creating default.",
+          {},
+        );
+        const defaultFormula = {
+          id: "formula_1",
+          name: this.homey.__
+            ? this.homey.__("formula.default_name_alt")
+            : this.homey.__("formula.default_name_alt_fallback"),
+          expression: this.getDefaultExpression(),
+          enabled: true,
+          timeout: 0,
+          firstImpression: false,
+          inputStates: {},
+          lockedInputs: {},
+          lastInputTime: null,
+          result: null,
+          timedOut: false,
+          sessionComplete: false,
+        };
+
+        this.availableInputs.forEach((id) => {
+          defaultFormula.inputStates[id] = "undefined";
+          defaultFormula.lockedInputs[id] = false;
+        });
+        this.formulas = [defaultFormula];
+      }
+      this.logger.info("formula.initialized", {
+        count: this.formulas.length,
+      });
+      this.formulas.forEach((f) =>
+        this.logger.debug("formula.details", {
+          name: f.name,
+          expression: f.expression,
+          enabled: f.enabled,
+        }),
+      );
+    } else {
+      // For other setting changes, use the normal initializeFormulas
+      await this.initializeFormulas();
+    }
+
+    if (changedKeys.includes("formulas")) {
+      for (const formula of this.formulas) {
+        const validation = this.validateExpression(formula.expression);
+        if (!validation.valid) {
+          this.homey.notifications
+            .createNotification({
+              excerpt: this.homey.__("notifications.invalid_formula_config", {
+                formulaName: formula.name,
+                error: validation.error,
+              }),
+            })
+            .catch((e) =>
+              this.logger.error(
+                this.homey.__("errors.notification_failed_invalid_formula"),
+                e,
+              ),
+            );
+          this.logger.error(
+            `Invalid formula configuration saved for '${formula.name}'`,
+            {
+              error: validation.error,
+            },
+          );
+        }
       }
     }
 
-    if (!anyEvaluated) {
-      // FIKS: Send nøkkel
-      this.logger.warn('inputs.waiting');
-      await this.safeSetCapabilityValue('onoff', false);
+    await this.evaluateAllFormulasInitial();
+
+    this.startTimeoutChecks();
+    this.logger.info("settings.applied", {});
+
+    const formatSettings = {};
+    let needsFormat = false;
+    if (changedKeys.includes("formulas")) {
+      try {
+        const parsed = JSON.parse(newSettings.formulas);
+        const formatted = JSON.stringify(parsed, null, 2);
+        if (formatted !== newSettings.formulas) {
+          formatSettings.formulas = formatted;
+          needsFormat = true;
+          this.logger.debug("settings.formatting", {
+            type: "formulas",
+          });
+        }
+      } catch (e) {}
+    }
+    if (needsFormat) {
+      setTimeout(async () => {
+        try {
+          this.logger.debug("settings.applying_formatted", {});
+          await this.setSettings(formatSettings);
+          this.logger.info("settings.auto_formatted", {});
+        } catch (e) {
+          this.logger.error("settings.format_failed", e);
+        }
+      }, 500);
     }
   }
+
+  async onDeleted() {
+    this._isDeleting = true;
+    this.logger.device("device.deleted_cleanup", {
+      name: this.getName(),
+    });
+    if (this.timeoutInterval) {
+      clearInterval(this.timeoutInterval);
+      this.timeoutInterval = null;
+    }
+    this.logger.info("device.cleanup_complete", {
+      name: this.getName(),
+    });
+  }
+
+
+// --- Async venting for condition-kort ---
+_sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Vent til formelen har et bestemt (ikke-null) resultat ELLER har timet ut
+ * Avslutter også hvis enheten slettes (onDeleted).
+ */
+async _waitForFormulaResolution(formula, maxWaitMs) {
+  const start = Date.now();
+  while (!this._isDeleting) {
+    if (formula.result !== null) return;        // fikk true/false
+    if (formula.timedOut === true) return;      // timeout slo inn (se checkTimeouts)
+    if (Date.now() - start >= maxWaitMs) return; // sikkerhetsnett
+    await this._sleep(50);
+  }
+}
+
 };

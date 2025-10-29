@@ -1,0 +1,68 @@
+{
+  "id": "device_state_changed",
+  "title": {
+    "en": "State changed",
+    "no": "Tilstand endret",
+    "de": "Zustand geändert",
+    "nl": "Staat gewijzigd",
+    "fr": "État modifié",
+    "da": "Tilstand ændret",
+    "fi": "Tila muuttunut",
+    "sv": "Tillstånd ändrat",
+    "pl": "Stan zmieniony",
+    "it": "Stato cambiato",
+    "es": "Estado cambiado"
+  },
+  "titleFormatted": {
+    "en": "State of [[device]] changed",
+    "no": "Tilstand til [[device]] endret",
+    "de": "Zustand von [[device]] geändert",
+    "nl": "Staat van [[device]] gewijzigd",
+    "fr": "État de [[device]] modifié",
+    "da": "Tilstand for [[device]] ændret",
+    "fi": "Laitteen [[device]] tila muuttunut",
+    "sv": "Tillstånd för [[device]] ändrat",
+    "pl": "Stan [[device]] zmieniony",
+    "it": "Stato di [[device]] cambiato",
+    "es": "Estado de [[device]] cambiado"
+  },
+  "hint": {
+    "en": "Triggers when the Logic Device state changes (on/off)",
+    "no": "Trigges når tilstanden til den Logiske Enheten endres (på/av)",
+    "de": "Wird ausgelöst, wenn sich der Zustand des Logikgeräts ändert (ein/aus)",
+    "nl": "Activeert wanneer de status van het Logisch Apparaat verandert (aan/uit)",
+    "fr": "Se déclenche lorsque l'état de l'Appareil Logique change (marche/arrêt)",
+    "da": "Udløses, når tilstanden for den Logiske Enhed ændres (tænd/sluk)",
+    "fi": "Laukaistaan, kun Logiikkalaitteen tila muuttuu (päälle/pois)",
+    "sv": "Utlöses när tillståndet för Logikenheten ändras (på/av)",
+    "pl": "Uruchamia się, gdy stan Urządzenia Logicznego ulegnie zmianie (włącz/wyłącz)",
+    "it": "Si attiva quando lo stato del Dispositivo Logico cambia (on/off)",
+    "es": "Se activa cuando el estado del Dispositivo Lógico cambia (encendido/apagado)"
+  },
+  "tokens": [
+    {
+      "name": "state",
+      "type": "boolean",
+      "title": {
+        "en": "State",
+        "no": "Tilstand",
+        "de": "Zustand",
+        "nl": "Staat",
+        "fr": "État",
+        "da": "Tilstand",
+        "fi": "Tila",
+        "sv": "Tillstånd",
+        "pl": "Stan",
+        "it": "Stato",
+        "es": "Estado"
+      },
+      "example": true
+    }
+  ],
+  "args": [
+    {
+      "type": "device",
+      "name": "device"
+    }
+  ]
+}

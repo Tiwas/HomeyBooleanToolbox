@@ -161,5 +161,39 @@
         }
       ]
     }
+  ],
+"flow": [
+    {
+      "type": "trigger",
+      "id": "device_state_changed",
+      "titleFormatted": "flow.triggers.device_state_changed.titleFormatted",
+      "tokens": [
+        {
+          "name": "state",
+          "type": "string",
+          "title": "flow.tokens.state.title"
+        }
+      ]
+    },
+    {
+      "type": "condition",
+      "id": "formula_has_timed_out_ld"
+    },
+    {
+      "type": "condition",
+      "id": "formula_result_is_ld"
+    },
+    {
+      "type": "condition",
+      "id": "has_any_error_ld"
+    },
+    {
+      "type": "action",
+      "id": "evaluate_formula_ld"
+    },
+    {
+      "type": "action",
+      "id": "clear_error_ld"
+    }
   ]
 }

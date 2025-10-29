@@ -1,267 +1,510 @@
 {
-  "settings": {
-    "title": "Asetukset",
-    "description": "Määritä Boolean Toolbox -logiikkalaite",
-    "save": "Tallenna",
-    "cancel": "Peruuta",
-    "reset": "Palauta oletusasetuksiin",
-    "saved": "Asetukset tallennettu",
-    "error": "Asetusten tallentaminen epäonnistui",
-    "changed": "Asetukset muutettu:",
-    "applied": "Asetukset otettu käyttöön onnistuneesti",
-    "formatting": "Automaattisesti muotoillaan {type} JSON",
-    "applying_formatted": "Otetaan käyttöön automaattisesti muotoiltuja asetuksia...",
-    "auto_formatted": "Asetukset automaattisesti muotoiltu",
-    "format_failed": "Asetusten automaattinen muotoilu epäonnistui:"
-  },
-  "pair": {
-    "title": "Lisää logiikkalaite",
-    "intro": "Luo uusi logiikkalaite monimutkaisten kaavojen arvioimiseksi",
-    "name": "Laitteen nimi",
-    "name_placeholder": "Logiikkalaitteeni",
-    "configure": "Määritä laite",
-    "add": "Lisää laite",
-    "success": "Laite lisätty onnistuneesti",
-    "error": "Laitteen lisääminen epäonnistui",
-    "session_started": "Paritusistunto aloitettu",
-    "get_num_inputs": "[PAIR] get_num_inputs kutsuttu",
-    "set_num_inputs": "[PAIR] set_num_inputs kutsuttu datalla:",
-    "get_zones": "[PAIR] get_zones kutsuttu",
-    "get_zones_error": "[PAIR] VIRHE get_zones:",
-    "get_devices_in_zone": "[PAIR] get_devices_in_zone kutsuttu alueelle: {zone}",
-    "get_devices_error": "[PAIR] VIRHE get_devices_in_zone:",
-    "set_input_links": "[PAIR] set_input_links kutsuttu",
-    "set_device_name": "[PAIR] set_device_name kutsuttu arvolla:",
-    "create_device": "[PAIR] create_device kutsuttu",
-    "creating_device": "[PAIR] Luodaan laitetta:",
-    "handlers_registered": "Parituskäsittelijät rekisteröity"
-  },
-  "device": {
-    "ready": "Laite valmis: {name}",
-    "initializing": "Logiikkalaite '{name}' alustaa.",
-    "initialized": "Logiikkalaite '{name}' alustettu {count} tulolla",
-    "capacity_expanded": "Havaittiin {detected} tuloa tarpeen (alun perin {original}). Laajennetaan kapasiteettia.",
-    "capacity_updated": "Päivitetään kapasiteettia: {old} → {new} tuloa",
-    "max_input_detected": "Havaittu suurin tulo: {input} ({count} tuloa tarvitaan)",
-    "capability_readonly": "Asetettu onoff vain luku -tilaan",
-    "capability_options_failed": "Kyvykkyysasetusten asettaminen epäonnistui:",
-    "capability_update_failed": "Kyvykkyyspäivitys epäonnistui kohteelle {capability}:",
-    "capability_skip_deleted": "(turvallinen) Ohitetaan {capability} – laitetta ei enää ole.",
-    "deleted_cleanup": "Laite poistettu — siivotaan kuuntelijat ja ajastimet",
-    "cleanup_complete": "Siivous valmis",
-    "deleted_skip_update": "Laite poistettu, ohitetaan kyvykkyyspäivitys",
-    "deleted_skip_flow": "Laite poistettu, ohitetaan flow-käynnistin",
-    "logic_unit_name": "Logiikkayksikkö ({count} tuloa)"
-  },
-  "formula": {
-    "default_name": "Pääkaava",
-    "default_name_alt": "Kaava 1",
-    "initialized": "Alustettu {count} kaavaa",
-    "details": "  - {name}: \"{expression}\" (käytössä: {enabled})",
-    "reinitialized": "Uudelleenalustettu {count} kaavaa",
-    "timed_out": "Kaava '{name}' aikakatkaistiin {timeout}s jälkeen",
-    "evaluated_count": "Arvioitu {count} kaavaa",
-    "expression_empty": "Lauseke ei voi olla tyhjä",
-    "invalid_tokens": "Virheellisiä osia lausekkeessa: \"{tokens}\"",
-    "invalid_syntax": "Virheellinen lausekkeen syntaksi: {message}",
-    "no_expression": "(ei lauseketta)",
-    "error_validation": "Kaava '{name}': {error}",
-    "result_debug": "getFormulaResult: Kaava '{name}' ({id}) tulos = {result} (tyyppi: {type})",
-    "not_found_or_disabled": "Kaavaa '{id}' ei löydy tai se on poistettu käytöstä.",
-    "unlocked_inputs": "🔓 Kaikki tulot avattu kaavalle '{name}'",
-    "waiting_for_inputs": "Kaava '{name}': Odotetaan tuloja. Vaaditut: [{required}]",
-    "evaluating_expression": "Arvioidaan: \"{expression}\" → \"{evalExpression}\"",
-    "result": "Kaavan '{name}' tulos: {result}",
-    "all_inputs_defined": "Kaava '{name}': Kaikki tulot määritelty, arvioidaan...",
-    "missing_inputs": "Kaava '{name}': Puuttuvat tulot:",
-    "evaluation_failed": "Kaavan '{name}' arviointi epäonnistui: {message}",
-    "get_result_not_found": "getFormulaResult: Kaavaa '{id}' ei löydy",
-    "set_input_error": "setInputForFormula virhe:",
-    "name": "Kaava",
-    "expression": "Lauseke",
-    "input": "Tulo",
-    "output": "Lähtö",
-    "evaluation": "Arviointi",
-    "evaluating": "Arvioidaan kaavaa...",
-    "evaluated": "Kaava arvioitu",
-    "error": "Kaavavirhe",
-    "timeout": "Kaavan arvioinnin aikakatkaisu",
-    "invalid": "Virheellinen kaava",
-    "syntax_error": "Syntaksivirhe kaavassa"
-  },
-  "devicelinks": {
-    "setting_up": "Määritetään laitelinkkejä...",
-    "complete": "Laitelinkkien määritys valmis",
-    "count": "Määritetään {count} laitelinkkiä",
-    "unregistered": "Kuuntelija poistettu rekisteristä: {key}",
-    "error_unregister": "Virhe kuuntelijan rekisteristä poistamisessa:",
-    "setup_failed": "Kuuntelijan määrittäminen tulolle {input} epäonnistui:",
-    "error_cleanup": "Virhe kuuntelijan siivoamisessa:"
-  },
-  "initial": {
-    "fetching_all": "Haetaan alkuarvoja kaikille tuloille...",
-    "api_unavailable": "Sovelluksen API ei ole käytettävissä alkuarvojen hakemiseen",
-    "fetching_input": "[{input}] Haetaan alkuarvoa...",
-    "device_not_found": "[{input}] Laitetta ei löydy",
-    "capability_not_found": "[{input}] Kyvykkyyttä {capability} ei löydy",
-    "value_received": "[{input}] Alkuarvo: {value} → {boolean}",
-    "received_value": "[{input}] Vastaanotettu alkuarvo: {value}",
-    "no_value_waiting": "[{input}] Alkuarvoa ei löytynyt - odotetaan ensimmäistä tapahtumaa",
-    "error": "[{input}] Virhe alkuarvon hakemisessa:"
-  },
-  "evaluation": {
-    "running_initial": "Ajetaan kaavojen alkuarviointi...",
-    "initial_complete": "Kaikkien kaavojen alkuarviointi...",
-    "no_formulas_ready": "Kaavoja ei voitu arvioida - odotetaan tuloarvoja",
-    "reevaluating_all": "Arvioidaan kaikki kaavat uudelleen (nollataan lukot)..."
-  },
-  "listener": {
-    "registered": "[{input}] Kuunnellaan laitetta {device} kyvykkyyttä {capability}",
-    "device_not_found": "[{input}] Laitetta {device} ei löydy",
-    "capability_not_exist": "[{input}] Kyvykkyyttä {capability} ei ole laitteessa {device}",
-    "polling_setup": "[{input}] Määritetty pollaus laitteelle {device} ({capability})",
-    "capability_changed": "[{input}] Kyvykkyys '{capability}' muuttui: {value} → {boolean}",
-    "error_setup": "Virhe kuuntelijan määrittämisessä tulolle {input}:",
-    "setting_up": "Määritetään kuuntelijaa tulolle {input}",
-    "invalid_config": "Virheellinen linkkimääritys tulolle {input}",
-    "api_unavailable": "Sovelluksen API ei ole käytettävissä kuuntelijan määritykseen",
-    "device_found": "Laite löydetty: {device}",
-    "capability_found": "Laitteella on kyvykkyys: {capability}",
-    "event_received": "Tapahtuma vastaanotettu tulolle {input}",
-    "registering": "Rekisteröidään kyvykkyyskuuntelijaa kohteelle {capability}..."
-  },
-  "polling": {
-    "all_inputs": "Pollataan kaikkia linkitettyjä laitetuloja...",
-    "no_links": "Ei inputLinks-määrityksiä pollattavaksi",
-    "api_unavailable": "Sovelluksen API ei ole käytettävissä pollaamiseen",
-    "input": "Pollataan tuloa \"{input}\" laitteesta \"{device}\" kyvykkyys \"{capability}\"",
-    "device_not_found": "Laitetta ei löydy: {device}",
-    "no_value": "Ei arvoa kohteelle {input} ({capability})",
-    "value_received": "Pollattu {input}: {value} → {boolean}",
-    "failed": "Tiedonhaku epäonnistui kohteelle {input}:"
-  },
-  "parse": {
-    "error_formulas": "Kaavojen jäsentäminen epäonnistui:",
-    "error_input_links": "input_links-määritysten jäsentäminen epäonnistui:",
-    "error_formulas_json": "Kaavojen jäsentäminen epäonnistui:",
-    "error_formulas_invalid": "Virheellinen kaavojen JSON: {message}",
-    "error_input_links_invalid": "Virheellinen input_links JSON: {message}",
-    "error_detecting_inputs": "Virhe tarvittavien tulojen tunnistamisessa:"
-  },
-  "refetch": {
-    "reason": "Haetaan tulot uudelleen (syy: {reason})...",
-    "invoked": "Uudelleenhaku ja arviointi käynnistetty (lähde={source})",
-    "parse_failed": "input_links-määritysten jäsentäminen epäonnistui uudelleenhaun aikana:",
-    "no_links": "Ei syöttölinkkejä saatavilla uudelleenhaun aikana; ohitetaan arvojen haku.",
-    "fetching_values": "Haetaan alkuarvot uudelleen ennen arviointia..."
-  },
-  "timeout": {
-    "error": "Virhe aikakatkaisun laukaisemisessa:"
-  },
-  "flow": {
-    "triggered": "Käynnistetään flow kaavan '{name}' muutokselle arvoon {result}",
-    "trigger_error": "Virhe flow'n käynnistämisessä:"
-  },
-  "driver": {
-    "ready": "Ajuri valmis",
-    "ensure_unique_failed": "ensureUniqueDeviceName epäonnistui:"
-  },
-  "debug": {
-    "raw_formulas": "Raakat kaavatiedot asetuksista:",
-    "raw_input_links": "Raakat input_links-tiedot asetuksista:"
-  },
   "app": {
     "athom_api_loaded": "athom-api ladattu onnistuneesti",
-    "homey_api_extracted": "HomeyAPI purettu, tyyppi:",
-    "initializing_homey_api": "Alustetaan HomeyAPI.forCurrentHomey...",
-    "homey_api_not_function": "HomeyAPI.forCurrentHomey ei ole funktio",
-    "homey_api_methods": "HomeyAPI-metodit:",
-    "error_stack": "Virhepino:",
-    "getting_zones": "Haetaan saatavilla olevia alueita...",
-    "found_zones": "Löytyi {count} aluetta",
-    "error_getting_zones": "Virhe alueita haettaessa:",
-    "getting_devices_for_zone": "Haetaan laitteita alueelle ID: {zoneId}",
-    "found_devices_in_zone": "Löytyi {count} laitetta alueelta {zoneId}",
-    "error_getting_devices": "Virhe haettaessa laitteita alueelle {zoneId}:",
-    "registering_flow_cards": "Rekisteröidään flow-kortteja...",
-    "condition_check": "Ehtotarkistus: Kaavan '{formulaName}' tulos = {result}, tarkistetaan onko se '{expected}'",
-    "formula_not_evaluated": "Ehto: Kaavaa '{formulaName}' ei ole vielä arvioitu (tulos on {result})",
-    "running_evaluation": "Ajetaan arviointi. Tulo: {input}, Säännöt: '{rules}'",
-    "evaluation_finished": "Arviointi valmis. Lähtö: {output}",
-    "value_outside_logic": "Arvo {input} on määritellyn logiikan ulkopuolella.",
     "checking_for_error": "Tarkistetaan virhettä. Tulo: '{textInput}', Onko virhe: {hasError}",
-    "flow_cards_registered": "Flow-kortit rekisteröity"
+    "condition_check": "Ehtotarkistus: Kaavan '{formulaName}' tulos = {result}, tarkistetaan onko se '{expected}'",
+    "error_getting_devices": "Virhe haettaessa laitteita alueelle {zoneId}:",
+    "error_getting_zones": "Virhe alueita haettaessa:",
+    "error_stack": "Virhepino:",
+    "evaluation_finished": "Arviointi valmis. Lähtö: {output}",
+    "flow_cards_registered": "Flow-kortit rekisteröity",
+    "formula_not_evaluated": "Ehto: Kaavaa '{formulaName}' ei ole vielä arvioitu (tulos on {result})",
+    "found_devices_in_zone": "Löytyi {count} laitetta alueelta {zoneId}",
+    "found_zones": "Löytyi {count} aluetta",
+    "getting_devices_for_zone": "Haetaan laitteita alueelle ID: {zoneId}",
+    "getting_zones": "Haetaan saatavilla olevia alueita...",
+    "homey_api_extracted": "HomeyAPI purettu, tyyppi:",
+    "homey_api_methods": "HomeyAPI-metodit:",
+    "homey_api_not_function": "HomeyAPI.forCurrentHomey ei ole funktio",
+    "initializing_homey_api": "Alustetaan HomeyAPI.forCurrentHomey...",
+    "registering_flow_cards": "Rekisteröidään flow-kortteja...",
+    "running_evaluation": "Ajetaan arviointi. Tulo: {input}, Säännöt: '{rules}'",
+    "value_outside_logic": "Arvo {input} on määritellyn logiikan ulkopuolella."
   },
-  "errors": {
-    "generic": "Tapahtui virhe",
-    "timeout": "Toiminnon aikakatkaisu",
-    "invalid_input": "Virheellinen tuloarvo",
-    "invalid_formula": "Virheellinen kaavan lauseke",
-    "evaluation_failed": "Kaavan arviointi epäonnistui",
-    "device_not_found": "Laitetta ei löytynyt",
-    "permission_denied": "Käyttö estetty",
-    "connection_failed": "Yhteys epäonnistui",
-    "unknown": "Tuntematon virhe tapahtui"
-  },
-  "notifications": {
-    "formula_updated": "Kaava päivitetty",
-    "input_received": "Tulo vastaanotettu",
-    "output_changed": "Lähtö muutettu",
-    "error_cleared": "Virhetila tyhjennetty",
-    "device_ready": "Laite on valmis",
-    "reevaluating": "Arvioi kaikki kaavat uudelleen..."
+  "capability": {
+    "logic_state": {
+      "title": "Logiikan tila"
+    }
   },
   "common": {
-    "yes": "Kyllä",
-    "no": "Ei",
-    "true": "Tosi",
-    "false": "Epätosi",
-    "enabled": "Käytössä",
     "disabled": "Ei käytössä",
-    "on": "Päällä",
-    "off": "Pois päältä",
-    "unknown": "Tuntematon",
-    "loading": "Ladataan...",
-    "processing": "Käsitellään...",
     "done": "Valmis",
+    "enabled": "Käytössä",
     "failed": "Epäonnistui",
-    "success": "Onnistui",
-    "warning": "Varoitus",
+    "false": "Epätosi",
     "info": "Tiedot",
-    "min": "Minimi",
+    "loading": "Ladataan...",
     "max": "Maksimi",
-    "value": "Arvo",
+    "min": "Minimi",
     "name": "Nimi",
+    "no": "Ei",
+    "off": "Pois päältä",
+    "on": "Päällä",
+    "processing": "Käsitellään...",
+    "state": "Tila",
+    "success": "Onnistui",
+    "true": "Tosi",
     "type": "Tyyppi",
-    "state": "Tila"
+    "unknown": "Tuntematon",
+    "value": "Arvo",
+    "warning": "Varoitus",
+    "yes": "Kyllä"
+  },
+  "debug": {
+    "checking_formula": "Tarkistetaan kaavaa: {name} (\"{expression}\")",
+    "raw_formulas": "Raakat kaavatiedot asetuksista:",
+    "raw_input_links": "Raakat input_links-tiedot asetuksista:",
+    "required_inputs": "  - Vaaditut tulot: {inputs}"
+  },
+  "device": {
+    "capability_options_failed": "Kyvykkyysasetusten asettaminen epäonnistui:",
+    "capability_readonly": "Asetettu onoff vain luku -tilaan",
+    "capability_skip_deleted": "(turvallinen) Ohitetaan {capability} – laitetta ei enää ole.",
+    "capability_update_failed": "Kyvykkyyspäivitys epäonnistui kohteelle {capability}:",
+    "capacity_expanded": "Havaittiin {detected} tuloa tarpeen (alun perin {original}). Laajennetaan kapasiteettia.",
+    "capacity_updated": "Päivitetään kapasiteettia: {old} → {new} tuloa",
+    "cleanup_complete": "Siivous valmis",
+    "deleted_cleanup": "Laite poistettu — siivotaan kuuntelijat ja ajastimet",
+    "deleted_skip_flow": "Laite poistettu, ohitetaan flow-käynnistin",
+    "deleted_skip_update": "Laite poistettu, ohitetaan kyvykkyyspäivitys",
+    "initialized": "Logiikkalaite '{name}' alustettu {count} tulolla",
+    "initializing": "Logiikkalaite '{name}' alustaa.",
+    "logic_unit_dynamic_name": "Logiikkayksikkö",
+    "logic_unit_dynamic_name_fallback": "Logiikkayksikkö",
+    "logic_unit_name": "Logiikkayksikkö ({count} tuloa)",
+    "logic_unit_name_fallback": "Logiikkayksikkö ({count} tuloa)",
+    "max_input_detected": "Havaittu suurin tulo: {input} ({count} tuloa tarvitaan)",
+    "ready": "Laite valmis: {name}"
+  },
+  "devicelinks": {
+    "complete": "Laitelinkkien määritys valmis",
+    "count": "Määritetään {count} laitelinkkiä",
+    "error_cleanup": "Virhe kuuntelijan siivoamisessa:",
+    "error_unregister": "Virhe kuuntelijan rekisteristä poistamisessa:",
+    "setting_up": "Määritetään laitelinkkejä...",
+    "setup_failed": "Kuuntelijan määrittäminen tulolle {input} epäonnistui:",
+    "unregistered": "Kuuntelija poistettu rekisteristä: {key}"
+  },
+  "driver": {
+    "ensure_unique_failed": "ensureUniqueDeviceName epäonnistui:",
+    "ready": "Ajuri valmis",
+    "registering_flow_cards": "Rekisteröidään ajurin flow-kortteja..."
+  },
+  "errors": {
+    "connection_failed": "Yhteys epäonnistui",
+    "device_not_found": "Laitetta ei löytynyt",
+    "evaluation_failed": "Kaavan arviointi epäonnistui",
+    "generic": "Tapahtui virhe",
+    "helper_not_function": "Aputoiminto '{argName}' varten ei ole funktio.",
+    "invalid_device_instance": "Virheellinen laiteinstanssi",
+    "invalid_formula": "Virheellinen kaavan lauseke",
+    "invalid_input": "Virheellinen tuloarvo",
+    "method_missing_on_device": "Metodi '{methodName}' puuttuu laitteesta",
+    "notification_failed_invalid_formula": "Ilmoituksen luominen virheelliselle kaavalle epäonnistui",
+    "permission_denied": "Käyttö estetty",
+    "timeout": "Toiminnon aikakatkaisu",
+    "trigger_timeout_card_failed": "Virhe haettaessa/käynnistettäessä formula_timeout-korttia",
+    "unknown": "Tuntematon virhe tapahtui"
+  },
+  "evaluation": {
+    "initial_complete": "Kaikkien kaavojen alkuarviointi...",
+    "no_formulas_ready": "Kaavoja ei voitu arvioida - odotetaan tuloarvoja",
+    "reevaluating_all": "Arvioidaan kaikki kaavat uudelleen (nollataan lukot)...",
+    "running_initial": "Ajetaan kaavojen alkuarviointi..."
+  },
+  "flow": {
+    "actions": {
+      "clear_error_state_lu": {
+        "title": "Tyhjennä kaavan virhetila",
+        "titleFormatted": "Tyhjennä virhetila kaavalle [[formula]]"
+      },
+      "clear_error_state_ld": {
+        "title": "Tyhjennä kaavan virhetila",
+        "titleFormatted": "Tyhjennä virhetila"
+      },
+      "evaluate_all_formula_lu": {
+        "title": "Arvioi kaikki kaavat uudelleen",
+        "titleFormatted": "Arvioi kaikki kaavat uudelleen"
+      },
+      "evaluate_expression": {
+        "title": "Arvioi lauseke",
+        "titleFormatted": "Arvioi [[input]] [[op1]] min [[logical_op]] [[op2]] max säännöillä [[rules]]"
+      },
+      "evaluate_formula_lu": {
+        "title": "Arvioi tietty kaava",
+        "titleFormatted": "Arvioi kaava [[formula]]"
+      },
+      "evaluate_formula_ld": {
+        "title": "Tarkista laitteen tila uudelleen",
+        "titleFormatted": "Tarkista tila uudelleen"
+      },
+      "reevaluate_formulas": {
+        "title": "Arvioi kaikki kaavat uudelleen",
+        "titleFormatted": "Arvioi kaikki kaavat uudelleen"
+      },
+      "set_all_inputs_lu": {
+        "title": "Aseta kaikki tulot JSON-muodosta",
+        "titleFormatted": "Aseta kaikki tulot JSON-muodosta: [[values]]"
+      },
+      "set_input_lu": {
+        "title": "Aseta tuloarvo (kaikki kaavat)",
+        "titleFormatted": "Aseta tulo [[input]] arvoon [[value]]"
+      },
+      "set_input_value_lu": {
+        "title": "Aseta tuloarvo kaavalle",
+        "titleFormatted": "Aseta tulo [[input]] arvoon [[value]] kaavalle [[formula]]"
+      }
+    },
+    "args": {
+      "formula": {
+        "placeholder": "Valitse kaava",
+        "title": "Kaava"
+      },
+      "input": {
+        "placeholder": "Valitse tulo",
+        "title": "Tulo"
+      },
+      "logical_op": {
+        "AND": "JA",
+        "OR": "TAI",
+        "title": "Looginen operaattori"
+      },
+      "number_input": {
+        "placeholder": "Anna numero",
+        "title": "Tuloarvo"
+      },
+      "op1": {
+        "gt": ">",
+        "gte": "≥",
+        "lt": "<",
+        "lte": "≤",
+        "title": "Ensimmäinen operaattori"
+      },
+      "op2": {
+        "gt": ">",
+        "gte": "≥",
+        "lt": "<",
+        "lte": "≤",
+        "title": "Toinen operaattori"
+      },
+      "rules": {
+        "placeholder": "min,max,lähtö;...",
+        "title": "Säännöt"
+      },
+      "text_input": {
+        "placeholder": "Anna virheilmoitus tai tunniste",
+        "title": "Virheilmoitus"
+      },
+      "value": {
+        "false": "EPÄTOSI",
+        "title": "Arvo",
+        "true": "TOSI"
+      },
+      "values": {
+        "placeholder": "{\"A\": true, \"B\": false}",
+        "title": "JSON-arvot"
+      },
+      "what_is": {
+        "false": "EPÄTOSI",
+        "title": "Arvo",
+        "true": "TOSI"
+      }
+    },
+    "conditions": {
+      "formula_has_timed_out_lu": {
+        "title": "Kaava !{{on|ei ole}} aikakatkaistu",
+        "titleFormatted": "Kaava [[formula]] !{{on|ei ole}} aikakatkaistu"
+      },
+      "formula_has_timed_out_ld": {
+        "title": "Kaava !{{on|ei ole}} aikakatkaistu",
+        "titleFormatted": "Kaava !{{on|ei ole}} aikakatkaistu"
+      },
+      "formula_result_is_lu": {
+        "title": "Kaavan tulos on...",
+        "titleFormatted": "Kaava [[formula]] tulos on [[what_is]]"
+      },
+      "formula_result_is_ld": {
+        "title": "Kaavan tulos on...",
+        "titleFormatted": "Kaavan tulos on [[what_is]]"
+      },
+      "has_any_error_lu": {
+        "title": "Laite !{{on|ei ole}} virheellinen",
+        "titleFormatted": "Laite !{{on|ei ole}} virheellinen"
+      },
+      "has_any_error_ld": {
+        "title": "Laite !{{on|ei ole}} virheellinen",
+        "titleFormatted": "Laite !{{on|ei ole}} virheellinen"
+      },
+      "has_error": {
+        "title": "!{{On|Ei ole}} virhe",
+        "titleFormatted": "!{{On|Ei ole}} virhe [[text_input]]:ssa"
+      }
+    },
+    "tokens": {
+      "errorMessage": {
+        "title": "Virheilmoitus"
+      },
+      "outputValue": {
+        "title": "Lähtöarvo"
+      },
+      "state": {
+        "title": "Tila"
+      }
+    },
+    "trigger_error": "Virhe flow'n käynnistämisessä:",
+    "triggered": "Käynnistetään flow kaavan '{name}' muutokselle arvoon {result}",
+    "triggers": {
+      "device_state_changed": {
+        "hint": "Laukaistaan, kun Logiikkalaitteen tila muuttuu (päälle/pois)",
+        "title": "Tila muuttunut",
+        "titleFormatted": "Tila muuttui arvoon [[state]]"
+      },
+      "device_state_changed_ld": {
+        "hint": "Laukaistaan, kun Logiikkalaitteen tila muuttuu (päälle/pois)",
+        "title": "Tila muuttunut",
+        "titleFormatted": "Tila muuttunut"
+      },
+      "formula_changed_to_false_lu": {
+        "title": "Kaava muuttui EPÄTODEKSI",
+        "titleFormatted": "Kaava [[formula]] muuttui EPÄTODEKSI"
+      },
+      "formula_changed_to_true_lu": {
+        "title": "Kaava muuttui TODEKSI",
+        "titleFormatted": "Kaava [[formula]] muuttui TODEKSI"
+      },
+      "formula_timeout_lu": {
+        "title": "Kaava aikakatkaistu",
+        "titleFormatted": "Kaava [[formula]] aikakatkaistu"
+      },
+      "state_changed_ld": {
+        "title": "Tila muuttunut",
+        "titleFormatted": "Tila muuttunut"
+      }
+    }
+  },
+  "formula": {
+    "all_inputs_defined": "Kaava '{name}': Kaikki tulot määritelty, arvioidaan...",
+    "default_name": "Pääkaava",
+    "default_name_alt": "Kaava 1",
+    "default_name_alt_fallback": "Oletuskaava",
+    "details": "  - {name}: \"{expression}\" (käytössä: {enabled})",
+    "error": "Kaavavirhe",
+    "error_inputs_used_but_none_configured": "Lauseke käyttää tuloja, mutta tälle laitteelle ei ole määritetty tuloja.",
+    "error_no_inputs": "Tuloja ei saatavilla",
+    "error_unbalanced_parentheses": "Tasapainottamattomat sulut",
+    "error_validation": "Kaava '{name}': {error}",
+    "evaluated": "Kaava arvioitu",
+    "evaluated_count": "Arvioitu {count} kaavaa",
+    "evaluating": "Arvioidaan kaavaa...",
+    "evaluating_expression": "Arvioidaan: \"{expression}\" → \"{evalExpression}\"",
+    "evaluation": "Arviointi",
+    "evaluation_failed": "Kaavan '{name}' arviointi epäonnistui: {message}",
+    "expression": "Lauseke",
+    "expression_empty": "Lauseke ei voi olla tyhjä",
+    "get_result_not_found": "getFormulaResult: Kaavaa '{id}' ei löydy",
+    "initialized": "Alustettu {count} kaavaa",
+    "input": "Tulo",
+    "invalid": "Virheellinen kaava",
+    "invalid_syntax": "Virheellinen lausekkeen syntaksi: {message}",
+    "invalid_tokens": "Virheellisiä osia lausekkeessa: \"{tokens}\"",
+    "missing_inputs": "Kaava '{name}': Puuttuvat tulot:",
+    "name": "Kaava",
+    "no_expression": "(ei lauseketta)",
+    "not_found_or_disabled": "Kaavaa '{id}' ei löydy tai se on poistettu käytöstä.",
+    "output": "Lähtö",
+    "reinitialized": "Uudelleenalustettu {count} kaavaa",
+    "result": "Kaavan '{name}' tulos: {result}",
+    "result_debug": "getFormulaResult: Kaava '{name}' ({id}) tulos = {result} (tyyppi: {type})",
+    "set_input_error": "setInputForFormula virhe:",
+    "syntax_error": "Syntaksivirhe kaavassa",
+    "timed_out": "Kaava '{name}' aikakatkaistiin {timeout}s jälkeen",
+    "timeout": "Kaavan arvioinnin aikakatkaisu",
+    "unlocked_inputs": "🔓 Kaikki tulot avattu kaavalle '{name}'",
+    "unnamed_formula": "Nimetön Kaava",
+    "waiting_for_input": "Kaava '{formula}' odottaa määrittelemättömiä syötteitä: {error}",
+    "waiting_for_inputs": "Kaava '{name}': Odotetaan tuloja. Vaaditut: [{required}]"
+  },
+  "help": {
+    "first_impression": "Ensivaikutelman tila lukitsee tulot niiden ensimmäiseen vastaanotettuun arvoon",
+    "formula_syntax": "Käytä loogisia operaattoreita kuten JA, TAI, EI luodaksesi kaavasi",
+    "input_values": "Tuloarvot päivittyvät automaattisesti, kun yhdistetyt laitteet muuttuvat",
+    "timeout_warning": "Jos tuloa ei päivitetä aikakatkaisujakson aikana, se merkitään"
+  },
+  "initial": {
+    "api_unavailable": "Sovelluksen API ei ole käytettävissä alkuarvojen hakemiseen",
+    "capability_not_found": "[{input}] Kyvykkyyttä {capability} ei löydy",
+    "device_not_found": "[{input}] Laitetta ei löydy",
+    "error": "[{input}] Virhe alkuarvon hakemisessa:",
+    "fetching_all": "Haetaan alkuarvoja kaikille tuloille...",
+    "fetching_input": "[{input}] Haetaan alkuarvoa...",
+    "no_value_waiting": "[{input}] Alkuarvoa ei löytynyt - odotetaan ensimmäistä tapahtumaa",
+    "received_value": "[{input}] Vastaanotettu alkuarvo: {value}",
+    "value_received": "[{input}] Alkuarvo: {value} → {boolean}"
+  },
+  "input_options": {
+    "context_specific": "Tuloasetukset suodatettu kaavalle: {formula} ({expression})"
   },
   "inputs": {
+    "first_impression": "Ensivaikutelman tila",
     "label": "Tulo",
-    "value": "Arvo",
     "locked": "Tulo lukittu",
-    "unlocked": "Tulon lukitus avattu",
+    "locked_at_value": "🔒 Tulo '{input}' lukittu arvoon {value} (ensivaikutelman tila)",
     "locked_first_impression": "Tulo '{input}' lukittu kaavalle '{formula}' (ensivaikutelman tila)",
     "setting_value": "Asetetaan tulo '{input}' arvoon {value} kaavalle '{formula}' (oli: {oldValue})",
-    "locked_at_value": "🔒 Tulo '{input}' lukittu arvoon {value} (ensivaikutelman tila)",
-    "first_impression": "Ensivaikutelman tila",
     "timeout_detected": "Aikakatkaisu havaittu tulossa",
+    "unlocked": "Tulon lukitus avattu",
+    "unused_warning": "Varoitus: Tuloa {input} ei käytetä missään kaavassa. Käytetyt: {usedInputs}",
+    "value": "Arvo",
     "waiting": "Odotetaan tuloa..."
+  },
+  "listener": {
+    "api_unavailable": "Sovelluksen API ei ole käytettävissä kuuntelijan määritykseen",
+    "capability_changed": "[{input}] Kyvykkyys '{capability}' muuttui: {value} → {boolean}",
+    "capability_found": "Laitteella on kyvykkyys: {capability}",
+    "capability_not_exist": "[{input}] Kyvykkyyttä {capability} ei ole laitteessa {device}",
+    "device_found": "Laite löydetty: {device}",
+    "device_not_found": "[{input}] Laitetta {device} ei löydy",
+    "error_setup": "Virhe kuuntelijan määrittämisessä tulolle {input}:",
+    "event_received": "Tapahtuma vastaanotettu tulolle {input}",
+    "invalid_config": "Virheellinen linkkimääritys tulolle {input}",
+    "polling_setup": "[{input}] Määritetty pollaus laitteelle {device} ({capability})",
+    "registered": "[{input}] Kuunnellaan laitetta {device} kyvykkyyttä {capability}",
+    "registering": "Rekisteröidään kyvykkyyskuuntelijaa kohteelle {capability}...",
+    "setting_up": "Määritetään kuuntelijaa tulolle {input}"
+  },
+  "notifications": {
+    "device_ready": "Laite on valmis",
+    "error_cleared": "Virhetila tyhjennetty",
+    "error_cleared_all": "Virhetila tyhjennetty kaikille kaavoille",
+    "formula_updated": "Kaava päivitetty",
+    "input_received": "Tulo vastaanotettu",
+    "invalid_formula_config": "Virheellinen kaava '{formulaName}': {error}",
+    "output_changed": "Lähtö muutettu",
+    "reevaluating": "Arvioi kaikki kaavat uudelleen..."
   },
   "operators": {
     "and": "JA",
-    "or": "TAI",
-    "not": "EI",
-    "greater_than": "Suurempi kuin",
-    "less_than": "Pienempi kuin",
     "equal": "Yhtä suuri kuin",
-    "not_equal": "Eri kuin",
     "greater_or_equal": "Suurempi tai yhtä suuri kuin",
-    "less_or_equal": "Pienempi tai yhtä suuri kuin"
+    "greater_than": "Suurempi kuin",
+    "less_or_equal": "Pienempi tai yhtä suuri kuin",
+    "less_than": "Pienempi kuin",
+    "not": "EI",
+    "not_equal": "Eri kuin",
+    "or": "TAI"
   },
-  "help": {
-    "formula_syntax": "Käytä loogisia operaattoreita kuten JA, TAI, EI luodaksesi kaavasi",
-    "input_values": "Tuloarvot päivittyvät automaattisesti, kun yhdistetyt laitteet muuttuvat",
-    "timeout_warning": "Jos tuloa ei päivitetä aikakatkaisujakson aikana, se merkitään",
-    "first_impression": "Ensivaikutelman tila lukitsee tulot niiden ensimmäiseen vastaanotettuun arvoon"
+  "pair": {
+    "add": "Lisää laite",
+    "capability_label": "Kyvykkyys:",
+    "configure": "Määritä laite",
+    "configure_all_inputs": "Määritä kaikki tulot ensin!",
+    "configure_inputs_description": "Valitse, mitä laitetta ja kyvykkyyttä kunkin tulon tulee seurata:",
+    "configure_inputs_title": "Määritä tulot",
+    "configured": "Määritetty",
+    "create_device": "[PAIR] create_device kutsuttu",
+    "creating_device": "[PAIR] Luodaan laitetta:",
+    "default_formula_name": "Oma Kaava",
+    "device_label": "Laite:",
+    "device_name_label": "Anna laitteelle nimi:",
+    "device_name_placeholder": "Logiikkalaitteeni",
+    "error": "Laitteen lisääminen epäonnistui",
+    "error_button_not_found": "Valmis-painiketta ei löydy DOM:sta!",
+    "error_completing_setup": "Asennuksen viimeistely epäonnistui: {error}",
+    "error_homey_emit_unavailable": "Homey.emit ei ole käytettävissä",
+    "error_homey_nextview_unavailable": "Homey.nextView ei ole käytettävissä",
+    "error_homey_object_unavailable": "Homey-objekti tai vaaditut funktiot (emit, __) eivät ole käytettävissä.",
+    "error_i18n_unavailable": "Homey-käännöstoiminto (__) ei ole käytettävissä.",
+    "error_loading": "-- Lastausvirhe --",
+    "error_loading_capabilities": "Kyvykkyyksien lataus epäonnistui: {error}",
+    "error_loading_initial_data": "Alkutietojen lataus epäonnistui: {error}",
+    "error_navigating": "Siirtymisvirhe: {error}",
+    "error_saving_config": "Määrityksen tallennus epäonnistui: {error}",
+    "error_saving_input_number": "Tulomäärän tallennus epäonnistui: {error}",
+    "error_setting_up_interactions": "Sivun vuorovaikutusten asettaminen epäonnistui: {error}",
+    "error_system_not_ready": "Virhe: Paritusjärjestelmä ei ole valmis.",
+    "formula_label": "Syötä kaava:",
+    "get_devices_error": "[PAIR] VIRHE get_devices_in_zone:",
+    "get_devices_in_zone": "[PAIR] get_devices_in_zone kutsuttu alueelle: {zone}",
+    "get_num_inputs": "[PAIR] get_num_inputs kutsuttu",
+    "get_zones": "[PAIR] get_zones kutsuttu",
+    "get_zones_error": "[PAIR] VIRHE get_zones:",
+    "handlers_registered": "Parituskäsittelijät rekisteröity",
+    "input": "Tulo",
+    "inputs_configured": "tuloa määritetty",
+    "inputs_range": "Valitse 2–10 tuloa",
+    "intro": "Luo uusi logiikkalaite monimutkaisten kaavojen arvioimiseksi",
+    "load_devices_error": "Laitteiden lataaminen alueelle epäonnistui",
+    "name": "Laitteen nimi",
+    "name_placeholder": "Logiikkalaitteeni",
+    "next": "Seuraava →",
+    "no_zones_error": "Alueita ei löydy. Luo ensin alueita Homey-laitteeseesi.",
+    "not_configured": "Ei määritetty",
+    "of": "/",
+    "save_complete": "Tallenna ja viimeistele",
+    "select_capability": "-- Valitse kyvykkyys --",
+    "select_device": "-- Valitse laite --",
+    "select_device_first": "-- Valitse laite ensin --",
+    "select_inputs_description": "Kuinka monta laitetta haluat yhdistää tähän logiikkalaitteeseen?",
+    "select_inputs_title": "Valitse tulojen määrä",
+    "select_zone": "-- Valitse alue/huone --",
+    "select_zone_first": "-- Valitse alue ensin --",
+    "session_started": "Paritusistunto aloitettu",
+    "set_device_formula": "[PAIR] set_device_formula kutsuttu arvolla: {formula}",
+    "set_device_name": "[PAIR] set_device_name kutsuttu arvolla:",
+    "set_input_links": "[PAIR] set_input_links kutsuttu",
+    "set_num_inputs": "[PAIR] set_num_inputs kutsuttu datalla:",
+    "status_label": "Tila:",
+    "success": "Laite lisätty onnistuneesti",
+    "title": "Lisää logiikkalaite",
+    "unknown_capability_fallback": "Tuntematon kyvykkyys",
+    "unknown_device": "Tuntematon laite",
+    "zone_label": "Alue/Huone:"
+  },
+  "parse": {
+    "error_detecting_inputs": "Virhe tarvittavien tulojen tunnistamisessa:",
+    "error_formulas": "Kaavojen jäsentäminen epäonnistui:",
+    "error_formulas_invalid": "Virheellinen kaavojen JSON: {message}",
+    "error_formulas_json": "Kaavojen jäsentäminen epäonnistui:",
+    "error_input_links": "input_links-määritysten jäsentäminen epäonnistui:",
+    "error_input_links_invalid": "Virheellinen input_links JSON: {message}"
+  },
+  "polling": {
+    "all_inputs": "Pollataan kaikkia linkitettyjä laitetuloja...",
+    "api_unavailable": "Sovelluksen API ei ole käytettävissä pollaamiseen",
+    "device_not_found": "Laitetta ei löydy: {device}",
+    "failed": "Tiedonhaku epäonnistui kohteelle {input}:",
+    "input": "Pollataan tuloa \"{input}\" laitteesta \"{device}\" kyvykkyys \"{capability}\"",
+    "no_links": "Ei inputLinks-määrityksiä pollattavaksi",
+    "no_value": "Ei arvoa kohteelle {input} ({capability})",
+    "value_received": "Pollattu {input}: {value} → {boolean}"
+  },
+  "refetch": {
+    "fetching_values": "Haetaan alkuarvot uudelleen ennen arviointia...",
+    "invoked": "Uudelleenhaku ja arviointi käynnistetty (lähde={source})",
+    "no_links": "Ei syöttölinkkejä saatavilla uudelleenhaun aikana; ohitetaan arvojen haku.",
+    "parse_failed": "input_links-määritysten jäsentäminen epäonnistui uudelleenhaun aikana:",
+    "reason": "Haetaan tulot uudelleen (syy: {reason})..."
+  },
+  "settings": {
+    "applied": "Asetukset otettu käyttöön onnistuneesti",
+    "applying_formatted": "Otetaan käyttöön automaattisesti muotoiltuja asetuksia...",
+    "auto_formatted": "Asetukset automaattisesti muotoiltu",
+    "cancel": "Peruuta",
+    "changed": "Asetukset muutettu:",
+    "changed_dynamic": "Asetukset muutettu (dynaaminen laite):",
+    "description": "Määritä Boolean Toolbox -logiikkalaite",
+    "error": "Asetusten tallentaminen epäonnistui",
+    "expanded": "Kapasiteetti laajennettu {numInputs} tuloon: {availableInputs}",
+    "expanding_capacity": "Laajennetaan kapasiteettia: {from} -> {to} (syy: {reason})",
+    "expansion_failed": "Kapasiteetin automaattinen laajentaminen epäonnistui:",
+    "format_failed": "Asetusten automaattinen muotoilu epäonnistui:",
+    "formatting": "Automaattisesti muotoillaan {type} JSON",
+    "reset": "Palauta oletusasetuksiin",
+    "save": "Tallenna",
+    "saved": "Asetukset tallennettu",
+    "title": "Asetukset"
+  },
+  "timeout": {
+    "error": "Virhe aikakatkaisun laukaisemisessa:"
   }
 }

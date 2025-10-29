@@ -1,0 +1,160 @@
+{
+  "id": "set_input_value_lu",
+  "title": {
+    "en": "Set input value (specific formula)",
+    "no": "Sett inngangsverdi (spesifikk formel)",
+    "de": "Eingangswert setzen (spezifische Formel)",
+    "nl": "Ingangswaarde instellen (specifieke formule)",
+    "fr": "Définir la valeur d'entrée (formule spécifique)",
+    "da": "Indstil indgangsværdi (specifik formel)",
+    "fi": "Aseta tuloarvo (tietty kaava)",
+    "sv": "Ställ in ingångsvärde (specifik formel)",
+    "pl": "Ustaw wartość wejściową (konkretna formuła)",
+    "it": "Imposta valore input (formula specifica)",
+    "es": "Establecer valor de entrada (fórmula específica)"
+  },
+  "titleFormatted": {
+    "en": "Set input [[input]] to [[value]] for formula [[formula]]",
+    "no": "Sett inngang [[input]] til [[value]] for formel [[formula]]",
+    "de": "Eingang [[input]] auf [[value]] für Formel [[formula]] setzen",
+    "nl": "Ingang [[input]] instellen op [[value]] voor formule [[formula]]",
+    "fr": "Mettre l'entrée [[input]] à [[value]] pour la formule [[formula]]",
+    "da": "Indstil indgang [[input]] til [[value]] for formel [[formula]]",
+    "fi": "Aseta tulo [[input]] arvoon [[value]] kaavalle [[formula]]",
+    "sv": "Ställ in ingång [[input]] till [[value]] för formel [[formula]]",
+    "pl": "Ustaw wejście [[input]] na [[value]] dla formuły [[formula]]",
+    "it": "Imposta input [[input]] a [[value]] per formula [[formula]]",
+    "es": "Establecer entrada [[input]] a [[value]] para fórmula [[formula]]"
+  },
+  "hint": {
+    "en": "✅ Sets the input value for ONE specific formula only. Other formulas are not affected. Use this when you want to control formulas independently.",
+    "no": "✅ Setter inngangsverdien for KUN ÉN spesifikk formel. Andre formler påvirkes ikke. Bruk denne når du vil kontrollere formler uavhengig.",
+    "de": "✅ Setzt den Eingangswert für NUR EINE spezifische Formel. Andere Formeln werden nicht beeinflusst. Verwenden Sie dies, wenn Sie Formeln unabhängig steuern möchten.",
+    "nl": "✅ Stelt de ingangswaarde in voor SLECHTS ÉÉN specifieke formule. Andere formules worden niet beïnvloed. Gebruik dit wanneer u formules onafhankelijk wilt besturen.",
+    "fr": "✅ Définit la valeur d'entrée pour UNE SEULE formule spécifique. Les autres formules ne sont pas affectées. Utilisez ceci lorsque vous souhaitez contrôler les formules indépendamment.",
+    "da": "✅ Indstiller indgangsværdien for KUN ÉN specifik formel. Andre formler påvirkes ikke. Brug dette, når du vil styre formler uafhængigt.",
+    "fi": "✅ Asettaa tuloarvon vain YHDELLE tietylle kaavalle. Muut kaavat eivät vaikuta. Käytä tätä, kun haluat hallita kaavoja itsenäisesti.",
+    "sv": "✅ Ställer in ingångsvärdet för ENDAST EN specifik formel. Andra formler påverkas inte. Använd detta när du vill styra formler oberoende.",
+    "pl": "✅ Ustawia wartość wejściową dla TYLKO JEDNEJ konkretnej formuły. Inne formuły nie są dotknięte. Użyj tego, gdy chcesz kontrolować formuły niezależnie.",
+    "it": "✅ Imposta il valore di input per UNA SOLA formula specifica. Le altre formule non sono interessate. Usa questo quando vuoi controllare le formule indipendentemente.",
+    "es": "✅ Establece el valor de entrada para UNA SOLA fórmula específica. Otras fórmulas no se ven afectadas. Usa esto cuando quieras controlar fórmulas de forma independiente."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-unit|logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+    },
+    {
+      "type": "autocomplete",
+      "name": "formula",
+      "title": {
+        "en": "Formula",
+        "no": "Formel",
+        "de": "Formel",
+        "nl": "Formule",
+        "fr": "Formule",
+        "da": "Formel",
+        "fi": "Kaava",
+        "sv": "Formel",
+        "pl": "Formuła",
+        "it": "Formula",
+        "es": "Fórmula"
+      },
+      "placeholder": {
+        "en": "Select formula",
+        "no": "Velg formel",
+        "de": "Wähle Formel",
+        "nl": "Selecteer formule",
+        "fr": "Sélectionner la formule",
+        "da": "Vælg formel",
+        "fi": "Valitse kaava",
+        "sv": "Välj formel",
+        "pl": "Wybierz formułę",
+        "it": "Seleziona formula",
+        "es": "Seleccionar fórmula"
+      }
+    },
+    {
+      "type": "autocomplete",
+      "name": "input",
+      "title": {
+        "en": "Input",
+        "no": "Inngang",
+        "de": "Eingang",
+        "nl": "Ingang",
+        "fr": "Entrée",
+        "da": "Indgang",
+        "fi": "Tulo",
+        "sv": "Ingång",
+        "pl": "Wejście",
+        "it": "Input",
+        "es": "Entrada"
+      },
+      "placeholder": {
+        "en": "Select input",
+        "no": "Velg inngang",
+        "de": "Eingang wählen",
+        "nl": "Selecteer ingang",
+        "fr": "Sélectionner l'entrée",
+        "da": "Vælg indgang",
+        "fi": "Valitse tulo",
+        "sv": "Välj ingång",
+        "pl": "Wybierz wejście",
+        "it": "Seleziona input",
+        "es": "Seleccionar entrada"
+      }
+    },
+    {
+      "type": "dropdown",
+      "name": "value",
+      "title": {
+        "en": "Value",
+        "no": "Verdi",
+        "de": "Wert",
+        "nl": "Waarde",
+        "fr": "Valeur",
+        "da": "Værdi",
+        "fi": "Arvo",
+        "sv": "Värde",
+        "pl": "Wartość",
+        "it": "Valore",
+        "es": "Valor"
+      },
+      "values": [
+        {
+          "id": "true",
+          "title": {
+            "en": "TRUE",
+            "no": "SANN",
+            "de": "WAHR",
+            "nl": "WAAR",
+            "fr": "VRAI",
+            "da": "SAND",
+            "fi": "TOSI",
+            "sv": "SANT",
+            "pl": "PRAWDA",
+            "it": "VERO",
+            "es": "VERDADERO"
+          }
+        },
+        {
+          "id": "false",
+          "title": {
+            "en": "FALSE",
+            "no": "USANN",
+            "de": "FALSCH",
+            "nl": "ONWAAR",
+            "fr": "FAUX",
+            "da": "FALSK",
+            "fi": "EPÄTOSI",
+            "sv": "FALSKT",
+            "pl": "FAŁSZ",
+            "it": "FALSO",
+            "es": "FALSO"
+          }
+        }
+      ]
+    }
+  ]
+}

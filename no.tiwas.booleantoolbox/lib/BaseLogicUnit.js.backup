@@ -1,0 +1,1049 @@
+"use strict";
+const FormulaEvaluator = require('./FormulaEvaluator');
+const Homey = require("homey");
+const Logger = require("./Logger");
+
+module.exports = class BaseLogicUnit extends Homey.Device {
+  async safeSetCapabilityValue(cap, value) {
+    if (this._isDeleting) return;
+    try {
+      if (!this.hasCapability(cap)) {
+        return;
+      }
+      await this.setCapabilityValue(cap, value);
+    } catch (e) {
+      const msg = e?.message || String(e);
+      if (e?.statusCode === 404 || /not\s*found/i.test(msg)) {
+        this.logger.debug("device.capability_skip_deleted", {
+          capability: cap,
+        });
+      } else {
+        this.logger.error("device.capability_update_failed", {
+          capability: cap,
+          message: msg,
+        });
+      }
+    }
+  }
+
+  async onInit() {
+    const driverName = `Device: ${this.driver ? this.driver.id : "unknown-driver"}`;
+    this.logger = new Logger(this, driverName);
+    this.logger.device("device.initializing", {
+      name: this.getName(),
+    });
+
+    if (!this.hasCapability("onoff")) {
+      await this.addCapability("onoff").catch((e) =>
+        this.logger.error("Failed to add 'onoff' capability", e),
+      );
+    }
+    if (!this.hasCapability("alarm_generic")) {
+      await this.addCapability("alarm_generic").catch((e) =>
+        this.logger.error("Failed to add 'alarm_generic' capability", e),
+      );
+    }
+
+    this.numInputs = this.getData().numInputs ?? 2;
+    this.availableInputs = this.getAvailableInputIds();
+    this.logger.debug(
+      `Device initialized with ${this.numInputs} inputs: ${this.availableInputs.join(", ")}`,
+      {},
+    );
+
+    await this.initializeFormulas();
+    await this.evaluateAllFormulasInitial();
+    this.startTimeoutChecks();
+
+    // REGISTRATION IS REMOVED FROM HERE
+    this.logger.info("device.initialized", {
+      name: this.getName(),
+      count: this.numInputs,
+    });
+  }
+
+  async onFlowCondition(args, state, checkType) {
+    this.logger.flow(`onFlowCondition called for checkType: '${checkType}'`, {
+      formulaId: args.formula?.id,
+    });
+
+    if (checkType === "has_error") {
+      const hasTimeout = this.formulas.some((f) => f.timedOut === true);
+      this.logger.flow(`Condition 'has_any_error' check result: ${hasTimeout}`);
+      return hasTimeout;
+    }
+
+    const cardIdFromArgs = args.cardId;
+    if (
+      (cardIdFromArgs === "formula_result_is_ld" ||
+        cardIdFromArgs === "formula_has_timed_out_ld") &&
+      !args.formula
+    ) {
+      this.logger.warn(
+        "onFlowCondition: _ld card called without formula on LU device. Checking first formula as fallback.",
+      );
+      if (this.formulas.length > 0) args.formula = this.formulas[0];
+      else return false;
+    }
+
+    if (!args.formula || !args.formula.id) {
+      this.logger.warn(
+        "onFlowCondition: No formula specified in args for formula-specific check.",
+        {
+          checkType,
+        },
+      );
+      return false;
+    }
+    const formulaId = args.formula.id;
+    const formula = this.formulas.find((f) => f.id === formulaId);
+
+    if (!formula) {
+      this.logger.warn("onFlowCondition: Invalid formula ID received.", {
+        formulaId,
+      });
+      return false;
+    }
+
+    if (checkType === "timeout") {
+      const isTimedOut = formula.timedOut === true;
+      this.logger.flow(
+        `Condition 'formula_has_timed_out' check for '${formula.name}': Result=${isTimedOut}`,
+      );
+      return isTimedOut;
+    } else if (typeof checkType === "boolean") {
+      const currentResult = formula.result;
+      const desiredResult = checkType;
+      const evaluatedResult = currentResult === true;
+      const conditionMet = evaluatedResult === desiredResult;
+      this.logger.flow(
+        `Condition 'formula_result_is' check for '${formula.name}': Current=${currentResult}, Desired=${desiredResult}, Match=${conditionMet}`,
+      );
+      return conditionMet;
+    } else {
+      this.logger.error(
+        `onFlowCondition: Unknown checkType received: '${checkType}'`,
+      );
+      return false;
+    }
+  }
+
+  async onFlowActionSetInput(args, state) {
+    if (!args.formula || !args.input || !args.formula.id || !args.input.id) {
+      this.logger.warn("onFlowActionSetInput: Missing formula or input ID.", {
+        args,
+      });
+      return false;
+    }
+    const formulaId = args.formula.id;
+    const inputId = args.input.id;
+    const value = args.value === "true";
+    this.logger.flow("onFlowActionSetInput: Setting input", {
+      formula: formulaId,
+      input: inputId,
+      value: value,
+    });
+    try {
+      await this.setInputForFormula(formulaId, inputId, value);
+      return true;
+    } catch (e) {
+      this.logger.error(
+        `Error during onFlowActionSetInput for ${formulaId}/${inputId}`,
+        e,
+      );
+      return false;
+    }
+  }
+
+  async onFlowActionEvaluateFormula(args, state) {
+    const cardIdFromArgs = args.cardId;
+    if (
+      (!args.formula || !args.formula.id) &&
+      cardIdFromArgs === "evaluate_formula_ld"
+    ) {
+      this.logger.warn(
+        `onFlowActionEvaluateFormula (LD) called on LU device ${this.getName()}. Falling back to re-evaluate all.`,
+      );
+      return this.onFlowActionReEvaluateAll(args, state);
+    }
+    if (!args.formula || !args.formula.id) {
+      this.logger.warn("onFlowActionEvaluateFormula: Missing formula ID.", {
+        args,
+      });
+      return false;
+    }
+    const formulaId = args.formula.id;
+    const formula = this.formulas.find((f) => f.id === formulaId);
+    if (!formula) {
+      this.logger.warn("onFlowActionEvaluateFormula: Invalid formula ID.", {
+        formulaId,
+      });
+      return false;
+    }
+    this.logger.flow(
+      `onFlowActionEvaluateFormula: Evaluating '${formula.name}' (Resetting locks)`,
+    );
+    try {
+      await this.evaluateFormula(formulaId, true);
+      return true;
+    } catch (e) {
+      this.logger.error(
+        `Error during onFlowActionEvaluateFormula for ${formulaId}`,
+        e,
+      );
+      return false;
+    }
+  }
+
+  async onFlowActionClearError(args, state) {
+    const cardIdFromArgs = args.cardId;
+    if (
+      (!args.formula || !args.formula.id) &&
+      cardIdFromArgs === "clear_error_ld"
+    ) {
+      this.logger.warn(
+        `onFlowActionClearError (LD) called on LU device ${this.getName()}. Clearing all formula timeouts.`,
+      );
+      this.formulas.forEach((f) => {
+        f.timedOut = false;
+      });
+      this.logger.info("notifications.error_cleared_all", {});
+      return true;
+    }
+    if (!args.formula || !args.formula.id) {
+      this.logger.warn("onFlowActionClearError: Missing formula ID.", {
+        args,
+      });
+      return false;
+    }
+    const formulaId = args.formula.id;
+    const formula = this.formulas.find((f) => f.id === formulaId);
+    if (!formula) {
+      this.logger.warn("onFlowActionClearError: Invalid formula ID.", {
+        formulaId,
+      });
+      return false;
+    }
+    this.logger.flow(
+      `onFlowActionClearError: Clearing timeout state for '${formula.name}'`,
+    );
+    formula.timedOut = false;
+    this.logger.info("notifications.error_cleared", {
+      formulaName: formula.name,
+    });
+    return true;
+  }
+
+  async onFlowActionReEvaluateAll(args, state) {
+    this.logger.flow(
+      "onFlowActionReEvaluateAll: Re-evaluating all formulas",
+      {},
+    );
+    try {
+      await this.evaluateAllFormulas();
+      return true;
+    } catch (e) {
+      this.logger.error("Error during onFlowActionReEvaluateAll", e);
+      return false;
+    }
+  }
+
+  async setAllInputsFromFlow(args, state) {
+    const device = this;
+    const valuesJson = args.values;
+    this.logger.flow(
+      `Executing Action 'set_all_inputs' on device '${device.getName()}'`,
+    );
+    if (typeof valuesJson !== "string" || valuesJson.trim() === "") {
+      this.logger.warn(
+        `RunListener set_all_inputs: Empty or invalid JSON provided.`,
+      );
+      return false;
+    }
+    try {
+      const values = JSON.parse(valuesJson);
+      if (typeof values !== "object" || values === null) {
+        throw new Error("Parsed JSON is not an object.");
+      }
+      const promises = [];
+      const inputs = device.getAvailableInputIds
+        ? device.getAvailableInputIds()
+        : [];
+      const formulas = Array.isArray(device.formulas) ? device.formulas : [];
+
+      for (const key in values) {
+        if (!inputs.includes(key.toLowerCase())) {
+          this.logger.warn(
+            `setAllInputsFromFlow: JSON contains invalid input key '${key}' for this device.`,
+          );
+        }
+      }
+
+      for (const inputId of inputs) {
+        const key = inputId.toUpperCase();
+        if (values.hasOwnProperty(key)) {
+          formulas.forEach((f) => {
+            if (
+              f &&
+              f.enabled &&
+              typeof device.setInputForFormula === "function"
+            ) {
+              const boolValue =
+                values[key] === true ||
+                String(values[key]).toLowerCase() === "true";
+              promises.push(
+                device.setInputForFormula(f.id, inputId, boolValue),
+              );
+            }
+          });
+        }
+      }
+      await Promise.all(promises);
+      this.logger.info(`set_all_inputs OK for ${device.getName()}`, {});
+      return true;
+    } catch (e) {
+      this.logger.error(`Error set_all_inputs for ${device.getName()}`, e);
+      return false;
+    }
+  }
+
+  async setInputForAllFormulasFromFlow(args, state) {
+    const device = this;
+    const inputId = args.input?.id;
+    const value = args.value === "true";
+
+    this.logger.flow(
+      `Executing Action 'set_input' on device '${device.getName()}'`,
+      {
+        input: inputId,
+        value,
+      },
+    );
+
+    if (!inputId || !this.availableInputs.includes(inputId)) {
+      this.logger.error(
+        `RunListener set_input: Invalid or missing input ID: ${inputId}. Available: ${this.availableInputs.join(",")}`,
+      );
+
+      return false;
+    }
+
+    const promises = [];
+    const formulas = Array.isArray(device.formulas) ? device.formulas : [];
+    try {
+      formulas.forEach((f) => {
+        if (f && f.enabled && typeof device.setInputForFormula === "function") {
+          promises.push(device.setInputForFormula(f.id, inputId, value));
+        }
+      });
+      await Promise.all(promises);
+      this.logger.info(`set_input OK for ${device.getName()}`, {});
+      return true;
+    } catch (e) {
+      this.logger.error(`Error set_input for ${device.getName()}`, e);
+      return false;
+    }
+  }
+
+  getAvailableInputIds() {
+    const allInputs = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+    const count = Math.max(
+      0,
+      Math.min(allInputs.length, Number(this.numInputs) || 0),
+    );
+    return allInputs.slice(0, count);
+  }
+
+  getAvailableInputsUppercase() {
+    return this.availableInputs.map((i) => i.toUpperCase());
+  }
+
+  initializeFormulas() {
+    this.logger.debug("Initializing formulas from settings...", {});
+    const settings = this.getSettings();
+    try {
+      const formulasData = settings.formulas
+        ? JSON.parse(settings.formulas)
+        : [];
+      if (!Array.isArray(formulasData)) {
+        this.logger.error("errors.invalid_formula", {
+          message: "Formulas setting is not an array.",
+        });
+        this.formulas = [];
+      } else {
+        this.formulas = formulasData.map((f) => ({
+          id: f.id || `formula_${Math.random().toString(16).slice(2)}`,
+          name: f.name || this.homey.__("formula.unnamed_formula"),
+          expression: f.expression || "",
+          enabled: f.enabled !== false,
+          timeout: Number(f.timeout) || 0,
+          firstImpression: !!f.firstImpression,
+          inputStates: {},
+          lockedInputs: {},
+          lastInputTime: null,
+          result: null,
+          timedOut: false,
+        }));
+      }
+
+      this.formulas.forEach((formula) => {
+        this.availableInputs.forEach((id) => {
+          formula.inputStates[id] = "undefined";
+          formula.lockedInputs[id] = false;
+        });
+      });
+    } catch (e) {
+      this.logger.error("errors.invalid_formula", e);
+      this.formulas = [];
+    }
+
+    if (this.formulas.length === 0) {
+      this.logger.warn(
+        "No valid formulas found in settings, creating default.",
+        {},
+      );
+      const defaultFormula = {
+        id: "formula_1",
+        name: this.homey.__
+          ? this.homey.__("formula.default_name_alt")
+          : this.homey.__("formula.default_name_alt_fallback"),
+        expression: this.getDefaultExpression(),
+        enabled: true,
+        timeout: 0,
+        firstImpression: false,
+        inputStates: {},
+        lockedInputs: {},
+        lastInputTime: null,
+        result: null,
+        timedOut: false,
+      };
+
+      this.availableInputs.forEach((id) => {
+        defaultFormula.inputStates[id] = "undefined";
+        defaultFormula.lockedInputs[id] = false;
+      });
+      this.formulas = [defaultFormula];
+    }
+    this.logger.info("formula.initialized", {
+      count: this.formulas.length,
+    });
+    this.formulas.forEach((f) =>
+      this.logger.debug("formula.details", {
+        name: f.name,
+        expression: f.expression,
+        enabled: f.enabled,
+      }),
+    );
+  }
+
+  getDefaultExpression() {
+    const inputs = this.getAvailableInputsUppercase();
+    return inputs.length > 0 ? inputs.join(" AND ") : "true";
+  }
+
+  getFormulas() {
+    return this.formulas
+      .filter((f) => f.enabled)
+      .map((f) => ({
+        id: f.id,
+        name: f.name,
+        description:
+          f.expression ||
+          (this.homey.__
+            ? this.homey.__("formula.no_expression")
+            : "(no expression)"),
+      }));
+  }
+
+  getInputOptions() {
+    return this.getAvailableInputsUppercase().map((input) => ({
+      id: input.toLowerCase(),
+      name: input,
+    }));
+  }
+
+  validateExpression(expression) {
+    this.logger.debug(`Validating expression: "${expression || ""}"`, {});
+    if (
+      !expression ||
+      typeof expression !== "string" ||
+      expression.trim() === ""
+    ) {
+      return {
+        valid: false,
+        error: this.homey.__
+          ? this.homey.__("formula.expression_empty")
+          : "Expression empty",
+      };
+    }
+    const upper = expression.toUpperCase();
+    const inputs = this.getAvailableInputsUppercase();
+    if (!inputs.length && upper.match(/[A-J]/)) {
+      return {
+        valid: false,
+        error: this.homey.__("formula.error_inputs_used_but_none_configured"),
+      };
+    }
+    let validationInputs = inputs.length > 0 ? inputs : ["TEMP_VALIDATION_VAR"];
+
+    const tokenRe = new RegExp(
+      `\\b(?:AND|OR|XOR|NOT)\\b|&&|\\|\\||\\^|!=|\\*|\\+|!|\\(|\\)|\\b(?:${validationInputs.join("|")})\\b|\\bTRUE\\b|\\bFALSE\\b`,
+      "gi",
+    );
+    const stripped = upper.replace(tokenRe, "").replace(/\s+/g, "");
+    if (stripped.length > 0) {
+      return {
+        valid: false,
+        error: this.homey.__
+          ? this.homey.__("formula.invalid_tokens", {
+              tokens: stripped,
+            })
+          : `Invalid tokens: ${stripped}`,
+      };
+    }
+
+    let depth = 0;
+    for (const ch of upper) {
+      if (ch === "(") depth++;
+      else if (ch === ")") depth--;
+      if (depth < 0)
+        return {
+          valid: false,
+          error: this.homey.__("formula.error_unbalanced_parentheses"),
+        };
+    }
+    if (depth !== 0)
+      return {
+        valid: false,
+        error: "Unbalanced parentheses",
+      };
+
+    // Attempt to evaluate with dummy values to catch syntax errors
+    let testExpr = upper
+      .replace(/\bAND\b|&|\*/gi, "&&") // Normalize AND operators
+      .replace(/\bOR\b|\||\+/gi, "||") // Normalize OR operators
+      .replace(/\bXOR\b|\^|!=/gi, "!=") // Normalize XOR operators (use JS !=)
+      .replace(/\bNOT\b|!/gi, "!"); // Normalize NOT operator
+
+    // Replace input letters and TRUE/FALSE with boolean literals
+    for (const key of validationInputs) {
+      const re = new RegExp(`\\b${key}\\b`, "g");
+      testExpr = testExpr.replace(re, "true");
+    }
+    testExpr = testExpr
+      .replace(/\bTRUE\b/g, "true")
+      .replace(/\bFALSE\b/g, "false");
+
+    // Try creating a function to catch final syntax errors
+    try {
+      const fn = new Function(`return ${testExpr};`);
+      fn(); // Execute once to be sure
+      return {
+        valid: true,
+      };
+    } catch (e) {
+      return {
+        valid: false,
+        error: this.homey.__
+          ? this.homey.__("formula.invalid_syntax", {
+              message: e.message,
+            })
+          : `Syntax error: ${e.message}`,
+      };
+    }
+  }
+
+  parseExpression(expression) {
+    if (!expression || typeof expression !== "string") return [];
+    const inputs = this.getAvailableInputsUppercase();
+    if (!inputs.length) return [];
+    const varRe = new RegExp(`\\b(${inputs.join("|")})\\b`, "gi");
+    const matches = expression.match(varRe);
+    return matches ? [...new Set(matches.map((c) => c.toUpperCase()))] : [];
+  }
+
+  async setInputForFormula(formulaId, inputId, value) {
+    if (this._isDeleting) return null;
+    const formula = this.formulas.find((f) => f.id === formulaId);
+    if (!formula) {
+      this.logger.warn("errors.invalid_formula", {
+        formulaId,
+      });
+      return null;
+    }
+    if (!this.availableInputs.includes(inputId)) {
+      this.logger.warn(
+        `setInputForFormula: Invalid inputId '${inputId}' for device with ${this.numInputs} inputs.`,
+      );
+      return null;
+    }
+
+    if (
+      formula.firstImpression === true &&
+      formula.lockedInputs[inputId] === true
+    ) {
+      this.logger.debug("inputs.locked", {
+        input: inputId.toUpperCase(),
+        formula: formula.name,
+      });
+      return formula.result;
+    }
+
+    const oldValue = formula.inputStates[inputId];
+    formula.inputStates[inputId] =
+      value === true || value === false ? value : "undefined";
+    formula.timedOut = false;
+
+    if (
+      formula.firstImpression === true &&
+      formula.inputStates[inputId] !== "undefined" &&
+      formula.lockedInputs[inputId] !== true
+    ) {
+      formula.lockedInputs[inputId] = true;
+      this.logger.debug("inputs.locked_at_value", {
+        input: inputId.toUpperCase(),
+        value: formula.inputStates[inputId],
+        formula: formula.name,
+      });
+    }
+
+    if (formula.inputStates[inputId] !== "undefined") {
+      formula.lastInputTime = Date.now();
+    }
+
+    return await this.evaluateFormula(formulaId, false);
+  }
+
+  async evaluateFormula(formulaId, resetLocks = false) {
+    if (this._isDeleting) return null;
+    const formula = this.formulas.find((f) => f.id === formulaId);
+    if (!formula || !formula.enabled) {
+      this.logger.debug("errors.invalid_formula", {
+        formulaId,
+      });
+      return null;
+    }
+
+    if (resetLocks === true && formula.firstImpression === true) {
+      this.availableInputs.forEach((id) => {
+        formula.lockedInputs[id] = false;
+      });
+      this.logger.debug("inputs.unlocked", {
+        formula: formula.name,
+      });
+    }
+
+    const expression = formula.expression;
+    if (!expression) {
+      this.logger.debug("formula.invalid", {
+        formula: formula.name,
+        reason: "No expression",
+      });
+      formula.result = null;
+      return null;
+    }
+
+    const requiredInputs = this.parseExpression(expression);
+    const allDefined = requiredInputs.every(
+      (inputIdUpper) =>
+        formula.inputStates[inputIdUpper.toLowerCase()] !== "undefined",
+    );
+
+    if (!allDefined && requiredInputs.length > 0) {
+      const missing = requiredInputs.filter(
+        (id) => formula.inputStates[id.toLowerCase()] === "undefined",
+      );
+      this.logger.debug("inputs.waiting", {
+        formula: formula.name,
+        missing: missing.join(", "),
+      });
+      return formula.result;
+    }
+
+    const values = {};
+    this.availableInputs.forEach((id) => {
+      values[id.toUpperCase()] = formula.inputStates[id];
+    });
+    this.logger.debug("formula.evaluating", {
+      formula: formula.name,
+    });
+
+    let evalExpression = expression
+      .replace(/\bAND\b|&|\*/gi, "&&")
+      .replace(/\bOR\b|\||\+/gi, "||")
+      .replace(/\bXOR\b|\^|!=/gi, "!=")
+      .replace(/\bNOT\b|!/gi, "!");
+
+    for (const key in values) {
+      if (requiredInputs.includes(key) && values[key] !== "undefined") {
+        const re = new RegExp(`\\b${key}\\b`, "gi");
+        evalExpression = evalExpression.replace(
+          re,
+          String(values[key] === true),
+        );
+      }
+    }
+    evalExpression = evalExpression
+      .replace(/\bTRUE\b/gi, "true")
+      .replace(/\bFALSE\b/gi, "false");
+    this.logger.formula("formula.evaluating_expression", {
+      expression: expression,
+      evalExpression: evalExpression,
+    });
+
+    try {
+      const evaluateFn = new Function(`return ${evalExpression};`);
+      const result = !!evaluateFn();
+      this.logger.debug("formula.evaluated", {
+        formula: formula.name,
+        result: result,
+      });
+
+      const previous = formula.result;
+      formula.result = result;
+      formula.timedOut = false;
+
+      const overallDeviceState = this.formulas.some(
+        (f) => f.enabled && f.result === true,
+      );
+      const currentOnOffState = this.getCapabilityValue("onoff");
+
+      if (currentOnOffState !== overallDeviceState) {
+        await this.safeSetCapabilityValue("onoff", overallDeviceState);
+        await this.safeSetCapabilityValue("alarm_generic", overallDeviceState);
+        this.logger.info(
+          `Overall device capability updated: ${overallDeviceState}`,
+        );
+      }
+
+      if (result !== previous && previous !== null) {
+        const triggerData = {
+          formula: {
+            id: formula.id,
+            name: formula.name,
+          },
+        };
+        const state = {
+          formulaId: formula.id,
+        };
+        const triggerCardId = result
+          ? "formula_changed_to_true"
+          : "formula_changed_to_false";
+        try {
+          this.logger.flow(
+            `Triggering flow '${triggerCardId}' for '${formula.name}'`,
+          );
+          const card = this.homey.flow.getDeviceTriggerCard(triggerCardId);
+          await card.trigger(this, triggerData, state);
+        } catch (e) {
+          if (e.message && e.message.includes("Invalid Flow Card ID")) {
+            this.logger.error(
+              `FATAL: Trigger card '${triggerCardId}' not found. Check app.json/compose flow definitions.`,
+              e,
+            );
+          } else {
+            this.logger.error("flow.trigger_error", e);
+          }
+        }
+      }
+      return result;
+    } catch (e) {
+      this.logger.error("errors.evaluation_failed", e);
+      formula.result = null;
+      return null;
+    }
+  }
+
+  async evaluateAllFormulas() {
+    this.logger.info("notifications.reevaluating", {});
+    const results = [];
+    for (const formula of this.formulas) {
+      if (formula.enabled) {
+        if (formula.firstImpression) {
+          this.availableInputs.forEach((id) => {
+            formula.lockedInputs[id] = false;
+          });
+          this.logger.debug("inputs.unlocked", {
+            formula: formula.name,
+          });
+        }
+        const result = await this.evaluateFormula(formula.id, false);
+        results.push({
+          id: formula.id,
+          name: formula.name,
+          result,
+        });
+      } else {
+        formula.result = null;
+      }
+    }
+    const overallDeviceState = this.formulas.some(
+      (f) => f.enabled && f.result === true,
+    );
+    if (this.getCapabilityValue("onoff") !== overallDeviceState) {
+      await this.safeSetCapabilityValue("onoff", overallDeviceState);
+      await this.safeSetCapabilityValue("alarm_generic", overallDeviceState);
+      this.logger.info(
+        `Overall device capability updated after re-evaluating all: ${overallDeviceState}`,
+      );
+    }
+    this.logger.debug("formula.evaluated_count", {
+      count: results.length,
+    });
+    return results;
+  }
+
+  async evaluateAllFormulasInitial() {
+    this.logger.info("evaluation.initial_complete", {});
+    let anyEvaluated = false;
+
+    for (const formula of this.formulas) {
+      if (!formula.enabled) {
+        formula.result = null;
+        continue;
+      }
+      const expr = formula.expression;
+      if (!expr) {
+        formula.result = null;
+        continue;
+      }
+      const required = this.parseExpression(expr);
+      this.logger.debug("debug.checking_formula", {
+        name: formula.name,
+        expression: expr,
+      });
+      if (required.length > 0) {
+        this.logger.debug("debug.required_inputs", {
+          inputs: required.join(", "),
+        });
+      }
+
+      const allDefined = required.every(
+        (id) => formula.inputStates[id.toLowerCase()] !== "undefined",
+      );
+
+      if (allDefined || required.length === 0) {
+        this.logger.debug("formula.all_inputs_defined", {
+          name: formula.name,
+        });
+        const result = await this.evaluateFormula(formula.id);
+        if (result !== null) {
+          anyEvaluated = true;
+        }
+      } else {
+        const missing = required.filter(
+          (id) => formula.inputStates[id.toLowerCase()] === "undefined",
+        );
+        this.logger.debug("inputs.waiting", {
+          formula: formula.name,
+          missing: missing.join(", "),
+        });
+        formula.result = null;
+      }
+    }
+
+    const finalState = this.formulas.some(
+      (f) => f.enabled && f.result === true,
+    );
+
+    this.logger.info(
+      `Initial evaluation complete. Final state: ${finalState} (anyEvaluated=${anyEvaluated})`,
+    );
+
+    await this.safeSetCapabilityValue("onoff", finalState);
+    await this.safeSetCapabilityValue("alarm_generic", finalState);
+
+    if (
+      !anyEvaluated &&
+      this.formulas.some(
+        (f) =>
+          f.enabled &&
+          f.expression &&
+          this.parseExpression(f.expression).length > 0,
+      )
+    ) {
+      this.logger.warn("evaluation.no_formulas_ready", {});
+    }
+  }
+
+  getFormulaResult(formulaId) {
+    const formula = this.formulas.find((f) => f.id === formulaId);
+    if (!formula) {
+      this.logger.warn("errors.invalid_formula", {
+        formulaId,
+      });
+      return null;
+    }
+    this.logger.debug("formula.result_debug", {
+      name: formula.name,
+      id: formulaId,
+      result: formula.result,
+      type: typeof formula.result,
+    });
+    return formula.result === true;
+  }
+
+  hasFormulaTimedOut(formulaId) {
+    const formula = this.formulas.find((f) => f.id === formulaId);
+    return !!(formula && formula.timedOut);
+  }
+
+  startTimeoutChecks() {
+    if (this.timeoutInterval) {
+      clearInterval(this.timeoutInterval);
+    }
+    this.timeoutInterval = setInterval(() => {
+      this.checkTimeouts();
+    }, 1000);
+    this.logger.debug("Started timeout check interval.", {});
+  }
+
+  checkTimeouts() {
+    const now = Date.now();
+    this.formulas.forEach((formula) => {
+      if (
+        !formula.enabled ||
+        formula.timedOut ||
+        !formula.timeout ||
+        formula.timeout <= 0
+      )
+        return;
+
+      const requiredInputs = this.parseExpression(formula.expression);
+      if (
+        requiredInputs.length === 0 ||
+        requiredInputs.every(
+          (id) => formula.inputStates[id.toLowerCase()] !== "undefined",
+        )
+      ) {
+        return;
+      }
+
+      if (!formula.lastInputTime) return;
+
+      const timeoutMs = formula.timeout * 1000;
+      const elapsed = now - formula.lastInputTime;
+
+      if (elapsed >= timeoutMs) {
+        this.logger.info("formula.timed_out", {
+          name: formula.name,
+          timeout: formula.timeout,
+        });
+        formula.timedOut = true;
+
+        const triggerData = {
+          formula: {
+            id: formula.id,
+            name: formula.name,
+          },
+        };
+        const state = {
+          formulaId: formula.id,
+        };
+        try {
+          const card = this.homey.flow.getDeviceTriggerCard("formula_timeout");
+          card
+            .trigger(this, triggerData, state)
+            .catch((err) => this.logger.error("timeout.error", err));
+        } catch (e) {
+          if (e.message && e.message.includes("Invalid Flow Card ID")) {
+            this.logger.error(
+              `FATAL: Trigger card 'formula_timeout' not found. Check app.json/compose flow definitions.`,
+              e,
+            );
+          } else {
+            this.logger.error(
+              this.homey.__("errors.trigger_timeout_card_failed"),
+              e,
+            );
+          }
+        }
+      }
+    });
+  }
+
+  async onSettings({ oldSettings, newSettings, changedKeys }) {
+    this.logger.info("settings.changed", {
+      keys: changedKeys.join(", "),
+    });
+    if (this.timeoutInterval) {
+      clearInterval(this.timeoutInterval);
+      this.timeoutInterval = null;
+    }
+
+    await this.initializeFormulas();
+
+    if (changedKeys.includes("formulas")) {
+      for (const formula of this.formulas) {
+        const validation = this.validateExpression(formula.expression);
+        if (!validation.valid) {
+          this.homey.notifications
+            .createNotification({
+              excerpt: this.homey.__("notifications.invalid_formula_config", {
+                formulaName: formula.name,
+                error: validation.error,
+              }),
+            })
+            .catch((e) =>
+              this.logger.error(
+                this.homey.__("errors.notification_failed_invalid_formula"),
+                e,
+              ),
+            );
+          this.logger.error(
+            `Invalid formula configuration saved for '${formula.name}'`,
+            {
+              error: validation.error,
+            },
+          );
+        }
+      }
+    }
+
+    await this.evaluateAllFormulasInitial();
+
+    this.startTimeoutChecks();
+    this.logger.info("settings.applied", {});
+
+    const formatSettings = {};
+    let needsFormat = false;
+    if (changedKeys.includes("formulas")) {
+      try {
+        const parsed = JSON.parse(newSettings.formulas);
+        const formatted = JSON.stringify(parsed, null, 2);
+        if (formatted !== newSettings.formulas) {
+          formatSettings.formulas = formatted;
+          needsFormat = true;
+          this.logger.debug("settings.formatting", {
+            type: "formulas",
+          });
+        }
+      } catch (e) {}
+    }
+    if (needsFormat) {
+      setTimeout(async () => {
+        try {
+          this.logger.debug("settings.applying_formatted", {});
+          await this.setSettings(formatSettings);
+          this.logger.info("settings.auto_formatted", {});
+        } catch (e) {
+          this.logger.error("settings.format_failed", e);
+        }
+      }, 500);
+    }
+  }
+
+  async onDeleted() {
+    this._isDeleting = true;
+    this.logger.device("device.deleted_cleanup", {
+      name: this.getName(),
+    });
+    if (this.timeoutInterval) {
+      clearInterval(this.timeoutInterval);
+      this.timeoutInterval = null;
+    }
+    this.logger.info("device.cleanup_complete", {
+      name: this.getName(),
+    });
+  }
+};

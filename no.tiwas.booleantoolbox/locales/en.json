@@ -1,267 +1,509 @@
 {
-  "settings": {
-    "title": "Settings",
-    "description": "Configure your Boolean Toolbox logic device",
-    "save": "Save",
-    "cancel": "Cancel",
-    "reset": "Reset to default",
-    "saved": "Settings saved",
-    "error": "Could not save settings",
-    "changed": "Settings changed:",
-    "applied": "Settings applied successfully",
-    "formatting": "Will auto-format {type} JSON",
-    "applying_formatted": "Applying auto-formatted settings...",
-    "auto_formatted": "Settings auto-formatted",
-    "format_failed": "Failed to auto-format settings:"
-  },
-  "pair": {
-    "title": "Add logic device",
-    "intro": "Create a new logic device to evaluate complex formulas",
-    "name": "Device name",
-    "name_placeholder": "My logic device",
-    "configure": "Configure device",
-    "add": "Add device",
-    "success": "Device added successfully",
-    "error": "Could not add device",
-    "session_started": "Pairing session started",
-    "get_num_inputs": "[PAIR] get_num_inputs called",
-    "set_num_inputs": "[PAIR] set_num_inputs called with data:",
-    "get_zones": "[PAIR] get_zones called",
-    "get_zones_error": "[PAIR] ERROR in get_zones:",
-    "get_devices_in_zone": "[PAIR] get_devices_in_zone called for zone: {zone}",
-    "get_devices_error": "[PAIR] ERROR in get_devices_in_zone:",
-    "set_input_links": "[PAIR] set_input_links called",
-    "set_device_name": "[PAIR] set_device_name called with:",
-    "create_device": "[PAIR] create_device called",
-    "creating_device": "[PAIR] Creating device:",
-    "handlers_registered": "Pairing handlers registered"
-  },
-  "device": {
-    "ready": "Device ready: {name}",
-    "initializing": "Logic Device '{name}' initializing.",
-    "initialized": "Logic Device '{name}' initialized with {count} inputs",
-    "capacity_expanded": "Detected {detected} inputs needed (originally {original}). Expanding capacity.",
-    "capacity_updated": "Updating capacity: {old} → {new} inputs",
-    "max_input_detected": "Detected max input: {input} ({count} inputs needed)",
-    "capability_readonly": "Set onoff as read-only",
-    "capability_options_failed": "Could not set capability options:",
-    "capability_update_failed": "Capability update failed for {capability}:",
-    "capability_skip_deleted": "(safe) Skipping {capability} – device no longer exists.",
-    "deleted_cleanup": "Device deleted – cleaning up listeners & timers",
-    "cleanup_complete": "Cleanup complete",
-    "deleted_skip_update": "Device deleted, skipping capability update",
-    "deleted_skip_flow": "Device deleted, skipping flow trigger",
-    "logic_unit_name": "Logic Unit ({count} inputs)"
-  },
-  "formula": {
-    "default_name": "Main Formula",
-    "default_name_alt": "Formula 1",
-    "initialized": "Initialized {count} formulas",
-    "details": "  - {name}: \"{expression}\" (enabled: {enabled})",
-    "reinitialized": "Re-initialized {count} formulas",
-    "timed_out": "Formula '{name}' timed out after {timeout}s",
-    "evaluated_count": "Evaluated {count} formulas",
-    "expression_empty": "Expression cannot be empty",
-    "invalid_tokens": "Invalid tokens in expression: \"{tokens}\"",
-    "invalid_syntax": "Invalid expression syntax: {message}",
-    "no_expression": "(no expression)",
-    "error_validation": "Formula '{name}': {error}",
-    "result_debug": "getFormulaResult: Formula '{name}' ({id}) result = {result} (type: {type})",
-    "not_found_or_disabled": "Formula '{id}' not found or disabled.",
-    "unlocked_inputs": "🔓 Unlocked all inputs for formula '{name}'",
-    "waiting_for_inputs": "Formula '{name}': Waiting for inputs. Required: [{required}]",
-    "evaluating_expression": "Evaluating: \"{expression}\" → \"{evalExpression}\"",
-    "result": "Formula '{name}' result: {result}",
-    "all_inputs_defined": "Formula '{name}': All inputs defined, evaluating...",
-    "missing_inputs": "Formula '{name}': Missing inputs:",
-    "evaluation_failed": "Failed to evaluate formula '{name}': {message}",
-    "get_result_not_found": "getFormulaResult: Formula '{id}' not found",
-    "set_input_error": "setInputForFormula error:",
-    "name": "Formula",
-    "expression": "Expression",
-    "input": "Input",
-    "output": "Output",
-    "evaluation": "Evaluation",
-    "evaluating": "Evaluating formula...",
-    "evaluated": "Formula evaluated",
-    "error": "Formula error",
-    "timeout": "Formula evaluation timeout",
-    "invalid": "Invalid formula",
-    "syntax_error": "Syntax error in formula"
-  },
-  "devicelinks": {
-    "setting_up": "Setting up device links...",
-    "complete": "Device links setup complete",
-    "count": "Setting up {count} device links",
-    "unregistered": "Unregistered listener: {key}",
-    "error_unregister": "Error unregistering listener:",
-    "setup_failed": "Failed to setup listener for input {input}:",
-    "error_cleanup": "Error cleaning up listener:"
-  },
-  "initial": {
-    "fetching_all": "Fetching initial values for all inputs...",
-    "api_unavailable": "App API not available for fetching initial values",
-    "fetching_input": "[{input}] Fetching initial value...",
-    "device_not_found": "[{input}] Device not found",
-    "capability_not_found": "[{input}] Capability {capability} not found",
-    "value_received": "[{input}] Initial value: {value} → {boolean}",
-    "received_value": "[{input}] Received initial value: {value}",
-    "no_value_waiting": "[{input}] No initial value found - waiting for first event",
-    "error": "[{input}] Error fetching initial value:"
-  },
-  "evaluation": {
-    "running_initial": "Running initial formula evaluation...",
-    "initial_complete": "Initial evaluation of all formulas...",
-    "no_formulas_ready": "No formulas could be evaluated - waiting for input values",
-    "reevaluating_all": "Re-evaluating all formulas (resetting locks)..."
-  },
-  "listener": {
-    "registered": "[{input}] Listening to device {device} capability {capability}",
-    "device_not_found": "[{input}] Device {device} not found",
-    "capability_not_exist": "[{input}] Capability {capability} does not exist on device {device}",
-    "polling_setup": "[{input}] Set up polling for {device} ({capability})",
-    "capability_changed": "[{input}] Capability '{capability}' changed: {value} → {boolean}",
-    "error_setup": "Error setting up listener for input {input}:",
-    "setting_up": "Setting up listener for input {input}",
-    "invalid_config": "Invalid link configuration for input {input}",
-    "api_unavailable": "App API not available for listener setup",
-    "device_found": "Found device: {device}",
-    "capability_found": "Device has capability: {capability}",
-    "event_received": "Event received for input {input}",
-    "registering": "Registering capability listener for {capability}..."
-  },
-  "polling": {
-    "all_inputs": "Polling all linked device inputs...",
-    "no_links": "No inputLinks available for polling",
-    "api_unavailable": "App API not available for polling",
-    "input": "Polling input \"{input}\" from device \"{device}\" capability \"{capability}\"",
-    "device_not_found": "Device not found: {device}",
-    "no_value": "No value for {input} ({capability})",
-    "value_received": "Polled {input}: {value} → {boolean}",
-    "failed": "Failed to poll {input}:"
-  },
-  "parse": {
-    "error_formulas": "Failed to parse formulas:",
-    "error_input_links": "Failed to parse input_links:",
-    "error_formulas_json": "Could not parse formulas:",
-    "error_formulas_invalid": "Invalid formulas JSON: {message}",
-    "error_input_links_invalid": "Invalid input_links JSON: {message}",
-    "error_detecting_inputs": "Error detecting required inputs:"
-  },
-  "refetch": {
-    "reason": "Re-fetching inputs (reason: {reason})...",
-    "invoked": "Refetch and evaluate invoked (source={source})",
-    "parse_failed": "Failed to parse input_links during refetch:",
-    "no_links": "No input links available during refetch; skipping value fetch.",
-    "fetching_values": "Refetching initial values before evaluation..."
-  },
-  "timeout": {
-    "error": "Error triggering timeout:"
-  },
-  "flow": {
-    "triggered": "Triggering flow for formula '{name}' change to {result}",
-    "trigger_error": "Error triggering flow:"
-  },
-  "driver": {
-    "ready": "Driver ready",
-    "ensure_unique_failed": "ensureUniqueDeviceName failed:"
-  },
-  "debug": {
-    "raw_formulas": "Raw formulas input from settings:",
-    "raw_input_links": "Raw input_links from settings:"
-  },
   "app": {
     "athom_api_loaded": "athom-api loaded successfully",
-    "homey_api_extracted": "HomeyAPI extracted, type:",
-    "initializing_homey_api": "Initializing HomeyAPI.forCurrentHomey...",
-    "homey_api_not_function": "HomeyAPI.forCurrentHomey is not a function",
-    "homey_api_methods": "HomeyAPI methods:",
-    "error_stack": "Error stack:",
-    "getting_zones": "Getting available zones...",
-    "found_zones": "Found {count} zones",
-    "error_getting_zones": "Error getting zones:",
-    "getting_devices_for_zone": "Getting devices for zone ID: {zoneId}",
-    "found_devices_in_zone": "Found {count} devices in zone {zoneId}",
-    "error_getting_devices": "Error getting devices for zone {zoneId}:",
-    "registering_flow_cards": "Registering flow cards...",
-    "condition_check": "Condition check: Formula '{formulaName}' result = {result}, checking if it is '{expected}'",
-    "formula_not_evaluated": "Condition: Formula '{formulaName}' has not been evaluated yet (result is {result})",
-    "running_evaluation": "Running evaluation. Input: {input}, Rules: '{rules}'",
-    "evaluation_finished": "Evaluation finished. Output: {output}",
-    "value_outside_logic": "Value {input} is outside the defined logic.",
     "checking_for_error": "Checking for error. Input: '{textInput}', Has error: {hasError}",
-    "flow_cards_registered": "Flow cards registered"
+    "condition_check": "Condition check: Formula '{formulaName}' result = {result}, checking if it is '{expected}'",
+    "error_getting_devices": "Error getting devices for zone {zoneId}:",
+    "error_getting_zones": "Error getting zones:",
+    "error_stack": "Error stack:",
+    "evaluation_finished": "Evaluation finished. Output: {output}",
+    "flow_cards_registered": "Flow cards registered",
+    "formula_not_evaluated": "Condition: Formula '{formulaName}' has not been evaluated yet (result is {result})",
+    "found_devices_in_zone": "Found {count} devices in zone {zoneId}",
+    "found_zones": "Found {count} zones",
+    "getting_devices_for_zone": "Getting devices for zone ID: {zoneId}",
+    "getting_zones": "Getting available zones...",
+    "homey_api_extracted": "HomeyAPI extracted, type:",
+    "homey_api_methods": "HomeyAPI methods:",
+    "homey_api_not_function": "HomeyAPI.forCurrentHomey is not a function",
+    "initializing_homey_api": "Initializing HomeyAPI.forCurrentHomey...",
+    "registering_flow_cards": "Registering flow cards...",
+    "running_evaluation": "Running evaluation. Input: {input}, Rules: '{rules}'",
+    "value_outside_logic": "Value {input} is outside the defined logic."
   },
-  "errors": {
-    "generic": "An error occurred",
-    "timeout": "Operation timeout",
-    "invalid_input": "Invalid input value",
-    "invalid_formula": "Invalid formula expression",
-    "evaluation_failed": "Formula evaluation failed",
-    "device_not_found": "Device not found",
-    "permission_denied": "Permission denied",
-    "connection_failed": "Connection failed",
-    "unknown": "Unknown error occurred"
-  },
-  "notifications": {
-    "formula_updated": "Formula updated",
-    "input_received": "Input received",
-    "output_changed": "Output changed",
-    "error_cleared": "Error status cleared",
-    "device_ready": "Device is ready",
-    "reevaluating": "Re-evaluating all formulas..."
+  "capability": {
+    "logic_state": {
+      "title": "Logic State"
+    }
   },
   "common": {
-    "yes": "Yes",
-    "no": "No",
-    "true": "True",
-    "false": "False",
-    "enabled": "Enabled",
     "disabled": "Disabled",
-    "on": "On",
-    "off": "Off",
-    "unknown": "Unknown",
-    "loading": "Loading...",
-    "processing": "Processing...",
     "done": "Done",
+    "enabled": "Enabled",
     "failed": "Failed",
-    "success": "Success",
-    "warning": "Warning",
+    "false": "False",
     "info": "Information",
-    "min": "Minimum",
+    "loading": "Loading...",
     "max": "Maximum",
-    "value": "Value",
+    "min": "Minimum",
     "name": "Name",
+    "no": "No",
+    "off": "Off",
+    "on": "On",
+    "processing": "Processing...",
+    "state": "State",
+    "success": "Success",
+    "true": "True",
     "type": "Type",
-    "state": "State"
+    "unknown": "Unknown",
+    "value": "Value",
+    "warning": "Warning",
+    "yes": "Yes"
+  },
+  "debug": {
+    "checking_formula": "Checking formula: {name} (\"{expression}\")",
+    "raw_formulas": "Raw formulas input from settings:",
+    "raw_input_links": "Raw input_links from settings:",
+    "required_inputs": "  - Required inputs: {inputs}"
+  },
+  "device": {
+    "capability_options_failed": "Could not set capability options:",
+    "capability_readonly": "Set onoff as read-only",
+    "capability_skip_deleted": "(safe) Skipping {capability} – device no longer exists.",
+    "capability_update_failed": "Capability update failed for {capability}:",
+    "capacity_expanded": "Detected {detected} inputs needed (originally {original}). Expanding capacity.",
+    "capacity_updated": "Updating capacity: {old} → {new} inputs",
+    "cleanup_complete": "Cleanup complete",
+    "deleted_cleanup": "Device deleted – cleaning up listeners & timers",
+    "deleted_skip_flow": "Device deleted, skipping flow trigger",
+    "deleted_skip_update": "Device deleted, skipping capability update",
+    "initialized": "Logic Device '{name}' initialized with {count} inputs",
+    "initializing": "Logic Device '{name}' initializing.",
+    "logic_unit_dynamic_name": "Logic Unit",
+    "logic_unit_dynamic_name_fallback": "Logic Unit",
+    "logic_unit_name": "Logic Unit ({count} inputs)",
+    "logic_unit_name_fallback": "Logic Unit ({count} inputs)",
+    "max_input_detected": "Detected max input: {input} ({count} inputs needed)",
+    "ready": "Device ready: {name}"
+  },
+  "devicelinks": {
+    "complete": "Device links setup complete",
+    "count": "Setting up {count} device links",
+    "error_cleanup": "Error cleaning up listener:",
+    "error_unregister": "Error unregistering listener:",
+    "setting_up": "Setting up device links...",
+    "setup_failed": "Failed to setup listener for input {input}:",
+    "unregistered": "Unregistered listener: {key}"
+  },
+  "driver": {
+    "ensure_unique_failed": "ensureUniqueDeviceName failed:",
+    "ready": "Driver ready",
+    "registering_flow_cards": "Registering driver flow cards..."
+  },
+  "errors": {
+    "connection_failed": "Connection failed",
+    "device_not_found": "Device not found",
+    "evaluation_failed": "Formula evaluation failed",
+    "generic": "An error occurred",
+    "helper_not_function": "Helper function for '{argName}' is not a function.",
+    "invalid_device_instance": "Invalid device instance",
+    "invalid_formula": "Invalid formula expression",
+    "invalid_input": "Invalid input value",
+    "method_missing_on_device": "Method '{methodName}' missing on device",
+    "notification_failed_invalid_formula": "Failed to create notification for invalid formula",
+    "permission_denied": "Permission denied",
+    "timeout": "Operation timeout",
+    "trigger_timeout_card_failed": "Error getting/triggering formula_timeout card",
+    "unknown": "Unknown error occurred"
+  },
+  "evaluation": {
+    "initial_complete": "Initial evaluation of all formulas...",
+    "no_formulas_ready": "No formulas could be evaluated - waiting for input values",
+    "reevaluating_all": "Re-evaluating all formulas (resetting locks)...",
+    "running_initial": "Running initial formula evaluation..."
+  },
+  "flow": {
+    "actions": {
+      "clear_error_state_lu": {
+        "title": "Clear formula error state",
+        "titleFormatted": "Clear error state for formula [[formula]]"
+      },
+      "clear_error_state_ld": {
+        "title": "Clear formula error state",
+        "titleFormatted": "Clear formula error state"
+      },
+      "evaluate_all_formula_lu": {
+        "title": "Re-evaluate all formulas",
+        "titleFormatted": "Re-evaluate all formulas"
+      },
+      "evaluate_expression": {
+        "title": "Evaluate expression",
+        "titleFormatted": "Evaluate [[input]] [[op1]] min [[logical_op]] [[op2]] max with rules [[rules]]"
+      },
+      "evaluate_formula_lu": {
+        "title": "Evaluate specific formula",
+        "titleFormatted": "Evaluate formula [[formula]]"
+      },
+      "evaluate_formula_ld": {
+        "title": "Re-check device state",
+        "titleFormatted": "Re-check state"
+      },
+      "reevaluate_formulas": {
+        "title": "Re-evaluate all formulas",
+        "titleFormatted": "Re-evaluate all formulas"
+      },
+      "set_all_inputs_lu": {
+        "title": "Set all inputs from JSON",
+        "titleFormatted": "Set all inputs from JSON: [[values]]"
+      },
+      "set_input_lu": {
+        "title": "Set input value (all formulas)",
+        "titleFormatted": "Set input [[input]] to [[value]]"
+      },
+      "set_input_value_lu": {
+        "title": "Set input value for formula",
+        "titleFormatted": "Set input [[input]] to [[value]] for formula [[formula]]"
+      }
+    },
+    "args": {
+      "formula": {
+        "placeholder": "Select formula",
+        "title": "Formula"
+      },
+      "input": {
+        "placeholder": "Select input",
+        "title": "Input"
+      },
+      "logical_op": {
+        "AND": "AND",
+        "OR": "OR",
+        "title": "Logical operator"
+      },
+      "number_input": {
+        "placeholder": "Enter number",
+        "title": "Input value"
+      },
+      "op1": {
+        "gt": ">",
+        "gte": "≥",
+        "lt": "<",
+        "lte": "≤",
+        "title": "First operator"
+      },
+      "op2": {
+        "gt": ">",
+        "gte": "≥",
+        "lt": "<",
+        "lte": "≤",
+        "title": "Second operator"
+      },
+      "rules": {
+        "placeholder": "min,max,output;...",
+        "title": "Rules"
+      },
+      "text_input": {
+        "placeholder": "Enter error message or token",
+        "title": "Error message"
+      },
+      "value": {
+        "false": "FALSE",
+        "title": "Value",
+        "true": "TRUE"
+      },
+      "values": {
+        "placeholder": "{\"A\": true, \"B\": false}",
+        "title": "JSON values"
+      },
+      "what_is": {
+        "false": "FALSE",
+        "title": "Value",
+        "true": "TRUE"
+      }
+    },
+    "conditions": {
+      "formula_has_timed_out_lu": {
+        "title": "Formula !{{has|has not}} timed out",
+        "titleFormatted": "Formula [[formula]] !{{has|has not}} timed out"
+      },
+      "formula_has_timed_out_ld": {
+        "title": "Formula !{{has|has not}} timed out",
+        "titleFormatted": "Formula !{{has|has not}} timed out"
+      },
+      "formula_result_is_lu": {
+        "title": "Formula result is...",
+        "titleFormatted": "Formula [[formula]] result is [[what_is]]"
+      },
+      "formula_result_is_ld": {
+        "title": "Formula result is...",
+        "titleFormatted": "Formula result is [[what_is]]"
+      },
+      "has_any_error_lu": {
+        "title": "Device !{{has|has no}} error",
+        "titleFormatted": "Device !{{has|has no}} error"
+      },
+      "has_any_error_ld": {
+        "title": "Device !{{has|has no}} error",
+        "titleFormatted": "Device !{{has|has no}} error"
+      },
+      "has_error": {
+        "title": "!{{Has|Has no}} error",
+        "titleFormatted": "!{{Has|Has no}} error in [[text_input]]"
+      }
+    },
+    "tokens": {
+      "errorMessage": {
+        "title": "Error message"
+      },
+      "outputValue": {
+        "title": "Output value"
+      },
+      "state": {
+        "title": "State"
+      }
+    },
+    "trigger_error": "Error triggering flow:",
+    "triggered": "Triggering flow for formula '{name}' change to {result}",
+    "triggers": {
+      "device_state_changed": {
+        "hint": "Triggers when the Logic Device state changes (on/off)",
+        "title": "State changed"
+      },
+      "device_state_changed_ld": {
+        "hint": "Triggers when the Logic Device state changes (on/off)",
+        "title": "State changed",
+        "titleFormatted": "State changed"
+      },
+      "formula_changed_to_false_lu": {
+        "title": "Formula changed to FALSE",
+        "titleFormatted": "Formula [[formula]] changed to FALSE"
+      },
+      "formula_changed_to_true_lu": {
+        "title": "Formula changed to TRUE",
+        "titleFormatted": "Formula [[formula]] changed to TRUE"
+      },
+      "formula_timeout_lu": {
+        "title": "Formula timed out",
+        "titleFormatted": "Formula [[formula]] timed out"
+      },
+      "state_changed_ld": {
+        "title": "State changed",
+        "titleFormatted": "State changed"
+      }
+    }
+  },
+  "formula": {
+    "all_inputs_defined": "Formula '{name}': All inputs defined, evaluating...",
+    "default_name": "Main Formula",
+    "default_name_alt": "Formula 1",
+    "default_name_alt_fallback": "Default Formula",
+    "details": "  - {name}: \"{expression}\" (enabled: {enabled})",
+    "error": "Formula error",
+    "error_inputs_used_but_none_configured": "Expression uses inputs, but no inputs are configured for this device.",
+    "error_no_inputs": "No inputs available",
+    "error_unbalanced_parentheses": "Unbalanced parentheses",
+    "error_validation": "Formula '{name}': {error}",
+    "evaluated": "Formula evaluated",
+    "evaluated_count": "Evaluated {count} formulas",
+    "evaluating": "Evaluating formula...",
+    "evaluating_expression": "Evaluating: \"{expression}\" → \"{evalExpression}\"",
+    "evaluation": "Evaluation",
+    "evaluation_failed": "Failed to evaluate formula '{name}': {message}",
+    "expression": "Expression",
+    "expression_empty": "Expression cannot be empty",
+    "get_result_not_found": "getFormulaResult: Formula '{id}' not found",
+    "initialized": "Initialized {count} formulas",
+    "input": "Input",
+    "invalid": "Invalid formula",
+    "invalid_syntax": "Invalid expression syntax: {message}",
+    "invalid_tokens": "Invalid tokens in expression: \"{tokens}\"",
+    "missing_inputs": "Formula '{name}': Missing inputs:",
+    "name": "Formula",
+    "no_expression": "(no expression)",
+    "not_found_or_disabled": "Formula '{id}' not found or disabled.",
+    "output": "Output",
+    "reinitialized": "Re-initialized {count} formulas",
+    "result": "Formula '{name}' result: {result}",
+    "result_debug": "getFormulaResult: Formula '{name}' ({id}) result = {result} (type: {type})",
+    "set_input_error": "setInputForFormula error:",
+    "syntax_error": "Syntax error in formula",
+    "timed_out": "Formula '{name}' timed out after {timeout}s",
+    "timeout": "Formula evaluation timeout",
+    "unlocked_inputs": "🔓 Unlocked all inputs for formula '{name}'",
+    "unnamed_formula": "Unnamed Formula",
+    "waiting_for_input": "Formula '{formula}' waiting for undefined inputs: {error}",
+    "waiting_for_inputs": "Formula '{name}': Waiting for inputs. Required: [{required}]"
+  },
+  "help": {
+    "first_impression": "First impression mode locks inputs at their first received value",
+    "formula_syntax": "Use logical operators like AND, OR, NOT to create your formula",
+    "input_values": "Input values are automatically updated when connected devices change",
+    "timeout_warning": "If an input is not updated within the timeout period, it will be marked"
+  },
+  "initial": {
+    "api_unavailable": "App API not available for fetching initial values",
+    "capability_not_found": "[{input}] Capability {capability} not found",
+    "device_not_found": "[{input}] Device not found",
+    "error": "[{input}] Error fetching initial value:",
+    "fetching_all": "Fetching initial values for all inputs...",
+    "fetching_input": "[{input}] Fetching initial value...",
+    "no_value_waiting": "[{input}] No initial value found - waiting for first event",
+    "received_value": "[{input}] Received initial value: {value}",
+    "value_received": "[{input}] Initial value: {value} → {boolean}"
+  },
+  "input_options": {
+    "context_specific": "Input options filtered for formula: {formula} ({expression})"
   },
   "inputs": {
+    "first_impression": "First impression mode",
     "label": "Input",
-    "value": "Value",
     "locked": "Input locked",
-    "unlocked": "Input unlocked",
+    "locked_at_value": "🔒 Input '{input}' locked at value {value} (firstImpression mode)",
     "locked_first_impression": "Input '{input}' locked for formula '{formula}' (firstImpression mode)",
     "setting_value": "Setting input '{input}' to {value} for formula '{formula}' (was: {oldValue})",
-    "locked_at_value": "🔒 Input '{input}' locked at value {value} (firstImpression mode)",
-    "first_impression": "First impression mode",
     "timeout_detected": "Timeout detected on input",
+    "unlocked": "Input unlocked",
+    "unused_warning": "Warning: Input {input} is not used in any formula. Used: {usedInputs}",
+    "value": "Value",
     "waiting": "Waiting for input..."
+  },
+  "listener": {
+    "api_unavailable": "App API not available for listener setup",
+    "capability_changed": "[{input}] Capability '{capability}' changed: {value} → {boolean}",
+    "capability_found": "Device has capability: {capability}",
+    "capability_not_exist": "[{input}] Capability {capability} does not exist on device {device}",
+    "device_found": "Found device: {device}",
+    "device_not_found": "[{input}] Device {device} not found",
+    "error_setup": "Error setting up listener for input {input}:",
+    "event_received": "Event received for input {input}",
+    "invalid_config": "Invalid link configuration for input {input}",
+    "polling_setup": "[{input}] Set up polling for {device} ({capability})",
+    "registered": "[{input}] Listening to device {device} capability {capability}",
+    "registering": "Registering capability listener for {capability}...",
+    "setting_up": "Setting up listener for input {input}"
+  },
+  "notifications": {
+    "device_ready": "Device is ready",
+    "error_cleared": "Error status cleared",
+    "error_cleared_all": "Error status cleared for all formulas",
+    "formula_updated": "Formula updated",
+    "input_received": "Input received",
+    "invalid_formula_config": "Invalid formula '{formulaName}': {error}",
+    "output_changed": "Output changed",
+    "reevaluating": "Re-evaluating all formulas..."
   },
   "operators": {
     "and": "AND",
-    "or": "OR",
-    "not": "NOT",
-    "greater_than": "Greater than",
-    "less_than": "Less than",
     "equal": "Equal",
-    "not_equal": "Not equal",
     "greater_or_equal": "Greater or equal",
-    "less_or_equal": "Less or equal"
+    "greater_than": "Greater than",
+    "less_or_equal": "Less or equal",
+    "less_than": "Less than",
+    "not": "NOT",
+    "not_equal": "Not equal",
+    "or": "OR"
   },
-  "help": {
-    "formula_syntax": "Use logical operators like AND, OR, NOT to create your formula",
-    "input_values": "Input values are automatically updated when connected devices change",
-    "timeout_warning": "If an input is not updated within the timeout period, it will be marked",
-    "first_impression": "First impression mode locks inputs at their first received value"
+  "pair": {
+    "add": "Add device",
+    "capability_label": "Capability:",
+    "configure": "Configure device",
+    "configure_all_inputs": "Please configure all inputs first!",
+    "configure_inputs_description": "Select which device and capability each input should follow:",
+    "configure_inputs_title": "Configure inputs",
+    "configured": "Configured",
+    "create_device": "[PAIR] create_device called",
+    "creating_device": "[PAIR] Creating device:",
+    "default_formula_name": "My Formula",
+    "device_label": "Device:",
+    "device_name_label": "Give the device a name:",
+    "device_name_placeholder": "My logic device",
+    "error": "Could not add device",
+    "error_button_not_found": "Complete button not found in DOM!",
+    "error_completing_setup": "Error completing setup: {error}",
+    "error_homey_emit_unavailable": "Homey.emit is not available",
+    "error_homey_nextview_unavailable": "Homey.nextView is not available",
+    "error_homey_object_unavailable": "Homey object or required functions (emit, __) are not available.",
+    "error_i18n_unavailable": "Homey translation function (__) is not available.",
+    "error_loading": "-- Error loading --",
+    "error_loading_capabilities": "Error loading capabilities: {error}",
+    "error_loading_initial_data": "Error loading initial data: {error}",
+    "error_navigating": "Error navigating: {error}",
+    "error_saving_config": "Error saving configuration: {error}",
+    "error_saving_input_number": "Error saving input number: {error}",
+    "error_setting_up_interactions": "Error setting up page interactions: {error}",
+    "error_system_not_ready": "Error: Pairing system not ready.",
+    "formula_label": "Enter formula:",
+    "get_devices_error": "[PAIR] ERROR in get_devices_in_zone:",
+    "get_devices_in_zone": "[PAIR] get_devices_in_zone called for zone: {zone}",
+    "get_num_inputs": "[PAIR] get_num_inputs called",
+    "get_zones": "[PAIR] get_zones called",
+    "get_zones_error": "[PAIR] ERROR in get_zones:",
+    "handlers_registered": "Pairing handlers registered",
+    "input": "Input",
+    "inputs_configured": "inputs configured",
+    "inputs_range": "Choose between 2 and 10 inputs",
+    "intro": "Create a new logic device to evaluate complex formulas",
+    "load_devices_error": "Failed to load devices for zone",
+    "name": "Device name",
+    "name_placeholder": "My logic device",
+    "next": "Next →",
+    "no_zones_error": "No zones found. Please create zones in your Homey first.",
+    "not_configured": "Not configured",
+    "of": "of",
+    "save_complete": "Save and complete",
+    "select_capability": "-- Select capability --",
+    "select_device": "-- Select device --",
+    "select_device_first": "-- Select device first --",
+    "select_inputs_description": "How many devices do you want to connect to this logic device?",
+    "select_inputs_title": "Select number of inputs",
+    "select_zone": "-- Select zone/room --",
+    "select_zone_first": "-- Select zone first --",
+    "session_started": "Pairing session started",
+    "set_device_formula": "[PAIR] set_device_formula called with: {formula}",
+    "set_device_name": "[PAIR] set_device_name called with:",
+    "set_input_links": "[PAIR] set_input_links called",
+    "set_num_inputs": "[PAIR] set_num_inputs called with data:",
+    "status_label": "Status:",
+    "success": "Device added successfully",
+    "title": "Add logic device",
+    "unknown_capability_fallback": "Unknown Capability",
+    "unknown_device": "Unknown Device",
+    "zone_label": "Zone/Room:"
+  },
+  "parse": {
+    "error_detecting_inputs": "Error detecting required inputs:",
+    "error_formulas": "Failed to parse formulas:",
+    "error_formulas_invalid": "Invalid formulas JSON: {message}",
+    "error_formulas_json": "Could not parse formulas:",
+    "error_input_links": "Failed to parse input_links:",
+    "error_input_links_invalid": "Invalid input_links JSON: {message}"
+  },
+  "polling": {
+    "all_inputs": "Polling all linked device inputs...",
+    "api_unavailable": "App API not available for polling",
+    "device_not_found": "Device not found: {device}",
+    "failed": "Failed to poll {input}:",
+    "input": "Polling input \"{input}\" from device \"{device}\" capability \"{capability}\"",
+    "no_links": "No inputLinks available for polling",
+    "no_value": "No value for {input} ({capability})",
+    "value_received": "Polled {input}: {value} → {boolean}"
+  },
+  "refetch": {
+    "fetching_values": "Refetching initial values before evaluation...",
+    "invoked": "Refetch and evaluate invoked (source={source})",
+    "no_links": "No input links available during refetch; skipping value fetch.",
+    "parse_failed": "Failed to parse input_links during refetch:",
+    "reason": "Re-fetching inputs (reason: {reason})..."
+  },
+  "settings": {
+    "applied": "Settings applied successfully",
+    "applying_formatted": "Applying auto-formatted settings...",
+    "auto_formatted": "Settings auto-formatted",
+    "cancel": "Cancel",
+    "changed": "Settings changed:",
+    "changed_dynamic": "Settings changed (dynamic device):",
+    "description": "Configure your Boolean Toolbox logic device",
+    "error": "Could not save settings",
+    "expanded": "Capacity expanded to {numInputs} inputs: {availableInputs}",
+    "expanding_capacity": "Expanding capacity: {from} -> {to} (reason: {reason})",
+    "expansion_failed": "Failed to auto-expand capacity:",
+    "format_failed": "Failed to auto-format settings:",
+    "formatting": "Will auto-format {type} JSON",
+    "reset": "Reset to default",
+    "save": "Save",
+    "saved": "Settings saved",
+    "title": "Settings"
+  },
+  "timeout": {
+    "error": "Error triggering timeout:"
   }
 }

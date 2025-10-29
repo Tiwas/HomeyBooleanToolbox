@@ -1,0 +1,36 @@
+{
+  "id": "has_any_error_lu",
+  "title": {
+    "en": "Device !{{has|has no}} error",
+    "no": "Enhet !{{har|har ingen}} feil",
+    "de": "Gerät !{{hat|hat keinen}} Fehler",
+    "nl": "Apparaat !{{heeft|heeft geen}} fout",
+    "fr": "Appareil !{{a|n'a pas}} d'erreur",
+    "da": "Enhed !{{har|har ingen}} fejl",
+    "fi": "Laite !{{on|ei ole}} virheellinen",
+    "sv": "Enhet !{{har|har inget}} fel",
+    "pl": "Urządzenie !{{ma|nie ma}} błędu",
+    "it": "Dispositivo !{{ha|non ha}} errori",
+    "es": "Dispositivo !{{tiene|no tiene}} error"
+  },
+  "titleFormatted": {
+    "en": "[[device]] - Device !{{has|has no}} error",
+    "no": "[[device]] - Enhet !{{har|har ingen}} feil",
+    "de": "[[device]] - Gerät !{{hat|hat keinen}} Fehler",
+    "nl": "[[device]] - Apparaat !{{heeft|heeft geen}} fout",
+    "fr": "[[device]] - Appareil !{{a|n'a pas}} d'erreur",
+    "da": "[[device]] - Enhed !{{har|har ingen}} fejl",
+    "fi": "[[device]] - Laite !{{on|ei ole}} virheellinen",
+    "sv": "[[device]] - Enhet !{{har|har inget}} fel",
+    "pl": "[[device]] - Urządzenie !{{ma|nie ma}} błędu",
+    "it": "[[device]] - Dispositivo !{{ha|non ha}} errori",
+    "es": "[[device]] - Dispositivo !{{tiene|no tiene}} error"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-unit|logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+    }
+  ]
+}

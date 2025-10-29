@@ -1,0 +1,66 @@
+{
+  "id": "formula_changed_to_false_lu",
+  "title": {
+    "en": "Formula changed to FALSE",
+    "no": "Formel endret til USANN",
+    "de": "Formel auf FALSCH geändert",
+    "nl": "Formule veranderde naar ONWAAR",
+    "fr": "Formule changée en FAUX",
+    "da": "Formel ændret til FALSK",
+    "fi": "Kaava muuttui EPÄTODEKSI",
+    "sv": "Formel ändrades till FALSK",
+    "pl": "Formuła zmieniona na FAŁSZ",
+    "it": "Formula cambiata in FALSO",
+    "es": "Fórmula cambiada a FALSO"
+  },
+  "titleFormatted": {
+    "en": "Formula [[formula]] changed to FALSE",
+    "no": "Formel [[formula]] endret til USANN",
+    "de": "Formel [[formula]] auf FALSCH geändert",
+    "nl": "Formule [[formula]] veranderde naar ONWAAR",
+    "fr": "Formule [[formula]] changée en FAUX",
+    "da": "Formel [[formula]] ændret til FALSK",
+    "fi": "Kaava [[formula]] muuttui EPÄTODEKSI",
+    "sv": "Formel [[formula]] ändrades till FALSK",
+    "pl": "Formuła [[formula]] zmieniona na FAŁSZ",
+    "it": "Formula [[formula]] cambiata in FALSO",
+    "es": "Fórmula [[formula]] cambiada a FALSO"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-unit|logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+    },
+    {
+      "type": "autocomplete",
+      "name": "formula",
+      "title": {
+        "en": "Formula",
+        "no": "Formel",
+        "de": "Formel",
+        "nl": "Formule",
+        "fr": "Formule",
+        "da": "Formel",
+        "fi": "Kaava",
+        "sv": "Formel",
+        "pl": "Formuła",
+        "it": "Formula",
+        "es": "Fórmula"
+      },
+      "placeholder": {
+        "en": "Select formula",
+        "no": "Velg formel",
+        "de": "Wähle Formel",
+        "nl": "Selecteer formule",
+        "fr": "Sélectionner la formule",
+        "da": "Vælg formel",
+        "fi": "Valitse kaava",
+        "sv": "Välj formel",
+        "pl": "Wybierz formułę",
+        "it": "Seleziona formula",
+        "es": "Seleccionar fórmula"
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": "state_changed_ld",
+  "title": {
+    "en": "Logic state changed",
+    "no": "Logikk-status endret",
+    "de": "Logikstatus geändert",
+    "nl": "Logische status veranderd",
+    "fr": "État logique changé",
+    "da": "Logisk status ændret",
+    "fi": "Logiikkatila muuttui",
+    "sv": "Logikstatus ändrades",
+    "pl": "Stan logiczny zmienił się",
+    "it": "Stato logico cambiato",
+    "es": "Estado lógico cambiado"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "state",
+      "type": "boolean",
+      "title": {
+        "en": "State",
+        "no": "Status",
+        "de": "Status",
+        "nl": "Status",
+        "fr": "État",
+        "da": "Status",
+        "fi": "Tila",
+        "sv": "Status",
+        "pl": "Stan",
+        "it": "Stato",
+        "es": "Estado"
+      }
+    }
+  ]
+}
