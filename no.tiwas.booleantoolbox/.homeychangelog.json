@@ -1,0 +1,5 @@
+{
+  "1.4.0": {
+    "en": "Complete rewrite, introduction of unit testing, now using homey compose, the old logic-unit-x devices are deprecated as I've introduced a much smarter Logic Unit."
+  }
+}
