@@ -1,0 +1,123 @@
+{
+  "id": "formula_changed_to_false_lu_deprecated",
+  "deprecated": true,
+  "title": {
+    "en": "Formula changed to FALSE",
+    "no": "Formel endret til USANN",
+    "da": "Formel ændret til FALSK",
+    "de": "Formel geändert zu FALSCH",
+    "es": "Fórmula cambió a FALSO",
+    "fr": "Formule changée vers FAUX",
+    "it": "Formula cambiata in FALSO",
+    "nl": "Formule veranderd naar ONWAAR",
+    "sv": "Formel ändrad till FALSKT",
+    "pl": "Formuła zmieniona na FAŁSZ",
+    "ru": "Формула изменена на ЛОЖЬ",
+    "ko": "공식이 거짓으로 변경됨"
+  },
+  "titleFormatted": {
+    "en": "Formula [[formula]] changed to FALSE",
+    "no": "Formel [[formula]] endret til USANN",
+    "da": "Formel [[formula]] ændret til FALSK",
+    "de": "Formel [[formula]] geändert zu FALSCH",
+    "es": "Fórmula [[formula]] cambió a FALSO",
+    "fr": "Formule [[formula]] changée vers FAUX",
+    "it": "Formula [[formula]] cambiata in FALSO",
+    "nl": "Formule [[formula]] veranderd naar ONWAAR",
+    "sv": "Formel [[formula]] ändrad till FALSKT",
+    "pl": "Formuła [[formula]] zmieniona na FAŁSZ",
+    "ru": "Формула [[formula]] изменена на ЛОЖЬ",
+    "ko": "공식 [[formula]]이(가) 거짓으로 변경됨"    
+  },
+  "hint": {
+    "en": "⚠️ DEPRECATED: Use 'Formula changed to...' instead. This card will be removed in a future update.",
+    "no": "⚠️ FORELDET: Bruk 'Formel endret til...' i stedet. Dette kortet vil bli fjernet i en fremtidig oppdatering.",
+    "da": "⚠️ FORÆLDET: Brug 'Formel ændret til...' i stedet. Dette kort vil blive fjernet i en fremtidig opdatering.",
+    "de": "⚠️ VERALTET: Verwenden Sie stattdessen 'Formel geändert zu...'. Diese Karte wird in einem zukünftigen Update entfernt.",
+    "es": "⚠️ OBSOLETO: Use 'Fórmula cambió a...' en su lugar. Esta tarjeta se eliminará en una actualización futura.",
+    "fr": "⚠️ OBSOLÈTE: Utilisez 'Formule changée vers...' à la place. Cette carte sera supprimée dans une mise à jour future.",
+    "it": "⚠️ DEPRECATO: Usa 'Formula cambiata in...' invece. Questa scheda verrà rimossa in un aggiornamento futuro.",
+    "nl": "⚠️ VEROUDERD: Gebruik 'Formule veranderd naar...' in plaats daarvan. Deze kaart wordt verwijderd in een toekomstige update.",
+    "sv": "⚠️ FÖRÅLDRAD: Använd 'Formel ändrad till...' istället. Detta kort kommer att tas bort i en framtida uppdatering.",
+    "pl": "⚠️ PRZESTARZAŁE: Użyj 'Formuła zmieniona na...' zamiast tego. Ta karta zostanie usunięta w przyszłej aktualizacji.",
+    "ru": "⚠️ УСТАРЕЛО: Используйте 'Формула изменена на...' вместо этого. Эта карточка будет удалена в будущем обновлении.",
+    "ko": "⚠️ 더 이상 사용되지 않음: 대신 '공식이 다음으로 변경됨...'을 사용하세요. 이 카드는 향후 업데이트에서 제거됩니다."
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=logic-unit"
+    },
+    {
+      "name": "formula",
+      "type": "autocomplete",
+      "title": {
+        "en": "Formula",
+        "no": "Formel",
+        "da": "Formel",
+        "de": "Formel",
+        "es": "Fórmula",
+        "fr": "Formule",
+        "it": "Formula",
+        "nl": "Formule",
+        "sv": "Formel",
+        "pl": "Formuła",
+        "ru": "Формула",
+        "ko": "공식"
+      },
+      "placeholder": {
+        "en": "Select a formula...",
+        "no": "Velg en formel...",
+        "da": "Vælg en formel...",
+        "de": "Wählen Sie eine Formel...",
+        "es": "Selecciona una fórmula...",
+        "fr": "Sélectionnez une formule...",
+        "it": "Seleziona una formula...",
+        "nl": "Selecteer een formule...",
+        "sv": "Välj en formel...",
+        "pl": "Wybierz formułę...",
+        "ru": "Выберите формулу...",
+        "ko": "공식을 선택하세요..."
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "name": "device_name",
+      "type": "string",
+      "title": {
+        "en": "Device name",
+        "no": "Enhetsnavn",
+        "da": "Enhedsnavn",
+        "de": "Gerätename",
+        "es": "Nombre del dispositivo",
+        "fr": "Nom de l'appareil",
+        "it": "Nome dispositivo",
+        "nl": "Apparaatnaam",
+        "sv": "Enhetsnamn",
+        "pl": "Nazwa urządzenia",
+        "ru": "Имя устройства",
+        "ko": "장치 이름"
+      }
+    },
+    {
+      "name": "formula_name",
+      "type": "string",
+      "title": {
+        "en": "Formula name",
+        "no": "Formelnavn",
+        "da": "Formelnavn",
+        "de": "Formelname",
+        "es": "Nombre de fórmula",
+        "fr": "Nom de la formule",
+        "it": "Nome formula",
+        "nl": "Formule naam",
+        "sv": "Formelnamn",
+        "pl": "Nazwa formuły",
+        "ru": "Имя формулы",
+        "ko": "공식 이름"
+      }
+    }
+  ]
+}

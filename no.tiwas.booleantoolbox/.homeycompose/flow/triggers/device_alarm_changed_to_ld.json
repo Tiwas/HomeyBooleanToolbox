@@ -1,0 +1,144 @@
+{
+  "id": "device_alarm_changed_to_ld",
+  "title": {
+    "en": "Device alarm changed to...",
+    "no": "Enhetsalarm endret til...",
+    "da": "Enhedsalarm ændret til...",
+    "de": "Gerätealarm geändert zu...",
+    "es": "Alarma del dispositivo cambió a...",
+    "fr": "Alarme de l'appareil changée vers...",
+    "it": "Allarme dispositivo cambiato in...",
+    "nl": "Apparaat alarm veranderd naar...",
+    "sv": "Enhetslarm ändrat till...",
+    "pl": "Alarm urządzenia zmieniony na...",
+    "ru": "Тревога устройства изменена на...",
+    "ko": "장치 알람이 다음으로 변경됨..."
+  },
+  "titleFormatted": {
+    "en": "Device alarm changed to [[alarm_state]]",
+    "no": "Enhetsalarm endret til [[alarm_state]]",
+    "da": "Enhedsalarm ændret til [[alarm_state]]",
+    "de": "Gerätealarm geändert zu [[alarm_state]]",
+    "es": "Alarma del dispositivo cambió a [[alarm_state]]",
+    "fr": "Alarme de l'appareil changée vers [[alarm_state]]",
+    "it": "Allarme dispositivo cambiato in [[alarm_state]]",
+    "nl": "Apparaat alarm veranderd naar [[alarm_state]]",
+    "sv": "Enhetslarm ändrat till [[alarm_state]]",
+    "pl": "Alarm urządzenia zmieniony na [[alarm_state]]",
+    "ru": "Тревога устройства изменена на [[alarm_state]]",
+    "ko": "장치 알람이 [[alarm_state]](으)로 변경됨"
+  },
+  "hint": {
+    "en": "Triggers when the device's alarm state changes to the selected value.",
+    "no": "Utløses når enhetens alarmtilstand endres til den valgte verdien.",
+    "da": "Udløser når enhedens alarmstilstand ændres til den valgte værdi.",
+    "de": "Wird ausgelöst, wenn sich der Alarmzustand des Geräts auf den ausgewählten Wert ändert.",
+    "es": "Se activa cuando el estado de alarma del dispositivo cambia al valor seleccionado.",
+    "fr": "Se déclenche lorsque l'état d'alarme de l'appareil change vers la valeur sélectionnée.",
+    "it": "Si attiva quando lo stato di allarme del dispositivo cambia al valore selezionato.",
+    "nl": "Wordt geactiveerd wanneer de alarmstatus van het apparaat verandert naar de geselecteerde waarde.",
+    "sv": "Utlöser när enhetens alarmtillstånd ändras till det valda värdet.",
+    "pl": "Wyzwala się, gdy stan alarmu urządzenia zmienia się na wybraną wartość.",
+    "ru": "Срабатывает при изменении состояния тревоги устройства на выбранное значение.",
+    "ko": "장치의 알람 상태가 선택한 값으로 변경될 때 트리거됩니다."
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=logic-device"
+    },
+    {
+      "name": "alarm_state",
+      "type": "dropdown",
+      "title": {
+        "en": "Alarm state",
+        "no": "Alarmtilstand",
+        "da": "Alarmstilstand",
+        "de": "Alarmzustand",
+        "es": "Estado de alarma",
+        "fr": "État d'alarme",
+        "it": "Stato allarme",
+        "nl": "Alarmstatus",
+        "sv": "Alarmtillstånd",
+        "pl": "Stan alarmu",
+        "ru": "Состояние тревоги",
+        "ko": "알람 상태"
+      },
+      "values": [
+        {
+          "id": "true",
+          "title": {
+            "en": "On (active)",
+            "no": "På (aktiv)",
+            "da": "Til (aktiv)",
+            "de": "Ein (aktiv)",
+            "es": "Encendido (activo)",
+            "fr": "Allumé (actif)",
+            "it": "Acceso (attivo)",
+            "nl": "Aan (actief)",
+            "sv": "På (aktiv)",
+            "pl": "Włączony (aktywny)",
+            "ru": "Вкл (активно)",
+            "ko": "켜짐 (활성)"
+          }
+        },
+        {
+          "id": "false",
+          "title": {
+            "en": "Off (inactive)",
+            "no": "Av (inaktiv)",
+            "da": "Fra (inaktiv)",
+            "de": "Aus (inaktiv)",
+            "es": "Apagado (inactivo)",
+            "fr": "Éteint (inactif)",
+            "it": "Spento (inattivo)",
+            "nl": "Uit (inactief)",
+            "sv": "Av (inaktiv)",
+            "pl": "Wyłączony (nieaktywny)",
+            "ru": "Выкл (неактивно)",
+            "ko": "꺼짐 (비활성)"
+          }
+        }
+      ]
+    }
+  ],
+  "tokens": [
+    {
+      "name": "device_name",
+      "type": "string",
+      "title": {
+        "en": "Device name",
+        "no": "Enhetsnavn",
+        "da": "Enhedsnavn",
+        "de": "Gerätename",
+        "es": "Nombre del dispositivo",
+        "fr": "Nom de l'appareil",
+        "it": "Nome dispositivo",
+        "nl": "Apparaatnaam",
+        "sv": "Enhetsnamn",
+        "pl": "Nazwa urządzenia",
+        "ru": "Имя устройства",
+        "ko": "장치 이름"
+      }
+    },
+    {
+      "name": "alarm_state",
+      "type": "boolean",
+      "title": {
+        "en": "Alarm state",
+        "no": "Alarmtilstand",
+        "da": "Alarmstilstand", 
+        "de": "Alarmzustand",
+        "es": "Estado de alarma",
+        "fr": "État d'alarme",
+        "it": "Stato allarme",
+        "nl": "Alarmstatus",
+        "sv": "Alarmtillstånd",
+        "pl": "Stan alarmu",
+        "ru": "Состояние тревоги",
+        "ko": "알람 상태"
+      }
+    }
+  ]
+}

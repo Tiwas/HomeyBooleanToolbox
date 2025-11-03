@@ -14,17 +14,17 @@
     "es": "Re-evaluar todas las fórmulas"
   },
   "titleFormatted": {
-    "en": "[[device]] - Re-evaluate all formulas",
-    "no": "[[device]] - Re-evaluer alle formler",
-    "de": "[[device]] - Alle Formeln neu bewerten",
-    "nl": "[[device]] - Alle formules opnieuw evalueren",
-    "fr": "[[device]] - Réévaluer toutes les formules",
-    "da": "[[device]] - Gentag evaluering af alle formler",
-    "fi": "[[device]] - Arvioi kaikki kaavat uudelleen",
-    "sv": "[[device]] - Omvärdera alla formler",
-    "pl": "[[device]] - Ponownie oceń wszystkie formuły",
-    "it": "[[device]] - Rivaluta tutte le formule",
-    "es": "[[device]] - Re-evaluar todas las fórmulas"
+    "en": "Re-evaluate all formulas",
+    "no": "Re-evaluer alle formler",
+    "de": "Alle Formeln neu bewerten",
+    "nl": "Alle formules opnieuw evalueren",
+    "fr": "Réévaluer toutes les formules",
+    "da": "Gentag evaluering af alle formler",
+    "fi": "Arvioi kaikki kaavat uudelleen",
+    "sv": "Omvärdera alla formler",
+    "pl": "Ponownie oceń wszystkie formuły",
+    "it": "Rivaluta tutte le formule",
+    "es": "Re-evaluar todas las fórmulas"
   },
   "args": [
     {

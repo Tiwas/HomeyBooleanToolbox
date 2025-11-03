@@ -14,7 +14,7 @@
 module.exports = {
   // Default log level for any logger not specified below.
   // Options: 'DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE'
-  defaultLevel: 'debug',
+  defaultLevel: 'info',
 
   // Override log levels for specific categories (class names).
   // This helps in reducing noise or enabling detailed logs for specific parts of the app.

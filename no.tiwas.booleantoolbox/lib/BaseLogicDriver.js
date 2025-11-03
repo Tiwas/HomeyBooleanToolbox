@@ -118,47 +118,82 @@ class BaseLogicDriver extends Homey.Driver {
     async registerFlowCards() {
         this.logger.debug("driver.registering_flow_cards");
 
-        // --- Triggers ---
-        const triggerCards = [
-            {
-                id: "formula_changed_to_false_lu",
-            },
-            {
-                id: "formula_changed_to_true_lu",
-            },
-            {
-                id: "formula_timeout_lu",
-            },
-        ];
-        triggerCards.forEach((cardInfo) => {
-            try {
-                const card = this.homey.flow.getTriggerCard(cardInfo.id);
-                card.registerRunListener(async (args, state) => {
-                    return (
-                        args &&
-                        args.device &&
-                        args.device.driver &&
-                        args.device.driver.id &&
-                        args.device.driver.id.startsWith("logic-unit-")
-                    );
-                });
-                this.registerAutocomplete(
-                    card,
-                    "formula",
-                    formulaAutocompleteHelper,
+        // ===== DEPRECATED TRIGGERS (for backward compatibility) =====
+        
+        // Deprecated: Formula changed to FALSE (old separate card)
+        try {
+            const formulaChangedToFalseCard = this.homey.flow.getTriggerCard("formula_changed_to_false_lu_deprecated");
+            formulaChangedToFalseCard.registerRunListener(async (args, state) => {
+                return (
+                    args &&
+                    args.device &&
+                    args.device.driver &&
+                    args.device.driver.id &&
+                    args.device.driver.id.startsWith("logic-unit-") &&
+                    state?.result === false
                 );
-                this.logger.debug(
-                    ` -> OK: TRIGGER card registered: '${cardInfo.id}'`,
-                );
-            } catch (e) {
-                this.logger.error(
-                    ` -> FAILED: Registering TRIGGER card '${cardInfo.id}'`,
-                    e,
-                );
-            }
-        });
+            });
+            this.registerAutocomplete(formulaChangedToFalseCard, "formula", formulaAutocompleteHelper);
+            this.logger.debug(` -> OK: DEPRECATED TRIGGER registered: 'formula_changed_to_false_lu_deprecated'`);
+        } catch (e) {
+            this.logger.warn(` -> SKIP: Deprecated trigger 'formula_changed_to_false_lu_deprecated' not found`);
+        }
 
-        // --- Actions ---
+        // Deprecated: Formula changed to TRUE (old separate card)
+        try {
+            const formulaChangedToTrueCard = this.homey.flow.getTriggerCard("formula_changed_to_true_lu_deprecated");
+            formulaChangedToTrueCard.registerRunListener(async (args, state) => {
+                return (
+                    args &&
+                    args.device &&
+                    args.device.driver &&
+                    args.device.driver.id &&
+                    args.device.driver.id.startsWith("logic-unit-") &&
+                    state?.result === true
+                );
+            });
+            this.registerAutocomplete(formulaChangedToTrueCard, "formula", formulaAutocompleteHelper);
+            this.logger.debug(` -> OK: DEPRECATED TRIGGER registered: 'formula_changed_to_true_lu_deprecated'`);
+        } catch (e) {
+            this.logger.warn(` -> SKIP: Deprecated trigger 'formula_changed_to_true_lu_deprecated' not found`);
+        }
+
+        // ===== NEW IMPROVED TRIGGERS =====
+        
+        // New: Formula changed to [dropdown selection] (combined card)
+        const formulaChangedToCard = this.homey.flow.getTriggerCard("formula_changed_to_lu");
+        formulaChangedToCard.registerRunListener(async (args, state) => {
+            const expectedResult = args.result === "true";
+            return (
+                args &&
+                args.device &&
+                args.device.driver &&
+                args.device.driver.id &&
+                args.device.driver.id.startsWith("logic-unit-") &&
+                state?.result === expectedResult
+            );
+        });
+        this.registerAutocomplete(formulaChangedToCard, "formula", formulaAutocompleteHelper);
+        this.logger.debug(` -> OK: NEW TRIGGER registered: 'formula_changed_to_lu'`);
+
+        // ===== EXISTING TRIGGERS (unchanged) =====
+        
+        // Existing: Formula timeout
+        const formulaTimeoutCard = this.homey.flow.getTriggerCard("formula_timeout_lu");
+        formulaTimeoutCard.registerRunListener(async (args, state) => {
+            return (
+                args &&
+                args.device &&
+                args.device.driver &&
+                args.device.driver.id &&
+                args.device.driver.id.startsWith("logic-unit-")
+            );
+        });
+        this.registerAutocomplete(formulaTimeoutCard, "formula", formulaAutocompleteHelper);
+        this.logger.debug(` -> OK: EXISTING TRIGGER registered: 'formula_timeout_lu'`);
+
+        // ===== ACTIONS (unchanged) =====
+        
         const actionCards = [
             {
                 id: "set_input_value_lu",
@@ -241,7 +276,8 @@ class BaseLogicDriver extends Homey.Driver {
             }
         });
 
-        // --- Conditions ---
+        // ===== CONDITIONS (existing + new with dropdowns) =====
+        
         const conditionCards = [
             {
                 id: "formula_has_timed_out_lu",
@@ -300,6 +336,50 @@ class BaseLogicDriver extends Homey.Driver {
                 );
             }
         });
+
+        // ===== NEW CONDITIONS WITH DROPDOWNS =====
+        
+        // New: Logic Unit is turned [dropdown selection]
+        try {
+            const unitIsTurnedCard = this.homey.flow.getConditionCard("unit_is_turned_lu");
+            unitIsTurnedCard.registerRunListener(async (args, state) => {
+                const device = args.device;
+                if (!device) return false;
+                
+                const expectedOnState = args.on_state === "true";
+                const currentOnState = device.getCapabilityValue("onoff");
+                
+                this.logger.flow(
+                    `Executing CONDITION 'unit_is_turned_lu' on device ${device.getName()}: expected=${expectedOnState}, current=${currentOnState}`,
+                );
+                
+                return currentOnState === expectedOnState;
+            });
+            this.logger.debug(` -> OK: NEW CONDITION registered: 'unit_is_turned_lu'`);
+        } catch (e) {
+            this.logger.warn(` -> SKIP: New condition 'unit_is_turned_lu' not found`);
+        }
+
+        // New: Logic Unit alarm is [dropdown selection]
+        try {
+            const unitAlarmIsCard = this.homey.flow.getConditionCard("unit_alarm_is_lu");
+            unitAlarmIsCard.registerRunListener(async (args, state) => {
+                const device = args.device;
+                if (!device) return false;
+                
+                const expectedAlarmState = args.alarm_state === "true";
+                const currentAlarmState = device.getCapabilityValue("alarm_generic");
+                
+                this.logger.flow(
+                    `Executing CONDITION 'unit_alarm_is_lu' on device ${device.getName()}: expected=${expectedAlarmState}, current=${currentAlarmState}`,
+                );
+                
+                return currentAlarmState === expectedAlarmState;
+            });
+            this.logger.debug(` -> OK: NEW CONDITION registered: 'unit_alarm_is_lu'`);
+        } catch (e) {
+            this.logger.warn(` -> SKIP: New condition 'unit_alarm_is_lu' not found`);
+        }
     }
 
     // --- Helper for Autocomplete Registration ---
@@ -364,11 +444,10 @@ class BaseLogicDriver extends Homey.Driver {
             if (
                 !this.homey.app ||
                 !this.homey.app.api ||
-                !this.homey.app.api.devices ||
-                typeof this.homey.app.api.devices.getDevices !== "function"
+                typeof this.homey.app.api.devices?.getDevices !== "function"
             ) {
                 this.logger.warn(
-                    "ensureUniqueDeviceName: Homey API not ready, returning original name.",
+                    "ensureUniqueDeviceName: Homey API (via app) not ready, returning original name.",
                     {},
                 );
                 return String(name || "");
@@ -381,24 +460,23 @@ class BaseLogicDriver extends Homey.Driver {
                 );
                 return String(name || "");
             }
-            const existing = new Set(
+            const existingNames = new Set(
                 Object.values(all)
-                    .map((d) =>
-                        d && typeof d === "object"
-                            ? String(d.name || "").trim()
-                            : "",
-                    )
+                    .map((d) => (d?.name || "").trim())
                     .filter(Boolean),
             );
+
             const nameStr = String(name || "");
-            if (!existing.has(nameStr)) return nameStr;
+            if (!existingNames.has(nameStr)) return nameStr;
+
             const base = nameStr.replace(/\s+\d+$/, "").trim();
             const m = nameStr.match(/\s+(\d+)$/);
             let n = m ? parseInt(m[1], 10) + 1 : 2;
-            if (isNaN(n)) n = 2;
+            if (isNaN(n)) n = 2; // Fallback
+
             let candidate = `${base} ${n}`;
             let safetyCounter = 0;
-            while (existing.has(candidate) && safetyCounter < 100) {
+            while (existingNames.has(candidate) && safetyCounter < 100) {
                 n++;
                 candidate = `${base} ${n}`;
                 safetyCounter++;
@@ -417,60 +495,79 @@ class BaseLogicDriver extends Homey.Driver {
         }
     }
 
-async onPair(session) {
-        this.logger.info("pair.session_started", {});
-        session.setHandler("list_devices", async () => {
-            try {
-                this.logger.debug("Pair handler: list_devices called", {});
-                let localeString;
-                try {
-                    localeString = this.homey.__("device.logic_unit_name");
-                } catch (e) {
-                    this.logger.error(
-                        "Error getting localization for 'device.logic_unit_name'",
-                        e,
-                    );
-                    localeString = this.homey.__(
-                        "device.logic_unit_name_fallback",
-                    );
-                }
-                const baseName = String(localeString || "").replace(
-                    "{count}",
-                    this.numInputs,
-                );
-                const name = await this.ensureUniqueDeviceName(baseName);
-                const defaultFormulaName = this.homey.__(
-                    "pair.default_formula_name",
-                );
-                const deviceData = {
-                    name: name,
-                    data: {
-                        id: `${this.id}-${Math.random().toString(16).slice(2)}`,
-                        numInputs: this.numInputs,
-                    },
-                    settings: {
-                        formulas: `[{"id":"f1","name":"${defaultFormulaName}","expression":"${this.getDefaultExpression()}","enabled":true,"timeout":0,"firstImpression":false}]`,
-                    },
-                    capabilityValues: {  // ✅ NY: Initial values for nye devices
-                        onoff: true,     // Starter som ON
-                        alarm_generic: false
-                    }
-                };
-                this.logger.debug(
-                    "Pair handler: list_devices returning:",
-                    deviceData,
-                );
-                return [deviceData];
-            } catch (e) {
-                this.logger.error("Error in list_devices pair handler", e);
-                throw e;
-            }
+    async onPair(session) {
+        this.logger.info("pair.session_started");
+
+        let deviceName = this.homey.__("pair.name_placeholder");
+
+        session.setHandler("set_device_name", async (data) => {
+            this.logger.debug("pair.set_device_name", {
+                name: data.name,
+            });
+            deviceName = String(
+                data.name || this.homey.__("pair.name_placeholder"),
+            );
+            return {
+                success: true,
+            };
         });
-        this.logger.debug("Pair handler: list_devices registered", {});
+
+        session.setHandler("create_device", async () => {
+            this.logger.info("pair.create_device");
+
+            const uniqueName = await this.ensureUniqueDeviceName(deviceName);
+
+            const device = {
+                name: uniqueName,
+                data: {
+                    id: `logic-unit-${this.numInputs}-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+                    numInputs: this.numInputs,
+                },
+                settings: {
+                    formulas: JSON.stringify(
+                        [
+                            {
+                                id: "formula_1",
+                                name:
+                                    this.homey.__("formula.default_name_lu") ||
+                                    "Main Formula",
+                                expression: this.getDefaultExpression(),
+                                enabled: true,
+                                timeout: 0,
+                                firstImpression: false,
+                            },
+                        ],
+                        null,
+                        2,
+                    ),
+                },
+                capabilities: ["onoff", "alarm_generic"],
+                capabilitiesOptions: {
+                    onoff: {
+                        setable: true,
+                    },
+                    alarm_generic: {
+                        setable: false,
+                    },
+                },
+                capabilityValues: {
+                    onoff: true,
+                    alarm_generic: false
+                }
+            };
+
+            this.logger.info("pair.creating_device", {
+                name: uniqueName,
+            });
+            this.logger.dump("Device data to be created", device);
+            return device;
+        });
+
+        this.logger.debug("pair.handlers_registered");
     }
 
     getDefaultExpression() {
-        const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+        const letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
         const inputsToUse = Math.min(this.numInputs, letters.length);
         if (inputsToUse <= 0) return "true";
         return letters.slice(0, inputsToUse).join(" AND ");
@@ -478,5 +575,3 @@ async onPair(session) {
 }
 
 module.exports = BaseLogicDriver;
-module.exports.formulaAutocompleteHelper = formulaAutocompleteHelper;
-module.exports.inputAutocompleteHelper = inputAutocompleteHelper;

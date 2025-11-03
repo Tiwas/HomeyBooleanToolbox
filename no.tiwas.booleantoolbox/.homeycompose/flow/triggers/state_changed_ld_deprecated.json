@@ -1,5 +1,6 @@
 {
   "id": "state_changed_ld",
+  "deprecated": true,
   "title": {
     "en": "Logic state changed",
     "no": "Logikk-status endret",
@@ -12,6 +13,19 @@
     "pl": "Stan logiczny zmienił się",
     "it": "Stato logico cambiato",
     "es": "Estado lógico cambiado"
+  },
+  "hint": {
+    "en": "Deprecated: Use 'Device alarm state changed' instead",
+    "no": "Utgått: Bruk 'Enhetsalarm-status endret' i stedet",
+    "de": "Veraltet: Verwenden Sie stattdessen 'Gerätealarmstatus geändert'",
+    "nl": "Vervangen: Gebruik 'Apparaat alarmstatus gewijzigd' in plaats daarvan",
+    "fr": "Obsolète: Utilisez 'État d'alarme de l'appareil modifié' à la place",
+    "da": "Forældet: Brug 'Enhedsalarmstatus ændret' i stedet",
+    "fi": "Vanhentunut: Käytä 'Laitteen hälytystila muuttunut' sen sijaan",
+    "sv": "Föråldrad: Använd 'Enhetslarmstatus ändrades' istället",
+    "pl": "Przestarzałe: Użyj 'Stan alarmu urządzenia zmienił się' zamiast tego",
+    "it": "Deprecato: Usa 'Stato allarme dispositivo cambiato' invece",
+    "es": "Obsoleto: Use 'Estado de alarma del dispositivo cambiado' en su lugar"
   },
   "args": [
     {

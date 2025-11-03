@@ -1,0 +1,106 @@
+{
+  "id": "device_is_turned_ld",
+  "title": {
+    "en": "Device is turned...",
+    "no": "Enheten er skrudd...",
+    "da": "Enheden er slået...",
+    "de": "Gerät ist...",
+    "es": "El dispositivo está...",
+    "fr": "L'appareil est...",
+    "it": "Il dispositivo è...",
+    "nl": "Apparaat is...",
+    "sv": "Enheten är...",
+    "pl": "Urządzenie jest...",
+    "ru": "Устройство...",
+    "ko": "장치가..."
+  },
+  "titleFormatted": {
+    "en": "Device !{{is|isn't}} turned [[on_state]]",
+    "no": "Enheten !{{er|er ikke}} skrudd [[on_state]]",
+    "da": "Enheden !{{er|er ikke}} slået [[on_state]]",
+    "de": "Gerät !{{ist|ist nicht}} [[on_state]]",
+    "es": "El dispositivo !{{está|no está}} [[on_state]]",
+    "fr": "L'appareil !{{est|n'est pas}} [[on_state]]",
+    "it": "Il dispositivo !{{è|non è}} [[on_state]]",
+    "nl": "Apparaat !{{is|is niet}} [[on_state]]",
+    "sv": "Enheten !{{är|är inte}} [[on_state]]",
+    "pl": "Urządzenie !{{jest|nie jest}} [[on_state]]",
+    "ru": "Устройство !{{включено|не включено}} [[on_state]]",
+    "ko": "장치가 !{{켜져|꺼져}} [[on_state]] 있음"
+  },
+  "hint": {
+    "en": "Check if the device is currently turned on or off.",
+    "no": "Sjekk om enheten er skrudd på eller av.",
+    "da": "Tjek om enheden er slået til eller fra.",
+    "de": "Überprüfen Sie, ob das Gerät ein- oder ausgeschaltet ist.",
+    "es": "Verifica si el dispositivo está encendido o apagado.",
+    "fr": "Vérifiez si l'appareil est allumé ou éteint.",
+    "it": "Controlla se il dispositivo è acceso o spento.",
+    "nl": "Controleer of het apparaat aan of uit staat.",
+    "sv": "Kontrollera om enheten är på eller av.",
+    "pl": "Sprawdź, czy urządzenie jest włączone lub wyłączone.",
+    "ru": "Проверьте, включено или выключено устройство.",
+    "ko": "장치가 현재 켜져 있는지 꺼져 있는지 확인하세요."
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=logic-device"
+    },
+    {
+      "name": "on_state",
+      "type": "dropdown",
+      "title": {
+        "en": "State",
+        "no": "Tilstand",
+        "da": "Tilstand",
+        "de": "Zustand",
+        "es": "Estado",
+        "fr": "État",
+        "it": "Stato",
+        "nl": "Status",
+        "sv": "Tillstånd",
+        "pl": "Stan",
+        "ru": "Состояние",
+        "ko": "상태"
+      },
+      "values": [
+        {
+          "id": "true",
+          "title": {
+            "en": "On",
+            "no": "På",
+            "da": "Til",
+            "de": "Ein",
+            "es": "Encendido",
+            "fr": "Allumé",
+            "it": "Acceso",
+            "nl": "Aan",
+            "sv": "På",
+            "pl": "Włączony",
+            "ru": "Вкл",
+            "ko": "켜짐"
+          }
+        },
+        {
+          "id": "false",
+          "title": {
+            "en": "Off",
+            "no": "Av",
+            "da": "Fra",
+            "de": "Aus",
+            "es": "Apagado",
+            "fr": "Éteint",
+            "it": "Spento",
+            "nl": "Uit",
+            "sv": "Av",
+            "pl": "Wyłączony",
+            "ru": "Выкл",
+            "ko": "꺼짐"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.tiwas.booleantoolbox",
   "support": "https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "permissions": [
@@ -59,100 +59,444 @@
   "flow": {
     "triggers": [
       {
-        "id": "device_state_changed",
+        "id": "device_alarm_changed_to_ld",
         "title": {
-          "en": "State changed",
-          "no": "Tilstand endret",
-          "de": "Zustand geändert",
-          "nl": "Staat gewijzigd",
-          "fr": "État modifié",
-          "da": "Tilstand ændret",
-          "fi": "Tila muuttunut",
-          "sv": "Tillstånd ändrat",
-          "pl": "Stan zmieniony",
-          "it": "Stato cambiato",
-          "es": "Estado cambiado"
+          "en": "Device alarm changed to...",
+          "no": "Enhetsalarm endret til...",
+          "da": "Enhedsalarm ændret til...",
+          "de": "Gerätealarm geändert zu...",
+          "es": "Alarma del dispositivo cambió a...",
+          "fr": "Alarme de l'appareil changée vers...",
+          "it": "Allarme dispositivo cambiato in...",
+          "nl": "Apparaat alarm veranderd naar...",
+          "sv": "Enhetslarm ändrat till...",
+          "pl": "Alarm urządzenia zmieniony na...",
+          "ru": "Тревога устройства изменена на...",
+          "ko": "장치 알람이 다음으로 변경됨..."
         },
         "titleFormatted": {
-          "en": "State of [[device]] changed",
-          "no": "Tilstand til [[device]] endret",
-          "de": "Zustand von [[device]] geändert",
-          "nl": "Staat van [[device]] gewijzigd",
-          "fr": "État de [[device]] modifié",
-          "da": "Tilstand for [[device]] ændret",
-          "fi": "Laitteen [[device]] tila muuttunut",
-          "sv": "Tillstånd för [[device]] ändrat",
-          "pl": "Stan [[device]] zmieniony",
-          "it": "Stato di [[device]] cambiato",
-          "es": "Estado de [[device]] cambiado"
+          "en": "Device alarm changed to [[alarm_state]]",
+          "no": "Enhetsalarm endret til [[alarm_state]]",
+          "da": "Enhedsalarm ændret til [[alarm_state]]",
+          "de": "Gerätealarm geändert zu [[alarm_state]]",
+          "es": "Alarma del dispositivo cambió a [[alarm_state]]",
+          "fr": "Alarme de l'appareil changée vers [[alarm_state]]",
+          "it": "Allarme dispositivo cambiato in [[alarm_state]]",
+          "nl": "Apparaat alarm veranderd naar [[alarm_state]]",
+          "sv": "Enhetslarm ändrat till [[alarm_state]]",
+          "pl": "Alarm urządzenia zmieniony na [[alarm_state]]",
+          "ru": "Тревога устройства изменена на [[alarm_state]]",
+          "ko": "장치 알람이 [[alarm_state]](으)로 변경됨"
         },
         "hint": {
-          "en": "Triggers when the Logic Device state changes (on/off)",
-          "no": "Trigges når tilstanden til den Logiske Enheten endres (på/av)",
-          "de": "Wird ausgelöst, wenn sich der Zustand des Logikgeräts ändert (ein/aus)",
-          "nl": "Activeert wanneer de status van het Logisch Apparaat verandert (aan/uit)",
-          "fr": "Se déclenche lorsque l'état de l'Appareil Logique change (marche/arrêt)",
-          "da": "Udløses, når tilstanden for den Logiske Enhed ændres (tænd/sluk)",
-          "fi": "Laukaistaan, kun Logiikkalaitteen tila muuttuu (päälle/pois)",
-          "sv": "Utlöses när tillståndet för Logikenheten ändras (på/av)",
-          "pl": "Uruchamia się, gdy stan Urządzenia Logicznego ulegnie zmianie (włącz/wyłącz)",
-          "it": "Si attiva quando lo stato del Dispositivo Logico cambia (on/off)",
-          "es": "Se activa cuando el estado del Dispositivo Lógico cambia (encendido/apagado)"
+          "en": "Triggers when the device's alarm state changes to the selected value.",
+          "no": "Utløses når enhetens alarmtilstand endres til den valgte verdien.",
+          "da": "Udløser når enhedens alarmstilstand ændres til den valgte værdi.",
+          "de": "Wird ausgelöst, wenn sich der Alarmzustand des Geräts auf den ausgewählten Wert ändert.",
+          "es": "Se activa cuando el estado de alarma del dispositivo cambia al valor seleccionado.",
+          "fr": "Se déclenche lorsque l'état d'alarme de l'appareil change vers la valeur sélectionnée.",
+          "it": "Si attiva quando lo stato di allarme del dispositivo cambia al valore selezionato.",
+          "nl": "Wordt geactiveerd wanneer de alarmstatus van het apparaat verandert naar de geselecteerde waarde.",
+          "sv": "Utlöser när enhetens alarmtillstånd ändras till det valda värdet.",
+          "pl": "Wyzwala się, gdy stan alarmu urządzenia zmienia się na wybraną wartość.",
+          "ru": "Срабатывает при изменении состояния тревоги устройства на выбранное значение.",
+          "ko": "장치의 알람 상태가 선택한 값으로 변경될 때 트리거됩니다."
         },
-        "tokens": [
+        "args": [
           {
-            "name": "state",
-            "type": "boolean",
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "name": "alarm_state",
+            "type": "dropdown",
             "title": {
-              "en": "State",
-              "no": "Tilstand",
-              "de": "Zustand",
-              "nl": "Staat",
-              "fr": "État",
-              "da": "Tilstand",
-              "fi": "Tila",
-              "sv": "Tillstånd",
-              "pl": "Stan",
-              "it": "Stato",
-              "es": "Estado"
+              "en": "Alarm state",
+              "no": "Alarmtilstand",
+              "da": "Alarmstilstand",
+              "de": "Alarmzustand",
+              "es": "Estado de alarma",
+              "fr": "État d'alarme",
+              "it": "Stato allarme",
+              "nl": "Alarmstatus",
+              "sv": "Alarmtillstånd",
+              "pl": "Stan alarmu",
+              "ru": "Состояние тревоги",
+              "ko": "알람 상태"
             },
-            "example": true
+            "values": [
+              {
+                "id": "true",
+                "title": {
+                  "en": "On (active)",
+                  "no": "På (aktiv)",
+                  "da": "Til (aktiv)",
+                  "de": "Ein (aktiv)",
+                  "es": "Encendido (activo)",
+                  "fr": "Allumé (actif)",
+                  "it": "Acceso (attivo)",
+                  "nl": "Aan (actief)",
+                  "sv": "På (aktiv)",
+                  "pl": "Włączony (aktywny)",
+                  "ru": "Вкл (активно)",
+                  "ko": "켜짐 (활성)"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "Off (inactive)",
+                  "no": "Av (inaktiv)",
+                  "da": "Fra (inaktiv)",
+                  "de": "Aus (inaktiv)",
+                  "es": "Apagado (inactivo)",
+                  "fr": "Éteint (inactif)",
+                  "it": "Spento (inattivo)",
+                  "nl": "Uit (inactief)",
+                  "sv": "Av (inaktiv)",
+                  "pl": "Wyłączony (nieaktywny)",
+                  "ru": "Выкл (неактивно)",
+                  "ko": "꺼짐 (비활성)"
+                }
+              }
+            ]
           }
         ],
+        "tokens": [
+          {
+            "name": "device_name",
+            "type": "string",
+            "title": {
+              "en": "Device name",
+              "no": "Enhetsnavn",
+              "da": "Enhedsnavn",
+              "de": "Gerätename",
+              "es": "Nombre del dispositivo",
+              "fr": "Nom de l'appareil",
+              "it": "Nome dispositivo",
+              "nl": "Apparaatnaam",
+              "sv": "Enhetsnamn",
+              "pl": "Nazwa urządzenia",
+              "ru": "Имя устройства",
+              "ko": "장치 이름"
+            }
+          },
+          {
+            "name": "alarm_state",
+            "type": "boolean",
+            "title": {
+              "en": "Alarm state",
+              "no": "Alarmtilstand",
+              "da": "Alarmstilstand",
+              "de": "Alarmzustand",
+              "es": "Estado de alarma",
+              "fr": "État d'alarme",
+              "it": "Stato allarme",
+              "nl": "Alarmstatus",
+              "sv": "Alarmtillstånd",
+              "pl": "Stan alarmu",
+              "ru": "Состояние тревоги",
+              "ko": "알람 상태"
+            }
+          }
+        ]
+      },
+      {
+        "id": "device_alarm_state_changed_ld",
+        "title": {
+          "en": "Device alarm state changed",
+          "no": "Enhetsalarm-status endret",
+          "de": "Gerätealarmstatus geändert",
+          "nl": "Apparaat alarmstatus gewijzigd",
+          "fr": "État d'alarme de l'appareil modifié",
+          "da": "Enhedsalarmstatus ændret",
+          "fi": "Laitteen hälytystila muuttunut",
+          "sv": "Enhetslarmstatus ändrades",
+          "pl": "Stan alarmu urządzenia zmienił się",
+          "it": "Stato allarme dispositivo cambiato",
+          "es": "Estado de alarma del dispositivo cambiado"
+        },
+        "hint": {
+          "en": "Triggers when the Logic Device's alarm state changes (true/false)",
+          "no": "Utløses når Logic Device sin alarmstatus endres (sant/usant)",
+          "de": "Wird ausgelöst, wenn sich der Alarmstatus des Logic Device ändert (wahr/falsch)",
+          "nl": "Wordt geactiveerd wanneer de alarmstatus van het Logic Device verandert (waar/onwaar)",
+          "fr": "Se déclenche lorsque l'état d'alarme du Logic Device change (vrai/faux)",
+          "da": "Udløses, når Logic Device's alarmstatus ændres (sand/falsk)",
+          "fi": "Laukaistaan, kun Logic Device:n hälytystila muuttuu (tosi/epätosi)",
+          "sv": "Utlöses när Logic Device:s larmstatus ändras (sant/falskt)",
+          "pl": "Wyzwalane, gdy stan alarmu Logic Device zmienia się (prawda/fałsz)",
+          "it": "Si attiva quando lo stato di allarme del Logic Device cambia (vero/falso)",
+          "es": "Se activa cuando el estado de alarma del Logic Device cambia (verdadero/falso)"
+        },
         "args": [
           {
             "type": "device",
-            "name": "device"
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "alarm_state",
+            "type": "boolean",
+            "title": {
+              "en": "Alarm state",
+              "no": "Alarmstatus",
+              "de": "Alarmstatus",
+              "nl": "Alarmstatus",
+              "fr": "État d'alarme",
+              "da": "Alarmstatus",
+              "fi": "Hälytystila",
+              "sv": "Larmstatus",
+              "pl": "Stan alarmu",
+              "it": "Stato allarme",
+              "es": "Estado de alarma"
+            }
+          }
+        ]
+      },
+      {
+        "id": "device_alarm_turned_ld",
+        "title": {
+          "en": "Device alarm turned...",
+          "no": "Enhetsalarm skrudd...",
+          "da": "Enhedsalarm slået...",
+          "de": "Gerätealarm...",
+          "es": "Alarma del dispositivo...",
+          "fr": "Alarme de l'appareil...",
+          "it": "Allarme dispositivo...",
+          "nl": "Apparaat alarm...",
+          "sv": "Enhetslarm...",
+          "pl": "Alarm urządzenia...",
+          "ru": "Тревога устройства...",
+          "ko": "장치 알람..."
+        },
+        "titleFormatted": {
+          "en": "Device alarm turned [[alarm_state]]",
+          "no": "Enhetsalarm skrudd [[alarm_state]]",
+          "da": "Enhedsalarm slået [[alarm_state]]",
+          "de": "Gerätealarm [[alarm_state]]",
+          "es": "Alarma del dispositivo [[alarm_state]]",
+          "fr": "Alarme de l'appareil [[alarm_state]]",
+          "it": "Allarme dispositivo [[alarm_state]]",
+          "nl": "Apparaat alarm [[alarm_state]]",
+          "sv": "Enhetslarm [[alarm_state]]",
+          "pl": "Alarm urządzenia [[alarm_state]]",
+          "ru": "Тревога устройства [[alarm_state]]",
+          "ko": "장치 알람 [[alarm_state]]"
+        },
+        "hint": {
+          "en": "Triggers when the device's alarm is turned on or off.",
+          "no": "Utløses når enhetens alarm blir skrudd på eller av.",
+          "da": "Udløser når enhedens alarm slås til eller fra.",
+          "de": "Wird ausgelöst, wenn der Gerätealarm ein- oder ausgeschaltet wird.",
+          "es": "Se activa cuando la alarma del dispositivo se enciende o apaga.",
+          "fr": "Se déclenche lorsque l'alarme de l'appareil est allumée ou éteinte.",
+          "it": "Si attiva quando l'allarme del dispositivo viene acceso o spento.",
+          "nl": "Wordt geactiveerd wanneer het apparaat alarm wordt aan- of uitgezet.",
+          "sv": "Utlöser när enhetens alarm slås på eller av.",
+          "pl": "Wyzwala się, gdy alarm urządzenia jest włączony lub wyłączony.",
+          "ru": "Срабатывает при включении или выключении тревоги устройства.",
+          "ko": "장치의 알람이 켜지거나 꺼질 때 트리거됩니다."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "name": "alarm_state",
+            "type": "dropdown",
+            "title": {
+              "en": "Alarm state",
+              "no": "Alarmtilstand",
+              "da": "Alarmstilstand",
+              "de": "Alarmzustand",
+              "es": "Estado de alarma",
+              "fr": "État d'alarme",
+              "it": "Stato allarme",
+              "nl": "Alarmstatus",
+              "sv": "Alarmtillstånd",
+              "pl": "Stan alarmu",
+              "ru": "Состояние тревоги",
+              "ko": "알람 상태"
+            },
+            "values": [
+              {
+                "id": "true",
+                "title": {
+                  "en": "On",
+                  "no": "På",
+                  "da": "Til",
+                  "de": "Ein",
+                  "es": "Encendido",
+                  "fr": "Allumé",
+                  "it": "Acceso",
+                  "nl": "Aan",
+                  "sv": "På",
+                  "pl": "Włączony",
+                  "ru": "Вкл",
+                  "ko": "켜짐"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "Off",
+                  "no": "Av",
+                  "da": "Fra",
+                  "de": "Aus",
+                  "es": "Apagado",
+                  "fr": "Éteint",
+                  "it": "Spento",
+                  "nl": "Uit",
+                  "sv": "Av",
+                  "pl": "Wyłączony",
+                  "ru": "Выкл",
+                  "ko": "꺼짐"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "device_name",
+            "type": "string",
+            "title": {
+              "en": "Device name",
+              "no": "Enhetsnavn",
+              "da": "Enhedsnavn",
+              "de": "Gerätename",
+              "es": "Nombre del dispositivo",
+              "fr": "Nom de l'appareil",
+              "it": "Nome dispositivo",
+              "nl": "Apparaatnaam",
+              "sv": "Enhetsnamn",
+              "pl": "Nazwa urządzenia",
+              "ru": "Имя устройства",
+              "ko": "장치 이름"
+            }
+          },
+          {
+            "name": "alarm_state",
+            "type": "boolean",
+            "title": {
+              "en": "Alarm state",
+              "no": "Alarmtilstand",
+              "da": "Alarmstilstand",
+              "de": "Alarmzustand",
+              "es": "Estado de alarma",
+              "fr": "État d'alarme",
+              "it": "Stato allarme",
+              "nl": "Alarmstatus",
+              "sv": "Alarmtillstånd",
+              "pl": "Stan alarmu",
+              "ru": "Состояние тревоги",
+              "ko": "알람 상태"
+            }
+          }
+        ]
+      },
+      {
+        "id": "device_on_state_changed_ld",
+        "title": {
+          "en": "Device on-state changed",
+          "no": "Enhet på-status endret",
+          "de": "Gerät Ein-Status geändert",
+          "nl": "Apparaat aan-status gewijzigd",
+          "fr": "État d'activation de l'appareil modifié",
+          "da": "Enheds tænd-status ændret",
+          "fi": "Laitteen päällä-tila muuttunut",
+          "sv": "Enhetens på-status ändrades",
+          "pl": "Stan włączenia urządzenia zmienił się",
+          "it": "Stato di accensione dispositivo cambiato",
+          "es": "Estado de encendido del dispositivo cambiado"
+        },
+        "hint": {
+          "en": "Triggers when the Logic Device's on/off state changes (enabled/disabled)",
+          "no": "Utløses når Logic Device sin på/av-status endres (aktivert/deaktivert)",
+          "de": "Wird ausgelöst, wenn sich der Ein/Aus-Status des Logic Device ändert (aktiviert/deaktiviert)",
+          "nl": "Wordt geactiveerd wanneer de aan/uit-status van het Logic Device verandert (ingeschakeld/uitgeschakeld)",
+          "fr": "Se déclenche lorsque l'état marche/arrêt du Logic Device change (activé/désactivé)",
+          "da": "Udløses, når Logic Device's tænd/sluk-status ændres (aktiveret/deaktiveret)",
+          "fi": "Laukaistaan, kun Logic Device:n päällä/pois-tila muuttuu (aktivoitu/deaktivoitu)",
+          "sv": "Utlöses när Logic Device:s på/av-status ändras (aktiverad/inaktiverad)",
+          "pl": "Wyzwalane, gdy stan włączenia/wyłączenia Logic Device zmienia się (aktywowany/dezaktywowany)",
+          "it": "Si attiva quando lo stato acceso/spento del Logic Device cambia (attivato/disattivato)",
+          "es": "Se activa cuando el estado encendido/apagado del Logic Device cambia (activado/desactivado)"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "on_state",
+            "type": "boolean",
+            "title": {
+              "en": "On state",
+              "no": "På-status",
+              "de": "Ein-Status",
+              "nl": "Aan-status",
+              "fr": "État allumé",
+              "da": "Tænd-status",
+              "fi": "Päällä-tila",
+              "sv": "På-status",
+              "pl": "Stan włączenia",
+              "it": "Stato acceso",
+              "es": "Estado encendido"
+            }
           }
         ]
       },
       {
         "id": "device_state_changed_ld",
+        "deprecated": true,
         "title": {
-          "en": "Logic state changed",
-          "no": "Logikk-status endret",
-          "de": "Logikstatus geändert",
-          "nl": "Logische status veranderd",
-          "fr": "État logique changé",
-          "da": "Logisk status ændret",
-          "fi": "Logiikkatila muuttui",
-          "sv": "Logikstatus ändrades",
-          "pl": "Stan logiczny zmienił się",
-          "it": "Stato logico cambiato",
-          "es": "Estado lógico cambiado"
+          "en": "Logic state changed to...",
+          "no": "Logikk-status endret til...",
+          "de": "Logikstatus geändert zu...",
+          "nl": "Logische status veranderd naar...",
+          "fr": "État logique changé vers...",
+          "da": "Logisk status ændret til...",
+          "fi": "Logiikkatila muuttui...",
+          "sv": "Logikstatus ändrades till...",
+          "pl": "Stan logiczny zmienił się na...",
+          "it": "Stato logico cambiato a...",
+          "es": "Estado lógico cambiado a..."
         },
         "titleFormatted": {
           "en": "Logic state changed to [[state]]",
           "no": "Logikk-status endret til [[state]]",
           "de": "Logikstatus geändert zu [[state]]",
           "nl": "Logische status veranderd naar [[state]]",
-          "fr": "État logique changé en [[state]]",
+          "fr": "État logique changé vers [[state]]",
           "da": "Logisk status ændret til [[state]]",
-          "fi": "Logiikkatila muuttui arvoon [[state]]",
+          "fi": "Logiikkatila muuttui [[state]]",
           "sv": "Logikstatus ändrades till [[state]]",
           "pl": "Stan logiczny zmienił się na [[state]]",
-          "it": "Stato logico cambiato in [[state]]",
+          "it": "Stato logico cambiato a [[state]]",
           "es": "Estado lógico cambiado a [[state]]"
+        },
+        "hint": {
+          "en": "Deprecated: Use 'Device alarm changed to...' instead",
+          "no": "Utgått: Bruk 'Enhetsalarm endret til...' i stedet",
+          "de": "Veraltet: Verwenden Sie stattdessen 'Gerätealarm geändert zu...'",
+          "nl": "Vervangen: Gebruik 'Apparaat alarm gewijzigd naar...' in plaats daarvan",
+          "fr": "Obsolète: Utilisez 'Alarme de l'appareil changée vers...' à la place",
+          "da": "Forældet: Brug 'Enhedsalarm ændret til...' i stedet",
+          "fi": "Vanhentunut: Käytä 'Laitteen hälytys muutettu...' sen sijaan",
+          "sv": "Föråldrad: Använd 'Enhetslarm ändrades till...' istället",
+          "pl": "Przestarzałe: Użyj 'Alarm urządzenia zmieniony na...' zamiast tego",
+          "it": "Deprecato: Usa 'Allarme dispositivo cambiato a...' invece",
+          "es": "Obsoleto: Use 'Alarma del dispositivo cambiada a...' en su lugar"
         },
         "args": [
           {
@@ -180,17 +524,440 @@
               {
                 "id": "true",
                 "title": {
+                  "en": "True",
+                  "no": "Sant",
+                  "de": "Wahr",
+                  "nl": "Waar",
+                  "fr": "Vrai",
+                  "da": "Sand",
+                  "fi": "Tosi",
+                  "sv": "Sant",
+                  "pl": "Prawda",
+                  "it": "Vero",
+                  "es": "Verdadero"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "False",
+                  "no": "Usant",
+                  "de": "Falsch",
+                  "nl": "Onwaar",
+                  "fr": "Faux",
+                  "da": "Falsk",
+                  "fi": "Epätosi",
+                  "sv": "Falskt",
+                  "pl": "Fałsz",
+                  "it": "Falso",
+                  "es": "Falso"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "state",
+            "type": "boolean",
+            "title": {
+              "en": "State",
+              "no": "Status",
+              "de": "Status",
+              "nl": "Status",
+              "fr": "État",
+              "da": "Status",
+              "fi": "Tila",
+              "sv": "Status",
+              "pl": "Stan",
+              "it": "Stato",
+              "es": "Estado"
+            }
+          }
+        ]
+      },
+      {
+        "id": "device_turned_ld",
+        "title": {
+          "en": "Device turned...",
+          "no": "Enhet skrudd...",
+          "da": "Enhed slået...",
+          "de": "Gerät...",
+          "es": "Dispositivo...",
+          "fr": "Appareil...",
+          "it": "Dispositivo...",
+          "nl": "Apparaat...",
+          "sv": "Enhet...",
+          "pl": "Urządzenie...",
+          "ru": "Устройство...",
+          "ko": "장치..."
+        },
+        "titleFormatted": {
+          "en": "Device turned [[on_state]]",
+          "no": "Enhet skrudd [[on_state]]",
+          "da": "Enhed slået [[on_state]]",
+          "de": "Gerät [[on_state]]",
+          "es": "Dispositivo [[on_state]]",
+          "fr": "Appareil [[on_state]]",
+          "it": "Dispositivo [[on_state]]",
+          "nl": "Apparaat [[on_state]]",
+          "sv": "Enhet [[on_state]]",
+          "pl": "Urządzenie [[on_state]]",
+          "ru": "Устройство [[on_state]]",
+          "ko": "장치 [[on_state]]"
+        },
+        "hint": {
+          "en": "Triggers when the device is turned on or off.",
+          "no": "Utløses når enheten blir skrudd på eller av.",
+          "da": "Udløser når enheden slås til eller fra.",
+          "de": "Wird ausgelöst, wenn das Gerät ein- oder ausgeschaltet wird.",
+          "es": "Se activa cuando el dispositivo se enciende o apaga.",
+          "fr": "Se déclenche lorsque l'appareil est allumé ou éteint.",
+          "it": "Si attiva quando il dispositivo viene acceso o spento.",
+          "nl": "Wordt geactiveerd wanneer het apparaat wordt aan- of uitgezet.",
+          "sv": "Utlöser när enheten slås på eller av.",
+          "pl": "Wyzwala się, gdy urządzenie jest włączone lub wyłączone.",
+          "ru": "Срабатывает при включении или выключении устройства.",
+          "ko": "장치가 켜지거나 꺼질 때 트리거됩니다."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "name": "on_state",
+            "type": "dropdown",
+            "title": {
+              "en": "State",
+              "no": "Tilstand",
+              "da": "Tilstand",
+              "de": "Zustand",
+              "es": "Estado",
+              "fr": "État",
+              "it": "Stato",
+              "nl": "Status",
+              "sv": "Tillstånd",
+              "pl": "Stan",
+              "ru": "Состояние",
+              "ko": "상태"
+            },
+            "values": [
+              {
+                "id": "true",
+                "title": {
+                  "en": "On",
+                  "no": "På",
+                  "da": "Til",
+                  "de": "Ein",
+                  "es": "Encendido",
+                  "fr": "Allumé",
+                  "it": "Acceso",
+                  "nl": "Aan",
+                  "sv": "På",
+                  "pl": "Włączony",
+                  "ru": "Вкл",
+                  "ko": "켜짐"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "Off",
+                  "no": "Av",
+                  "da": "Fra",
+                  "de": "Aus",
+                  "es": "Apagado",
+                  "fr": "Éteint",
+                  "it": "Spento",
+                  "nl": "Uit",
+                  "sv": "Av",
+                  "pl": "Wyłączony",
+                  "ru": "Выкл",
+                  "ko": "꺼짐"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "device_name",
+            "type": "string",
+            "title": {
+              "en": "Device name",
+              "no": "Enhetsnavn",
+              "da": "Enhedsnavn",
+              "de": "Gerätename",
+              "es": "Nombre del dispositivo",
+              "fr": "Nom de l'appareil",
+              "it": "Nome dispositivo",
+              "nl": "Apparaatnaam",
+              "sv": "Enhetsnamn",
+              "pl": "Nazwa urządzenia",
+              "ru": "Имя устройства",
+              "ko": "장치 이름"
+            }
+          },
+          {
+            "name": "on_state",
+            "type": "boolean",
+            "title": {
+              "en": "On state",
+              "no": "På-tilstand",
+              "da": "Til-tilstand",
+              "de": "Ein-Zustand",
+              "es": "Estado encendido",
+              "fr": "État allumé",
+              "it": "Stato acceso",
+              "nl": "Aan-status",
+              "sv": "På-tillstånd",
+              "pl": "Stan włączenia",
+              "ru": "Состояние включения",
+              "ko": "켜짐 상태"
+            }
+          }
+        ]
+      },
+      {
+        "id": "formula_changed_to_false_lu_deprecated",
+        "deprecated": true,
+        "title": {
+          "en": "Formula changed to FALSE",
+          "no": "Formel endret til USANN",
+          "da": "Formel ændret til FALSK",
+          "de": "Formel geändert zu FALSCH",
+          "es": "Fórmula cambió a FALSO",
+          "fr": "Formule changée vers FAUX",
+          "it": "Formula cambiata in FALSO",
+          "nl": "Formule veranderd naar ONWAAR",
+          "sv": "Formel ändrad till FALSKT",
+          "pl": "Formuła zmieniona na FAŁSZ",
+          "ru": "Формула изменена на ЛОЖЬ",
+          "ko": "공식이 거짓으로 변경됨"
+        },
+        "titleFormatted": {
+          "en": "Formula [[formula]] changed to FALSE",
+          "no": "Formel [[formula]] endret til USANN",
+          "da": "Formel [[formula]] ændret til FALSK",
+          "de": "Formel [[formula]] geändert zu FALSCH",
+          "es": "Fórmula [[formula]] cambió a FALSO",
+          "fr": "Formule [[formula]] changée vers FAUX",
+          "it": "Formula [[formula]] cambiata in FALSO",
+          "nl": "Formule [[formula]] veranderd naar ONWAAR",
+          "sv": "Formel [[formula]] ändrad till FALSKT",
+          "pl": "Formuła [[formula]] zmieniona na FAŁSZ",
+          "ru": "Формула [[formula]] изменена на ЛОЖЬ",
+          "ko": "공식 [[formula]]이(가) 거짓으로 변경됨"
+        },
+        "hint": {
+          "en": "⚠️ DEPRECATED: Use 'Formula changed to...' instead. This card will be removed in a future update.",
+          "no": "⚠️ FORELDET: Bruk 'Formel endret til...' i stedet. Dette kortet vil bli fjernet i en fremtidig oppdatering.",
+          "da": "⚠️ FORÆLDET: Brug 'Formel ændret til...' i stedet. Dette kort vil blive fjernet i en fremtidig opdatering.",
+          "de": "⚠️ VERALTET: Verwenden Sie stattdessen 'Formel geändert zu...'. Diese Karte wird in einem zukünftigen Update entfernt.",
+          "es": "⚠️ OBSOLETO: Use 'Fórmula cambió a...' en su lugar. Esta tarjeta se eliminará en una actualización futura.",
+          "fr": "⚠️ OBSOLÈTE: Utilisez 'Formule changée vers...' à la place. Cette carte sera supprimée dans une mise à jour future.",
+          "it": "⚠️ DEPRECATO: Usa 'Formula cambiata in...' invece. Questa scheda verrà rimossa in un aggiornamento futuro.",
+          "nl": "⚠️ VEROUDERD: Gebruik 'Formule veranderd naar...' in plaats daarvan. Deze kaart wordt verwijderd in een toekomstige update.",
+          "sv": "⚠️ FÖRÅLDRAD: Använd 'Formel ändrad till...' istället. Detta kort kommer att tas bort i en framtida uppdatering.",
+          "pl": "⚠️ PRZESTARZAŁE: Użyj 'Formuła zmieniona na...' zamiast tego. Ta karta zostanie usunięta w przyszłej aktualizacji.",
+          "ru": "⚠️ УСТАРЕЛО: Используйте 'Формула изменена на...' вместо этого. Эта карточка будет удалена в будущем обновлении.",
+          "ko": "⚠️ 더 이상 사용되지 않음: 대신 '공식이 다음으로 변경됨...'을 사용하세요. 이 카드는 향후 업데이트에서 제거됩니다."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=logic-unit"
+          },
+          {
+            "name": "formula",
+            "type": "autocomplete",
+            "title": {
+              "en": "Formula",
+              "no": "Formel",
+              "da": "Formel",
+              "de": "Formel",
+              "es": "Fórmula",
+              "fr": "Formule",
+              "it": "Formula",
+              "nl": "Formule",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "ru": "Формула",
+              "ko": "공식"
+            },
+            "placeholder": {
+              "en": "Select a formula...",
+              "no": "Velg en formel...",
+              "da": "Vælg en formel...",
+              "de": "Wählen Sie eine Formel...",
+              "es": "Selecciona una fórmula...",
+              "fr": "Sélectionnez une formule...",
+              "it": "Seleziona una formula...",
+              "nl": "Selecteer een formule...",
+              "sv": "Välj en formel...",
+              "pl": "Wybierz formułę...",
+              "ru": "Выберите формулу...",
+              "ko": "공식을 선택하세요..."
+            }
+          }
+        ],
+        "tokens": [
+          {
+            "name": "device_name",
+            "type": "string",
+            "title": {
+              "en": "Device name",
+              "no": "Enhetsnavn",
+              "da": "Enhedsnavn",
+              "de": "Gerätename",
+              "es": "Nombre del dispositivo",
+              "fr": "Nom de l'appareil",
+              "it": "Nome dispositivo",
+              "nl": "Apparaatnaam",
+              "sv": "Enhetsnamn",
+              "pl": "Nazwa urządzenia",
+              "ru": "Имя устройства",
+              "ko": "장치 이름"
+            }
+          },
+          {
+            "name": "formula_name",
+            "type": "string",
+            "title": {
+              "en": "Formula name",
+              "no": "Formelnavn",
+              "da": "Formelnavn",
+              "de": "Formelname",
+              "es": "Nombre de fórmula",
+              "fr": "Nom de la formule",
+              "it": "Nome formula",
+              "nl": "Formule naam",
+              "sv": "Formelnamn",
+              "pl": "Nazwa formuły",
+              "ru": "Имя формулы",
+              "ko": "공식 이름"
+            }
+          }
+        ]
+      },
+      {
+        "id": "formula_changed_to_lu",
+        "title": {
+          "en": "Formula changed to...",
+          "no": "Formel endret til...",
+          "da": "Formel ændret til...",
+          "de": "Formel geändert zu...",
+          "es": "Fórmula cambió a...",
+          "fr": "Formule changée vers...",
+          "it": "Formula cambiata in...",
+          "nl": "Formule veranderd naar...",
+          "sv": "Formel ändrad till...",
+          "pl": "Formuła zmieniona na...",
+          "ru": "Формула изменена на...",
+          "ko": "공식이 다음으로 변경됨..."
+        },
+        "titleFormatted": {
+          "en": "Formula [[formula]] changed to [[result]]",
+          "no": "Formel [[formula]] endret til [[result]]",
+          "da": "Formel [[formula]] ændret til [[result]]",
+          "de": "Formel [[formula]] geändert zu [[result]]",
+          "es": "Fórmula [[formula]] cambió a [[result]]",
+          "fr": "Formule [[formula]] changée vers [[result]]",
+          "it": "Formula [[formula]] cambiata in [[result]]",
+          "nl": "Formule [[formula]] veranderd naar [[result]]",
+          "sv": "Formel [[formula]] ändrad till [[result]]",
+          "pl": "Formuła [[formula]] zmieniona na [[result]]",
+          "ru": "Формула [[formula]] изменена на [[result]]",
+          "ko": "공식 [[formula]]이(가) [[result]](으)로 변경됨"
+        },
+        "hint": {
+          "en": "Triggers when the selected formula changes to the specified result (TRUE or FALSE).",
+          "no": "Utløses når den valgte formelen endres til det spesifiserte resultatet (SANN eller USANN).",
+          "da": "Udløser når den valgte formel ændres til det specificerede resultat (SAND eller FALSK).",
+          "de": "Wird ausgelöst, wenn die ausgewählte Formel sich zum angegebenen Ergebnis (WAHR oder FALSCH) ändert.",
+          "es": "Se activa cuando la fórmula seleccionada cambia al resultado especificado (VERDADERO o FALSO).",
+          "fr": "Se déclenche lorsque la formule sélectionnée change vers le résultat spécifié (VRAI ou FAUX).",
+          "it": "Si attiva quando la formula selezionata cambia al risultato specificato (VERO o FALSO).",
+          "nl": "Wordt geactiveerd wanneer de geselecteerde formule verandert naar het opgegeven resultaat (WAAR of ONWAAR).",
+          "sv": "Utlöser när den valda formeln ändras till det specificerade resultatet (SANT eller FALSKT).",
+          "pl": "Wyzwala się, gdy wybrana formuła zmienia się na określony wynik (PRAWDA lub FAŁSZ).",
+          "ru": "Срабатывает при изменении выбранной формулы на указанный результат (ИСТИНА или ЛОЖЬ).",
+          "ko": "선택한 공식이 지정된 결과(참 또는 거짓)로 변경될 때 트리거됩니다."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=logic-unit"
+          },
+          {
+            "name": "formula",
+            "type": "autocomplete",
+            "title": {
+              "en": "Formula",
+              "no": "Formel",
+              "da": "Formel",
+              "de": "Formel",
+              "es": "Fórmula",
+              "fr": "Formule",
+              "it": "Formula",
+              "nl": "Formule",
+              "sv": "Formel",
+              "pl": "Formuła",
+              "ru": "Формула",
+              "ko": "공식"
+            },
+            "placeholder": {
+              "en": "Select a formula...",
+              "no": "Velg en formel...",
+              "da": "Vælg en formel...",
+              "de": "Wählen Sie eine Formel...",
+              "es": "Selecciona una fórmula...",
+              "fr": "Sélectionnez une formule...",
+              "it": "Seleziona una formula...",
+              "nl": "Selecteer een formule...",
+              "sv": "Välj en formel...",
+              "pl": "Wybierz formułę...",
+              "ru": "Выберите формулу...",
+              "ko": "공식을 선택하세요..."
+            }
+          },
+          {
+            "name": "result",
+            "type": "dropdown",
+            "title": {
+              "en": "Result",
+              "no": "Resultat",
+              "da": "Resultat",
+              "de": "Ergebnis",
+              "es": "Resultado",
+              "fr": "Résultat",
+              "it": "Risultato",
+              "nl": "Resultaat",
+              "sv": "Resultat",
+              "pl": "Wynik",
+              "ru": "Результат",
+              "ko": "결과"
+            },
+            "values": [
+              {
+                "id": "true",
+                "title": {
                   "en": "TRUE",
                   "no": "SANN",
-                  "de": "WAHR",
-                  "nl": "WAAR",
-                  "fr": "VRAI",
                   "da": "SAND",
-                  "fi": "TOSI",
-                  "sv": "SANN",
-                  "pl": "PRAWDA",
+                  "de": "WAHR",
+                  "es": "VERDADERO",
+                  "fr": "VRAI",
                   "it": "VERO",
-                  "es": "VERDADERO"
+                  "nl": "WAAR",
+                  "sv": "SANT",
+                  "pl": "PRAWDA",
+                  "ru": "ИСТИНА",
+                  "ko": "참"
                 }
               },
               {
@@ -198,149 +965,197 @@
                 "title": {
                   "en": "FALSE",
                   "no": "USANN",
-                  "de": "FALSCH",
-                  "nl": "ONWAAR",
-                  "fr": "FAUX",
                   "da": "FALSK",
-                  "fi": "EPÄTOSI",
+                  "de": "FALSCH",
+                  "es": "FALSO",
+                  "fr": "FAUX",
+                  "it": "FALSO",
+                  "nl": "ONWAAR",
                   "sv": "FALSKT",
                   "pl": "FAŁSZ",
-                  "it": "FALSO",
-                  "es": "FALSO"
+                  "ru": "ЛОЖЬ",
+                  "ko": "거짓"
                 }
               }
             ]
           }
-        ]
-      },
-      {
-        "id": "formula_changed_to_false_lu",
-        "title": {
-          "en": "Formula changed to FALSE",
-          "no": "Formel endret til USANN",
-          "de": "Formel auf FALSCH geändert",
-          "nl": "Formule veranderde naar ONWAAR",
-          "fr": "Formule changée en FAUX",
-          "da": "Formel ændret til FALSK",
-          "fi": "Kaava muuttui EPÄTODEKSI",
-          "sv": "Formel ändrades till FALSK",
-          "pl": "Formuła zmieniona na FAŁSZ",
-          "it": "Formula cambiata in FALSO",
-          "es": "Fórmula cambiada a FALSO"
-        },
-        "titleFormatted": {
-          "en": "Formula [[formula]] changed to FALSE",
-          "no": "Formel [[formula]] endret til USANN",
-          "de": "Formel [[formula]] auf FALSCH geändert",
-          "nl": "Formule [[formula]] veranderde naar ONWAAR",
-          "fr": "Formule [[formula]] changée en FAUX",
-          "da": "Formel [[formula]] ændret til FALSK",
-          "fi": "Kaava [[formula]] muuttui EPÄTODEKSI",
-          "sv": "Formel [[formula]] ändrades till FALSK",
-          "pl": "Formuła [[formula]] zmieniona na FAŁSZ",
-          "it": "Formula [[formula]] cambiata in FALSO",
-          "es": "Fórmula [[formula]] cambiada a FALSO"
-        },
-        "args": [
+        ],
+        "tokens": [
           {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=logic-unit|logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+            "name": "device_name",
+            "type": "string",
+            "title": {
+              "en": "Device name",
+              "no": "Enhetsnavn",
+              "da": "Enhedsnavn",
+              "de": "Gerätename",
+              "es": "Nombre del dispositivo",
+              "fr": "Nom de l'appareil",
+              "it": "Nome dispositivo",
+              "nl": "Apparaatnaam",
+              "sv": "Enhetsnamn",
+              "pl": "Nazwa urządzenia",
+              "ru": "Имя устройства",
+              "ko": "장치 이름"
+            }
           },
           {
-            "type": "autocomplete",
-            "name": "formula",
+            "name": "formula_name",
+            "type": "string",
             "title": {
-              "en": "Formula",
-              "no": "Formel",
-              "de": "Formel",
-              "nl": "Formule",
-              "fr": "Formule",
-              "da": "Formel",
-              "fi": "Kaava",
-              "sv": "Formel",
-              "pl": "Formuła",
-              "it": "Formula",
-              "es": "Fórmula"
-            },
-            "placeholder": {
-              "en": "Select formula",
-              "no": "Velg formel",
-              "de": "Wähle Formel",
-              "nl": "Selecteer formule",
-              "fr": "Sélectionner la formule",
-              "da": "Vælg formel",
-              "fi": "Valitse kaava",
-              "sv": "Välj formel",
-              "pl": "Wybierz formułę",
-              "it": "Seleziona formula",
-              "es": "Seleccionar fórmula"
+              "en": "Formula name",
+              "no": "Formelnavn",
+              "da": "Formelnavn",
+              "de": "Formelname",
+              "es": "Nombre de fórmula",
+              "fr": "Nom de la formule",
+              "it": "Nome formula",
+              "nl": "Formule naam",
+              "sv": "Formelnamn",
+              "pl": "Nazwa formuły",
+              "ru": "Имя формулы",
+              "ko": "공식 이름"
+            }
+          },
+          {
+            "name": "result",
+            "type": "boolean",
+            "title": {
+              "en": "Result",
+              "no": "Resultat",
+              "da": "Resultat",
+              "de": "Ergebnis",
+              "es": "Resultado",
+              "fr": "Résultat",
+              "it": "Risultato",
+              "nl": "Resultaat",
+              "sv": "Resultat",
+              "pl": "Wynik",
+              "ru": "Результат",
+              "ko": "결과"
             }
           }
         ]
       },
       {
-        "id": "formula_changed_to_true_lu",
+        "id": "formula_changed_to_true_lu_deprecated",
+        "deprecated": true,
         "title": {
           "en": "Formula changed to TRUE",
           "no": "Formel endret til SANN",
-          "de": "Formel auf WAHR geändert",
-          "nl": "Formule veranderde naar WAAR",
-          "fr": "Formule changée en VRAI",
           "da": "Formel ændret til SAND",
-          "fi": "Kaava muuttui TODEKSI",
-          "sv": "Formel ändrades till SANN",
-          "pl": "Formuła zmieniona na PRAWDA",
+          "de": "Formel geändert zu WAHR",
+          "es": "Fórmula cambió a VERDADERO",
+          "fr": "Formule changée vers VRAI",
           "it": "Formula cambiata in VERO",
-          "es": "Fórmula cambiada a VERDADERO"
+          "nl": "Formule veranderd naar WAAR",
+          "sv": "Formel ändrad till SANT",
+          "pl": "Formuła zmieniona na PRAWDA",
+          "ru": "Формула изменена на ИСТИНА",
+          "ko": "공식이 참으로 변경됨"
         },
         "titleFormatted": {
           "en": "Formula [[formula]] changed to TRUE",
           "no": "Formel [[formula]] endret til SANN",
-          "de": "Formel [[formula]] auf WAHR geändert",
-          "nl": "Formule [[formula]] veranderde naar WAAR",
-          "fr": "Formule [[formula]] changée en VRAI",
           "da": "Formel [[formula]] ændret til SAND",
-          "fi": "Kaava [[formula]] muuttui TODEKSI",
-          "sv": "Formel [[formula]] ändrades till SANN",
-          "pl": "Formuła [[formula]] zmieniona na PRAWDA",
+          "de": "Formel [[formula]] geändert zu WAHR",
+          "es": "Fórmula [[formula]] cambió a VERDADERO",
+          "fr": "Formule [[formula]] changée vers VRAI",
           "it": "Formula [[formula]] cambiata in VERO",
-          "es": "Fórmula [[formula]] cambiada a VERDADERO"
+          "nl": "Formule [[formula]] veranderd naar WAAR",
+          "sv": "Formel [[formula]] ändrad till SANT",
+          "pl": "Formuła [[formula]] zmieniona na PRAWDA",
+          "ru": "Формула [[formula]] изменена на ИСТИНА",
+          "ko": "공식 [[formula]]이(가) 참으로 변경됨"
+        },
+        "hint": {
+          "en": "⚠️ DEPRECATED: Use 'Formula changed to...' instead. This card will be removed in a future update.",
+          "no": "⚠️ FORELDET: Bruk 'Formel endret til...' i stedet. Dette kortet vil bli fjernet i en fremtidig oppdatering.",
+          "da": "⚠️ FORÆLDET: Brug 'Formel ændret til...' i stedet. Dette kort vil blive fjernet i en fremtidig opdatering.",
+          "de": "⚠️ VERALTET: Verwenden Sie stattdessen 'Formel geändert zu...'. Diese Karte wird in einem zukünftigen Update entfernt.",
+          "es": "⚠️ OBSOLETO: Use 'Fórmula cambió a...' en su lugar. Esta tarjeta se eliminará en una actualización futura.",
+          "fr": "⚠️ OBSOLÈTE: Utilisez 'Formule changée vers...' à la place. Cette carte sera supprimée dans une mise à jour future.",
+          "it": "⚠️ DEPRECATO: Usa 'Formula cambiata in...' invece. Questa scheda verrà rimossa in un aggiornamento futuro.",
+          "nl": "⚠️ VEROUDERD: Gebruik 'Formule veranderd naar...' in plaats daarvan. Deze kaart wordt verwijderd in een toekomstige update.",
+          "sv": "⚠️ FÖRÅLDRAD: Använd 'Formel ändrad till...' istället. Detta kort kommer att tas bort i en framtida uppdatering.",
+          "pl": "⚠️ PRZESTARZAŁE: Użyj 'Formuła zmieniona na...' zamiast tego. Ta karta zostanie usunięta w przyszłej aktualizacji.",
+          "ru": "⚠️ УСТАРЕЛО: Используйте 'Формула изменена на...' вместо этого. Эта карточка будет удалена в будущем обновлении.",
+          "ko": "⚠️ 더 이상 사용되지 않음: 대신 '공식이 다음으로 변경됨...'을 사용하세요. 이 카드는 향후 업데이트에서 제거됩니다."
         },
         "args": [
           {
-            "type": "device",
             "name": "device",
-            "filter": "driver_id=logic-unit|logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+            "type": "device",
+            "filter": "driver_id=logic-unit"
           },
           {
-            "type": "autocomplete",
             "name": "formula",
+            "type": "autocomplete",
             "title": {
               "en": "Formula",
               "no": "Formel",
-              "de": "Formel",
-              "nl": "Formule",
-              "fr": "Formule",
               "da": "Formel",
-              "fi": "Kaava",
+              "de": "Formel",
+              "es": "Fórmula",
+              "fr": "Formule",
+              "it": "Formula",
+              "nl": "Formule",
               "sv": "Formel",
               "pl": "Formuła",
-              "it": "Formula",
-              "es": "Fórmula"
+              "ru": "Формула",
+              "ko": "공식"
             },
             "placeholder": {
-              "en": "Select formula",
-              "no": "Velg formel",
-              "de": "Wähle Formel",
-              "nl": "Selecteer formule",
-              "fr": "Sélectionner la formule",
-              "da": "Vælg formel",
-              "fi": "Valitse kaava",
-              "sv": "Välj formel",
-              "pl": "Wybierz formułę",
-              "it": "Seleziona formula",
-              "es": "Seleccionar fórmula"
+              "en": "Select a formula...",
+              "no": "Velg en formel...",
+              "da": "Vælg en formel...",
+              "de": "Wählen Sie eine Formel...",
+              "es": "Selecciona una fórmula...",
+              "fr": "Sélectionnez une formule...",
+              "it": "Seleziona una formula...",
+              "nl": "Selecteer een formule...",
+              "sv": "Välj en formel...",
+              "pl": "Wybierz formułę...",
+              "ru": "Выберите формулу...",
+              "ko": "공식을 선택하세요..."
+            }
+          }
+        ],
+        "tokens": [
+          {
+            "name": "device_name",
+            "type": "string",
+            "title": {
+              "en": "Device name",
+              "no": "Enhetsnavn",
+              "da": "Enhedsnavn",
+              "de": "Gerätename",
+              "es": "Nombre del dispositivo",
+              "fr": "Nom de l'appareil",
+              "it": "Nome dispositivo",
+              "nl": "Apparaatnaam",
+              "sv": "Enhetsnamn",
+              "pl": "Nazwa urządzenia",
+              "ru": "Имя устройства",
+              "ko": "장치 이름"
+            }
+          },
+          {
+            "name": "formula_name",
+            "type": "string",
+            "title": {
+              "en": "Formula name",
+              "no": "Formelnavn",
+              "da": "Formelnavn",
+              "de": "Formelname",
+              "es": "Nombre de fórmula",
+              "fr": "Nom de la formule",
+              "it": "Nome formula",
+              "nl": "Formule naam",
+              "sv": "Formelnamn",
+              "pl": "Nazwa formuły",
+              "ru": "Имя формулы",
+              "ko": "공식 이름"
             }
           }
         ]
@@ -413,6 +1228,7 @@
       },
       {
         "id": "state_changed_ld",
+        "deprecated": true,
         "title": {
           "en": "Logic state changed",
           "no": "Logikk-status endret",
@@ -425,6 +1241,19 @@
           "pl": "Stan logiczny zmienił się",
           "it": "Stato logico cambiato",
           "es": "Estado lógico cambiado"
+        },
+        "hint": {
+          "en": "Deprecated: Use 'Device alarm state changed' instead",
+          "no": "Utgått: Bruk 'Enhetsalarm-status endret' i stedet",
+          "de": "Veraltet: Verwenden Sie stattdessen 'Gerätealarmstatus geändert'",
+          "nl": "Vervangen: Gebruik 'Apparaat alarmstatus gewijzigd' in plaats daarvan",
+          "fr": "Obsolète: Utilisez 'État d'alarme de l'appareil modifié' à la place",
+          "da": "Forældet: Brug 'Enhedsalarmstatus ændret' i stedet",
+          "fi": "Vanhentunut: Käytä 'Laitteen hälytystila muuttunut' sen sijaan",
+          "sv": "Föråldrad: Använd 'Enhetslarmstatus ändrades' istället",
+          "pl": "Przestarzałe: Użyj 'Stan alarmu urządzenia zmienił się' zamiast tego",
+          "it": "Deprecato: Usa 'Stato allarme dispositivo cambiato' invece",
+          "es": "Obsoleto: Use 'Estado de alarma del dispositivo cambiado' en su lugar"
         },
         "args": [
           {
@@ -455,6 +1284,218 @@
       }
     ],
     "conditions": [
+      {
+        "id": "device_alarm_is_ld",
+        "title": {
+          "en": "Device alarm is...",
+          "no": "Enhetsalarm er...",
+          "da": "Enhedsalarm er...",
+          "de": "Gerätealarm ist...",
+          "es": "La alarma del dispositivo está...",
+          "fr": "L'alarme de l'appareil est...",
+          "it": "L'allarme del dispositivo è...",
+          "nl": "Apparaat alarm is...",
+          "sv": "Enhetslarm är...",
+          "pl": "Alarm urządzenia jest...",
+          "ru": "Тревога устройства...",
+          "ko": "장치 알람이..."
+        },
+        "titleFormatted": {
+          "en": "Device alarm !{{is|isn't}} [[alarm_state]]",
+          "no": "Enhetsalarm !{{er|er ikke}} [[alarm_state]]",
+          "da": "Enhedsalarm !{{er|er ikke}} [[alarm_state]]",
+          "de": "Gerätealarm !{{ist|ist nicht}} [[alarm_state]]",
+          "es": "La alarma del dispositivo !{{está|no está}} [[alarm_state]]",
+          "fr": "L'alarme de l'appareil !{{est|n'est pas}} [[alarm_state]]",
+          "it": "L'allarme del dispositivo !{{è|non è}} [[alarm_state]]",
+          "nl": "Apparaat alarm !{{is|is niet}} [[alarm_state]]",
+          "sv": "Enhetslarm !{{är|är inte}} [[alarm_state]]",
+          "pl": "Alarm urządzenia !{{jest|nie jest}} [[alarm_state]]",
+          "ru": "Тревога устройства !{{включена|не включена}} [[alarm_state]]",
+          "ko": "장치 알람이 !{{켜져|꺼져}} [[alarm_state]] 있음"
+        },
+        "hint": {
+          "en": "Check if the device's alarm is currently on or off.",
+          "no": "Sjekk om enhetens alarm er på eller av.",
+          "da": "Tjek om enhedens alarm er til eller fra.",
+          "de": "Überprüfen Sie, ob der Gerätealarm ein- oder ausgeschaltet ist.",
+          "es": "Verifica si la alarma del dispositivo está encendida o apagada.",
+          "fr": "Vérifiez si l'alarme de l'appareil est allumée ou éteinte.",
+          "it": "Controlla se l'allarme del dispositivo è acceso o spento.",
+          "nl": "Controleer of het apparaat alarm aan of uit staat.",
+          "sv": "Kontrollera om enhetens alarm är på eller av.",
+          "pl": "Sprawdź, czy alarm urządzenia jest włączony lub wyłączony.",
+          "ru": "Проверьте, включена или выключена тревога устройства.",
+          "ko": "장치의 알람이 현재 켜져 있는지 꺼져 있는지 확인하세요."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "name": "alarm_state",
+            "type": "dropdown",
+            "title": {
+              "en": "Alarm state",
+              "no": "Alarmtilstand",
+              "da": "Alarmstilstand",
+              "de": "Alarmzustand",
+              "es": "Estado de alarma",
+              "fr": "État d'alarme",
+              "it": "Stato allarme",
+              "nl": "Alarmstatus",
+              "sv": "Alarmtillstånd",
+              "pl": "Stan alarmu",
+              "ru": "Состояние тревоги",
+              "ko": "알람 상태"
+            },
+            "values": [
+              {
+                "id": "true",
+                "title": {
+                  "en": "On",
+                  "no": "På",
+                  "da": "Til",
+                  "de": "Ein",
+                  "es": "Encendido",
+                  "fr": "Allumé",
+                  "it": "Acceso",
+                  "nl": "Aan",
+                  "sv": "På",
+                  "pl": "Włączony",
+                  "ru": "Вкл",
+                  "ko": "켜짐"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "Off",
+                  "no": "Av",
+                  "da": "Fra",
+                  "de": "Aus",
+                  "es": "Apagado",
+                  "fr": "Éteint",
+                  "it": "Spento",
+                  "nl": "Uit",
+                  "sv": "Av",
+                  "pl": "Wyłączony",
+                  "ru": "Выкл",
+                  "ko": "꺼짐"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "device_is_turned_ld",
+        "title": {
+          "en": "Device is turned...",
+          "no": "Enheten er skrudd...",
+          "da": "Enheden er slået...",
+          "de": "Gerät ist...",
+          "es": "El dispositivo está...",
+          "fr": "L'appareil est...",
+          "it": "Il dispositivo è...",
+          "nl": "Apparaat is...",
+          "sv": "Enheten är...",
+          "pl": "Urządzenie jest...",
+          "ru": "Устройство...",
+          "ko": "장치가..."
+        },
+        "titleFormatted": {
+          "en": "Device !{{is|isn't}} turned [[on_state]]",
+          "no": "Enheten !{{er|er ikke}} skrudd [[on_state]]",
+          "da": "Enheden !{{er|er ikke}} slået [[on_state]]",
+          "de": "Gerät !{{ist|ist nicht}} [[on_state]]",
+          "es": "El dispositivo !{{está|no está}} [[on_state]]",
+          "fr": "L'appareil !{{est|n'est pas}} [[on_state]]",
+          "it": "Il dispositivo !{{è|non è}} [[on_state]]",
+          "nl": "Apparaat !{{is|is niet}} [[on_state]]",
+          "sv": "Enheten !{{är|är inte}} [[on_state]]",
+          "pl": "Urządzenie !{{jest|nie jest}} [[on_state]]",
+          "ru": "Устройство !{{включено|не включено}} [[on_state]]",
+          "ko": "장치가 !{{켜져|꺼져}} [[on_state]] 있음"
+        },
+        "hint": {
+          "en": "Check if the device is currently turned on or off.",
+          "no": "Sjekk om enheten er skrudd på eller av.",
+          "da": "Tjek om enheden er slået til eller fra.",
+          "de": "Überprüfen Sie, ob das Gerät ein- oder ausgeschaltet ist.",
+          "es": "Verifica si el dispositivo está encendido o apagado.",
+          "fr": "Vérifiez si l'appareil est allumé ou éteint.",
+          "it": "Controlla se il dispositivo è acceso o spento.",
+          "nl": "Controleer of het apparaat aan of uit staat.",
+          "sv": "Kontrollera om enheten är på eller av.",
+          "pl": "Sprawdź, czy urządzenie jest włączone lub wyłączone.",
+          "ru": "Проверьте, включено или выключено устройство.",
+          "ko": "장치가 현재 켜져 있는지 꺼져 있는지 확인하세요."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=logic-device"
+          },
+          {
+            "name": "on_state",
+            "type": "dropdown",
+            "title": {
+              "en": "State",
+              "no": "Tilstand",
+              "da": "Tilstand",
+              "de": "Zustand",
+              "es": "Estado",
+              "fr": "État",
+              "it": "Stato",
+              "nl": "Status",
+              "sv": "Tillstånd",
+              "pl": "Stan",
+              "ru": "Состояние",
+              "ko": "상태"
+            },
+            "values": [
+              {
+                "id": "true",
+                "title": {
+                  "en": "On",
+                  "no": "På",
+                  "da": "Til",
+                  "de": "Ein",
+                  "es": "Encendido",
+                  "fr": "Allumé",
+                  "it": "Acceso",
+                  "nl": "Aan",
+                  "sv": "På",
+                  "pl": "Włączony",
+                  "ru": "Вкл",
+                  "ko": "켜짐"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "Off",
+                  "no": "Av",
+                  "da": "Fra",
+                  "de": "Aus",
+                  "es": "Apagado",
+                  "fr": "Éteint",
+                  "it": "Spento",
+                  "nl": "Uit",
+                  "sv": "Av",
+                  "pl": "Wyłączony",
+                  "ru": "Выкл",
+                  "ko": "꺼짐"
+                }
+              }
+            ]
+          }
+        ]
+      },
       {
         "id": "formula_has_timed_out_ld",
         "title": {
@@ -770,17 +1811,17 @@
           "es": "Dispositivo !{{tiene|no tiene}} error"
         },
         "titleFormatted": {
-          "en": "[[device]] - Device !{{has|has no}} error",
-          "no": "[[device]] - Enhet !{{har|har ingen}} feil",
-          "de": "[[device]] - Gerät !{{hat|hat keinen}} Fehler",
-          "nl": "[[device]] - Apparaat !{{heeft|heeft geen}} fout",
-          "fr": "[[device]] - Appareil !{{a|n'a pas}} d'erreur",
-          "da": "[[device]] - Enhed !{{har|har ingen}} fejl",
-          "fi": "[[device]] - Laite !{{on|ei ole}} virheellinen",
-          "sv": "[[device]] - Enhet !{{har|har inget}} fel",
-          "pl": "[[device]] - Urządzenie !{{ma|nie ma}} błędu",
-          "it": "[[device]] - Dispositivo !{{ha|non ha}} errori",
-          "es": "[[device]] - Dispositivo !{{tiene|no tiene}} error"
+          "en": "Device !{{has|has no}} error",
+          "no": "Enhet !{{har|har ingen}} feil",
+          "de": "Gerät !{{hat|hat keinen}} Fehler",
+          "nl": "Apparaat !{{heeft|heeft geen}} fout",
+          "fr": "Appareil !{{a|n'a pas}} d'erreur",
+          "da": "Enhed !{{har|har ingen}} fejl",
+          "fi": "Laite !{{on|ei ole}} virheellinen",
+          "sv": "Enhet !{{har|har inget}} fel",
+          "pl": "Urządzenie !{{ma|nie ma}} błędu",
+          "it": "Dispositivo !{{ha|non ha}} errori",
+          "es": "Dispositivo !{{tiene|no tiene}} error"
         },
         "args": [
           {
@@ -850,6 +1891,218 @@
           }
         ],
         "id": "has_error"
+      },
+      {
+        "id": "unit_alarm_is_lu",
+        "title": {
+          "en": "Logic Unit alarm is...",
+          "no": "Logikkenhet alarm er...",
+          "da": "Logikenhed alarm er...",
+          "de": "Logikeinheit Alarm ist...",
+          "es": "La alarma de la unidad lógica está...",
+          "fr": "L'alarme de l'unité logique est...",
+          "it": "L'allarme dell'unità logica è...",
+          "nl": "Logische eenheid alarm is...",
+          "sv": "Logikenhet alarm är...",
+          "pl": "Alarm jednostki logicznej jest...",
+          "ru": "Тревога логического блока...",
+          "ko": "논리 유닛 알람이..."
+        },
+        "titleFormatted": {
+          "en": "Logic Unit alarm !{{is|isn't}} [[alarm_state]]",
+          "no": "Logikkenhet alarm !{{er|er ikke}} [[alarm_state]]",
+          "da": "Logikenhed alarm !{{er|er ikke}} [[alarm_state]]",
+          "de": "Logikeinheit Alarm !{{ist|ist nicht}} [[alarm_state]]",
+          "es": "La alarma de la unidad lógica !{{está|no está}} [[alarm_state]]",
+          "fr": "L'alarme de l'unité logique !{{est|n'est pas}} [[alarm_state]]",
+          "it": "L'allarme dell'unità logica !{{è|non è}} [[alarm_state]]",
+          "nl": "Logische eenheid alarm !{{is|is niet}} [[alarm_state]]",
+          "sv": "Logikenhet alarm !{{är|är inte}} [[alarm_state]]",
+          "pl": "Alarm jednostki logicznej !{{jest|nie jest}} [[alarm_state]]",
+          "ru": "Тревога логического блока !{{включена|не включена}} [[alarm_state]]",
+          "ko": "논리 유닛 알람이 !{{켜져|꺼져}} [[alarm_state]] 있음"
+        },
+        "hint": {
+          "en": "Check if the Logic Unit's alarm is currently on or off.",
+          "no": "Sjekk om logikkenhetens alarm er på eller av.",
+          "da": "Tjek om logikenhedens alarm er til eller fra.",
+          "de": "Überprüfen Sie, ob der Alarm der Logikeinheit ein- oder ausgeschaltet ist.",
+          "es": "Verifica si la alarma de la unidad lógica está encendida o apagada.",
+          "fr": "Vérifiez si l'alarme de l'unité logique est allumée ou éteinte.",
+          "it": "Controlla se l'allarme dell'unità logica è acceso o spento.",
+          "nl": "Controleer of het alarm van de logische eenheid aan of uit staat.",
+          "sv": "Kontrollera om logikenhetens alarm är på eller av.",
+          "pl": "Sprawdź, czy alarm jednostki logicznej jest włączony lub wyłączony.",
+          "ru": "Проверьте, включена или выключена тревога логического блока.",
+          "ko": "논리 유닛의 알람이 현재 켜져 있는지 꺼져 있는지 확인하세요."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+          },
+          {
+            "name": "alarm_state",
+            "type": "dropdown",
+            "title": {
+              "en": "Alarm state",
+              "no": "Alarmtilstand",
+              "da": "Alarmstilstand",
+              "de": "Alarmzustand",
+              "es": "Estado de alarma",
+              "fr": "État d'alarme",
+              "it": "Stato allarme",
+              "nl": "Alarmstatus",
+              "sv": "Alarmtillstånd",
+              "pl": "Stan alarmu",
+              "ru": "Состояние тревоги",
+              "ko": "알람 상태"
+            },
+            "values": [
+              {
+                "id": "true",
+                "title": {
+                  "en": "On",
+                  "no": "På",
+                  "da": "Til",
+                  "de": "Ein",
+                  "es": "Encendido",
+                  "fr": "Allumé",
+                  "it": "Acceso",
+                  "nl": "Aan",
+                  "sv": "På",
+                  "pl": "Włączony",
+                  "ru": "Вкл",
+                  "ko": "켜짐"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "Off",
+                  "no": "Av",
+                  "da": "Fra",
+                  "de": "Aus",
+                  "es": "Apagado",
+                  "fr": "Éteint",
+                  "it": "Spento",
+                  "nl": "Uit",
+                  "sv": "Av",
+                  "pl": "Wyłączony",
+                  "ru": "Выкл",
+                  "ko": "꺼짐"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "unit_is_turned_lu",
+        "title": {
+          "en": "Logic Unit is turned...",
+          "no": "Logikkenhet er skrudd...",
+          "da": "Logikenhed er slået...",
+          "de": "Logikeinheit ist...",
+          "es": "La unidad lógica está...",
+          "fr": "L'unité logique est...",
+          "it": "L'unità logica è...",
+          "nl": "Logische eenheid is...",
+          "sv": "Logikenhet är...",
+          "pl": "Jednostka logiczna jest...",
+          "ru": "Логический блок...",
+          "ko": "논리 유닛이..."
+        },
+        "titleFormatted": {
+          "en": "Logic Unit !{{is|isn't}} turned [[on_state]]",
+          "no": "Logikkenhet !{{er|er ikke}} skrudd [[on_state]]",
+          "da": "Logikenhed !{{er|er ikke}} slået [[on_state]]",
+          "de": "Logikeinheit !{{ist|ist nicht}} [[on_state]]",
+          "es": "La unidad lógica !{{está|no está}} [[on_state]]",
+          "fr": "L'unité logique !{{est|n'est pas}} [[on_state]]",
+          "it": "L'unità logica !{{è|non è}} [[on_state]]",
+          "nl": "Logische eenheid !{{is|is niet}} [[on_state]]",
+          "sv": "Logikenhet !{{är|är inte}} [[on_state]]",
+          "pl": "Jednostka logiczna !{{jest|nie jest}} [[on_state]]",
+          "ru": "Логический блок !{{включен|не включен}} [[on_state]]",
+          "ko": "논리 유닛이 !{{켜져|꺼져}} [[on_state]] 있음"
+        },
+        "hint": {
+          "en": "Check if the Logic Unit is currently turned on or off.",
+          "no": "Sjekk om logikkenheten er skrudd på eller av.",
+          "da": "Tjek om logikenheden er slået til eller fra.",
+          "de": "Überprüfen Sie, ob die Logikeinheit ein- oder ausgeschaltet ist.",
+          "es": "Verifica si la unidad lógica está encendida o apagada.",
+          "fr": "Vérifiez si l'unité logique est allumée ou éteinte.",
+          "it": "Controlla se l'unità logica è accesa o spenta.",
+          "nl": "Controleer of de logische eenheid aan of uit staat.",
+          "sv": "Kontrollera om logikenheten är på eller av.",
+          "pl": "Sprawdź, czy jednostka logiczna jest włączona lub wyłączona.",
+          "ru": "Проверьте, включен или выключен логический блок.",
+          "ko": "논리 유닛이 현재 켜져 있는지 꺼져 있는지 확인하세요."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+          },
+          {
+            "name": "on_state",
+            "type": "dropdown",
+            "title": {
+              "en": "State",
+              "no": "Tilstand",
+              "da": "Tilstand",
+              "de": "Zustand",
+              "es": "Estado",
+              "fr": "État",
+              "it": "Stato",
+              "nl": "Status",
+              "sv": "Tillstånd",
+              "pl": "Stan",
+              "ru": "Состояние",
+              "ko": "상태"
+            },
+            "values": [
+              {
+                "id": "true",
+                "title": {
+                  "en": "On",
+                  "no": "På",
+                  "da": "Til",
+                  "de": "Ein",
+                  "es": "Encendido",
+                  "fr": "Allumé",
+                  "it": "Acceso",
+                  "nl": "Aan",
+                  "sv": "På",
+                  "pl": "Włączony",
+                  "ru": "Вкл",
+                  "ko": "켜짐"
+                }
+              },
+              {
+                "id": "false",
+                "title": {
+                  "en": "Off",
+                  "no": "Av",
+                  "da": "Fra",
+                  "de": "Aus",
+                  "es": "Apagado",
+                  "fr": "Éteint",
+                  "it": "Spento",
+                  "nl": "Uit",
+                  "sv": "Av",
+                  "pl": "Wyłączony",
+                  "ru": "Выкл",
+                  "ko": "꺼짐"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "actions": [
@@ -958,17 +2211,17 @@
           "es": "Re-evaluar todas las fórmulas"
         },
         "titleFormatted": {
-          "en": "[[device]] - Re-evaluate all formulas",
-          "no": "[[device]] - Re-evaluer alle formler",
-          "de": "[[device]] - Alle Formeln neu bewerten",
-          "nl": "[[device]] - Alle formules opnieuw evalueren",
-          "fr": "[[device]] - Réévaluer toutes les formules",
-          "da": "[[device]] - Gentag evaluering af alle formler",
-          "fi": "[[device]] - Arvioi kaikki kaavat uudelleen",
-          "sv": "[[device]] - Omvärdera alla formler",
-          "pl": "[[device]] - Ponownie oceń wszystkie formuły",
-          "it": "[[device]] - Rivaluta tutte le formule",
-          "es": "[[device]] - Re-evaluar todas las fórmulas"
+          "en": "Re-evaluate all formulas",
+          "no": "Re-evaluer alle formler",
+          "de": "Alle Formeln neu bewerten",
+          "nl": "Alle formules opnieuw evalueren",
+          "fr": "Réévaluer toutes les formules",
+          "da": "Gentag evaluering af alle formler",
+          "fi": "Arvioi kaikki kaavat uudelleen",
+          "sv": "Omvärdera alla formler",
+          "pl": "Ponownie oceń wszystkie formuły",
+          "it": "Rivaluta tutte le formule",
+          "es": "Re-evaluar todas las fórmulas"
         },
         "args": [
           {
@@ -1268,17 +2521,17 @@
           "es": "Evaluar fórmula"
         },
         "titleFormatted": {
-          "en": "[[device]] - Evaluate formula",
-          "no": "[[device]] - Evaluer formel",
-          "de": "[[device]] - Formel auswerten",
-          "nl": "[[device]] - Formule evalueren",
-          "fr": "[[device]] - Évaluer la formule",
-          "da": "[[device]] - Evaluer formel",
-          "fi": "[[device]] - Arvioi kaava",
-          "sv": "[[device]] - Utvärdera formel",
-          "pl": "[[device]] - Oceń formułę",
-          "it": "[[device]] - Valuta formula",
-          "es": "[[device]] - Evaluar fórmula"
+          "en": "Evaluate formula",
+          "no": "Evaluer formel",
+          "de": "Formel auswerten",
+          "nl": "Formule evalueren",
+          "fr": "Évaluer la formule",
+          "da": "Evaluer formel",
+          "fi": "Arvioi kaava",
+          "sv": "Utvärdera formel",
+          "pl": "Oceń formułę",
+          "it": "Valuta formula",
+          "es": "Evaluar fórmula"
         },
         "args": [
           {

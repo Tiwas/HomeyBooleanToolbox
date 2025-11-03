@@ -1,0 +1,55 @@
+{
+  "id": "device_alarm_state_changed_ld",
+  "title": {
+    "en": "Device alarm state changed",
+    "no": "Enhetsalarm-status endret",
+    "de": "Gerätealarmstatus geändert",
+    "nl": "Apparaat alarmstatus gewijzigd",
+    "fr": "État d'alarme de l'appareil modifié",
+    "da": "Enhedsalarmstatus ændret",
+    "fi": "Laitteen hälytystila muuttunut",
+    "sv": "Enhetslarmstatus ändrades",
+    "pl": "Stan alarmu urządzenia zmienił się",
+    "it": "Stato allarme dispositivo cambiato",
+    "es": "Estado de alarma del dispositivo cambiado"
+  },
+  "hint": {
+    "en": "Triggers when the Logic Device's alarm state changes (true/false)",
+    "no": "Utløses når Logic Device sin alarmstatus endres (sant/usant)",
+    "de": "Wird ausgelöst, wenn sich der Alarmstatus des Logic Device ändert (wahr/falsch)",
+    "nl": "Wordt geactiveerd wanneer de alarmstatus van het Logic Device verandert (waar/onwaar)",
+    "fr": "Se déclenche lorsque l'état d'alarme du Logic Device change (vrai/faux)",
+    "da": "Udløses, når Logic Device's alarmstatus ændres (sand/falsk)",
+    "fi": "Laukaistaan, kun Logic Device:n hälytystila muuttuu (tosi/epätosi)",
+    "sv": "Utlöses när Logic Device:s larmstatus ändras (sant/falskt)",
+    "pl": "Wyzwalane, gdy stan alarmu Logic Device zmienia się (prawda/fałsz)",
+    "it": "Si attiva quando lo stato di allarme del Logic Device cambia (vero/falso)",
+    "es": "Se activa cuando el estado de alarma del Logic Device cambia (verdadero/falso)"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "alarm_state",
+      "type": "boolean",
+      "title": {
+        "en": "Alarm state",
+        "no": "Alarmstatus",
+        "de": "Alarmstatus",
+        "nl": "Alarmstatus",
+        "fr": "État d'alarme",
+        "da": "Alarmstatus",
+        "fi": "Hälytystila",
+        "sv": "Larmstatus",
+        "pl": "Stan alarmu",
+        "it": "Stato allarme",
+        "es": "Estado de alarma"
+      }
+    }
+  ]
+}

@@ -84,13 +84,31 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         await this.evaluateAllFormulasInitial();
         this.startTimeoutChecks();
         this.logger.info("✅ Device enabled - evaluations resumed");
+        
+        // Fire on-state trigger for enabling device
+        await this.fireAllRelevantTriggers(
+          null, // newAlarmState (will be set by formula evaluation)
+          true, // newOnState (device was turned on)
+          null, // previousAlarmState
+          false // previousOnState (was off before)
+        );
       } else {
         // Device disabled - stop timeout checks and clear alarm
         if (this.timeoutInterval) {
           clearInterval(this.timeoutInterval);
           this.timeoutInterval = null;
         }
+        const previousAlarmState = this.getCapabilityValue("alarm_generic");
         await this.setCapabilityValue("alarm_generic", false).catch(() => {});
+        
+        // Fire triggers for on/off state change
+        const previousOnState = !value; // Previous state is opposite of new value
+        await this.fireAllRelevantTriggers(
+          false,            // newAlarmState (set to false when disabled)
+          value,            // newOnState (the new on/off state)
+          previousAlarmState, // previousAlarmState
+          previousOnState   // previousOnState
+        );
         this.logger.info("⏸️  Device disabled - evaluations stopped");
       }
 
@@ -785,7 +803,23 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
       // Trigger flows hvis resultatet endret seg
       if (previousResult !== null && previousResult !== result) {
-        // ... (samme trigger-kode som før)
+        // Get current on/off state for context
+        const currentOnState = this.getCapabilityValue("onoff");
+        
+        this.logger.debug("formula_result_changed", {
+          formulaName: formula.name,
+          previousResult,
+          newResult: result,
+          currentOnState
+        });
+        
+        // Fire all relevant triggers
+        await this.fireAllRelevantTriggers(
+          result,           // newAlarmState (formula result)
+          currentOnState,   // newOnState (on/off capability)
+          previousResult,   // previousAlarmState
+          null             // previousOnState (not changing here)
+        );
       }
 
       return result;
@@ -1057,9 +1091,24 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
     if (!anyEvaluated) {
       this.logger.warn("evaluation.no_formulas_ready");
+      
+      // Store previous state before updating
+      const previousAlarmState = this.getCapabilityValue("alarm_generic");
+      
       // ✅ CRITICAL: Only set alarm_generic, NOT onoff!
       // onoff is user control, alarm_generic is formula result
       await this.safeSetCapabilityValue("alarm_generic", false);
+      
+      // Fire alarm triggers if state changed
+      if (previousAlarmState !== false) {
+        const currentOnState = this.getCapabilityValue("onoff");
+        await this.fireAllRelevantTriggers(
+          false,              // newAlarmState
+          currentOnState,     // newOnState
+          previousAlarmState, // previousAlarmState
+          null               // previousOnState (not changing)
+        );
+      }
     }
   }
 
@@ -1577,5 +1626,75 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     }
 
     this.logger.info("device.cleanup_complete");
+  }
+
+  async fireAllRelevantTriggers(newAlarmState, newOnState, previousAlarmState = null, previousOnState = null) {
+    this.logger.debug("firing_all_triggers", {
+      newAlarmState,
+      newOnState,
+      previousAlarmState,
+      previousOnState
+    });
+
+    // ===== ALARM STATE TRIGGERS =====
+    if (previousAlarmState !== null && previousAlarmState !== newAlarmState) {
+      // Prepare alarm state trigger data
+      const alarmTriggerData = {
+        state: newAlarmState,        // For deprecated triggers (boolean)
+        alarm_state: newAlarmState   // For new triggers (boolean)
+      };
+      
+      const alarmState = {
+        state: newAlarmState,        // For deprecated triggers
+        alarm_state: newAlarmState   // For new triggers
+      };
+
+      this.logger.flow(`🚨 Alarm state changed: ${previousAlarmState} → ${newAlarmState}`);
+
+      // Fire deprecated triggers (for backward compatibility)
+      await this.safeTriggerCard("state_changed_ld", alarmTriggerData, alarmState);
+      await this.safeTriggerCard("device_state_changed_ld", alarmTriggerData, alarmState);
+
+      // Fire new alarm state triggers
+      await this.safeTriggerCard("device_alarm_state_changed_ld", alarmTriggerData, alarmState);
+      await this.safeTriggerCard("device_alarm_changed_to_ld", alarmTriggerData, alarmState);
+    }
+
+    // ===== ON/OFF STATE TRIGGERS =====
+    if (previousOnState !== null && previousOnState !== newOnState) {
+      // Prepare on/off state trigger data
+      const onTriggerData = {
+        on_state: newOnState
+      };
+      
+      const onState = {
+        on_state: newOnState
+      };
+
+      this.logger.flow(`🔘 On state changed: ${previousOnState} → ${newOnState}`);
+
+      // Fire new on/off state triggers
+      await this.safeTriggerCard("device_on_state_changed_ld", onTriggerData, onState);
+      await this.safeTriggerCard("device_turned_ld", onTriggerData, onState);
+    }
+  }
+
+  // Safe trigger card firing with error handling
+  async safeTriggerCard(triggerCardId, triggerData, state) {
+    try {
+      this.logger.flow(`🎯 Triggering '${triggerCardId}' with data:`, triggerData);
+      const card = this.homey.flow.getDeviceTriggerCard(triggerCardId);
+      await card.trigger(this, triggerData, state);
+      this.logger.debug(`✅ Successfully triggered: ${triggerCardId}`);
+    } catch (e) {
+      if (e.message && e.message.includes("Invalid Flow Card ID")) {
+        this.logger.error(
+          `FATAL: Trigger card '${triggerCardId}' not found. Check app.json/compose flow definitions.`,
+          e
+        );
+      } else {
+        this.logger.error(`❌ Error triggering ${triggerCardId}:`, e);
+      }
+    }
   }
 };

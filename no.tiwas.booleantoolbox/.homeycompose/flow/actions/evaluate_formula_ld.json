@@ -14,17 +14,17 @@
     "es": "Evaluar fórmula"
   },
   "titleFormatted": {
-    "en": "[[device]] - Evaluate formula",
-    "no": "[[device]] - Evaluer formel",
-    "de": "[[device]] - Formel auswerten",
-    "nl": "[[device]] - Formule evalueren",
-    "fr": "[[device]] - Évaluer la formule",
-    "da": "[[device]] - Evaluer formel",
-    "fi": "[[device]] - Arvioi kaava",
-    "sv": "[[device]] - Utvärdera formel",
-    "pl": "[[device]] - Oceń formułę",
-    "it": "[[device]] - Valuta formula",
-    "es": "[[device]] - Evaluar fórmula"
+    "en": "Evaluate formula",
+    "no": "Evaluer formel",
+    "de": "Formel auswerten",
+    "nl": "Formule evalueren",
+    "fr": "Évaluer la formule",
+    "da": "Evaluer formel",
+    "fi": "Arvioi kaava",
+    "sv": "Utvärdera formel",
+    "pl": "Oceń formułę",
+    "it": "Valuta formula",
+    "es": "Evaluar fórmula"
   },
   "args": [
     {

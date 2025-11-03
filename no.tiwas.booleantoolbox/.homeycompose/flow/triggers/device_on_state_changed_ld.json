@@ -1,0 +1,55 @@
+{
+  "id": "device_on_state_changed_ld",
+  "title": {
+    "en": "Device on-state changed",
+    "no": "Enhet på-status endret",
+    "de": "Gerät Ein-Status geändert",
+    "nl": "Apparaat aan-status gewijzigd",
+    "fr": "État d'activation de l'appareil modifié",
+    "da": "Enheds tænd-status ændret",
+    "fi": "Laitteen päällä-tila muuttunut",
+    "sv": "Enhetens på-status ändrades",
+    "pl": "Stan włączenia urządzenia zmienił się",
+    "it": "Stato di accensione dispositivo cambiato",
+    "es": "Estado de encendido del dispositivo cambiado"
+  },
+  "hint": {
+    "en": "Triggers when the Logic Device's on/off state changes (enabled/disabled)",
+    "no": "Utløses når Logic Device sin på/av-status endres (aktivert/deaktivert)",
+    "de": "Wird ausgelöst, wenn sich der Ein/Aus-Status des Logic Device ändert (aktiviert/deaktiviert)",
+    "nl": "Wordt geactiveerd wanneer de aan/uit-status van het Logic Device verandert (ingeschakeld/uitgeschakeld)",
+    "fr": "Se déclenche lorsque l'état marche/arrêt du Logic Device change (activé/désactivé)",
+    "da": "Udløses, når Logic Device's tænd/sluk-status ændres (aktiveret/deaktiveret)",
+    "fi": "Laukaistaan, kun Logic Device:n päällä/pois-tila muuttuu (aktivoitu/deaktivoitu)",
+    "sv": "Utlöses när Logic Device:s på/av-status ändras (aktiverad/inaktiverad)",
+    "pl": "Wyzwalane, gdy stan włączenia/wyłączenia Logic Device zmienia się (aktywowany/dezaktywowany)",
+    "it": "Si attiva quando lo stato acceso/spento del Logic Device cambia (attivato/disattivato)",
+    "es": "Se activa cuando el estado encendido/apagado del Logic Device cambia (activado/desactivado)"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "on_state",
+      "type": "boolean",
+      "title": {
+        "en": "On state",
+        "no": "På-status",
+        "de": "Ein-Status",
+        "nl": "Aan-status",
+        "fr": "État allumé",
+        "da": "Tænd-status",
+        "fi": "Päällä-tila",
+        "sv": "På-status",
+        "pl": "Stan włączenia",
+        "it": "Stato acceso",
+        "es": "Estado encendido"
+      }
+    }
+  ]
+}

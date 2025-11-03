@@ -1,0 +1,106 @@
+{
+  "id": "unit_alarm_is_lu",
+  "title": {
+    "en": "Logic Unit alarm is...",
+    "no": "Logikkenhet alarm er...",
+    "da": "Logikenhed alarm er...",
+    "de": "Logikeinheit Alarm ist...",
+    "es": "La alarma de la unidad lógica está...",
+    "fr": "L'alarme de l'unité logique est...",
+    "it": "L'allarme dell'unità logica è...",
+    "nl": "Logische eenheid alarm is...",
+    "sv": "Logikenhet alarm är...",
+    "pl": "Alarm jednostki logicznej jest...",
+    "ru": "Тревога логического блока...",
+    "ko": "논리 유닛 알람이..."
+  },
+  "titleFormatted": {
+    "en": "Logic Unit alarm !{{is|isn't}} [[alarm_state]]",
+    "no": "Logikkenhet alarm !{{er|er ikke}} [[alarm_state]]",
+    "da": "Logikenhed alarm !{{er|er ikke}} [[alarm_state]]",
+    "de": "Logikeinheit Alarm !{{ist|ist nicht}} [[alarm_state]]",
+    "es": "La alarma de la unidad lógica !{{está|no está}} [[alarm_state]]",
+    "fr": "L'alarme de l'unité logique !{{est|n'est pas}} [[alarm_state]]",
+    "it": "L'allarme dell'unità logica !{{è|non è}} [[alarm_state]]",
+    "nl": "Logische eenheid alarm !{{is|is niet}} [[alarm_state]]",
+    "sv": "Logikenhet alarm !{{är|är inte}} [[alarm_state]]",
+    "pl": "Alarm jednostki logicznej !{{jest|nie jest}} [[alarm_state]]",
+    "ru": "Тревога логического блока !{{включена|не включена}} [[alarm_state]]",
+    "ko": "논리 유닛 알람이 !{{켜져|꺼져}} [[alarm_state]] 있음"
+  },
+  "hint": {
+    "en": "Check if the Logic Unit's alarm is currently on or off.",
+    "no": "Sjekk om logikkenhetens alarm er på eller av.",
+    "da": "Tjek om logikenhedens alarm er til eller fra.",
+    "de": "Überprüfen Sie, ob der Alarm der Logikeinheit ein- oder ausgeschaltet ist.",
+    "es": "Verifica si la alarma de la unidad lógica está encendida o apagada.",
+    "fr": "Vérifiez si l'alarme de l'unité logique est allumée ou éteinte.",
+    "it": "Controlla se l'allarme dell'unità logica è acceso o spento.",
+    "nl": "Controleer of het alarm van de logische eenheid aan of uit staat.",
+    "sv": "Kontrollera om logikenhetens alarm är på eller av.",
+    "pl": "Sprawdź, czy alarm jednostki logicznej jest włączony lub wyłączony.",
+    "ru": "Проверьте, включена или выключена тревога логического блока.",
+    "ko": "논리 유닛의 알람이 현재 켜져 있는지 꺼져 있는지 확인하세요."
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+    },
+    {
+      "name": "alarm_state",
+      "type": "dropdown",
+      "title": {
+        "en": "Alarm state",
+        "no": "Alarmtilstand",
+        "da": "Alarmstilstand",
+        "de": "Alarmzustand",
+        "es": "Estado de alarma",
+        "fr": "État d'alarme",
+        "it": "Stato allarme",
+        "nl": "Alarmstatus",
+        "sv": "Alarmtillstånd",
+        "pl": "Stan alarmu",
+        "ru": "Состояние тревоги",
+        "ko": "알람 상태"
+      },
+      "values": [
+        {
+          "id": "true",
+          "title": {
+            "en": "On",
+            "no": "På",
+            "da": "Til",
+            "de": "Ein",
+            "es": "Encendido",
+            "fr": "Allumé",
+            "it": "Acceso",
+            "nl": "Aan",
+            "sv": "På",
+            "pl": "Włączony",
+            "ru": "Вкл",
+            "ko": "켜짐"
+          }
+        },
+        {
+          "id": "false",
+          "title": {
+            "en": "Off",
+            "no": "Av",
+            "da": "Fra",
+            "de": "Aus",
+            "es": "Apagado",
+            "fr": "Éteint",
+            "it": "Spento",
+            "nl": "Uit",
+            "sv": "Av",
+            "pl": "Wyłączony",
+            "ru": "Выкл",
+            "ko": "꺼짐"
+          }
+        }
+      ]
+    }
+  ]
+}

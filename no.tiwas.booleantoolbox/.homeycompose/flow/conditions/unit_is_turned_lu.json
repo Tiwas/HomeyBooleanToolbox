@@ -1,0 +1,106 @@
+{
+  "id": "unit_is_turned_lu",
+  "title": {
+    "en": "Logic Unit is turned...",
+    "no": "Logikkenhet er skrudd...",
+    "da": "Logikenhed er slået...",
+    "de": "Logikeinheit ist...",
+    "es": "La unidad lógica está...",
+    "fr": "L'unité logique est...",
+    "it": "L'unità logica è...",
+    "nl": "Logische eenheid is...",
+    "sv": "Logikenhet är...",
+    "pl": "Jednostka logiczna jest...",
+    "ru": "Логический блок...",
+    "ko": "논리 유닛이..."
+  },
+  "titleFormatted": {
+    "en": "Logic Unit !{{is|isn't}} turned [[on_state]]",
+    "no": "Logikkenhet !{{er|er ikke}} skrudd [[on_state]]",
+    "da": "Logikenhed !{{er|er ikke}} slået [[on_state]]",
+    "de": "Logikeinheit !{{ist|ist nicht}} [[on_state]]",
+    "es": "La unidad lógica !{{está|no está}} [[on_state]]",
+    "fr": "L'unité logique !{{est|n'est pas}} [[on_state]]",
+    "it": "L'unità logica !{{è|non è}} [[on_state]]",
+    "nl": "Logische eenheid !{{is|is niet}} [[on_state]]",
+    "sv": "Logikenhet !{{är|är inte}} [[on_state]]",
+    "pl": "Jednostka logiczna !{{jest|nie jest}} [[on_state]]",
+    "ru": "Логический блок !{{включен|не включен}} [[on_state]]",
+    "ko": "논리 유닛이 !{{켜져|꺼져}} [[on_state]] 있음"
+  },
+  "hint": {
+    "en": "Check if the Logic Unit is currently turned on or off.",
+    "no": "Sjekk om logikkenheten er skrudd på eller av.",
+    "da": "Tjek om logikenheden er slået til eller fra.",
+    "de": "Überprüfen Sie, ob die Logikeinheit ein- oder ausgeschaltet ist.",
+    "es": "Verifica si la unidad lógica está encendida o apagada.",
+    "fr": "Vérifiez si l'unité logique est allumée ou éteinte.",
+    "it": "Controlla se l'unità logica è accesa o spenta.",
+    "nl": "Controleer of de logische eenheid aan of uit staat.",
+    "sv": "Kontrollera om logikenheten är på eller av.",
+    "pl": "Sprawdź, czy jednostka logiczna jest włączona lub wyłączona.",
+    "ru": "Проверьте, включен или выключен логический блок.",
+    "ko": "논리 유닛이 현재 켜져 있는지 꺼져 있는지 확인하세요."
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+    },
+    {
+      "name": "on_state",
+      "type": "dropdown",
+      "title": {
+        "en": "State",
+        "no": "Tilstand",
+        "da": "Tilstand",
+        "de": "Zustand",
+        "es": "Estado",
+        "fr": "État",
+        "it": "Stato",
+        "nl": "Status",
+        "sv": "Tillstånd",
+        "pl": "Stan",
+        "ru": "Состояние",
+        "ko": "상태"
+      },
+      "values": [
+        {
+          "id": "true",
+          "title": {
+            "en": "On",
+            "no": "På",
+            "da": "Til",
+            "de": "Ein",
+            "es": "Encendido",
+            "fr": "Allumé",
+            "it": "Acceso",
+            "nl": "Aan",
+            "sv": "På",
+            "pl": "Włączony",
+            "ru": "Вкл",
+            "ko": "켜짐"
+          }
+        },
+        {
+          "id": "false",
+          "title": {
+            "en": "Off",
+            "no": "Av",
+            "da": "Fra",
+            "de": "Aus",
+            "es": "Apagado",
+            "fr": "Éteint",
+            "it": "Spento",
+            "nl": "Uit",
+            "sv": "Av",
+            "pl": "Wyłączony",
+            "ru": "Выкл",
+            "ko": "꺼짐"
+          }
+        }
+      ]
+    }
+  ]
+}

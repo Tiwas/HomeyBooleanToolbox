@@ -1,0 +1,194 @@
+{
+  "id": "formula_changed_to_lu",
+  "title": {
+    "en": "Formula changed to...",
+    "no": "Formel endret til...",
+    "da": "Formel ændret til...",
+    "de": "Formel geändert zu...",
+    "es": "Fórmula cambió a...",
+    "fr": "Formule changée vers...",
+    "it": "Formula cambiata in...",
+    "nl": "Formule veranderd naar...",
+    "sv": "Formel ändrad till...",
+    "pl": "Formuła zmieniona na...",
+    "ru": "Формула изменена на...",
+    "ko": "공식이 다음으로 변경됨..."
+  },
+  "titleFormatted": {
+    "en": "Formula [[formula]] changed to [[result]]",
+    "no": "Formel [[formula]] endret til [[result]]",
+    "da": "Formel [[formula]] ændret til [[result]]",
+    "de": "Formel [[formula]] geändert zu [[result]]",
+    "es": "Fórmula [[formula]] cambió a [[result]]",
+    "fr": "Formule [[formula]] changée vers [[result]]",
+    "it": "Formula [[formula]] cambiata in [[result]]",
+    "nl": "Formule [[formula]] veranderd naar [[result]]",
+    "sv": "Formel [[formula]] ändrad till [[result]]",
+    "pl": "Formuła [[formula]] zmieniona na [[result]]",
+    "ru": "Формула [[formula]] изменена на [[result]]",
+    "ko": "공식 [[formula]]이(가) [[result]](으)로 변경됨"
+  },
+  "hint": {
+    "en": "Triggers when the selected formula changes to the specified result (TRUE or FALSE).",
+    "no": "Utløses når den valgte formelen endres til det spesifiserte resultatet (SANN eller USANN).",
+    "da": "Udløser når den valgte formel ændres til det specificerede resultat (SAND eller FALSK).",
+    "de": "Wird ausgelöst, wenn die ausgewählte Formel sich zum angegebenen Ergebnis (WAHR oder FALSCH) ändert.",
+    "es": "Se activa cuando la fórmula seleccionada cambia al resultado especificado (VERDADERO o FALSO).",
+    "fr": "Se déclenche lorsque la formule sélectionnée change vers le résultat spécifié (VRAI ou FAUX).",
+    "it": "Si attiva quando la formula selezionata cambia al risultato specificato (VERO o FALSO).",
+    "nl": "Wordt geactiveerd wanneer de geselecteerde formule verandert naar het opgegeven resultaat (WAAR of ONWAAR).",
+    "sv": "Utlöser när den valda formeln ändras till det specificerade resultatet (SANT eller FALSKT).",
+    "pl": "Wyzwala się, gdy wybrana formuła zmienia się na określony wynik (PRAWDA lub FAŁSZ).",
+    "ru": "Срабатывает при изменении выбранной формулы на указанный результат (ИСТИНА или ЛОЖЬ).",
+    "ko": "선택한 공식이 지정된 결과(참 또는 거짓)로 변경될 때 트리거됩니다."
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=logic-unit"
+    },
+    {
+      "name": "formula",
+      "type": "autocomplete",
+      "title": {
+        "en": "Formula",
+        "no": "Formel",
+        "da": "Formel",
+        "de": "Formel",
+        "es": "Fórmula",
+        "fr": "Formule",
+        "it": "Formula",
+        "nl": "Formule",
+        "sv": "Formel",
+        "pl": "Formuła",
+        "ru": "Формула",
+        "ko": "공식"
+      },
+      "placeholder": {
+        "en": "Select a formula...",
+        "no": "Velg en formel...",
+        "da": "Vælg en formel...",
+        "de": "Wählen Sie eine Formel...",
+        "es": "Selecciona una fórmula...",
+        "fr": "Sélectionnez une formule...",
+        "it": "Seleziona una formula...",
+        "nl": "Selecteer een formule...",
+        "sv": "Välj en formel...",
+        "pl": "Wybierz formułę...",
+        "ru": "Выберите формулу...",
+        "ko": "공식을 선택하세요..."
+      }
+    },
+    {
+      "name": "result",
+      "type": "dropdown",
+      "title": {
+        "en": "Result",
+        "no": "Resultat",
+        "da": "Resultat",
+        "de": "Ergebnis",
+        "es": "Resultado",
+        "fr": "Résultat",
+        "it": "Risultato",
+        "nl": "Resultaat",
+        "sv": "Resultat",
+        "pl": "Wynik",
+        "ru": "Результат",
+        "ko": "결과"
+      },
+      "values": [
+        {
+          "id": "true",
+          "title": {
+            "en": "TRUE",
+            "no": "SANN",
+            "da": "SAND",
+            "de": "WAHR",
+            "es": "VERDADERO",
+            "fr": "VRAI",
+            "it": "VERO",
+            "nl": "WAAR",
+            "sv": "SANT",
+            "pl": "PRAWDA",
+            "ru": "ИСТИНА",
+            "ko": "참"
+          }
+        },
+        {
+          "id": "false",
+          "title": {
+            "en": "FALSE",
+            "no": "USANN",
+            "da": "FALSK",
+            "de": "FALSCH",
+            "es": "FALSO",
+            "fr": "FAUX",
+            "it": "FALSO",
+            "nl": "ONWAAR",
+            "sv": "FALSKT",
+            "pl": "FAŁSZ",
+            "ru": "ЛОЖЬ",
+            "ko": "거짓"
+          }
+        }
+      ]
+    }
+  ],
+  "tokens": [
+    {
+      "name": "device_name",
+      "type": "string",
+      "title": {
+        "en": "Device name",
+        "no": "Enhetsnavn",
+        "da": "Enhedsnavn",
+        "de": "Gerätename",
+        "es": "Nombre del dispositivo",
+        "fr": "Nom de l'appareil",
+        "it": "Nome dispositivo",
+        "nl": "Apparaatnaam",
+        "sv": "Enhetsnamn",
+        "pl": "Nazwa urządzenia",
+        "ru": "Имя устройства",
+        "ko": "장치 이름"
+      }
+    },
+    {
+      "name": "formula_name",
+      "type": "string",
+      "title": {
+        "en": "Formula name",
+        "no": "Formelnavn",
+        "da": "Formelnavn",
+        "de": "Formelname",
+        "es": "Nombre de fórmula",
+        "fr": "Nom de la formule",
+        "it": "Nome formula",
+        "nl": "Formule naam",
+        "sv": "Formelnamn",
+        "pl": "Nazwa formuły",
+        "ru": "Имя формулы",
+        "ko": "공식 이름"
+      }
+    },
+    {
+      "name": "result",
+      "type": "boolean",
+      "title": {
+        "en": "Result",
+        "no": "Resultat",
+        "da": "Resultat",
+        "de": "Ergebnis",
+        "es": "Resultado",
+        "fr": "Résultat",
+        "it": "Risultato",
+        "nl": "Resultaat",
+        "sv": "Resultat",
+        "pl": "Wynik",
+        "ru": "Результат",
+        "ko": "결과"
+      }
+    }
+  ]
+}
