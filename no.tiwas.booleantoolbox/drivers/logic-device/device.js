@@ -130,6 +130,20 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
     this.startTimeoutChecks();
 
+    // Store current formulas and input_links for change detection
+    const currentSettings = this.getSettings();
+    this.lastKnownFormulas = currentSettings.formulas;
+    this.lastKnownInputLinks = currentSettings.input_links;
+
+    // Poll settings every 5 seconds to detect changes (since onSettings doesn't fire for textarea)
+    this.settingsPoller = setInterval(async () => {
+      try {
+        await this.checkSettingsChanged();
+      } catch (error) {
+        this.logger.error("Error checking settings", { error: error.message });
+      }
+    }, 5000);
+
     this.logger.info("device.initialized", {
       name: this.getName(),
       count: this.numInputs,
@@ -266,6 +280,33 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       }
 
       throw error;
+    }
+  }
+
+  async checkSettingsChanged() {
+    const currentSettings = this.getSettings();
+    const currentFormulas = currentSettings.formulas;
+    const currentInputLinks = currentSettings.input_links;
+
+    // Check if formulas or input_links have changed
+    if (this.lastKnownFormulas !== currentFormulas || this.lastKnownInputLinks !== currentInputLinks) {
+      this.logger.info("⚙️  Settings changed detected, reloading and validating...");
+
+      // Update stored values
+      this.lastKnownFormulas = currentFormulas;
+      this.lastKnownInputLinks = currentInputLinks;
+
+      // Reinitialize formulas and validate
+      await this.initializeFormulas();
+      await this.setupDeviceLinks();
+
+      // This will update the alarm_config capability
+      await this.updateConfigAlarm();
+
+      // Re-evaluate formulas with new settings
+      await this.refetchAndEvaluate("settings_changed");
+
+      this.logger.info("✅ Settings reloaded and validated");
     }
   }
 
@@ -1855,6 +1896,11 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     if (this.timeoutInterval) {
       clearInterval(this.timeoutInterval);
       this.timeoutInterval = null;
+    }
+
+    if (this.settingsPoller) {
+      clearInterval(this.settingsPoller);
+      this.settingsPoller = null;
     }
 
     if (

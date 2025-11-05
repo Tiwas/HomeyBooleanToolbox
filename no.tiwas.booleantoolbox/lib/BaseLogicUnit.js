@@ -157,6 +157,19 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     await this.evaluateAllFormulasInitial();
     this.startTimeoutChecks();
 
+    // Store current formulas for change detection
+    const currentSettings = this.getSettings();
+    this.lastKnownFormulas = currentSettings.formulas;
+
+    // Poll settings every 5 seconds to detect changes (since onSettings doesn't fire for textarea)
+    this.settingsPoller = setInterval(async () => {
+      try {
+        await this.checkSettingsChanged();
+      } catch (error) {
+        this.logger.error("Error checking settings", { error: error.message });
+      }
+    }, 5000);
+
     this.logger.info("device.initialized", {
       name: this.getName(),
       count: this.numInputs,
@@ -1518,6 +1531,30 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     }
   }
 
+  async checkSettingsChanged() {
+    const currentSettings = this.getSettings();
+    const currentFormulas = currentSettings.formulas;
+
+    // Check if formulas have changed
+    if (this.lastKnownFormulas !== currentFormulas) {
+      this.logger.info("⚙️  Settings changed detected, reloading and validating...");
+
+      // Update stored value
+      this.lastKnownFormulas = currentFormulas;
+
+      // Reinitialize formulas and validate
+      await this.initializeFormulas();
+
+      // This will update the alarm_config capability
+      await this.updateConfigAlarm();
+
+      // Re-evaluate formulas with new settings
+      await this.evaluateAllFormulasInitial();
+
+      this.logger.info("✅ Settings reloaded and validated");
+    }
+  }
+
   async onDeleted() {
     this._isDeleting = true;
     this.logger.device("device.deleted_cleanup", {
@@ -1526,6 +1563,10 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     if (this.timeoutInterval) {
       clearInterval(this.timeoutInterval);
       this.timeoutInterval = null;
+    }
+    if (this.settingsPoller) {
+      clearInterval(this.settingsPoller);
+      this.settingsPoller = null;
     }
     this.logger.info("device.cleanup_complete", {
       name: this.getName(),
