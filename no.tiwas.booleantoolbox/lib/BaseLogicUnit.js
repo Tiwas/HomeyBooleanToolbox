@@ -790,22 +790,79 @@ module.exports = class BaseLogicUnit extends Homey.Device {
         this.logger.warn("config.validation_failed", {
           reason: "Formulas is not an array",
         });
-      } else {
-        // Validate each formula expression
-        for (const formula of formulasData) {
-          if (formula.expression) {
+      } else if (formulasData.length > 0) {
+        // Sjekk for duplikate formel-ID-er
+        const ids = formulasData.map((f) => f.id).filter(id => id); // Filter out undefined/null
+        if (ids.length > 0) {
+          const uniqueIds = new Set(ids);
+          if (ids.length !== uniqueIds.size) {
+            hasError = true;
+            this.logger.warn("config.validation_failed", {
+              reason: "Duplikate formel-ID-er funnet",
+              ids: ids.join(", "),
+            });
+          }
+        }
+
+        // Validate each formula
+        if (!hasError) {
+          for (let i = 0; i < formulasData.length; i++) {
+            const formula = formulasData[i];
+            const formulaLabel = formula.name || formula.id || `Formel #${i + 1}`;
+
+            // Sjekk at formelen har en ID
+            if (!formula.id || typeof formula.id !== 'string' || formula.id.trim() === '') {
+              hasError = true;
+              this.logger.warn("config.validation_failed", {
+                reason: `${formulaLabel}: Mangler gyldig ID`,
+              });
+              break;
+            }
+
+            // Sjekk at formelen har et navn
+            if (!formula.name || typeof formula.name !== 'string' || formula.name.trim() === '') {
+              hasError = true;
+              this.logger.warn("config.validation_failed", {
+                reason: `${formulaLabel}: Mangler gyldig navn`,
+              });
+              break;
+            }
+
+            // Sjekk at formelen har et expression
+            if (!formula.expression || typeof formula.expression !== 'string' || formula.expression.trim() === '') {
+              hasError = true;
+              this.logger.warn("config.validation_failed", {
+                reason: `${formulaLabel}: Mangler gyldig uttrykk`,
+              });
+              break;
+            }
+
+            // Validate expression syntax
             const validation = this.validateExpression(formula.expression);
             if (!validation.valid) {
               hasError = true;
               this.logger.warn("config.validation_failed", {
-                formula: formula.name || formula.id,
+                formula: formulaLabel,
                 error: validation.error,
               });
               break;
             }
+
+            // Validate timeout value (optional, but if present must be valid)
+            if (formula.timeout !== undefined && formula.timeout !== null) {
+              const timeout = Number(formula.timeout);
+              if (isNaN(timeout) || timeout < 0) {
+                hasError = true;
+                this.logger.warn("config.validation_failed", {
+                  reason: `${formulaLabel}: Ugyldig timeout-verdi (${formula.timeout})`,
+                });
+                break;
+              }
+            }
           }
         }
       }
+      // Note: Empty array is OK for Logic Unit - it will get a default formula
     } catch (e) {
       hasError = true;
       this.logger.warn("config.validation_failed", {

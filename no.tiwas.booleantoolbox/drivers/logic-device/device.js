@@ -1310,8 +1310,14 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
           reason: errorReason,
         });
       } else {
-        // VIKTIG: Logic Device kan bare ha én formel
-        if (formulasData.length > 1) {
+        // VIKTIG: Logic Device må ha nøyaktig én formel
+        if (formulasData.length === 0) {
+          hasError = true;
+          errorReason = "Logic Device må ha minst én formel";
+          this.logger.warn("⚠️ config.validation_failed", {
+            reason: errorReason,
+          });
+        } else if (formulasData.length > 1) {
           hasError = true;
           errorReason = `Logic Device kan kun ha én formel (${formulasData.length} funnet)`;
           this.logger.warn("⚠️ config.validation_failed", {
@@ -1320,34 +1326,59 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
           });
         }
 
-        // Sjekk for duplikate formel-ID-er
-        if (!hasError && formulasData.length > 0) {
-          const ids = formulasData.map((f) => f.id);
-          const uniqueIds = new Set(ids);
-          if (ids.length !== uniqueIds.size) {
+        // Validate the single formula
+        if (!hasError && formulasData.length === 1) {
+          const formula = formulasData[0];
+
+          // Sjekk at formelen har en ID
+          if (!formula.id || typeof formula.id !== 'string' || formula.id.trim() === '') {
             hasError = true;
-            errorReason = "Duplikate formel-ID-er funnet";
+            errorReason = "Formelen mangler en gyldig ID";
             this.logger.warn("⚠️ config.validation_failed", {
               reason: errorReason,
-              ids: ids.join(", "),
             });
           }
-        }
 
-        // Validate each formula expression
-        if (!hasError) {
-          for (const formula of formulasData) {
-            if (formula.expression) {
-              const validation = this.validateExpression(formula.expression);
-              if (!validation.valid) {
-                hasError = true;
-                errorReason = `Ugyldig formel "${formula.name}": ${validation.error}`;
-                this.logger.warn("⚠️ config.validation_failed", {
-                  formula: formula.name || formula.id,
-                  error: validation.error,
-                });
-                break;
-              }
+          // Sjekk at formelen har et navn
+          if (!hasError && (!formula.name || typeof formula.name !== 'string' || formula.name.trim() === '')) {
+            hasError = true;
+            errorReason = "Formelen mangler et gyldig navn";
+            this.logger.warn("⚠️ config.validation_failed", {
+              reason: errorReason,
+            });
+          }
+
+          // Sjekk at formelen har et expression
+          if (!hasError && (!formula.expression || typeof formula.expression !== 'string' || formula.expression.trim() === '')) {
+            hasError = true;
+            errorReason = "Formelen mangler et gyldig uttrykk";
+            this.logger.warn("⚠️ config.validation_failed", {
+              reason: errorReason,
+            });
+          }
+
+          // Validate expression syntax
+          if (!hasError && formula.expression) {
+            const validation = this.validateExpression(formula.expression);
+            if (!validation.valid) {
+              hasError = true;
+              errorReason = `Ugyldig formel "${formula.name}": ${validation.error}`;
+              this.logger.warn("⚠️ config.validation_failed", {
+                formula: formula.name || formula.id,
+                error: validation.error,
+              });
+            }
+          }
+
+          // Validate timeout value (optional, but if present must be valid)
+          if (!hasError && formula.timeout !== undefined && formula.timeout !== null) {
+            const timeout = Number(formula.timeout);
+            if (isNaN(timeout) || timeout < 0) {
+              hasError = true;
+              errorReason = `Ugyldig timeout-verdi: ${formula.timeout}`;
+              this.logger.warn("⚠️ config.validation_failed", {
+                reason: errorReason,
+              });
             }
           }
         }
