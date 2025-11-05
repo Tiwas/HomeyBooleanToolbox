@@ -790,7 +790,13 @@ module.exports = class BaseLogicUnit extends Homey.Device {
         this.logger.warn("config.validation_failed", {
           reason: "Formulas is not an array",
         });
-      } else if (formulasData.length > 0) {
+      } else if (formulasData.length === 0) {
+        // VIKTIG: Logic Unit må ha minst én formel
+        hasError = true;
+        this.logger.warn("config.validation_failed", {
+          reason: "Logic Unit må ha minst én formel",
+        });
+      } else {
         // Sjekk for duplikate formel-ID-er
         const ids = formulasData.map((f) => f.id).filter(id => id); // Filter out undefined/null
         if (ids.length > 0) {
@@ -862,7 +868,6 @@ module.exports = class BaseLogicUnit extends Homey.Device {
           }
         }
       }
-      // Note: Empty array is OK for Logic Unit - it will get a default formula
     } catch (e) {
       hasError = true;
       this.logger.warn("config.validation_failed", {
