@@ -2,6 +2,7 @@
 
 const Homey = require("homey");
 const Logger = require("./lib/Logger");
+const WaiterManager = require("./lib/WaiterManager");
 
 // Import autocomplete helpers from BaseLogicDriver
 // NOTE: Requires BaseLogicDriver to export them correctly
@@ -72,10 +73,21 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             });
         }
 
+        // Initialize WaiterManager
+        this.waiterManager = new WaiterManager(this.homey, this.logger);
+
         // Register ALL Flow Cards here using generic methods
         await this.registerAllFlowCards();
 
         this.logger.info("App initialization complete.", {});
+    }
+
+    async onUninit() {
+        // Cleanup WaiterManager
+        if (this.waiterManager) {
+            this.waiterManager.destroy();
+        }
+        this.logger.info("App uninitialized.", {});
     }
 
     async getAvailableZones() {
@@ -389,7 +401,244 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             this.logger.error(` -> FAILED: Registering APP TRIGGER 'any_config_alarm_state_changed'`, e);
         }
 
+        // --- Waiter Gates ---
+
+        // Condition: Wait until becomes true
+        try {
+            const waitUntilCard = this.homey.flow.getConditionCard("wait_until_becomes_true");
+
+            // Register autocomplete for capability argument
+            waitUntilCard.registerArgumentAutocompleteListener('capability', async (query, args) => {
+                try {
+                    const device = args.device; // Get selected device
+                    if (!device) return [];
+
+                    const capabilities = device.capabilities || [];
+                    const results = capabilities.map(capId => {
+                        return {
+                            name: capId,
+                            description: `Capability: ${capId}`,
+                            id: capId
+                        };
+                    });
+
+                    // Filter by query if provided
+                    if (query) {
+                        return results.filter(r =>
+                            r.name.toLowerCase().includes(query.toLowerCase())
+                        );
+                    }
+
+                    return results;
+                } catch (error) {
+                    this.logger.error('Capability autocomplete error:', error);
+                    return [];
+                }
+            });
+
+            waitUntilCard.registerRunListener(async (args, state) => {
+                try {
+                    const waiterId = args.waiter_id || '';
+                    const timeoutValue = Number(args.timeout_value) || 0;
+                    const timeoutUnit = args.timeout_unit || 's';
+
+                    // NEW: Extract device config
+                    const device = args.device;
+                    const capability = args.capability?.id || args.capability; // Handle autocomplete object
+                    const targetValue = args.target_value;
+
+                    this.logger.info(`🔷 Waiter condition triggered: ${waiterId || '(auto-generate)'}`);
+                    this.logger.info(`📡 Listening for: ${device.name}.${capability} = ${targetValue}`);
+
+                    // Create a promise that will be resolved when the waiter is triggered
+                    return new Promise(async (resolve, reject) => {
+                        try {
+                            // Create waiter with flow context
+                            const flowContext = {
+                                flowId: state?.flowId || 'unknown',
+                                flowToken: state?.flowToken || null
+                            };
+
+                            const config = {
+                                timeoutValue,
+                                timeoutUnit
+                            };
+
+                            // NEW: Device config for capability listening
+                            const deviceConfig = {
+                                deviceId: device.id,
+                                capability,
+                                targetValue
+                            };
+
+                            const actualWaiterId = await this.waiterManager.createWaiter(
+                                waiterId,
+                                config,
+                                flowContext,
+                                deviceConfig  // NEW parameter
+                            );
+
+                            // Store resolver in waiter data so it can be called later
+                            const waiterData = this.waiterManager.waiters.get(actualWaiterId);
+                            if (waiterData) {
+                                waiterData.resolver = resolve;
+                            }
+
+                            // NEW: Register capability listener
+                            await this.waiterManager.registerCapabilityListener(
+                                actualWaiterId,
+                                this.homey
+                            );
+
+                            // Return false immediately to let other flow branches continue
+                            // The flow will be continued later when the waiter is triggered
+                            this.logger.info(`⏸️  Waiter ${actualWaiterId} waiting for capability change...`);
+
+                        } catch (error) {
+                            this.logger.error(`❌ Failed to create waiter:`, error);
+                            reject(error);
+                        }
+                    });
+                } catch (error) {
+                    this.logger.error(`❌ Waiter condition error:`, error);
+                    throw error;
+                }
+            });
+            this.logger.debug(` -> OK: CONDITION registered: 'wait_until_becomes_true'`);
+        } catch (e) {
+            this.logger.error(` -> FAILED: Registering CONDITION 'wait_until_becomes_true'`, e);
+        }
+
+        // Action: Control waiter
+        try {
+            const controlWaiterCard = this.homey.flow.getActionCard("control_waiter");
+            controlWaiterCard.registerRunListener(async (args, state) => {
+                try {
+                    const waiterId = args.waiter_id;
+                    const action = args.action;
+
+                    if (!waiterId) {
+                        throw new Error('Waiter ID is required');
+                    }
+
+                    this.logger.info(`🎛️  Control waiter: ${waiterId} -> ${action}`);
+
+                    switch (action) {
+                        case 'enable':
+                            const enabled = this.waiterManager.enableWaiter(waiterId, true);
+                            this.logger.info(`✅ Enabled ${enabled} waiter(s)`);
+                            return true;
+
+                        case 'disable':
+                            const disabled = this.waiterManager.enableWaiter(waiterId, false);
+                            this.logger.info(`⏸️  Disabled ${disabled} waiter(s)`);
+                            return true;
+
+                        case 'stop':  // NEW ACTION
+                            const stopped = this.waiterManager.stopWaiter(waiterId);
+                            this.logger.info(`🛑 Stopped ${stopped} waiter(s)`);
+                            return true;
+
+                        default:
+                            throw new Error(`Unknown action: ${action}`);
+                    }
+                } catch (error) {
+                    this.logger.error(`❌ Control waiter error:`, error);
+                    throw error;
+                }
+            });
+
+            // Register autocomplete for waiter_id argument
+            controlWaiterCard.registerArgumentAutocompleteListener('waiter_id', async (query, args) => {
+                try {
+                    const results = [];
+                    const seenIds = new Set();
+
+                    // Get all defined waiter IDs from flows
+                    const definedIds = await this.getAllDefinedWaiterIds();
+
+                    // Get active waiters from WaiterManager
+                    const activeWaiters = this.waiterManager.getWaitersForAutocomplete(query);
+
+                    // Add active waiters first (with status info)
+                    for (const waiter of activeWaiters) {
+                        if (!query || waiter.id.toLowerCase().includes(query.toLowerCase())) {
+                            results.push(waiter);
+                            seenIds.add(waiter.id);
+                        }
+                    }
+
+                    // Add defined waiters that aren't currently active
+                    for (const id of definedIds) {
+                        if (!seenIds.has(id)) {
+                            if (!query || id.toLowerCase().includes(query.toLowerCase())) {
+                                results.push({
+                                    name: id,
+                                    description: '📋 Defined in flow (not active)',
+                                    id: id
+                                });
+                                seenIds.add(id);
+                            }
+                        }
+                    }
+
+                    return results;
+                } catch (error) {
+                    this.logger.error(`❌ Waiter autocomplete error:`, error);
+                    return [];
+                }
+            });
+
+            this.logger.debug(` -> OK: ACTION registered: 'control_waiter'`);
+        } catch (e) {
+            this.logger.error(` -> FAILED: Registering ACTION 'control_waiter'`, e);
+        }
+
         this.logger.info("app.flow_cards_registered", {});
+    }
+
+    /**
+     * Get all waiter IDs defined in flows (from wait_until_becomes_true cards)
+     * @returns {Promise<Array>} Array of waiter IDs found in flows
+     */
+    async getAllDefinedWaiterIds() {
+        try {
+            if (!this.api) {
+                const athomApi = require("athom-api");
+                const { HomeyAPI } = athomApi;
+                this.api = await HomeyAPI.forCurrentHomey(this.homey);
+            }
+
+            const waiterIds = new Set();
+
+            // Get all flows
+            const flows = await this.api.flow.getFlows();
+
+            // Search through all flows for wait_until_becomes_true cards
+            for (const flowId in flows) {
+                const flow = flows[flowId];
+
+                // Check if flow has cards
+                if (!flow.cards) continue;
+
+                // Search through all cards
+                for (const card of flow.cards) {
+                    // Find wait_until_becomes_true condition cards
+                    if (card.type === 'condition' && card.id === 'wait_until_becomes_true') {
+                        // Extract waiter_id from card args
+                        const waiterId = card.args?.waiter_id;
+                        if (waiterId && typeof waiterId === 'string' && waiterId.trim() !== '') {
+                            waiterIds.add(waiterId.trim());
+                        }
+                    }
+                }
+            }
+
+            return Array.from(waiterIds).sort();
+        } catch (error) {
+            this.logger.error('Failed to get defined waiter IDs from flows:', error);
+            return [];
+        }
     }
 
     /**
