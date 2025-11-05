@@ -92,7 +92,14 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     if (!this.hasCapability("alarm_generic")) {
     }
 
-    // ✅ STEP 2: ALWAYS force enabled - Logic Units are always on
+    // ✅ STEP 2: Add alarm_config capability if missing
+    if (!this.hasCapability("alarm_config")) {
+      await this.addCapability("alarm_config").catch((e) =>
+        this.logger.error("Failed to add 'alarm_config' capability", e),
+      );
+    }
+
+    // ✅ STEP 3: ALWAYS force enabled - Logic Units are always on
     // Forbedret logging og sjekk for eksisterende devices
     let onoffValue = this.getCapabilityValue("onoff");
     this.logger.info(
@@ -109,7 +116,7 @@ module.exports = class BaseLogicUnit extends Homey.Device {
 
     this.logger.info(`✅ Logic Unit: ENABLED (onoff: ${onoffValue})`);
 
-    // ✅ STEP 3: Make onoff READ-ONLY for Logic Units
+    // ✅ STEP 4: Make onoff READ-ONLY for Logic Units
     try {
       await this.setCapabilityOptions("onoff", {
         setable: false, // READ-ONLY: Users cannot toggle
@@ -120,7 +127,7 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       this.logger.error("Failed to set onoff options", e);
     }
 
-    // ✅ STEP 4: Continue with normal initialization
+    // ✅ STEP 5: Continue with normal initialization
     this.numInputs = this.getData().numInputs ?? 2;
     this.availableInputs = this.getAvailableInputIds();
     this.logger.debug(
@@ -143,6 +150,10 @@ module.exports = class BaseLogicUnit extends Homey.Device {
         }
       }
     });
+
+    // ✅ STEP 6: Validate configuration and set alarm_config
+    await this.updateConfigAlarm();
+
     await this.evaluateAllFormulasInitial();
     this.startTimeoutChecks();
 
@@ -740,6 +751,63 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     }
   }
 
+  /**
+   * Validate configuration and update alarm_config capability
+   * Sets alarm_config to true if there are JSON parsing errors or invalid formulas
+   */
+  async updateConfigAlarm() {
+    if (!this.hasCapability("alarm_config")) {
+      return;
+    }
+
+    let hasError = false;
+    const settings = this.getSettings();
+
+    // Check if formulas JSON is valid
+    try {
+      const formulasData = settings.formulas
+        ? JSON.parse(settings.formulas)
+        : [];
+
+      if (!Array.isArray(formulasData)) {
+        hasError = true;
+        this.logger.warn("config.validation_failed", {
+          reason: "Formulas is not an array",
+        });
+      } else {
+        // Validate each formula expression
+        for (const formula of formulasData) {
+          if (formula.expression) {
+            const validation = this.validateExpression(formula.expression);
+            if (!validation.valid) {
+              hasError = true;
+              this.logger.warn("config.validation_failed", {
+                formula: formula.name || formula.id,
+                error: validation.error,
+              });
+              break;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      hasError = true;
+      this.logger.warn("config.validation_failed", {
+        reason: "Invalid JSON",
+        error: e.message,
+      });
+    }
+
+    // Update alarm_config capability
+    await this.safeSetCapabilityValue("alarm_config", hasError);
+
+    if (hasError) {
+      this.logger.info("⚠️  Configuration error detected - alarm_config set to true");
+    } else {
+      this.logger.debug("✅ Configuration valid - alarm_config set to false");
+    }
+  }
+
   parseExpression(expression) {
     if (!expression || typeof expression !== "string") return [];
     const inputs = this.getAvailableInputsUppercase();
@@ -1333,6 +1401,9 @@ module.exports = class BaseLogicUnit extends Homey.Device {
           );
         }
       }
+
+      // Update alarm_config based on validation results
+      await this.updateConfigAlarm();
     }
 
     await this.evaluateAllFormulasInitial();

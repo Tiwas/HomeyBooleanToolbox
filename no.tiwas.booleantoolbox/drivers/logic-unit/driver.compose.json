@@ -15,8 +15,30 @@
   "class": "other",
   "capabilities": [
     "onoff",
-    "alarm_generic"
+    "alarm_generic",
+    "alarm_config"
   ],
+  "capabilitiesOptions": {
+    "alarm_config": {
+      "title": {
+        "en": "Configuration Error",
+        "no": "Konfigurasjonsfeil",
+        "de": "Konfigurationsfehler",
+        "nl": "Configuratiefout",
+        "fr": "Erreur de Configuration",
+        "da": "Konfigurationsfejl",
+        "fi": "Konfiguraatiovirhe",
+        "sv": "Konfigurationsfel",
+        "pl": "Błąd Konfiguracji",
+        "it": "Errore di Configurazione",
+        "es": "Error de Configuración"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/config_error.svg"
+    }
+  },
   "energy": {
     "approximation": {
       "usageConstant": 0
