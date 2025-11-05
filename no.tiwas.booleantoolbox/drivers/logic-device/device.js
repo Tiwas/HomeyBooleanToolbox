@@ -239,8 +239,20 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         message: error.message,
       });
 
-      // Update alarm_config to show error
-      await this.updateConfigAlarm();
+      // Set alarm_config to true to show error visually
+      try {
+        const previousAlarmConfig = this.getCapabilityValue("alarm_config");
+        await this.setCapabilityValue("alarm_config", true);
+
+        // Trigger flow cards if state changed
+        if (previousAlarmConfig !== true) {
+          await this.triggerConfigAlarmChanged(true);
+        }
+      } catch (e) {
+        this.logger.error("Failed to set alarm_config during validation error", {
+          error: e.message,
+        });
+      }
 
       throw error;
     }
