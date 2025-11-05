@@ -339,6 +339,80 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             }
         });
 
+        // --- App-level Triggers ---
+        try {
+            const anyConfigAlarmCard = this.homey.flow.getTriggerCard("any_config_alarm_changed");
+            anyConfigAlarmCard.registerRunListener(async (args, state) => {
+                const expectedDeviceType = args.device_type;
+                const expectedAlarmState = args.alarm_state === "true";
+
+                // Match device type filter
+                let deviceTypeMatches = false;
+                if (expectedDeviceType === "any") {
+                    deviceTypeMatches = true;
+                } else if (expectedDeviceType === "logic-unit") {
+                    deviceTypeMatches = state?.driver_id?.startsWith("logic-unit");
+                } else if (expectedDeviceType === "logic-device") {
+                    deviceTypeMatches = state?.driver_id === "logic-device";
+                }
+
+                // Match alarm state
+                const alarmStateMatches = state?.alarm_state === expectedAlarmState;
+
+                return deviceTypeMatches && alarmStateMatches;
+            });
+            this.logger.debug(` -> OK: APP TRIGGER registered: 'any_config_alarm_changed'`);
+        } catch (e) {
+            this.logger.error(` -> FAILED: Registering APP TRIGGER 'any_config_alarm_changed'`, e);
+        }
+
         this.logger.info("app.flow_cards_registered", {});
+    }
+
+    /**
+     * Get all devices with configuration errors
+     * @param {string} driverFilter - 'any', 'logic-unit', or 'logic-device'
+     * @returns {Array} Array of devices with errors
+     */
+    async getDevicesWithConfigErrors(driverFilter = 'any') {
+        const devicesWithErrors = [];
+
+        try {
+            const drivers = this.homey.drivers.getDrivers();
+
+            for (const driver of Object.values(drivers)) {
+                const driverId = driver.id;
+
+                // Apply filter
+                let shouldInclude = false;
+                if (driverFilter === 'any') {
+                    shouldInclude = driverId.startsWith('logic-unit') || driverId === 'logic-device';
+                } else if (driverFilter === 'logic-unit') {
+                    shouldInclude = driverId.startsWith('logic-unit');
+                } else if (driverFilter === 'logic-device') {
+                    shouldInclude = driverId === 'logic-device';
+                }
+
+                if (!shouldInclude) continue;
+
+                const devices = driver.getDevices();
+                for (const device of devices) {
+                    if (device.hasCapability && device.hasCapability('alarm_config')) {
+                        const alarmConfig = device.getCapabilityValue('alarm_config');
+                        if (alarmConfig === true) {
+                            devicesWithErrors.push({
+                                id: device.getData().id,
+                                name: device.getName(),
+                                driverId: driverId,
+                            });
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            this.logger.error('Failed to get devices with config errors', e);
+        }
+
+        return devicesWithErrors;
     }
 };

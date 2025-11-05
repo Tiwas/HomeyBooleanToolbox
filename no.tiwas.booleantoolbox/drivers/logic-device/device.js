@@ -1306,9 +1306,10 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
   }
 
   /**
-   * Trigger config_alarm_changed_to flow card
+   * Trigger config_alarm_changed_to flow cards (both device-level and app-level)
    */
   async triggerConfigAlarmChanged(alarmState) {
+    // Trigger device-specific card
     try {
       const card = this.homey.flow.getDeviceTriggerCard("config_alarm_changed_to_ld");
       const tokens = {
@@ -1321,12 +1322,45 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
       await card.trigger(this, tokens, state);
 
-      this.logger.info("config_alarm.trigger_fired", {
+      this.logger.info("config_alarm.device_trigger_fired", {
         alarm_state: alarmState,
         device_name: this.getName(),
       });
     } catch (e) {
-      this.logger.error("config_alarm.trigger_failed", {
+      this.logger.error("config_alarm.device_trigger_failed", {
+        error: e.message,
+      });
+    }
+
+    // Trigger app-level card with all affected devices
+    try {
+      const driverId = this.driver?.id || 'logic-device';
+
+      // Get all devices with errors
+      const affectedDevices = await this.homey.app.getDevicesWithConfigErrors('logic-device');
+
+      const tokens = {
+        device_name: this.getName(),
+        device_type: 'Logic Device',
+        alarm_state: alarmState,
+        affected_devices: affectedDevices.map(d => d.name).join(', ') || this.getName(),
+        error_count: affectedDevices.length,
+      };
+
+      const state = {
+        alarm_state: alarmState,
+        driver_id: driverId,
+      };
+
+      const appCard = this.homey.flow.getTriggerCard("any_config_alarm_changed");
+      await appCard.trigger(tokens, state);
+
+      this.logger.info("config_alarm.app_trigger_fired", {
+        alarm_state: alarmState,
+        affected_count: affectedDevices.length,
+      });
+    } catch (e) {
+      this.logger.error("config_alarm.app_trigger_failed", {
         error: e.message,
       });
     }
