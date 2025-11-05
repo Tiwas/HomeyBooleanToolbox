@@ -1250,6 +1250,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     const previousAlarmConfig = this.getCapabilityValue("alarm_config");
 
     let hasError = false;
+    let errorReason = "";
     const settings = this.getSettings();
 
     // Check if formulas JSON is valid
@@ -1260,29 +1261,58 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
       if (!Array.isArray(formulasData)) {
         hasError = true;
-        this.logger.warn("config.validation_failed", {
-          reason: "Formulas is not an array",
+        errorReason = "Formulas is not an array";
+        this.logger.warn("⚠️ config.validation_failed", {
+          reason: errorReason,
         });
       } else {
+        // VIKTIG: Logic Device kan bare ha én formel
+        if (formulasData.length > 1) {
+          hasError = true;
+          errorReason = `Logic Device kan kun ha én formel (${formulasData.length} funnet)`;
+          this.logger.warn("⚠️ config.validation_failed", {
+            reason: errorReason,
+            formulaCount: formulasData.length,
+          });
+        }
+
+        // Sjekk for duplikate formel-ID-er
+        if (!hasError && formulasData.length > 0) {
+          const ids = formulasData.map((f) => f.id);
+          const uniqueIds = new Set(ids);
+          if (ids.length !== uniqueIds.size) {
+            hasError = true;
+            errorReason = "Duplikate formel-ID-er funnet";
+            this.logger.warn("⚠️ config.validation_failed", {
+              reason: errorReason,
+              ids: ids.join(", "),
+            });
+          }
+        }
+
         // Validate each formula expression
-        for (const formula of formulasData) {
-          if (formula.expression) {
-            const validation = this.validateExpression(formula.expression);
-            if (!validation.valid) {
-              hasError = true;
-              this.logger.warn("config.validation_failed", {
-                formula: formula.name || formula.id,
-                error: validation.error,
-              });
-              break;
+        if (!hasError) {
+          for (const formula of formulasData) {
+            if (formula.expression) {
+              const validation = this.validateExpression(formula.expression);
+              if (!validation.valid) {
+                hasError = true;
+                errorReason = `Ugyldig formel "${formula.name}": ${validation.error}`;
+                this.logger.warn("⚠️ config.validation_failed", {
+                  formula: formula.name || formula.id,
+                  error: validation.error,
+                });
+                break;
+              }
             }
           }
         }
       }
     } catch (e) {
       hasError = true;
-      this.logger.warn("config.validation_failed", {
-        reason: "Invalid JSON in formulas",
+      errorReason = `Invalid JSON in formulas: ${e.message}`;
+      this.logger.warn("⚠️ config.validation_failed", {
+        reason: errorReason,
         error: e.message,
       });
     }
@@ -1318,6 +1348,15 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
     if (hasError) {
       this.logger.info("⚠️  Configuration error detected - alarm_config set to true");
+
+      // Send notification to user
+      try {
+        await this.homey.notifications.createNotification({
+          excerpt: `⚠️ Konfigurasjonsfeil i ${this.getName()}: ${errorReason}`,
+        });
+      } catch (e) {
+        this.logger.error("Failed to send notification", { error: e.message });
+      }
     } else {
       this.logger.debug("✅ Configuration valid - alarm_config set to false");
     }
