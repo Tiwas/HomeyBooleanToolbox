@@ -1,6 +1,7 @@
 # Generated files
 app.json
 .homeybuild/
+no.tiwas.*/app.json
 
 # Node.js dependencies
 node_modules/
