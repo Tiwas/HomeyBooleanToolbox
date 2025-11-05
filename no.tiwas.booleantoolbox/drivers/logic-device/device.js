@@ -1223,6 +1223,9 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       return;
     }
 
+    // Get previous alarm_config value to detect changes
+    const previousAlarmConfig = this.getCapabilityValue("alarm_config");
+
     let hasError = false;
     const settings = this.getSettings();
 
@@ -1294,6 +1297,38 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       this.logger.info("⚠️  Configuration error detected - alarm_config set to true");
     } else {
       this.logger.debug("✅ Configuration valid - alarm_config set to false");
+    }
+
+    // Trigger flow card if alarm_config value changed
+    if (previousAlarmConfig !== null && previousAlarmConfig !== hasError) {
+      await this.triggerConfigAlarmChanged(hasError);
+    }
+  }
+
+  /**
+   * Trigger config_alarm_changed_to flow card
+   */
+  async triggerConfigAlarmChanged(alarmState) {
+    try {
+      const card = this.homey.flow.getDeviceTriggerCard("config_alarm_changed_to_ld");
+      const tokens = {
+        device_name: this.getName(),
+        alarm_state: alarmState,
+      };
+      const state = {
+        alarm_state: alarmState,
+      };
+
+      await card.trigger(this, tokens, state);
+
+      this.logger.info("config_alarm.trigger_fired", {
+        alarm_state: alarmState,
+        device_name: this.getName(),
+      });
+    } catch (e) {
+      this.logger.error("config_alarm.trigger_failed", {
+        error: e.message,
+      });
     }
   }
 

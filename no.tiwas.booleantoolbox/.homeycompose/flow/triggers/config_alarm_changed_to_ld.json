@@ -1,0 +1,144 @@
+{
+  "id": "config_alarm_changed_to_ld",
+  "title": {
+    "en": "Configuration alarm changed to...",
+    "no": "Konfigurasjonsalarm endret til...",
+    "da": "Konfigurationsalarm ændret til...",
+    "de": "Konfigurationsalarm geändert zu...",
+    "es": "Alarma de configuración cambió a...",
+    "fr": "Alarme de configuration changée vers...",
+    "it": "Allarme configurazione cambiato in...",
+    "nl": "Configuratie alarm veranderd naar...",
+    "sv": "Konfigurationslarm ändrat till...",
+    "pl": "Alarm konfiguracji zmieniony na...",
+    "fi": "Konfiguraatiohälytys muuttui...",
+    "ru": "Тревога конфигурации изменена на..."
+  },
+  "titleFormatted": {
+    "en": "Configuration alarm changed to [[alarm_state]]",
+    "no": "Konfigurasjonsalarm endret til [[alarm_state]]",
+    "da": "Konfigurationsalarm ændret til [[alarm_state]]",
+    "de": "Konfigurationsalarm geändert zu [[alarm_state]]",
+    "es": "Alarma de configuración cambió a [[alarm_state]]",
+    "fr": "Alarme de configuration changée vers [[alarm_state]]",
+    "it": "Allarme configurazione cambiato in [[alarm_state]]",
+    "nl": "Configuratie alarm veranderd naar [[alarm_state]]",
+    "sv": "Konfigurationslarm ändrat till [[alarm_state]]",
+    "pl": "Alarm konfiguracji zmieniony na [[alarm_state]]",
+    "fi": "Konfiguraatiohälytys muuttui [[alarm_state]]",
+    "ru": "Тревога конфигурации изменена на [[alarm_state]]"
+  },
+  "hint": {
+    "en": "Triggers when a configuration error is detected or resolved (invalid JSON or formula syntax).",
+    "no": "Utløses når en konfigurasjonsfeil oppdages eller løses (ugyldig JSON eller formelsyntaks).",
+    "da": "Udløser når en konfigurationsfejl opdages eller løses (ugyldig JSON eller formelsyntaks).",
+    "de": "Wird ausgelöst, wenn ein Konfigurationsfehler erkannt oder behoben wird (ungültiges JSON oder Formelsyntax).",
+    "es": "Se activa cuando se detecta o resuelve un error de configuración (JSON o sintaxis de fórmula no válidos).",
+    "fr": "Se déclenche lorsqu'une erreur de configuration est détectée ou résolue (JSON ou syntaxe de formule non valide).",
+    "it": "Si attiva quando viene rilevato o risolto un errore di configurazione (JSON o sintassi formula non validi).",
+    "nl": "Wordt geactiveerd wanneer een configuratiefout wordt gedetecteerd of opgelost (ongeldige JSON of formulesyntax).",
+    "sv": "Utlöser när ett konfigurationsfel upptäcks eller löses (ogiltig JSON eller formelsyntax).",
+    "pl": "Wyzwala się, gdy wykryto lub rozwiązano błąd konfiguracji (nieprawidłowy JSON lub składnia formuły).",
+    "fi": "Laukeaa kun konfigurointivirhe havaitaan tai ratkaistaan (virheellinen JSON tai kaavasynnaksi).",
+    "ru": "Срабатывает при обнаружении или устранении ошибки конфигурации (недопустимый JSON или синтаксис формулы)."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=logic-device"
+    },
+    {
+      "name": "alarm_state",
+      "type": "dropdown",
+      "title": {
+        "en": "Alarm state",
+        "no": "Alarmtilstand",
+        "da": "Alarmstilstand",
+        "de": "Alarmzustand",
+        "es": "Estado de alarma",
+        "fr": "État d'alarme",
+        "it": "Stato allarme",
+        "nl": "Alarmstatus",
+        "sv": "Alarmtillstånd",
+        "pl": "Stan alarmu",
+        "fi": "Hälytystila",
+        "ru": "Состояние тревоги"
+      },
+      "values": [
+        {
+          "id": "true",
+          "title": {
+            "en": "Error detected",
+            "no": "Feil oppdaget",
+            "da": "Fejl opdaget",
+            "de": "Fehler erkannt",
+            "es": "Error detectado",
+            "fr": "Erreur détectée",
+            "it": "Errore rilevato",
+            "nl": "Fout gedetecteerd",
+            "sv": "Fel upptäckt",
+            "pl": "Wykryto błąd",
+            "fi": "Virhe havaittu",
+            "ru": "Обнаружена ошибка"
+          }
+        },
+        {
+          "id": "false",
+          "title": {
+            "en": "Error resolved",
+            "no": "Feil løst",
+            "da": "Fejl løst",
+            "de": "Fehler behoben",
+            "es": "Error resuelto",
+            "fr": "Erreur résolue",
+            "it": "Errore risolto",
+            "nl": "Fout opgelost",
+            "sv": "Fel löst",
+            "pl": "Błąd rozwiązany",
+            "fi": "Virhe ratkaistu",
+            "ru": "Ошибка устранена"
+          }
+        }
+      ]
+    }
+  ],
+  "tokens": [
+    {
+      "name": "device_name",
+      "type": "string",
+      "title": {
+        "en": "Device name",
+        "no": "Enhetsnavn",
+        "da": "Enhedsnavn",
+        "de": "Gerätename",
+        "es": "Nombre del dispositivo",
+        "fr": "Nom de l'appareil",
+        "it": "Nome dispositivo",
+        "nl": "Apparaatnaam",
+        "sv": "Enhetsnamn",
+        "pl": "Nazwa urządzenia",
+        "fi": "Laitteen nimi",
+        "ru": "Имя устройства"
+      }
+    },
+    {
+      "name": "alarm_state",
+      "type": "boolean",
+      "title": {
+        "en": "Alarm state",
+        "no": "Alarmtilstand",
+        "da": "Alarmstilstand",
+        "de": "Alarmzustand",
+        "es": "Estado de alarma",
+        "fr": "État d'alarme",
+        "it": "Stato allarme",
+        "nl": "Alarmstatus",
+        "sv": "Alarmtillstånd",
+        "pl": "Stan alarmu",
+        "fi": "Hälytystila",
+        "ru": "Состояние тревоги"
+      }
+    }
+  ]
+}

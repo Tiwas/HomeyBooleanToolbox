@@ -192,6 +192,21 @@ class BaseLogicDriver extends Homey.Driver {
         this.registerAutocomplete(formulaTimeoutCard, "formula", formulaAutocompleteHelper);
         this.logger.debug(` -> OK: EXISTING TRIGGER registered: 'formula_timeout_lu'`);
 
+        // New: Configuration alarm changed to [dropdown selection]
+        const configAlarmChangedToCard = this.homey.flow.getTriggerCard("config_alarm_changed_to_lu");
+        configAlarmChangedToCard.registerRunListener(async (args, state) => {
+            const expectedAlarmState = args.alarm_state === "true";
+            return (
+                args &&
+                args.device &&
+                args.device.driver &&
+                args.device.driver.id &&
+                args.device.driver.id.startsWith("logic-unit-") &&
+                state?.alarm_state === expectedAlarmState
+            );
+        });
+        this.logger.debug(` -> OK: NEW TRIGGER registered: 'config_alarm_changed_to_lu'`);
+
         // ===== ACTIONS (unchanged) =====
         
         const actionCards = [

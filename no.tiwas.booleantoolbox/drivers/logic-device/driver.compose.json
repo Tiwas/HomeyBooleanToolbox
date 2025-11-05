@@ -196,6 +196,10 @@
       ]
     },
     {
+      "type": "trigger",
+      "id": "config_alarm_changed_to_ld"
+    },
+    {
       "type": "condition",
       "id": "formula_has_timed_out_ld"
     },
