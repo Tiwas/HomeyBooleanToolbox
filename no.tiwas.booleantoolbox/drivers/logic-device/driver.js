@@ -224,6 +224,10 @@ module.exports = class LogicDeviceDriver extends Homey.Driver {
         id: "clear_error_ld",
         handler: "onFlowActionClearError",
       },
+      {
+        id: "validate_config_ld",
+        handler: "onFlowActionValidateConfig",
+      },
     ];
     actionCards.forEach((cardInfo) => {
       try {

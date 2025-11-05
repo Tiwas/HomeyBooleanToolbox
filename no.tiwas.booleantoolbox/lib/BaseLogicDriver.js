@@ -227,6 +227,10 @@ class BaseLogicDriver extends Homey.Driver {
                 handler: "onFlowActionClearError",
             },
             {
+                id: "validate_config_lu",
+                handler: "onFlowActionValidateConfig",
+            },
+            {
                 id: "set_all_inputs_lu",
                 handler: "setAllInputsFromFlow",
             },

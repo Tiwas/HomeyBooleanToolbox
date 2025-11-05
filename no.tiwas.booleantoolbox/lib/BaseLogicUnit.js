@@ -1271,6 +1271,15 @@ module.exports = class BaseLogicUnit extends Homey.Device {
     return formula.result === true;
   }
 
+  /**
+   * Action card handler: Validate configuration manually
+   */
+  async onFlowActionValidateConfig(args, state) {
+    this.logger.info("🔍 Manual configuration validation triggered");
+    await this.updateConfigAlarm();
+    return true;
+  }
+
   hasFormulaTimedOut(formulaId) {
     const formula = this.formulas.find((f) => f.id === formulaId);
     return !!(formula && formula.timedOut);

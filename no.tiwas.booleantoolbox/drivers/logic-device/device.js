@@ -404,6 +404,9 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         enabled: f.enabled,
       });
     });
+
+    // Validate configuration after formulas are initialized
+    await this.updateConfigAlarm();
   }
 
   getDefaultExpression() {
@@ -1454,6 +1457,15 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       return null;
     }
     return formula.result;
+  }
+
+  /**
+   * Action card handler: Validate configuration manually
+   */
+  async onFlowActionValidateConfig(args, state) {
+    this.logger.info("🔍 Manual configuration validation triggered");
+    await this.updateConfigAlarm();
+    return true;
   }
 
   hasFormulaTimedOut(formulaId) {

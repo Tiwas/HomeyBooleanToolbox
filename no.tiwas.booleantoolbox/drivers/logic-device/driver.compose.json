@@ -218,6 +218,10 @@
     {
       "type": "action",
       "id": "clear_error_ld"
+    },
+    {
+      "type": "action",
+      "id": "validate_config_ld"
     }
   ]
 }

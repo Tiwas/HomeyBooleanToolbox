@@ -3527,6 +3527,110 @@
             ]
           }
         ]
+      },
+      {
+        "id": "validate_config_ld",
+        "title": {
+          "en": "Validate configuration",
+          "no": "Valider konfigurasjon",
+          "da": "Valider konfiguration",
+          "de": "Konfiguration validieren",
+          "es": "Validar configuración",
+          "fr": "Valider la configuration",
+          "it": "Convalida configurazione",
+          "nl": "Configuratie valideren",
+          "sv": "Validera konfiguration",
+          "pl": "Waliduj konfigurację",
+          "fi": "Vahvista kokoonpano",
+          "ru": "Проверить конфигурацию"
+        },
+        "titleFormatted": {
+          "en": "Validate configuration",
+          "no": "Valider konfigurasjon",
+          "da": "Valider konfiguration",
+          "de": "Konfiguration validieren",
+          "es": "Validar configuración",
+          "fr": "Valider la configuration",
+          "it": "Convalida configurazione",
+          "nl": "Configuratie valideren",
+          "sv": "Validera konfiguration",
+          "pl": "Waliduj konfigurację",
+          "fi": "Vahvista kokoonpano",
+          "ru": "Проверить конфигурацию"
+        },
+        "hint": {
+          "en": "Manually trigger configuration validation. Checks for JSON errors, invalid formulas, and duplicate IDs. Updates the configuration alarm accordingly.",
+          "no": "Utløs konfigurasjonsvalidering manuelt. Sjekker for JSON-feil, ugyldige formler og duplikat-ID-er. Oppdaterer konfigurasjonsalarmen deretter.",
+          "da": "Udløs manuel konfigurationsvalidering. Tjekker for JSON-fejl, ugyldige formler og duplikat-ID'er. Opdaterer konfigurationsalarmen tilsvarende.",
+          "de": "Manuelle Konfigurationsvalidierung auslösen. Überprüft auf JSON-Fehler, ungültige Formeln und doppelte IDs. Aktualisiert den Konfigurationsalarm entsprechend.",
+          "es": "Activar validación de configuración manual. Verifica errores JSON, fórmulas no válidas e IDs duplicados. Actualiza la alarma de configuración en consecuencia.",
+          "fr": "Déclencher la validation manuelle de la configuration. Vérifie les erreurs JSON, les formules non valides et les ID en double. Met à jour l'alarme de configuration en conséquence.",
+          "it": "Attiva la convalida manuale della configurazione. Controlla errori JSON, formule non valide e ID duplicati. Aggiorna l'allarme di configurazione di conseguenza.",
+          "nl": "Handmatige configuratievalidatie activeren. Controleert op JSON-fouten, ongeldige formules en dubbele ID's. Werkt het configuratie-alarm dienovereenkomstig bij.",
+          "sv": "Utlös manuell konfigurationsvalidering. Kontrollerar JSON-fel, ogiltiga formler och dubbla ID:n. Uppdaterar konfigurationslarmet i enlighet därmed.",
+          "pl": "Ręcznie uruchom walidację konfiguracji. Sprawdza błędy JSON, nieprawidłowe formuły i duplikaty ID. Odpowiednio aktualizuje alarm konfiguracji.",
+          "fi": "Käynnistä kokoonpanon vahvistus manuaalisesti. Tarkistaa JSON-virheet, virheelliset kaavat ja päällekkäiset tunnukset. Päivittää kokoonpanohälytyksen vastaavasti.",
+          "ru": "Запустить проверку конфигурации вручную. Проверяет ошибки JSON, недействительные формулы и дубликаты ID. Соответственно обновляет тревогу конфигурации."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          }
+        ]
+      },
+      {
+        "id": "validate_config_lu",
+        "title": {
+          "en": "Validate configuration",
+          "no": "Valider konfigurasjon",
+          "da": "Valider konfiguration",
+          "de": "Konfiguration validieren",
+          "es": "Validar configuración",
+          "fr": "Valider la configuration",
+          "it": "Convalida configurazione",
+          "nl": "Configuratie valideren",
+          "sv": "Validera konfiguration",
+          "pl": "Waliduj konfigurację",
+          "fi": "Vahvista kokoonpano",
+          "ru": "Проверить конфигурацию"
+        },
+        "titleFormatted": {
+          "en": "Validate configuration",
+          "no": "Valider konfigurasjon",
+          "da": "Valider konfiguration",
+          "de": "Konfiguration validieren",
+          "es": "Validar configuración",
+          "fr": "Valider la configuration",
+          "it": "Convalida configurazione",
+          "nl": "Configuratie valideren",
+          "sv": "Validera konfiguration",
+          "pl": "Waliduj konfigurację",
+          "fi": "Vahvista kokoonpano",
+          "ru": "Проверить конфигурацию"
+        },
+        "hint": {
+          "en": "Manually trigger configuration validation. Checks for JSON errors, invalid formulas, and duplicate IDs. Updates the configuration alarm accordingly.",
+          "no": "Utløs konfigurasjonsvalidering manuelt. Sjekker for JSON-feil, ugyldige formler og duplikat-ID-er. Oppdaterer konfigurasjonsalarmen deretter.",
+          "da": "Udløs manuel konfigurationsvalidering. Tjekker for JSON-fejl, ugyldige formler og duplikat-ID'er. Opdaterer konfigurationsalarmen tilsvarende.",
+          "de": "Manuelle Konfigurationsvalidierung auslösen. Überprüft auf JSON-Fehler, ungültige Formeln und doppelte IDs. Aktualisiert den Konfigurationsalarm entsprechend.",
+          "es": "Activar validación de configuración manual. Verifica errores JSON, fórmulas no válidas e IDs duplicados. Actualiza la alarma de configuración en consecuencia.",
+          "fr": "Déclencher la validation manuelle de la configuration. Vérifie les erreurs JSON, les formules non valides et les ID en double. Met à jour l'alarme de configuration en conséquence.",
+          "it": "Attiva la convalida manuale della configurazione. Controlla errori JSON, formule non valide e ID duplicati. Aggiorna l'allarme di configurazione di conseguenza.",
+          "nl": "Handmatige configuratievalidatie activeren. Controleert op JSON-fouten, ongeldige formules en dubbele ID's. Werkt het configuratie-alarm dienovereenkomstig bij.",
+          "sv": "Utlös manuell konfigurationsvalidering. Kontrollerar JSON-fel, ogiltiga formler och dubbla ID:n. Uppdaterar konfigurationslarmet i enlighet därmed.",
+          "pl": "Ręcznie uruchom walidację konfiguracji. Sprawdza błędy JSON, nieprawidłowe formuły i duplikaty ID. Odpowiednio aktualizuje alarm konfiguracji.",
+          "fi": "Käynnistä kokoonpanon vahvistus manuaalisesti. Tarkistaa JSON-virheet, virheelliset kaavat ja päällekkäiset tunnukset. Päivittää kokoonpanohälytyksen vastaavasti.",
+          "ru": "Запустить проверку конфигурации вручную. Проверяет ошибки JSON, недействительные формулы и дубликаты ID. Соответственно обновляет тревогу конфигурации."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-unit|logic-unit-2|logic-unit-3|logic-unit-4|logic-unit-5|logic-unit-6|logic-unit-7|logic-unit-8|logic-unit-9|logic-unit-10"
+          }
+        ]
       }
     ]
   },
@@ -3751,6 +3855,10 @@
         {
           "type": "action",
           "id": "clear_error_ld"
+        },
+        {
+          "type": "action",
+          "id": "validate_config_ld"
         }
       ],
       "id": "logic-device"
@@ -3895,6 +4003,10 @@
         {
           "type": "action",
           "id": "clear_error_state_lu"
+        },
+        {
+          "type": "action",
+          "id": "validate_config_lu"
         },
         {
           "type": "action",

@@ -141,6 +141,10 @@
     },
     {
       "type": "action",
+      "id": "validate_config_lu"
+    },
+    {
+      "type": "action",
       "id": "set_all_inputs_lu"
     },
     {
