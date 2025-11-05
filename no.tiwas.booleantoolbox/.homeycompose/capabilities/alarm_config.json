@@ -1,0 +1,33 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Configuration Error",
+    "no": "Konfigurasjonsfeil",
+    "de": "Konfigurationsfehler",
+    "nl": "Configuratiefout",
+    "fr": "Erreur de Configuration",
+    "da": "Konfigurationsfejl",
+    "fi": "Konfiguraatiovirhe",
+    "sv": "Konfigurationsfel",
+    "pl": "Błąd Konfiguracji",
+    "it": "Errore di Configurazione",
+    "es": "Error de Configuración"
+  },
+  "desc": {
+    "en": "True when there is a configuration error (invalid JSON or formula syntax)",
+    "no": "Sann når det er en konfigurasjonsfeil (ugyldig JSON eller formelsyntaks)",
+    "de": "Wahr, wenn ein Konfigurationsfehler vorliegt (ungültiges JSON oder Formelsyntax)",
+    "nl": "Waar wanneer er een configuratiefout is (ongeldige JSON of formulesyntax)",
+    "fr": "Vrai en cas d'erreur de configuration (JSON ou syntaxe de formule non valide)",
+    "da": "Sand når der er en konfigurationsfejl (ugyldig JSON eller formelsyntaks)",
+    "fi": "Tosi, kun on konfiguraatiovirhe (virheellinen JSON tai kaavasynnaksi)",
+    "sv": "Sant när det finns ett konfigurationsfel (ogiltig JSON eller formelsyntax)",
+    "pl": "Prawda, gdy wystąpił błąd konfiguracji (nieprawidłowy JSON lub składnia formuły)",
+    "it": "Vero quando è presente un errore di configurazione (JSON o sintassi formula non validi)",
+    "es": "Verdadero cuando hay un error de configuración (JSON o sintaxis de fórmula no válidos)"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/config_error.svg"
+}
