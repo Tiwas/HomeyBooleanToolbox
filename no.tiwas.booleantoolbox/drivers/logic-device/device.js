@@ -137,13 +137,21 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
   }
 
   async onSettings({ oldSettings, newSettings, changedKeys }) {
+    this.logger.info("🔧 onSettings called", {
+      changedKeys: changedKeys.join(", "),
+    });
+
     try {
       // Valider formler
       if (changedKeys.includes("formulas")) {
+        this.logger.info("📝 Validating formulas...");
+
         let formulas;
         try {
           formulas = JSON.parse(newSettings.formulas);
+          this.logger.info(`📊 Parsed ${formulas.length} formula(s)`);
         } catch (e) {
+          this.logger.error("❌ JSON parse error", { error: e.message });
           throw new Error(
             this.homey.__("settings.invalid_json", {
               field: "formulas",
@@ -154,11 +162,14 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
         // VIKTIG: Begrens til én formel for Logic Device
         if (formulas.length > 1) {
+          this.logger.error(`❌ TOO MANY FORMULAS: ${formulas.length} formulas found, but Logic Device only supports 1`);
           throw new Error(
             "Logic Device kan kun ha én formel. " +
               "For flere formler, bruk Logic Unit (Dynamic) i stedet.",
           );
         }
+
+        this.logger.info("✅ Formula count validation passed");
 
         // Valider hver formel
         for (const formula of formulas) {
