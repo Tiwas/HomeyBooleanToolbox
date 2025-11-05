@@ -207,6 +207,19 @@ class BaseLogicDriver extends Homey.Driver {
         });
         this.logger.debug(` -> OK: NEW TRIGGER registered: 'config_alarm_changed_to_lu'`);
 
+        // New: Configuration alarm state changed (no dropdown, triggers on any state change)
+        const configAlarmStateChangedCard = this.homey.flow.getTriggerCard("config_alarm_state_changed_lu");
+        configAlarmStateChangedCard.registerRunListener(async (args, state) => {
+            return (
+                args &&
+                args.device &&
+                args.device.driver &&
+                args.device.driver.id &&
+                args.device.driver.id.startsWith("logic-unit-")
+            );
+        });
+        this.logger.debug(` -> OK: NEW TRIGGER registered: 'config_alarm_state_changed_lu'`);
+
         // ===== ACTIONS (unchanged) =====
         
         const actionCards = [

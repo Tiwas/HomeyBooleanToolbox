@@ -323,6 +323,216 @@
         ]
       },
       {
+        "id": "any_config_alarm_state_changed",
+        "title": {
+          "en": "Any device configuration alarm state changed",
+          "no": "Konfigurasjonsalarm-status endret (alle enheter)",
+          "da": "Konfigurationsalarmstatus ændret (alle enheder)",
+          "de": "Konfigurationsalarmstatus geändert (alle Geräte)",
+          "es": "Estado de alarma de configuración cambió (todos los dispositivos)",
+          "fr": "État d'alarme de configuration modifié (tous les appareils)",
+          "it": "Stato allarme configurazione cambiato (tutti i dispositivi)",
+          "nl": "Configuratie alarmstatus gewijzigd (alle apparaten)",
+          "sv": "Konfigurationslarmstatus ändrades (alla enheter)",
+          "pl": "Stan alarmu konfiguracji zmienił się (wszystkie urządzenia)",
+          "fi": "Konfiguraatiohälytystila muuttunut (kaikki laitteet)",
+          "ru": "Состояние тревоги конфигурации изменилось (все устройства)"
+        },
+        "titleFormatted": {
+          "en": "[[device_type]] configuration alarm state changed",
+          "no": "[[device_type]] konfigurasjonsalarm-status endret",
+          "da": "[[device_type]] konfigurationsalarmstatus ændret",
+          "de": "[[device_type]] Konfigurationsalarmstatus geändert",
+          "es": "[[device_type]] estado de alarma de configuración cambió",
+          "fr": "[[device_type]] état d'alarme de configuration modifié",
+          "it": "[[device_type]] stato allarme configurazione cambiato",
+          "nl": "[[device_type]] configuratie alarmstatus gewijzigd",
+          "sv": "[[device_type]] konfigurationslarmstatus ändrades",
+          "pl": "[[device_type]] stan alarmu konfiguracji zmienił się",
+          "fi": "[[device_type]] konfiguraatiohälytystila muuttunut",
+          "ru": "[[device_type]] состояние тревоги конфигурации изменилось"
+        },
+        "hint": {
+          "en": "Triggers when any device's configuration alarm state changes (error detected or resolved). You can filter by device type.",
+          "no": "Utløses når konfigurasjonsalarmens status endres på en enhet (feil oppdaget eller løst). Du kan filtrere etter enhetstype.",
+          "da": "Udløser når konfigurationsalarmens status ændres på en enhed (fejl opdaget eller løst). Du kan filtrere efter enhedstype.",
+          "de": "Wird ausgelöst, wenn sich der Konfigurationsalarmstatus eines Geräts ändert (Fehler erkannt oder behoben). Sie können nach Gerätetyp filtern.",
+          "es": "Se activa cuando cambia el estado de alarma de configuración de cualquier dispositivo (error detectado o resuelto). Puede filtrar por tipo de dispositivo.",
+          "fr": "Se déclenche lorsque l'état d'alarme de configuration d'un appareil change (erreur détectée ou résolue). Vous pouvez filtrer par type d'appareil.",
+          "it": "Si attiva quando cambia lo stato di allarme di configurazione di un dispositivo (errore rilevato o risolto). È possibile filtrare per tipo di dispositivo.",
+          "nl": "Wordt geactiveerd wanneer de configuratie alarmstatus van een apparaat verandert (fout gedetecteerd of opgelost). U kunt filteren op apparaattype.",
+          "sv": "Utlöses när konfigurationslarmstatus för en enhet ändras (fel upptäckt eller löst). Du kan filtrera efter enhetstyp.",
+          "pl": "Wyzwala się, gdy zmienia się stan alarmu konfiguracji urządzenia (wykryto lub rozwiązano błąd). Można filtrować według typu urządzenia.",
+          "fi": "Laukeaa kun laitteen konfiguraatiohälytyksen tila muuttuu (virhe havaittu tai ratkaistu). Voit suodattaa laitetyypin mukaan.",
+          "ru": "Срабатывает при изменении состояния тревоги конфигурации устройства (ошибка обнаружена или устранена). Можно фильтровать по типу устройства."
+        },
+        "args": [
+          {
+            "name": "device_type",
+            "type": "dropdown",
+            "title": {
+              "en": "Device type",
+              "no": "Enhetstype",
+              "da": "Enhedstype",
+              "de": "Gerätetyp",
+              "es": "Tipo de dispositivo",
+              "fr": "Type d'appareil",
+              "it": "Tipo di dispositivo",
+              "nl": "Apparaattype",
+              "sv": "Enhetstyp",
+              "pl": "Typ urządzenia",
+              "fi": "Laitetyyppi",
+              "ru": "Тип устройства"
+            },
+            "values": [
+              {
+                "id": "any",
+                "title": {
+                  "en": "Any device",
+                  "no": "Alle enheter",
+                  "da": "Alle enheder",
+                  "de": "Alle Geräte",
+                  "es": "Todos los dispositivos",
+                  "fr": "Tous les appareils",
+                  "it": "Tutti i dispositivi",
+                  "nl": "Alle apparaten",
+                  "sv": "Alla enheter",
+                  "pl": "Wszystkie urządzenia",
+                  "fi": "Kaikki laitteet",
+                  "ru": "Все устройства"
+                }
+              },
+              {
+                "id": "logic-unit",
+                "title": {
+                  "en": "All Logic Units",
+                  "no": "Alle Logic Units",
+                  "da": "Alle Logic Units",
+                  "de": "Alle Logic Units",
+                  "es": "Todas las Logic Units",
+                  "fr": "Toutes les Logic Units",
+                  "it": "Tutte le Logic Units",
+                  "nl": "Alle Logic Units",
+                  "sv": "Alla Logic Units",
+                  "pl": "Wszystkie Logic Units",
+                  "fi": "Kaikki Logic Units",
+                  "ru": "Все Logic Units"
+                }
+              },
+              {
+                "id": "logic-device",
+                "title": {
+                  "en": "All Logic Devices",
+                  "no": "Alle Logic Devices",
+                  "da": "Alle Logic Devices",
+                  "de": "Alle Logic Devices",
+                  "es": "Todos los Logic Devices",
+                  "fr": "Tous les Logic Devices",
+                  "it": "Tutti i Logic Devices",
+                  "nl": "Alle Logic Devices",
+                  "sv": "Alla Logic Devices",
+                  "pl": "Wszystkie Logic Devices",
+                  "fi": "Kaikki Logic Devices",
+                  "ru": "Все Logic Devices"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "device_name",
+            "type": "string",
+            "title": {
+              "en": "Device name",
+              "no": "Enhetsnavn",
+              "da": "Enhedsnavn",
+              "de": "Gerätename",
+              "es": "Nombre del dispositivo",
+              "fr": "Nom de l'appareil",
+              "it": "Nome dispositivo",
+              "nl": "Apparaatnaam",
+              "sv": "Enhetsnamn",
+              "pl": "Nazwa urządzenia",
+              "fi": "Laitteen nimi",
+              "ru": "Имя устройства"
+            }
+          },
+          {
+            "name": "device_type",
+            "type": "string",
+            "title": {
+              "en": "Device type",
+              "no": "Enhetstype",
+              "da": "Enhedstype",
+              "de": "Gerätetyp",
+              "es": "Tipo de dispositivo",
+              "fr": "Type d'appareil",
+              "it": "Tipo di dispositivo",
+              "nl": "Apparaattype",
+              "sv": "Enhetstyp",
+              "pl": "Typ urządzenia",
+              "fi": "Laitetyyppi",
+              "ru": "Тип устройства"
+            }
+          },
+          {
+            "name": "alarm_state",
+            "type": "boolean",
+            "title": {
+              "en": "Alarm state",
+              "no": "Alarmtilstand",
+              "da": "Alarmstilstand",
+              "de": "Alarmzustand",
+              "es": "Estado de alarma",
+              "fr": "État d'alarme",
+              "it": "Stato allarme",
+              "nl": "Alarmstatus",
+              "sv": "Alarmtillstånd",
+              "pl": "Stan alarmu",
+              "fi": "Hälytystila",
+              "ru": "Состояние тревоги"
+            }
+          },
+          {
+            "name": "affected_devices",
+            "type": "string",
+            "title": {
+              "en": "Affected devices (comma-separated)",
+              "no": "Berørte enheter (kommaseparert)",
+              "da": "Berørte enheder (kommasepareret)",
+              "de": "Betroffene Geräte (durch Komma getrennt)",
+              "es": "Dispositivos afectados (separados por comas)",
+              "fr": "Appareils concernés (séparés par des virgules)",
+              "it": "Dispositivi interessati (separati da virgole)",
+              "nl": "Getroffen apparaten (kommagescheiden)",
+              "sv": "Berörda enheter (kommaseparerade)",
+              "pl": "Dotknięte urządzenia (oddzielone przecinkami)",
+              "fi": "Vaikutetut laitteet (pilkulla erotettu)",
+              "ru": "Затронутые устройства (через запятую)"
+            }
+          },
+          {
+            "name": "error_count",
+            "type": "number",
+            "title": {
+              "en": "Number of devices with errors",
+              "no": "Antall enheter med feil",
+              "da": "Antal enheder med fejl",
+              "de": "Anzahl der Geräte mit Fehlern",
+              "es": "Número de dispositivos con errores",
+              "fr": "Nombre d'appareils avec des erreurs",
+              "it": "Numero di dispositivi con errori",
+              "nl": "Aantal apparaten met fouten",
+              "sv": "Antal enheter med fel",
+              "pl": "Liczba urządzeń z błędami",
+              "fi": "Virheiden laitteiden määrä",
+              "ru": "Количество устройств с ошибками"
+            }
+          }
+        ]
+      },
+      {
         "id": "config_alarm_changed_to_ld",
         "title": {
           "en": "Configuration alarm changed to...",
@@ -569,6 +779,158 @@
                 }
               }
             ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "device_name",
+            "type": "string",
+            "title": {
+              "en": "Device name",
+              "no": "Enhetsnavn",
+              "da": "Enhedsnavn",
+              "de": "Gerätename",
+              "es": "Nombre del dispositivo",
+              "fr": "Nom de l'appareil",
+              "it": "Nome dispositivo",
+              "nl": "Apparaatnaam",
+              "sv": "Enhetsnamn",
+              "pl": "Nazwa urządzenia",
+              "fi": "Laitteen nimi",
+              "ru": "Имя устройства"
+            }
+          },
+          {
+            "name": "alarm_state",
+            "type": "boolean",
+            "title": {
+              "en": "Alarm state",
+              "no": "Alarmtilstand",
+              "da": "Alarmstilstand",
+              "de": "Alarmzustand",
+              "es": "Estado de alarma",
+              "fr": "État d'alarme",
+              "it": "Stato allarme",
+              "nl": "Alarmstatus",
+              "sv": "Alarmtillstånd",
+              "pl": "Stan alarmu",
+              "fi": "Hälytystila",
+              "ru": "Состояние тревоги"
+            }
+          }
+        ]
+      },
+      {
+        "id": "config_alarm_state_changed_ld",
+        "title": {
+          "en": "Configuration alarm state changed",
+          "no": "Konfigurasjonsalarm-status endret",
+          "da": "Konfigurationsalarmstatus ændret",
+          "de": "Konfigurationsalarmstatus geändert",
+          "es": "Estado de alarma de configuración cambiado",
+          "fr": "État d'alarme de configuration modifié",
+          "it": "Stato allarme configurazione cambiato",
+          "nl": "Configuratie alarmstatus gewijzigd",
+          "sv": "Konfigurationslarmstatus ändrades",
+          "pl": "Stan alarmu konfiguracji zmienił się",
+          "fi": "Konfiguraatiohälytystila muuttunut",
+          "ru": "Состояние тревоги конфигурации изменилось"
+        },
+        "hint": {
+          "en": "Triggers when the configuration alarm state changes (error detected or resolved).",
+          "no": "Utløses når konfigurasjonsalarmens status endres (feil oppdaget eller løst).",
+          "da": "Udløser når konfigurationsalarmens status ændres (fejl opdaget eller løst).",
+          "de": "Wird ausgelöst, wenn sich der Konfigurationsalarmstatus ändert (Fehler erkannt oder behoben).",
+          "es": "Se activa cuando cambia el estado de alarma de configuración (error detectado o resuelto).",
+          "fr": "Se déclenche lorsque l'état d'alarme de configuration change (erreur détectée ou résolue).",
+          "it": "Si attiva quando cambia lo stato di allarme di configurazione (errore rilevato o risolto).",
+          "nl": "Wordt geactiveerd wanneer de configuratie alarmstatus verandert (fout gedetecteerd of opgelost).",
+          "sv": "Utlöses när konfigurationslarmstatus ändras (fel upptäckt eller löst).",
+          "pl": "Wyzwala się, gdy zmienia się stan alarmu konfiguracji (wykryto lub rozwiązano błąd).",
+          "fi": "Laukeaa kun konfiguraatiohälytyksen tila muuttuu (virhe havaittu tai ratkaistu).",
+          "ru": "Срабатывает при изменении состояния тревоги конфигурации (ошибка обнаружена или устранена)."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-device"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "device_name",
+            "type": "string",
+            "title": {
+              "en": "Device name",
+              "no": "Enhetsnavn",
+              "da": "Enhedsnavn",
+              "de": "Gerätename",
+              "es": "Nombre del dispositivo",
+              "fr": "Nom de l'appareil",
+              "it": "Nome dispositivo",
+              "nl": "Apparaatnaam",
+              "sv": "Enhetsnamn",
+              "pl": "Nazwa urządzenia",
+              "fi": "Laitteen nimi",
+              "ru": "Имя устройства"
+            }
+          },
+          {
+            "name": "alarm_state",
+            "type": "boolean",
+            "title": {
+              "en": "Alarm state",
+              "no": "Alarmtilstand",
+              "da": "Alarmstilstand",
+              "de": "Alarmzustand",
+              "es": "Estado de alarma",
+              "fr": "État d'alarme",
+              "it": "Stato allarme",
+              "nl": "Alarmstatus",
+              "sv": "Alarmtillstånd",
+              "pl": "Stan alarmu",
+              "fi": "Hälytystila",
+              "ru": "Состояние тревоги"
+            }
+          }
+        ]
+      },
+      {
+        "id": "config_alarm_state_changed_lu",
+        "title": {
+          "en": "Configuration alarm state changed",
+          "no": "Konfigurasjonsalarm-status endret",
+          "da": "Konfigurationsalarmstatus ændret",
+          "de": "Konfigurationsalarmstatus geändert",
+          "es": "Estado de alarma de configuración cambiado",
+          "fr": "État d'alarme de configuration modifié",
+          "it": "Stato allarme configurazione cambiato",
+          "nl": "Configuratie alarmstatus gewijzigd",
+          "sv": "Konfigurationslarmstatus ändrades",
+          "pl": "Stan alarmu konfiguracji zmienił się",
+          "fi": "Konfiguraatiohälytystila muuttunut",
+          "ru": "Состояние тревоги конфигурации изменилось"
+        },
+        "hint": {
+          "en": "Triggers when the configuration alarm state changes (error detected or resolved).",
+          "no": "Utløses når konfigurasjonsalarmens status endres (feil oppdaget eller løst).",
+          "da": "Udløser når konfigurationsalarmens status ændres (fejl opdaget eller løst).",
+          "de": "Wird ausgelöst, wenn sich der Konfigurationsalarmstatus ändert (Fehler erkannt oder behoben).",
+          "es": "Se activa cuando cambia el estado de alarma de configuración (error detectado o resuelto).",
+          "fr": "Se déclenche lorsque l'état d'alarme de configuration change (erreur détectée ou résolue).",
+          "it": "Si attiva quando cambia lo stato di allarme di configurazione (errore rilevato o risolto).",
+          "nl": "Wordt geactiveerd wanneer de configuratie alarmstatus verandert (fout gedetecteerd of opgelost).",
+          "sv": "Utlöses när konfigurationslarmstatus ändras (fel upptäckt eller löst).",
+          "pl": "Wyzwala się, gdy zmienia się stan alarmu konfiguracji (wykryto lub rozwiązano błąd).",
+          "fi": "Laukeaa kun konfiguraatiohälytyksen tila muuttuu (virhe havaittu tai ratkaistu).",
+          "ru": "Срабатывает при изменении состояния тревоги конфигурации (ошибка обнаружена или устранена)."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=logic-unit|driver_id=logic-unit-2|driver_id=logic-unit-3|driver_id=logic-unit-4|driver_id=logic-unit-5|driver_id=logic-unit-6|driver_id=logic-unit-7|driver_id=logic-unit-8|driver_id=logic-unit-9|driver_id=logic-unit-10"
           }
         ],
         "tokens": [
@@ -3837,6 +4199,10 @@
           "id": "config_alarm_changed_to_ld"
         },
         {
+          "type": "trigger",
+          "id": "config_alarm_state_changed_ld"
+        },
+        {
           "type": "condition",
           "id": "formula_has_timed_out_ld"
         },
@@ -3975,6 +4341,10 @@
         {
           "type": "trigger",
           "id": "config_alarm_changed_to_lu"
+        },
+        {
+          "type": "trigger",
+          "id": "config_alarm_state_changed_lu"
         },
         {
           "type": "condition",
@@ -5169,28 +5539,30 @@
       "title": {
         "en": "Configuration Error",
         "no": "Konfigurasjonsfeil",
-        "de": "Konfigurationsfehler",
-        "nl": "Configuratiefout",
-        "fr": "Erreur de Configuration",
         "da": "Konfigurationsfejl",
-        "fi": "Konfiguraatiovirhe",
+        "de": "Konfigurationsfehler",
+        "es": "Error de Configuración",
+        "fr": "Erreur de Configuration",
+        "it": "Errore di Configurazione",
+        "nl": "Configuratiefout",
         "sv": "Konfigurationsfel",
         "pl": "Błąd Konfiguracji",
-        "it": "Errore di Configurazione",
-        "es": "Error de Configuración"
+        "fi": "Konfiguraatiovirhe",
+        "ru": "Ошибка конфигурации"
       },
       "desc": {
         "en": "True when there is a configuration error (invalid JSON or formula syntax)",
         "no": "Sann når det er en konfigurasjonsfeil (ugyldig JSON eller formelsyntaks)",
-        "de": "Wahr, wenn ein Konfigurationsfehler vorliegt (ungültiges JSON oder Formelsyntax)",
-        "nl": "Waar wanneer er een configuratiefout is (ongeldige JSON of formulesyntax)",
-        "fr": "Vrai en cas d'erreur de configuration (JSON ou syntaxe de formule non valide)",
         "da": "Sand når der er en konfigurationsfejl (ugyldig JSON eller formelsyntaks)",
-        "fi": "Tosi, kun on konfiguraatiovirhe (virheellinen JSON tai kaavasynnaksi)",
+        "de": "Wahr, wenn ein Konfigurationsfehler vorliegt (ungültiges JSON oder Formelsyntax)",
+        "es": "Verdadero cuando hay un error de configuración (JSON o sintaxis de fórmula no válidos)",
+        "fr": "Vrai en cas d'erreur de configuration (JSON ou syntaxe de formule non valide)",
+        "it": "Vero quando è presente un errore di configurazione (JSON o sintassi formula non validi)",
+        "nl": "Waar wanneer er een configuratiefout is (ongeldige JSON of formulesyntax)",
         "sv": "Sant när det finns ett konfigurationsfel (ogiltig JSON eller formelsyntax)",
         "pl": "Prawda, gdy wystąpił błąd konfiguracji (nieprawidłowy JSON lub składnia formuły)",
-        "it": "Vero quando è presente un errore di configurazione (JSON o sintassi formula non validi)",
-        "es": "Verdadero cuando hay un error de configuración (JSON o sintaxis de fórmula no válidos)"
+        "fi": "Tosi, kun on konfiguraatiovirhe (virheellinen JSON tai kaavasynnaksi)",
+        "ru": "Истина при наличии ошибки конфигурации (недопустимый JSON или синтаксис формулы)"
       },
       "getable": true,
       "setable": false,

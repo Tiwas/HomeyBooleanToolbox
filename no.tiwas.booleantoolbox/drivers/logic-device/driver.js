@@ -176,6 +176,13 @@ module.exports = class LogicDeviceDriver extends Homey.Driver {
     });
     this.logger.debug(` -> OK: NEW TRIGGER registered: 'config_alarm_changed_to_ld'`);
 
+    // New: Configuration alarm state changed (no dropdown, triggers on any state change)
+    const configAlarmStateChangedCard = this.homey.flow.getTriggerCard("config_alarm_state_changed_ld");
+    configAlarmStateChangedCard.registerRunListener(async (args, state) => {
+      return args?.device?.driver?.id === "logic-device";
+    });
+    this.logger.debug(` -> OK: NEW TRIGGER registered: 'config_alarm_state_changed_ld'`);
+
     // ===== NEW CONDITIONS WITH DROPDOWNS =====
     
     // New: Device is turned [dropdown selection]

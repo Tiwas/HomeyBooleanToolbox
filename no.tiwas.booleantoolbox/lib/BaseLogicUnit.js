@@ -895,7 +895,7 @@ module.exports = class BaseLogicUnit extends Homey.Device {
    * Trigger config_alarm_changed_to flow cards (both device-level and app-level)
    */
   async triggerConfigAlarmChanged(alarmState) {
-    // Trigger device-specific card
+    // Trigger device-specific "changed to" card
     try {
       const card = this.homey.flow.getDeviceTriggerCard("config_alarm_changed_to_lu");
       const tokens = {
@@ -918,7 +918,27 @@ module.exports = class BaseLogicUnit extends Homey.Device {
       });
     }
 
-    // Trigger app-level card with all affected devices
+    // Trigger device-specific "state changed" card
+    try {
+      const stateCard = this.homey.flow.getDeviceTriggerCard("config_alarm_state_changed_lu");
+      const tokens = {
+        device_name: this.getName(),
+        alarm_state: alarmState,
+      };
+
+      await stateCard.trigger(this, tokens);
+
+      this.logger.debug("config_alarm.device_state_trigger_fired", {
+        alarm_state: alarmState,
+        device_name: this.getName(),
+      });
+    } catch (e) {
+      this.logger.error("config_alarm.device_state_trigger_failed", {
+        error: e.message,
+      });
+    }
+
+    // Trigger app-level cards with all affected devices
     try {
       const driverId = this.driver?.id || 'unknown';
       const driverFilter = driverId.startsWith('logic-unit') ? 'logic-unit' : 'any';
@@ -939,15 +959,20 @@ module.exports = class BaseLogicUnit extends Homey.Device {
         driver_id: driverId,
       };
 
+      // Trigger "changed to" app-level card
       const appCard = this.homey.flow.getTriggerCard("any_config_alarm_changed");
       await appCard.trigger(tokens, state);
 
-      this.logger.info("config_alarm.app_trigger_fired", {
+      // Trigger "state changed" app-level card
+      const appStateCard = this.homey.flow.getTriggerCard("any_config_alarm_state_changed");
+      await appStateCard.trigger(tokens, state);
+
+      this.logger.info("config_alarm.app_triggers_fired", {
         alarm_state: alarmState,
         affected_count: affectedDevices.length,
       });
     } catch (e) {
-      this.logger.error("config_alarm.app_trigger_failed", {
+      this.logger.error("config_alarm.app_triggers_failed", {
         error: e.message,
       });
     }

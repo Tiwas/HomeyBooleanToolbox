@@ -366,6 +366,29 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             this.logger.error(` -> FAILED: Registering APP TRIGGER 'any_config_alarm_changed'`, e);
         }
 
+        // Register any_config_alarm_state_changed trigger (no alarm_state filter)
+        try {
+            const anyConfigAlarmStateChangedCard = this.homey.flow.getTriggerCard("any_config_alarm_state_changed");
+            anyConfigAlarmStateChangedCard.registerRunListener(async (args, state) => {
+                const expectedDeviceType = args.device_type;
+
+                // Match device type filter
+                let deviceTypeMatches = false;
+                if (expectedDeviceType === "any") {
+                    deviceTypeMatches = true;
+                } else if (expectedDeviceType === "logic-unit") {
+                    deviceTypeMatches = state?.driver_id?.startsWith("logic-unit");
+                } else if (expectedDeviceType === "logic-device") {
+                    deviceTypeMatches = state?.driver_id === "logic-device";
+                }
+
+                return deviceTypeMatches;
+            });
+            this.logger.debug(` -> OK: APP TRIGGER registered: 'any_config_alarm_state_changed'`);
+        } catch (e) {
+            this.logger.error(` -> FAILED: Registering APP TRIGGER 'any_config_alarm_state_changed'`, e);
+        }
+
         this.logger.info("app.flow_cards_registered", {});
     }
 
