@@ -49,7 +49,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     // ✅ STEP 3: Set capability options
     try {
       await this.setCapabilityOptions("onoff", {
-        setable: true, // ENDRET: Bruker kan nå slå device av/på
+        setable: true, // CHANGED: User can now turn device on/off
         getable: true,
       });
 
@@ -125,7 +125,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     // Validate configuration and set alarm_config
     await this.updateConfigAlarm();
 
-    this.logger.info("evaluation.running_initial");
+    this.logger.debug("evaluation.running_initial");
     await this.evaluateAllFormulasInitial();
 
     this.startTimeoutChecks();
@@ -156,7 +156,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     });
 
     try {
-      // Valider formler
+      // Validate formulas
       if (changedKeys.includes("formulas")) {
         this.logger.info("📝 Validating formulas...");
 
@@ -174,7 +174,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
           );
         }
 
-        // VIKTIG: Begrens til én formel for Logic Device
+        // IMPORTANT: Limit to one formula for Logic Device
         if (formulas.length > 1) {
           this.logger.error(`❌ TOO MANY FORMULAS: ${formulas.length} formulas found, but Logic Device only supports 1`);
           throw new Error(
@@ -306,7 +306,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       // Re-evaluate formulas with new settings
       await this.refetchAndEvaluate("settings_changed");
 
-      this.logger.info("✅ Settings reloaded and validated");
+      this.logger.debug("✅ Settings reloaded and validated");
     }
   }
 
@@ -372,7 +372,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
         ? JSON.parse(settings.formulas)
         : [];
 
-      // VIKTIG: Logic Device kan KUN ha én formel
+      // IMPORTANT: Logic Device can ONLY have one formula
       if (formulasData.length > 1) {
         this.logger.warn(
           "⚠️  Logic Device can only have one formula. Using only the first one.",
@@ -1310,7 +1310,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
           reason: errorReason,
         });
       } else {
-        // VIKTIG: Logic Device må ha nøyaktig én formel
+        // IMPORTANT: Logic Device must have exactly one formula
         if (formulasData.length === 0) {
           hasError = true;
           errorReason = "Logic Device må ha minst én formel";

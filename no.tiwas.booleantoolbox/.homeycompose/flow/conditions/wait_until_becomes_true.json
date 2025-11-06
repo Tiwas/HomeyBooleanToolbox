@@ -1,0 +1,279 @@
+{
+  "title": {
+    "en": "Wait until device capability becomes value",
+    "no": "Vent til enhetens capability blir verdi",
+    "da": "Vent indtil enhedens capability bliver værdi",
+    "de": "Warte bis Geräte-Capability Wert wird",
+    "es": "Esperar hasta que la capability del dispositivo sea valor",
+    "fr": "Attendre que la capability de l'appareil devienne valeur",
+    "it": "Aspetta fino a quando la capability del dispositivo diventa valore",
+    "nl": "Wacht tot apparaat capability waarde wordt",
+    "sv": "Vänta tills enhetens capability blir värde",
+    "pl": "Czekaj aż capability urządzenia stanie się wartością",
+    "fi": "Odota kunnes laitteen capability on arvo",
+    "ru": "Ждать пока capability устройства станет значением"
+  },
+  "titleFormatted": {
+    "en": "Wait until [[device]] [[capability]] becomes [[target_value]] (timeout: [[timeout_value]] [[timeout_unit]], id: [[waiter_id]])",
+    "no": "Vent til [[device]] [[capability]] blir [[target_value]] (timeout: [[timeout_value]] [[timeout_unit]], id: [[waiter_id]])",
+    "da": "Vent indtil [[device]] [[capability]] bliver [[target_value]] (timeout: [[timeout_value]] [[timeout_unit]], id: [[waiter_id]])",
+    "de": "Warte bis [[device]] [[capability]] [[target_value]] wird (Timeout: [[timeout_value]] [[timeout_unit]], ID: [[waiter_id]])",
+    "es": "Esperar hasta que [[device]] [[capability]] sea [[target_value]] (timeout: [[timeout_value]] [[timeout_unit]], id: [[waiter_id]])",
+    "fr": "Attendre que [[device]] [[capability]] devienne [[target_value]] (timeout: [[timeout_value]] [[timeout_unit]], id: [[waiter_id]])",
+    "it": "Aspetta fino a quando [[device]] [[capability]] diventa [[target_value]] (timeout: [[timeout_value]] [[timeout_unit]], id: [[waiter_id]])",
+    "nl": "Wacht tot [[device]] [[capability]] [[target_value]] wordt (timeout: [[timeout_value]] [[timeout_unit]], id: [[waiter_id]])",
+    "sv": "Vänta tills [[device]] [[capability]] blir [[target_value]] (timeout: [[timeout_value]] [[timeout_unit]], id: [[waiter_id]])",
+    "pl": "Czekaj aż [[device]] [[capability]] stanie się [[target_value]] (timeout: [[timeout_value]] [[timeout_unit]], id: [[waiter_id]])",
+    "fi": "Odota kunnes [[device]] [[capability]] on [[target_value]] (timeout: [[timeout_value]] [[timeout_unit]], id: [[waiter_id]])",
+    "ru": "Ждать пока [[device]] [[capability]] станет [[target_value]] (timeout: [[timeout_value]] [[timeout_unit]], id: [[waiter_id]])"
+  },
+  "hint": {
+    "en": "This card waits until a device capability reaches a specific value. If the value is already correct, it proceeds immediately (YES). If timeout expires before the value matches, it takes the NO path. Leave Waiter ID empty for auto-generation.",
+    "no": "Dette kortet venter til en enhets capability når en bestemt verdi. Hvis verdien allerede er riktig, fortsetter det umiddelbart (JA). Hvis timeout utløper før verdien matcher, tar det NEI-stien. La Waiter ID stå tom for auto-generering.",
+    "da": "Dette kort venter indtil en enheds capability når en bestemt værdi. Hvis værdien allerede er korrekt, fortsætter det straks (JA). Hvis timeout udløber før værdien matcher, tager det NEJ-vejen. Lad Waiter ID være tom for auto-generering.",
+    "de": "Diese Karte wartet bis eine Geräte-Capability einen bestimmten Wert erreicht. Wenn der Wert bereits korrekt ist, wird sofort fortgesetzt (JA). Wenn Timeout abläuft bevor der Wert übereinstimmt, wird der NEIN-Pfad genommen. Lassen Sie Waiter ID leer für Auto-Generierung.",
+    "es": "Esta tarjeta espera hasta que una capability del dispositivo alcance un valor específico. Si el valor ya es correcto, procede inmediatamente (SÍ). Si el timeout expira antes de que el valor coincida, toma el camino NO. Deje el ID del Waiter vacío para auto-generación.",
+    "fr": "Cette carte attend qu'une capability d'appareil atteigne une valeur spécifique. Si la valeur est déjà correcte, elle continue immédiatement (OUI). Si le timeout expire avant que la valeur corresponde, elle prend le chemin NON. Laissez l'ID Waiter vide pour la génération automatique.",
+    "it": "Questa scheda attende fino a quando una capability del dispositivo raggiunge un valore specifico. Se il valore è già corretto, procede immediatamente (SÌ). Se il timeout scade prima che il valore corrisponda, prende il percorso NO. Lascia l'ID Waiter vuoto per la generazione automatica.",
+    "nl": "Deze kaart wacht tot een apparaat capability een specifieke waarde bereikt. Als de waarde al correct is, gaat het onmiddellijk verder (JA). Als timeout verloopt voordat de waarde overeenkomt, neemt het het NEE-pad. Laat Waiter ID leeg voor auto-generatie.",
+    "sv": "Detta kort väntar tills en enhets capability når ett specifikt värde. Om värdet redan är korrekt, fortsätter det omedelbart (JA). Om timeout löper ut innan värdet matchar, tar det NEJ-vägen. Lämna Waiter ID tomt för auto-generering.",
+    "pl": "Ta karta czeka aż capability urządzenia osiągnie określoną wartość. Jeśli wartość jest już prawidłowa, kontynuuje natychmiast (TAK). Jeśli timeout wygaśnie zanim wartość będzie się zgadzać, przechodzi ścieżką NIE. Pozostaw ID Waiter puste dla auto-generacji.",
+    "fi": "Tämä kortti odottaa kunnes laitteen capability saavuttaa tietyn arvon. Jos arvo on jo oikea, se jatkaa välittömästi (KYLLÄ). Jos timeout vanhenee ennen kuin arvo täsmää, se ottaa EI-polun. Jätä Waiter ID tyhjäksi automaattista luontia varten.",
+    "ru": "Эта карта ждет пока capability устройства достигнет определенного значения. Если значение уже правильное, она продолжает немедленно (ДА). Если timeout истекает до того как значение совпадет, она выбирает путь НЕТ. Оставьте ID Waiter пустым для автогенерации."
+  },
+  "args": [
+    {
+      "type": "autocomplete",
+      "name": "device",
+      "title": {
+        "en": "Device",
+        "no": "Enhet",
+        "da": "Enhed",
+        "de": "Gerät",
+        "es": "Dispositivo",
+        "fr": "Appareil",
+        "it": "Dispositivo",
+        "nl": "Apparaat",
+        "sv": "Enhet",
+        "pl": "Urządzenie",
+        "fi": "Laite",
+        "ru": "Устройство"
+      },
+      "placeholder": {
+        "en": "Select device",
+        "no": "Velg enhet",
+        "da": "Vælg enhed",
+        "de": "Gerät wählen",
+        "es": "Seleccionar dispositivo",
+        "fr": "Sélectionner l'appareil",
+        "it": "Seleziona dispositivo",
+        "nl": "Selecteer apparaat",
+        "sv": "Välj enhet",
+        "pl": "Wybierz urządzenie",
+        "fi": "Valitse laite",
+        "ru": "Выбрать устройство"
+      }
+    },
+    {
+      "type": "autocomplete",
+      "name": "capability",
+      "title": {
+        "en": "Capability",
+        "no": "Capability",
+        "da": "Capability",
+        "de": "Capability",
+        "es": "Capability",
+        "fr": "Capability",
+        "it": "Capability",
+        "nl": "Capability",
+        "sv": "Capability",
+        "pl": "Capability",
+        "fi": "Capability",
+        "ru": "Capability"
+      },
+      "placeholder": {
+        "en": "Select capability",
+        "no": "Velg capability",
+        "da": "Vælg capability",
+        "de": "Capability wählen",
+        "es": "Seleccionar capability",
+        "fr": "Sélectionner capability",
+        "it": "Seleziona capability",
+        "nl": "Selecteer capability",
+        "sv": "Välj capability",
+        "pl": "Wybierz capability",
+        "fi": "Valitse capability",
+        "ru": "Выбрать capability"
+      }
+    },
+    {
+      "type": "text",
+      "name": "target_value",
+      "title": {
+        "en": "Target value",
+        "no": "Målverdi",
+        "da": "Målværdi",
+        "de": "Zielwert",
+        "es": "Valor objetivo",
+        "fr": "Valeur cible",
+        "it": "Valore target",
+        "nl": "Doelwaarde",
+        "sv": "Målvärde",
+        "pl": "Wartość docelowa",
+        "fi": "Tavoitearvo",
+        "ru": "Целевое значение"
+      },
+      "placeholder": {
+        "en": "true, false, 25, etc.",
+        "no": "true, false, 25, osv.",
+        "da": "true, false, 25, osv.",
+        "de": "true, false, 25, usw.",
+        "es": "true, false, 25, etc.",
+        "fr": "true, false, 25, etc.",
+        "it": "true, false, 25, ecc.",
+        "nl": "true, false, 25, enz.",
+        "sv": "true, false, 25, osv.",
+        "pl": "true, false, 25, itd.",
+        "fi": "true, false, 25, jne.",
+        "ru": "true, false, 25, и т.д."
+      }
+    },
+    {
+      "type": "number",
+      "name": "timeout_value",
+      "title": {
+        "en": "Timeout duration",
+        "no": "Timeout varighet",
+        "da": "Timeout varighed",
+        "de": "Timeout Dauer",
+        "es": "Duración del timeout",
+        "fr": "Durée du timeout",
+        "it": "Durata timeout",
+        "nl": "Timeout duur",
+        "sv": "Timeout varaktighet",
+        "pl": "Czas trwania timeout",
+        "fi": "Timeout kesto",
+        "ru": "Продолжительность timeout"
+      },
+      "min": 0,
+      "step": 1,
+      "placeholder": {
+        "en": "e.g. 5",
+        "no": "f.eks. 5",
+        "da": "f.eks. 5",
+        "de": "z.B. 5",
+        "es": "p.ej. 5",
+        "fr": "p.ex. 5",
+        "it": "es. 5",
+        "nl": "bijv. 5",
+        "sv": "t.ex. 5",
+        "pl": "np. 5",
+        "fi": "esim. 5",
+        "ru": "напр. 5"
+      }
+    },
+    {
+      "type": "dropdown",
+      "name": "timeout_unit",
+      "title": {
+        "en": "Timeout unit",
+        "no": "Timeout enhet",
+        "da": "Timeout enhed",
+        "de": "Timeout Einheit",
+        "es": "Unidad de timeout",
+        "fr": "Unité de timeout",
+        "it": "Unità timeout",
+        "nl": "Timeout eenheid",
+        "sv": "Timeout enhet",
+        "pl": "Jednostka timeout",
+        "fi": "Timeout yksikkö",
+        "ru": "Единица timeout"
+      },
+      "values": [
+        {
+          "id": "s",
+          "title": {
+            "en": "Seconds",
+            "no": "Sekunder",
+            "da": "Sekunder",
+            "de": "Sekunden",
+            "es": "Segundos",
+            "fr": "Secondes",
+            "it": "Secondi",
+            "nl": "Seconden",
+            "sv": "Sekunder",
+            "pl": "Sekundy",
+            "fi": "Sekuntia",
+            "ru": "Секунды"
+          }
+        },
+        {
+          "id": "m",
+          "title": {
+            "en": "Minutes",
+            "no": "Minutter",
+            "da": "Minutter",
+            "de": "Minuten",
+            "es": "Minutos",
+            "fr": "Minutes",
+            "it": "Minuti",
+            "nl": "Minuten",
+            "sv": "Minuter",
+            "pl": "Minuty",
+            "fi": "Minuuttia",
+            "ru": "Минуты"
+          }
+        },
+        {
+          "id": "h",
+          "title": {
+            "en": "Hours",
+            "no": "Timer",
+            "da": "Timer",
+            "de": "Stunden",
+            "es": "Horas",
+            "fr": "Heures",
+            "it": "Ore",
+            "nl": "Uren",
+            "sv": "Timmar",
+            "pl": "Godziny",
+            "fi": "Tuntia",
+            "ru": "Часы"
+          }
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "waiter_id",
+      "title": {
+        "en": "Waiter ID (optional)",
+        "no": "Waiter ID (valgfri)",
+        "da": "Waiter ID (valgfri)",
+        "de": "Waiter ID (optional)",
+        "es": "ID del Waiter (opcional)",
+        "fr": "ID du Waiter (optionnel)",
+        "it": "ID Waiter (opzionale)",
+        "nl": "Waiter ID (optioneel)",
+        "sv": "Waiter ID (valfritt)",
+        "pl": "ID Waiter (opcjonalne)",
+        "fi": "Waiter ID (valinnainen)",
+        "ru": "ID Waiter (необязательно)"
+      },
+      "placeholder": {
+        "en": "Leave empty for auto-generation",
+        "no": "La stå tom for auto-generering",
+        "da": "Lad stå tom for auto-generering",
+        "de": "Leer lassen für Auto-Generierung",
+        "es": "Dejar vacío para auto-generación",
+        "fr": "Laisser vide pour génération automatique",
+        "it": "Lascia vuoto per generazione automatica",
+        "nl": "Leeg laten voor auto-generatie",
+        "sv": "Lämna tomt för auto-generering",
+        "pl": "Pozostaw puste dla auto-generacji",
+        "fi": "Jätä tyhjäksi automaattista luontia varten",
+        "ru": "Оставьте пустым для автогенерации"
+      }
+    }
+  ]
+}
