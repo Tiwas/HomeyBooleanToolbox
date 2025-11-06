@@ -4,7 +4,7 @@ All notable changes to Boolean Toolbox for Homey will be documented in this file
 
 ---
 
-## [1.3.0] - 2025 (Current)
+## [1.3.0] - January 2025 (Current)
 
 ### ✨ New Features
 - **Waiter Gates (BETA)** - Reactive flow cards that pause flows and wait for device capability changes
