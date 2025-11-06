@@ -525,77 +525,80 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                     this.logger.info(`📡 Listening for: ${device.name}.${capability} = ${targetValue}`);
 
                     // Create a promise that will be resolved when the waiter is triggered
-                    return new Promise(async (resolve, reject) => {
-                        try {
-                            // Initialize Homey API if needed
-                            if (!this.api) {
-                                const { HomeyAPI } = require("athom-api");
-                                this.api = await HomeyAPI.forCurrentHomey(this.homey);
-                                this.logger.info(`🔌 Initialized Homey API for capability listening`);
-                            }
-
-                            // Check current value first - if already matches, resolve immediately
+                    return new Promise((resolve, reject) => {
+                        // Use IIFE to allow async/await inside Promise constructor
+                        (async () => {
                             try {
-                                const apiDevice = await this.api.devices.getDevice({ id: device.id });
-                                const currentValue = apiDevice.capabilitiesObj[capability]?.value;
-
-                                if (this.waiterManager.valueMatches(currentValue, targetValue)) {
-                                    this.logger.info(`✅ Value already matches! ${device.name}.${capability} = ${currentValue} (target: ${targetValue})`);
-                                    this.logger.info(`🎯 Resolving immediately to YES-output (no wait needed)`);
-                                    resolve(true);
-                                    return;
+                                // Initialize Homey API if needed
+                                if (!this.api) {
+                                    const { HomeyAPI } = require("athom-api");
+                                    this.api = await HomeyAPI.forCurrentHomey(this.homey);
+                                    this.logger.info(`🔌 Initialized Homey API for capability listening`);
                                 }
 
-                                this.logger.info(`⏳ Current value: ${currentValue}, waiting for: ${targetValue}`);
+                                // Check current value first - if already matches, resolve immediately
+                                try {
+                                    const apiDevice = await this.api.devices.getDevice({ id: device.id });
+                                    const currentValue = apiDevice.capabilitiesObj[capability]?.value;
+
+                                    if (this.waiterManager.valueMatches(currentValue, targetValue)) {
+                                        this.logger.info(`✅ Value already matches! ${device.name}.${capability} = ${currentValue} (target: ${targetValue})`);
+                                        this.logger.info(`🎯 Resolving immediately to YES-output (no wait needed)`);
+                                        resolve(true);
+                                        return;
+                                    }
+
+                                    this.logger.info(`⏳ Current value: ${currentValue}, waiting for: ${targetValue}`);
+                                } catch (error) {
+                                    this.logger.warn(`⚠️  Could not check current value, will wait for change: ${error.message}`);
+                                }
+
+                                // Create waiter with flow context
+                                const flowContext = {
+                                    flowId: state?.flowId || 'unknown',
+                                    flowToken: state?.flowToken || null
+                                };
+
+                                const config = {
+                                    timeoutValue,
+                                    timeoutUnit
+                                };
+
+                                // NEW: Device config for capability listening
+                                const deviceConfig = {
+                                    deviceId: device.id,
+                                    capability,
+                                    targetValue
+                                };
+
+                                const actualWaiterId = await this.waiterManager.createWaiter(
+                                    waiterId,
+                                    config,
+                                    flowContext,
+                                    deviceConfig  // NEW parameter
+                                );
+
+                                // Store resolver in waiter data so it can be called later
+                                const waiterData = this.waiterManager.waiters.get(actualWaiterId);
+                                if (waiterData) {
+                                    waiterData.resolver = resolve;
+                                }
+
+                                // NEW: Register capability listener (pass Homey API, not SDK)
+                                await this.waiterManager.registerCapabilityListener(
+                                    actualWaiterId,
+                                    this.api
+                                );
+
+                                // Promise stays open until resolver is called by capability listener or timeout
+                                // DO NOT call resolve/reject here - let waiter handle it
+                                this.logger.info(`⏸️  Waiter ${actualWaiterId} waiting for capability change...`);
+
                             } catch (error) {
-                                this.logger.warn(`⚠️  Could not check current value, will wait for change: ${error.message}`);
+                                this.logger.error(`❌ Failed to create waiter:`, error);
+                                reject(error);
                             }
-
-                            // Create waiter with flow context
-                            const flowContext = {
-                                flowId: state?.flowId || 'unknown',
-                                flowToken: state?.flowToken || null
-                            };
-
-                            const config = {
-                                timeoutValue,
-                                timeoutUnit
-                            };
-
-                            // NEW: Device config for capability listening
-                            const deviceConfig = {
-                                deviceId: device.id,
-                                capability,
-                                targetValue
-                            };
-
-                            const actualWaiterId = await this.waiterManager.createWaiter(
-                                waiterId,
-                                config,
-                                flowContext,
-                                deviceConfig  // NEW parameter
-                            );
-
-                            // Store resolver in waiter data so it can be called later
-                            const waiterData = this.waiterManager.waiters.get(actualWaiterId);
-                            if (waiterData) {
-                                waiterData.resolver = resolve;
-                            }
-
-                            // NEW: Register capability listener (pass Homey API, not SDK)
-                            await this.waiterManager.registerCapabilityListener(
-                                actualWaiterId,
-                                this.api
-                            );
-
-                            // Return false immediately to let other flow branches continue
-                            // The flow will be continued later when the waiter is triggered
-                            this.logger.info(`⏸️  Waiter ${actualWaiterId} waiting for capability change...`);
-
-                        } catch (error) {
-                            this.logger.error(`❌ Failed to create waiter:`, error);
-                            reject(error);
-                        }
+                        })();
                     });
                 } catch (error) {
                     this.logger.error(`❌ Waiter condition error:`, error);
