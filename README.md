@@ -202,4 +202,4 @@ This app is provided as-is. Use at your own risk.
 
 ---
 
-**Boolean Toolbox v1.3.0** - Smarter automations with advanced boolean logic 🚀
+**Boolean Toolbox** - Smarter automations with advanced boolean logic 🚀
