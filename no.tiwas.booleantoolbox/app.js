@@ -436,6 +436,36 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                 }
             });
 
+            // Register autocomplete for device argument
+            waitUntilCard.registerArgumentAutocompleteListener('device', async (query, args) => {
+                try {
+                    const devices = Object.values(this.homey.drivers.getDrivers())
+                        .flatMap(driver => driver.getDevices())
+                        .filter(device => {
+                            // Filter devices with capabilities
+                            const capabilities = device.capabilities || [];
+                            if (capabilities.length === 0) return false;
+
+                            // Filter by query if provided
+                            if (query) {
+                                return device.getName().toLowerCase().includes(query.toLowerCase());
+                            }
+                            return true;
+                        })
+                        .map(device => ({
+                            name: device.getName(),
+                            description: `${device.capabilities?.length || 0} capabilities`,
+                            id: device.getData().id,
+                            capabilities: device.capabilities
+                        }));
+
+                    return devices;
+                } catch (error) {
+                    this.logger.error('Device autocomplete error:', error);
+                    return [];
+                }
+            });
+
             waitUntilCard.registerRunListener(async (args, state) => {
                 try {
                     const waiterId = args.waiter_id || '';
