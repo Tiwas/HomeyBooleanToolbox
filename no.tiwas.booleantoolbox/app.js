@@ -435,31 +435,47 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                 }
             });
 
-            // Register autocomplete for device argument
-            waitUntilCard.registerArgumentAutocompleteListener('device', async (query, args) => {
-                try {
-                    const devices = Object.values(this.homey.drivers.getDrivers())
-                        .flatMap(driver => driver.getDevices())
-                        .filter(device => {
-                            const capabilities = device.capabilities || [];
-                            if (capabilities.length === 0) return false;
-                            if (query) {
-                                return device.getName().toLowerCase().includes(query.toLowerCase());
-                            }
-                            return true;
-                        })
-                        .map(device => ({
-                            name: device.getName(),
-                            description: `${device.capabilities?.length || 0} capabilities`,
-                            id: device.getData().id,
-                            capabilities: device.capabilities
-                        }));
-                    return devices;
-                } catch (error) {
-                    this.logger.error('Device autocomplete error:', error);
-                    return [];
+// Register autocomplete for device argument
+waitUntilCard.registerArgumentAutocompleteListener('device', async (query, args) => {
+    try {
+        this.logger.info(`🔍 Device autocomplete called! Query: "${query}"`);
+        
+        if (!this.api) {
+            const athomApi = require("athom-api");
+            const { HomeyAPI } = athomApi;
+            this.api = await HomeyAPI.forCurrentHomey(this.homey);
+        }
+        
+        const allDevices = await this.api.devices.getDevices();
+        this.logger.info(`📱 Found ${Object.keys(allDevices).length} total devices on system`);
+        
+        const deviceList = Object.values(allDevices)
+            .filter(device => {
+                // Only devices with capabilities
+                const capabilities = device.capabilities || [];
+                if (capabilities.length === 0) return false;
+                
+                // Filter by query if provided
+                if (query) {
+                    return device.name.toLowerCase().includes(query.toLowerCase());
                 }
-            });
+                return true;
+            })
+            .map(device => ({
+                name: device.name,
+                description: `${device.capabilities.length} capabilities`,
+                id: device.id,
+                capabilities: device.capabilities  // VIKTIG for capability autocomplete!
+            }));
+
+        this.logger.info(`📋 Returning ${deviceList.length} devices with capabilities`);
+        
+        return deviceList;
+    } catch (error) {
+        this.logger.error('Device autocomplete error:', error);
+        return [];
+    }
+});
 
             waitUntilCard.registerRunListener(async (args, state) => {
                 try {

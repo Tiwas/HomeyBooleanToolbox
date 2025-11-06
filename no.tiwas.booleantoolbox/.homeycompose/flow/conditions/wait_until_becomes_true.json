@@ -75,9 +75,26 @@
       }
     },
     {
-      "type": "device",
+      "type": "autocomplete",
       "name": "device",
-      "filter": "capabilities=*"
+      "title": {
+        "en": "Device",
+        "no": "Enhet",
+        "da": "Enhed",
+        "de": "Gerät",
+        "es": "Dispositivo",
+        "fr": "Appareil",
+        "it": "Dispositivo",
+        "nl": "Apparaat",
+        "sv": "Enhet",
+        "pl": "Urządzenie",
+        "fi": "Laite",
+        "ru": "Устройство"
+      },
+      "placeholder": {
+        "en": "Select device",
+        "no": "Velg enhet"
+      }
     },
     {
       "type": "autocomplete",
