@@ -472,10 +472,16 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                     const timeoutValue = Number(args.timeout_value) || 0;
                     const timeoutUnit = args.timeout_unit || 's';
 
-                    // NEW: Extract device config
+                    // Extract device config
                     const device = args.device;
-                    const capability = args.capability?.id || args.capability; // Handle autocomplete object
+                    const capability = args.capability?.id || args.capability;
                     const targetValue = args.target_value;
+
+                    // Validate capability exists on device
+                    if (!device.capabilities || !device.capabilities.includes(capability)) {
+                        const availableCaps = device.capabilities ? device.capabilities.join(', ') : 'none';
+                        throw new Error(`Capability "${capability}" not found on device "${device.name}". Available capabilities: ${availableCaps}`);
+                    }
 
                     this.logger.info(`🔷 Waiter condition triggered: ${waiterId || '(auto-generate)'}`);
                     this.logger.info(`📡 Listening for: ${device.name}.${capability} = ${targetValue}`);
