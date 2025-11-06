@@ -401,6 +401,38 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             this.logger.error(` -> FAILED: Registering APP TRIGGER 'any_config_alarm_state_changed'`, e);
         }
 
+        // --- Wait Action ---
+
+        // Action: Wait (simple delay)
+        try {
+            const waitCard = this.homey.flow.getActionCard("wait");
+            waitCard.registerRunListener(async (args, state) => {
+                const timeoutValue = Number(args.timeout_value) || 0;
+                const timeoutUnit = args.timeout_unit || 's';
+
+                // Convert to milliseconds
+                const multipliers = {
+                    'ms': 1,
+                    's': 1000,
+                    'm': 60000,
+                    'h': 3600000
+                };
+                const timeoutMs = timeoutValue * (multipliers[timeoutUnit] || 1000);
+
+                this.logger.info(`⏸️  Waiting ${timeoutValue} ${timeoutUnit} (${timeoutMs}ms)...`);
+
+                // Simple promise-based wait
+                await new Promise(resolve => setTimeout(resolve, timeoutMs));
+
+                this.logger.info(`✅ Wait complete, continuing flow`);
+                return true;
+            });
+
+            this.logger.debug(` -> OK: ACTION registered: 'wait'`);
+        } catch (e) {
+            this.logger.error(` -> FAILED: Registering ACTION 'wait'`, e);
+        }
+
         // --- Waiter Gates ---
 
         // Condition: Wait until becomes true
