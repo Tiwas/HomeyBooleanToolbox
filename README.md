@@ -25,14 +25,18 @@ Two flavors of boolean logic devices - choose what fits your needs:
 | Feature | Logic Device | Logic Unit |
 |---------|-------------|------------|
 | **Setup** | Visual pairing wizard | Quick add |
-| **Inputs** | Dynamic (2-10, auto-expands) | Fixed (2, 3, 4...10) |
+| **Inputs** | Dynamic (2-10, auto-expands) | Dynamic (2-10, auto-expands) |
 | **Configuration** | Zone/room selection | Manual JSON |
-| **Best for** | Most users, growing setups | Simple, fixed configurations |
+| **Formulas** | Single formula | Multiple formulas |
+| **Best for** | Simple setups, beginners | Advanced users, multi-formula needs |
 
 **Capabilities:**
 - `alarm_generic` - Formula result (true/false)
 - `onoff` - Enable/disable device
-- Multiple formulas per device (Logic Units only - Logic Device uses single formula)
+
+**Important:** Within a formula, there is no isolation between flows. This is by design to allow formulas to work across flows. If you need isolated formulas that can be used in multiple places within the same flow, create multiple copies of the device with different names.
+
+*Note: Logic Unit X (2, 3, 4...10 inputs) are legacy devices with fixed input counts - use the new Logic Unit or Logic Device instead.*
 
 [📚 Read detailed guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/devices.html)
 
@@ -78,15 +82,18 @@ ELSE notify "Light didn't turn on - check bulb?"
 
 ### 1. Add a Device
 
-**Logic Device (recommended):**
+**Logic Device (recommended for beginners):**
 - Go to **Devices** → **Add Device** → **Boolean Toolbox** → **Logic Device**
-- Choose inputs (2-10) - don't worry, it expands automatically if needed
+- Choose inputs (2-10) - expands automatically if needed
 - Configure inputs by selecting room → device → capability
-- Save and configure formulas in device settings
+- Save and configure formula in device settings (single formula)
 
-**Logic Unit:**
-- Go to **Devices** → **Add Device** → **Boolean Toolbox** → **Logic Unit (X inputs)**
-- Configure via settings JSON
+**Logic Unit (for advanced users):**
+- Go to **Devices** → **Add Device** → **Boolean Toolbox** → **Logic Unit**
+- Configure via settings JSON (supports multiple formulas)
+- Inputs expand automatically based on formula requirements
+
+*Legacy: Logic Unit X (2, 3, 4...10 inputs) have fixed input counts - use the new devices instead.*
 
 ### 2. Write Formulas
 
@@ -155,7 +162,7 @@ Lock inputs at first value for sequence-based logic:
 {"firstImpression": true, "timeout": 30}
 ```
 
-### Multiple Independent Formulas
+### Multiple Independent Formulas (Logic Unit only)
 Each formula maintains its own input states:
 ```json
 [
@@ -163,6 +170,8 @@ Each formula maintains its own input states:
   {"id": "night_mode", "expression": "A OR B"}
 ]
 ```
+
+**Note:** Formulas are not isolated between flows - they can be triggered from any flow. To use the same logic in multiple places within one flow, create separate device copies.
 
 ### JSON Auto-Formatting
 Paste ugly JSON, get beautiful formatting on save. Works in all settings fields.
