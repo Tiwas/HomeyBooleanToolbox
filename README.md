@@ -129,7 +129,6 @@ THEN: Turn on lights
 - Formula result changed to TRUE/FALSE
 - Formula timed out
 - State changed *(Logic Device only)*
-- ~~Waiter Gates~~ *(use condition card)*
 
 ### Conditions (AND)
 - Formula result is...
@@ -180,54 +179,18 @@ Paste ugly JSON, get beautiful formatting on save. Works in all settings fields.
 
 ---
 
-## 🛠️ Troubleshooting
-
-**Device not expanding inputs?**
-- Check formula syntax (must use A-J)
-- Verify settings saved successfully
-
-**Formula not evaluating?**
-- Ensure `"enabled": true`
-- Check all required inputs have values
-
-**Waiter Gates not working?**
-- Verify device capability exists
-- Check timeout values are reasonable
-- Look for errors in Homey app logs
-
-[📚 Read full troubleshooting guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/troubleshooting.html)
-
----
-
 ## 🤝 Support & Community
 
 - **Forum:** [Homey Community](https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906)
 - **Issues:** [GitHub Issues](https://github.com/Tiwas/HomeyBooleanToolbox/issues)
 - **Source:** [GitHub Repository](https://github.com/Tiwas/HomeyBooleanToolbox)
+- **Changelog:** [Version History](https://tiwas.github.io/HomeyBooleanToolbox/docs/changelog.html)
 
 ### Support Development
 
 If this app makes your life easier, consider buying me a coffee ☕
 
 [![PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/paypalme/tiwasno)
-
----
-
-## 📝 Recent Changes
-
-### v1.3.0 (Current)
-- ✨ NEW: Waiter Gates (BETA) - Reactive flow cards with device capability monitoring
-- ✨ NEW: Simple "Wait" action card
-- 🌍 Complete localization: 12 languages (en, no, da, de, es, fr, it, nl, sv, pl, fi, ru)
-- 🔧 Improved logging (less verbose)
-- 🧹 Code quality improvements
-
-### v1.2.0
-- ✨ Logic Device with visual pairing wizard
-- ✨ Dynamic input capacity (2-10, auto-expands)
-- ✨ JSON auto-formatting
-
-[📚 See full changelog →](https://tiwas.github.io/HomeyBooleanToolbox/docs/changelog.html)
 
 ---
 
