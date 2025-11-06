@@ -500,7 +500,13 @@ module.exports = class BooleanToolboxApp extends Homey.App {
 
             waitUntilCard.registerRunListener(async (args, state) => {
                 try {
-                    const waiterId = args.waiter_id || '';
+                    // Generate automatic id if not provided
+                    let waiterId = args.waiter_id?.trim();
+                    if (!waiterId) {
+                        waiterId = `waiter_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+                        this.logger.info(`🆔 Auto-generated waiter id: ${waiterId}`);
+                    }
+
                     const timeoutValue = Number(args.timeout_value) || 0;
                     const timeoutUnit = args.timeout_unit || 's';
 
@@ -515,12 +521,19 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                         throw new Error(`Capability "${capability}" not found on device "${device.name}". Available capabilities: ${availableCaps}`);
                     }
 
-                    this.logger.info(`🔷 Waiter condition triggered: ${waiterId || '(auto-generate)'}`);
+                    this.logger.info(`🔷 Waiter condition triggered: ${waiterId}`);
                     this.logger.info(`📡 Listening for: ${device.name}.${capability} = ${targetValue}`);
 
                     // Create a promise that will be resolved when the waiter is triggered
                     return new Promise(async (resolve, reject) => {
                         try {
+                            // Initialize Homey API if needed
+                            if (!this.api) {
+                                const { HomeyAPI } = require("athom-api");
+                                this.api = await HomeyAPI.forCurrentHomey(this.homey);
+                                this.logger.info(`🔌 Initialized Homey API for capability listening`);
+                            }
+
                             // Create waiter with flow context
                             const flowContext = {
                                 flowId: state?.flowId || 'unknown',
@@ -552,10 +565,10 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                                 waiterData.resolver = resolve;
                             }
 
-                            // NEW: Register capability listener
+                            // NEW: Register capability listener (pass Homey API, not SDK)
                             await this.waiterManager.registerCapabilityListener(
                                 actualWaiterId,
-                                this.homey
+                                this.api
                             );
 
                             // Return false immediately to let other flow branches continue
