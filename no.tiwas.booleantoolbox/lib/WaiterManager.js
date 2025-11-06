@@ -129,7 +129,7 @@ class WaiterManager {
         // Check if waiter already exists with same flow
         const existing = this.waiters.get(id);
         if (existing && existing.flowId === flowContext.flowId) {
-            this.logger.info(`♻️  Re-initializing existing waiter: ${id}`);
+            this.logger.debug(`♻️  Re-initializing existing waiter: ${id}`);
             // Cancel old timeout
             if (existing.timeoutHandle) {
                 clearTimeout(existing.timeoutHandle);
@@ -251,7 +251,7 @@ class WaiterManager {
                 try {
                     const { device, capability, listener } = waiterData.capabilityListener;
                     device.removeListener(`capability.${capability}`, listener);
-                    this.logger.info(`🔇 Unregistered listener for ${id}`);
+                    this.logger.debug(`🔇 Unregistered listener for ${id}`);
                 } catch (error) {
                     this.logger.error(`Failed to unregister listener for ${id}:`, error);
                 }
@@ -291,7 +291,7 @@ class WaiterManager {
 
             // Register capability listener
             const listener = async (value) => {
-                this.logger.info(`📡 Capability change: ${deviceId}.${capability} = ${value}`);
+                this.logger.debug(`📡 Capability change: ${deviceId}.${capability} = ${value}`);
 
                 // Check if value matches target
                 if (this.valueMatches(value, targetValue)) {
@@ -303,7 +303,6 @@ class WaiterManager {
                         this.logger.info(`✅ Waiter "${waiterId}" resolved to YES-output (capability matched)`);
                     }
 
-                    // Cleanup
                     this.removeWaiter(waiterId);
                 }
             };
@@ -318,7 +317,7 @@ class WaiterManager {
                 listener
             };
 
-            this.logger.info(`📡 Registered listener for ${deviceId}.${capability}`);
+            this.logger.debug(`📡 Registered listener for ${deviceId}.${capability}`);
 
         } catch (error) {
             this.logger.error(`Failed to register capability listener for ${waiterId}:`, error);

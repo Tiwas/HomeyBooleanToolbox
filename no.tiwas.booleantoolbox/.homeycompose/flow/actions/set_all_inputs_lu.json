@@ -11,7 +11,8 @@
     "sv": "Ställ in alla ingångar från JSON (ALLA formler)",
     "pl": "Ustaw wszystkie wejścia z JSON (WSZYSTKIE formuły)",
     "it": "Imposta tutti gli input da JSON (TUTTE le formule)",
-    "es": "Establecer todas las entradas desde JSON (TODAS las fórmulas)"
+    "es": "Establecer todas las entradas desde JSON (TODAS las fórmulas)",
+    "ru": "Установить все входы из JSON (ВСЕ формулы)"
   },
   "titleFormatted": {
     "en": "Set all inputs from JSON: [[values]] (for ALL formulas)",
@@ -24,7 +25,8 @@
     "sv": "Ställ in alla ingångar från JSON: [[values]] (för ALLA formler)",
     "pl": "Ustaw wszystkie wejścia z JSON: [[values]] (dla WSZYSTKICH formuł)",
     "it": "Imposta tutti gli input da JSON: [[values]] (per TUTTE le formule)",
-    "es": "Establecer todas las entradas desde JSON: [[values]] (para TODAS las fórmulas)"
+    "es": "Establecer todas las entradas desde JSON: [[values]] (para TODAS las fórmulas)",
+    "ru": "Установить все входы из JSON: [[values]] (для ВСЕХ формул)"
   },
   "hint": {
     "en": "⚠️ Sets ALL input values at once for ALL formulas in this Logic Unit from a JSON object. All formulas will receive the same input values. Use this when you want to update multiple inputs for all formulas simultaneously.",
@@ -37,7 +39,8 @@
     "sv": "⚠️ Ställer in ALLA ingångsvärden på en gång för ALLA formler i denna Logic Unit från ett JSON-objekt. Alla formler kommer att få samma ingångsvärden. Använd detta när du vill uppdatera flera ingångar för alla formler samtidigt.",
     "pl": "⚠️ Ustawia WSZYSTKIE wartości wejściowe jednocześnie dla WSZYSTKICH formuł w tej Logic Unit z obiektu JSON. Wszystkie formuły otrzymają te same wartości wejściowe. Użyj tego, gdy chcesz zaktualizować wiele wejść dla wszystkich formuł jednocześnie.",
     "it": "⚠️ Imposta TUTTI i valori di input contemporaneamente per TUTTE le formule in questa Logic Unit da un oggetto JSON. Tutte le formule riceveranno gli stessi valori di input. Usa questo quando vuoi aggiornare più input per tutte le formule simultaneamente.",
-    "es": "⚠️ Establece TODOS los valores de entrada a la vez para TODAS las fórmulas en esta Logic Unit desde un objeto JSON. Todas las fórmulas recibirán los mismos valores de entrada. Usa esto cuando quieras actualizar múltiples entradas para todas las fórmulas simultáneamente."
+    "es": "⚠️ Establece TODOS los valores de entrada a la vez para TODAS las fórmulas en esta Logic Unit desde un objeto JSON. Todas las fórmulas recibirán los mismos valores de entrada. Usa esto cuando quieras actualizar múltiples entradas para todas las fórmulas simultáneamente.",
+    "ru": "⚠️ Устанавливает ВСЕ входные значения одновременно для ВСЕХ формул в этом Logic Unit из JSON-объекта. Все формулы получат одинаковые входные значения. Используйте это, когда нужно обновить несколько входов для всех формул одновременно."
   },
   "args": [
     {
@@ -59,7 +62,8 @@
         "sv": "JSON-värden",
         "pl": "Wartości JSON",
         "it": "Valori JSON",
-        "es": "Valores JSON"
+        "es": "Valores JSON",
+        "ru": "Значения JSON"
       },
       "placeholder": {
         "en": "{\"A\": true, \"B\": false}",

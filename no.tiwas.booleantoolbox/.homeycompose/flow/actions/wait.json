@@ -47,13 +47,33 @@
       "name": "timeout_value",
       "title": {
         "en": "Duration",
-        "no": "Varighet"
+        "no": "Varighet",
+        "da": "Varighed",
+        "de": "Dauer",
+        "es": "Duración",
+        "fr": "Durée",
+        "it": "Durata",
+        "nl": "Duur",
+        "sv": "Varaktighet",
+        "pl": "Czas trwania",
+        "fi": "Kesto",
+        "ru": "Продолжительность"
       },
       "min": 0,
       "step": 1,
       "placeholder": {
         "en": "e.g. 5",
-        "no": "f.eks. 5"
+        "no": "f.eks. 5",
+        "da": "f.eks. 5",
+        "de": "z.B. 5",
+        "es": "p.ej. 5",
+        "fr": "p.ex. 5",
+        "it": "es. 5",
+        "nl": "bijv. 5",
+        "sv": "t.ex. 5",
+        "pl": "np. 5",
+        "fi": "esim. 5",
+        "ru": "напр. 5"
       }
     },
     {
@@ -61,35 +81,85 @@
       "name": "timeout_unit",
       "title": {
         "en": "Unit",
-        "no": "Enhet"
+        "no": "Enhet",
+        "da": "Enhed",
+        "de": "Einheit",
+        "es": "Unidad",
+        "fr": "Unité",
+        "it": "Unità",
+        "nl": "Eenheid",
+        "sv": "Enhet",
+        "pl": "Jednostka",
+        "fi": "Yksikkö",
+        "ru": "Единица"
       },
       "values": [
         {
           "id": "ms",
           "title": {
             "en": "Milliseconds",
-            "no": "Millisekunder"
+            "no": "Millisekunder",
+            "da": "Millisekunder",
+            "de": "Millisekunden",
+            "es": "Milisegundos",
+            "fr": "Millisecondes",
+            "it": "Millisecondi",
+            "nl": "Milliseconden",
+            "sv": "Millisekunder",
+            "pl": "Milisekundy",
+            "fi": "Millisekuntia",
+            "ru": "Миллисекунды"
           }
         },
         {
           "id": "s",
           "title": {
             "en": "Seconds",
-            "no": "Sekunder"
+            "no": "Sekunder",
+            "da": "Sekunder",
+            "de": "Sekunden",
+            "es": "Segundos",
+            "fr": "Secondes",
+            "it": "Secondi",
+            "nl": "Seconden",
+            "sv": "Sekunder",
+            "pl": "Sekundy",
+            "fi": "Sekuntia",
+            "ru": "Секунды"
           }
         },
         {
           "id": "m",
           "title": {
             "en": "Minutes",
-            "no": "Minutter"
+            "no": "Minutter",
+            "da": "Minutter",
+            "de": "Minuten",
+            "es": "Minutos",
+            "fr": "Minutes",
+            "it": "Minuti",
+            "nl": "Minuten",
+            "sv": "Minuter",
+            "pl": "Minuty",
+            "fi": "Minuuttia",
+            "ru": "Минуты"
           }
         },
         {
           "id": "h",
           "title": {
             "en": "Hours",
-            "no": "Timer"
+            "no": "Timer",
+            "da": "Timer",
+            "de": "Stunden",
+            "es": "Horas",
+            "fr": "Heures",
+            "it": "Ore",
+            "nl": "Uren",
+            "sv": "Timmar",
+            "pl": "Godziny",
+            "fi": "Tuntia",
+            "ru": "Часы"
           }
         }
       ]

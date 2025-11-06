@@ -11,7 +11,8 @@
     "sv": "Formel fick timeout",
     "pl": "Formuła przekroczyła limit czasu",
     "it": "Timeout formula",
-    "es": "Fórmula agotó tiempo"
+    "es": "Fórmula agotó tiempo",
+    "ru": "Тайм-аут формулы"
   },
   "titleFormatted": {
     "en": "Formula [[formula]] timed out",
@@ -24,7 +25,8 @@
     "sv": "Formel [[formula]] fick timeout",
     "pl": "Formuła [[formula]] przekroczyła limit czasu",
     "it": "Timeout formula [[formula]]",
-    "es": "Fórmula [[formula]] agotó tiempo"
+    "es": "Fórmula [[formula]] agotó tiempo",
+    "ru": "Тайм-аут формулы [[formula]]"
   },
   "args": [
     {
@@ -46,7 +48,8 @@
         "sv": "Formel",
         "pl": "Formuła",
         "it": "Formula",
-        "es": "Fórmula"
+        "es": "Fórmula",
+        "ru": "Формула"
       },
       "placeholder": {
         "en": "Select formula",
@@ -59,7 +62,8 @@
         "sv": "Välj formel",
         "pl": "Wybierz formułę",
         "it": "Seleziona formula",
-        "es": "Seleccionar fórmula"
+        "es": "Seleccionar fórmula",
+        "ru": "Выберите формулу"
       }
     }
   ]

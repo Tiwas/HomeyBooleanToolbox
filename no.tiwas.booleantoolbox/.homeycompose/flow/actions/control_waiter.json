@@ -1,15 +1,45 @@
 {
   "title": {
     "en": "Control Waiter Gate",
-    "no": "Kontroller Waiter Gate"
+    "no": "Kontroller Waiter Gate",
+    "da": "Kontroller Waiter Gate",
+    "de": "Waiter Gate steuern",
+    "es": "Controlar Waiter Gate",
+    "fr": "Contrôler Waiter Gate",
+    "it": "Controlla Waiter Gate",
+    "nl": "Bedien Waiter Gate",
+    "sv": "Kontrollera Waiter Gate",
+    "pl": "Kontroluj Waiter Gate",
+    "fi": "Hallitse Waiter Gate",
+    "ru": "Управление Waiter Gate"
   },
   "titleFormatted": {
     "en": "[[action]] waiter gate [[waiter_id]]",
-    "no": "[[action]] waiter gate [[waiter_id]]"
+    "no": "[[action]] waiter gate [[waiter_id]]",
+    "da": "[[action]] waiter gate [[waiter_id]]",
+    "de": "Waiter Gate [[waiter_id]] [[action]]",
+    "es": "[[action]] waiter gate [[waiter_id]]",
+    "fr": "[[action]] waiter gate [[waiter_id]]",
+    "it": "[[action]] waiter gate [[waiter_id]]",
+    "nl": "[[action]] waiter gate [[waiter_id]]",
+    "sv": "[[action]] waiter gate [[waiter_id]]",
+    "pl": "[[action]] waiter gate [[waiter_id]]",
+    "fi": "[[action]] waiter gate [[waiter_id]]",
+    "ru": "[[action]] waiter gate [[waiter_id]]"
   },
   "hint": {
     "en": "Enable, disable or stop a waiter gate by its ID",
-    "no": "Aktiver, deaktiver eller stopp en waiter gate ved dens ID"
+    "no": "Aktiver, deaktiver eller stopp en waiter gate ved dens ID",
+    "da": "Aktiver, deaktiver eller stop en waiter gate ved dens ID",
+    "de": "Waiter Gate über seine ID aktivieren, deaktivieren oder stoppen",
+    "es": "Activar, desactivar o detener un waiter gate por su ID",
+    "fr": "Activer, désactiver ou arrêter un waiter gate par son ID",
+    "it": "Attiva, disattiva o ferma un waiter gate tramite il suo ID",
+    "nl": "Schakel een waiter gate in, uit of stop het via zijn ID",
+    "sv": "Aktivera, inaktivera eller stoppa en waiter gate med dess ID",
+    "pl": "Włącz, wyłącz lub zatrzymaj waiter gate za pomocą jego ID",
+    "fi": "Ota käyttöön, poista käytöstä tai pysäytä waiter gate sen ID:llä",
+    "ru": "Включить, отключить или остановить waiter gate по его ID"
   },
   "args": [
     {
@@ -17,11 +47,31 @@
       "name": "waiter_id",
       "title": {
         "en": "Waiter ID",
-        "no": "Waiter ID"
+        "no": "Waiter ID",
+        "da": "Waiter ID",
+        "de": "Waiter ID",
+        "es": "ID del Waiter",
+        "fr": "ID du Waiter",
+        "it": "ID Waiter",
+        "nl": "Waiter ID",
+        "sv": "Waiter ID",
+        "pl": "ID Waiter",
+        "fi": "Waiter ID",
+        "ru": "ID Waiter"
       },
       "placeholder": {
         "en": "my-waiter",
-        "no": "min-waiter"
+        "no": "min-waiter",
+        "da": "min-waiter",
+        "de": "mein-waiter",
+        "es": "mi-waiter",
+        "fr": "mon-waiter",
+        "it": "mio-waiter",
+        "nl": "mijn-waiter",
+        "sv": "min-waiter",
+        "pl": "moj-waiter",
+        "fi": "oma-waiter",
+        "ru": "мой-waiter"
       }
     },
     {
@@ -29,28 +79,68 @@
       "name": "action",
       "title": {
         "en": "Action",
-        "no": "Handling"
+        "no": "Handling",
+        "da": "Handling",
+        "de": "Aktion",
+        "es": "Acción",
+        "fr": "Action",
+        "it": "Azione",
+        "nl": "Actie",
+        "sv": "Åtgärd",
+        "pl": "Akcja",
+        "fi": "Toiminto",
+        "ru": "Действие"
       },
       "values": [
         {
           "id": "enable",
-          "label": {
+          "title": {
             "en": "Enable",
-            "no": "Aktiver"
+            "no": "Aktiver",
+            "da": "Aktiver",
+            "de": "Aktivieren",
+            "es": "Activar",
+            "fr": "Activer",
+            "it": "Attiva",
+            "nl": "Inschakelen",
+            "sv": "Aktivera",
+            "pl": "Włącz",
+            "fi": "Ota käyttöön",
+            "ru": "Включить"
           }
         },
         {
           "id": "disable",
-          "label": {
+          "title": {
             "en": "Disable",
-            "no": "Deaktiver"
+            "no": "Deaktiver",
+            "da": "Deaktiver",
+            "de": "Deaktivieren",
+            "es": "Desactivar",
+            "fr": "Désactiver",
+            "it": "Disattiva",
+            "nl": "Uitschakelen",
+            "sv": "Inaktivera",
+            "pl": "Wyłącz",
+            "fi": "Poista käytöstä",
+            "ru": "Отключить"
           }
         },
         {
           "id": "stop",
-          "label": {
+          "title": {
             "en": "Stop",
-            "no": "Stopp"
+            "no": "Stopp",
+            "da": "Stop",
+            "de": "Stoppen",
+            "es": "Detener",
+            "fr": "Arrêter",
+            "it": "Ferma",
+            "nl": "Stoppen",
+            "sv": "Stoppa",
+            "pl": "Zatrzymaj",
+            "fi": "Pysäytä",
+            "ru": "Остановить"
           }
         }
       ]

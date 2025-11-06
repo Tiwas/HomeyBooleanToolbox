@@ -12,7 +12,8 @@
     "sv": "Enhetslarm är...",
     "pl": "Alarm urządzenia jest...",
     "ru": "Тревога устройства...",
-    "ko": "장치 알람이..."
+    "ko": "장치 알람이...",
+    "fi": "Laitteen hälytys on..."
   },
   "titleFormatted": {
     "en": "Device alarm !{{is|isn't}} [[alarm_state]]",
@@ -26,7 +27,8 @@
     "sv": "Enhetslarm !{{är|är inte}} [[alarm_state]]",
     "pl": "Alarm urządzenia !{{jest|nie jest}} [[alarm_state]]",
     "ru": "Тревога устройства !{{включена|не включена}} [[alarm_state]]",
-    "ko": "장치 알람이 !{{켜져|꺼져}} [[alarm_state]] 있음"
+    "ko": "장치 알람이 !{{켜져|꺼져}} [[alarm_state]] 있음",
+    "fi": "Laitteen hälytys !{{on|ei ole}} [[alarm_state]]"
   },
   "hint": {
     "en": "Check if the device's alarm is currently on or off.",
@@ -40,7 +42,8 @@
     "sv": "Kontrollera om enhetens alarm är på eller av.",
     "pl": "Sprawdź, czy alarm urządzenia jest włączony lub wyłączony.",
     "ru": "Проверьте, включена или выключена тревога устройства.",
-    "ko": "장치의 알람이 현재 켜져 있는지 꺼져 있는지 확인하세요."
+    "ko": "장치의 알람이 현재 켜져 있는지 꺼져 있는지 확인하세요.",
+    "fi": "Tarkista, onko laitteen hälytys päällä vai pois päältä."
   },
   "args": [
     {

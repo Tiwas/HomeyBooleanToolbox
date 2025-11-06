@@ -11,7 +11,8 @@
     "sv": "Ställ in ingångsvärde (ALLA formler)",
     "pl": "Ustaw wartość wejściową (WSZYSTKIE formuły)",
     "it": "Imposta valore input (TUTTE le formule)",
-    "es": "Establecer valor de entrada (TODAS las fórmulas)"
+    "es": "Establecer valor de entrada (TODAS las fórmulas)",
+    "ru": "Установить входное значение (ВСЕ формулы)"
   },
   "titleFormatted": {
     "en": "Set input [[input]] to [[value]] (for ALL formulas)",
@@ -24,7 +25,8 @@
     "sv": "Ställ in ingång [[input]] till [[value]] (för ALLA formler)",
     "pl": "Ustaw wejście [[input]] na [[value]] (dla WSZYSTKICH formuł)",
     "it": "Imposta input [[input]] a [[value]] (per TUTTE le formule)",
-    "es": "Establecer entrada [[input]] a [[value]] (para TODAS las fórmulas)"
+    "es": "Establecer entrada [[input]] a [[value]] (para TODAS las fórmulas)",
+    "ru": "Установить вход [[input]] в [[value]] (для ВСЕХ формул)"
   },
   "hint": {
     "en": "⚠️ Sets the same input value for ALL formulas in this Logic Unit. All formulas that use this input will be updated. Use this when you want to control multiple formulas together.",
@@ -37,7 +39,8 @@
     "sv": "⚠️ Ställer in samma ingångsvärde för ALLA formler i denna Logic Unit. Alla formler som använder denna ingång kommer att uppdateras. Använd detta när du vill styra flera formler tillsammans.",
     "pl": "⚠️ Ustawia tę samą wartość wejściową dla WSZYSTKICH formuł w tej Logic Unit. Wszystkie formuły używające tego wejścia zostaną zaktualizowane. Użyj tego, gdy chcesz kontrolować wiele formuł razem.",
     "it": "⚠️ Imposta lo stesso valore di input per TUTTE le formule in questa Logic Unit. Tutte le formule che utilizzano questo input verranno aggiornate. Usa questo quando vuoi controllare più formule insieme.",
-    "es": "⚠️ Establece el mismo valor de entrada para TODAS las fórmulas en esta Logic Unit. Todas las fórmulas que usan esta entrada se actualizarán. Usa esto cuando quieras controlar múltiples fórmulas juntas."
+    "es": "⚠️ Establece el mismo valor de entrada para TODAS las fórmulas en esta Logic Unit. Todas las fórmulas que usan esta entrada se actualizarán. Usa esto cuando quieras controlar múltiples fórmulas juntas.",
+    "ru": "⚠️ Устанавливает одинаковое входное значение для ВСЕХ формул в этом Logic Unit. Все формулы, использующие этот вход, будут обновлены. Используйте это, когда нужно управлять несколькими формулами вместе."
   },
   "args": [
     {
@@ -59,7 +62,8 @@
         "sv": "Ingång",
         "pl": "Wejście",
         "it": "Input",
-        "es": "Entrada"
+        "es": "Entrada",
+        "ru": "Вход"
       },
       "placeholder": {
         "en": "Select input",
@@ -72,7 +76,8 @@
         "sv": "Välj ingång",
         "pl": "Wybierz wejście",
         "it": "Seleziona input",
-        "es": "Seleccionar entrada"
+        "es": "Seleccionar entrada",
+        "ru": "Выберите вход"
       }
     },
     {
@@ -89,7 +94,8 @@
         "sv": "Värde",
         "pl": "Wartość",
         "it": "Valore",
-        "es": "Valor"
+        "es": "Valor",
+        "ru": "Значение"
       },
       "values": [
         {
@@ -105,7 +111,8 @@
             "sv": "SANT",
             "pl": "PRAWDA",
             "it": "VERO",
-            "es": "VERDADERO"
+            "es": "VERDADERO",
+            "ru": "ИСТИНА"
           }
         },
         {
@@ -121,7 +128,8 @@
             "sv": "FALSKT",
             "pl": "FAŁSZ",
             "it": "FALSO",
-            "es": "FALSO"
+            "es": "FALSO",
+            "ru": "ЛОЖЬ"
           }
         }
       ]

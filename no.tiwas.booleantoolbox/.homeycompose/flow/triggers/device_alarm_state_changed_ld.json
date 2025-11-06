@@ -11,7 +11,8 @@
     "sv": "Enhetslarmstatus ändrades",
     "pl": "Stan alarmu urządzenia zmienił się",
     "it": "Stato allarme dispositivo cambiato",
-    "es": "Estado de alarma del dispositivo cambiado"
+    "es": "Estado de alarma del dispositivo cambiado",
+    "ru": "Состояние тревоги устройства изменено"
   },
   "hint": {
     "en": "Triggers when the Logic Device's alarm state changes (true/false)",
@@ -24,7 +25,8 @@
     "sv": "Utlöses när Logic Device:s larmstatus ändras (sant/falskt)",
     "pl": "Wyzwalane, gdy stan alarmu Logic Device zmienia się (prawda/fałsz)",
     "it": "Si attiva quando lo stato di allarme del Logic Device cambia (vero/falso)",
-    "es": "Se activa cuando el estado de alarma del Logic Device cambia (verdadero/falso)"
+    "es": "Se activa cuando el estado de alarma del Logic Device cambia (verdadero/falso)",
+    "ru": "Срабатывает при изменении состояния тревоги Logic Device (истина/ложь)"
   },
   "args": [
     {
@@ -48,7 +50,8 @@
         "sv": "Larmstatus",
         "pl": "Stan alarmu",
         "it": "Stato allarme",
-        "es": "Estado de alarma"
+        "es": "Estado de alarma",
+        "ru": "Состояние тревоги"
       }
     }
   ]

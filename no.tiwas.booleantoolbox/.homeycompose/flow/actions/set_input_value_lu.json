@@ -11,7 +11,8 @@
     "sv": "Ställ in ingångsvärde (specifik formel)",
     "pl": "Ustaw wartość wejściową (konkretna formuła)",
     "it": "Imposta valore input (formula specifica)",
-    "es": "Establecer valor de entrada (fórmula específica)"
+    "es": "Establecer valor de entrada (fórmula específica)",
+    "ru": "Установить входное значение (определённая формула)"
   },
   "titleFormatted": {
     "en": "Set input [[input]] to [[value]] for formula [[formula]]",
@@ -24,7 +25,8 @@
     "sv": "Ställ in ingång [[input]] till [[value]] för formel [[formula]]",
     "pl": "Ustaw wejście [[input]] na [[value]] dla formuły [[formula]]",
     "it": "Imposta input [[input]] a [[value]] per formula [[formula]]",
-    "es": "Establecer entrada [[input]] a [[value]] para fórmula [[formula]]"
+    "es": "Establecer entrada [[input]] a [[value]] para fórmula [[formula]]",
+    "ru": "Установить вход [[input]] в [[value]] для формулы [[formula]]"
   },
   "hint": {
     "en": "✅ Sets the input value for ONE specific formula only. Other formulas are not affected. Use this when you want to control formulas independently.",
@@ -37,7 +39,8 @@
     "sv": "✅ Ställer in ingångsvärdet för ENDAST EN specifik formel. Andra formler påverkas inte. Använd detta när du vill styra formler oberoende.",
     "pl": "✅ Ustawia wartość wejściową dla TYLKO JEDNEJ konkretnej formuły. Inne formuły nie są dotknięte. Użyj tego, gdy chcesz kontrolować formuły niezależnie.",
     "it": "✅ Imposta il valore di input per UNA SOLA formula specifica. Le altre formule non sono interessate. Usa questo quando vuoi controllare le formule indipendentemente.",
-    "es": "✅ Establece el valor de entrada para UNA SOLA fórmula específica. Otras fórmulas no se ven afectadas. Usa esto cuando quieras controlar fórmulas de forma independiente."
+    "es": "✅ Establece el valor de entrada para UNA SOLA fórmula específica. Otras fórmulas no se ven afectadas. Usa esto cuando quieras controlar fórmulas de forma independiente.",
+    "ru": "✅ Устанавливает входное значение только для ОДНОЙ определённой формулы. Другие формулы не затрагиваются. Используйте это, когда нужно управлять формулами независимо."
   },
   "args": [
     {
@@ -59,7 +62,8 @@
         "sv": "Formel",
         "pl": "Formuła",
         "it": "Formula",
-        "es": "Fórmula"
+        "es": "Fórmula",
+        "ru": "Формула"
       },
       "placeholder": {
         "en": "Select formula",
@@ -72,7 +76,8 @@
         "sv": "Välj formel",
         "pl": "Wybierz formułę",
         "it": "Seleziona formula",
-        "es": "Seleccionar fórmula"
+        "es": "Seleccionar fórmula",
+        "ru": "Выберите формулу"
       }
     },
     {
@@ -89,7 +94,8 @@
         "sv": "Ingång",
         "pl": "Wejście",
         "it": "Input",
-        "es": "Entrada"
+        "es": "Entrada",
+        "ru": "Вход"
       },
       "placeholder": {
         "en": "Select input",
@@ -102,7 +108,8 @@
         "sv": "Välj ingång",
         "pl": "Wybierz wejście",
         "it": "Seleziona input",
-        "es": "Seleccionar entrada"
+        "es": "Seleccionar entrada",
+        "ru": "Выберите вход"
       }
     },
     {
@@ -119,7 +126,8 @@
         "sv": "Värde",
         "pl": "Wartość",
         "it": "Valore",
-        "es": "Valor"
+        "es": "Valor",
+        "ru": "Значение"
       },
       "values": [
         {
@@ -135,7 +143,8 @@
             "sv": "SANT",
             "pl": "PRAWDA",
             "it": "VERO",
-            "es": "VERDADERO"
+            "es": "VERDADERO",
+            "ru": "ИСТИНА"
           }
         },
         {
@@ -151,7 +160,8 @@
             "sv": "FALSKT",
             "pl": "FAŁSZ",
             "it": "FALSO",
-            "es": "FALSO"
+            "es": "FALSO",
+            "ru": "ЛОЖЬ"
           }
         }
       ]

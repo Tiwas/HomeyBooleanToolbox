@@ -264,7 +264,6 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                     return await device[methodName](args, state);
                 });
 
-                // --- Autocomplete ---
                 if (
                     [
                         "set_input_value_lu",
@@ -417,12 +416,12 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                 };
                 const timeoutMs = timeoutValue * (multipliers[timeoutUnit] || 1000);
 
-                this.logger.info(`⏸️  Waiting ${timeoutValue} ${timeoutUnit} (${timeoutMs}ms)...`);
+                this.logger.debug(`⏸️  Waiting ${timeoutValue} ${timeoutUnit} (${timeoutMs}ms)...`);
 
                 // Simple promise-based wait
                 await new Promise(resolve => setTimeout(resolve, timeoutMs));
 
-                this.logger.info(`✅ Wait complete, continuing flow`);
+                this.logger.debug(`✅ Wait complete, continuing flow`);
                 return true;
             });
 
@@ -513,7 +512,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                     let waiterId = args.waiter_id?.trim();
                     if (!waiterId) {
                         waiterId = `waiter_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-                        this.logger.info(`🆔 Auto-generated waiter id: ${waiterId}`);
+                        this.logger.debug(`🆔 Auto-generated waiter id: ${waiterId}`);
                     }
 
                     const timeoutValue = Number(args.timeout_value) || 0;
@@ -542,7 +541,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                                 if (!this.api) {
                                     const { HomeyAPI } = require("athom-api");
                                     this.api = await HomeyAPI.forCurrentHomey(this.homey);
-                                    this.logger.info(`🔌 Initialized Homey API for capability listening`);
+                                    this.logger.debug(`🔌 Initialized Homey API for capability listening`);
                                 }
 
                                 // Check current value first - if already matches, resolve immediately
@@ -557,7 +556,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                                         return;
                                     }
 
-                                    this.logger.info(`⏳ Current value: ${currentValue}, waiting for: ${targetValue}`);
+                                    this.logger.debug(`⏳ Current value: ${currentValue}, waiting for: ${targetValue}`);
                                 } catch (error) {
                                     this.logger.warn(`⚠️  Could not check current value, will wait for change: ${error.message}`);
                                 }
@@ -601,7 +600,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
 
                                 // Promise stays open until resolver is called by capability listener or timeout
                                 // DO NOT call resolve/reject here - let waiter handle it
-                                this.logger.info(`⏸️  Waiter ${actualWaiterId} waiting for capability change...`);
+                                this.logger.debug(`⏸️  Waiter ${actualWaiterId} waiting for capability change...`);
 
                             } catch (error) {
                                 this.logger.error(`❌ Failed to create waiter:`, error);
@@ -721,7 +720,6 @@ module.exports = class BooleanToolboxApp extends Homey.App {
 
             const waiterIds = new Set();
 
-            // Get all flows
             const flows = await this.api.flow.getFlows();
 
             // Search through all flows for wait_until_becomes_true cards
