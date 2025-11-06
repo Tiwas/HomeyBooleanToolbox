@@ -7,12 +7,17 @@ Create these under `/docs/` directory:
 ### 1. `devices.html` - Complete Device Guide
 **Content:**
 - Deep dive into Logic Units vs Logic Devices
+  * Both have dynamic inputs (2-10, auto-expand)
+  * Logic Device: Single formula, visual pairing
+  * Logic Unit: Multiple formulas, JSON config
+  * Legacy Logic Unit X: Fixed inputs (deprecated)
 - All capabilities explained with examples
 - Input configuration patterns
-- Dynamic vs fixed input strategies
 - Visual pairing wizard walkthrough
 - JSON structure reference
-- Migration guide (Logic Unit → Logic Device)
+- Formula isolation explained (no isolation between flows - by design)
+- When to use device copies vs multiple formulas
+- Migration guide (Logic Unit X → Logic Unit/Device)
 
 ### 2. `waiter-gates.html` - Waiter Gates Deep Dive
 **Content:**
