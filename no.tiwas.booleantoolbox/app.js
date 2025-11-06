@@ -410,7 +410,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             // Register autocomplete for capability argument
             waitUntilCard.registerArgumentAutocompleteListener('capability', async (query, args) => {
                 try {
-                    const device = args.device; // Get selected device
+                    const device = args.device;
                     if (!device) return [];
 
                     const capabilities = device.capabilities || [];
@@ -422,7 +422,6 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                         };
                     });
 
-                    // Filter by query if provided
                     if (query) {
                         return results.filter(r =>
                             r.name.toLowerCase().includes(query.toLowerCase())
@@ -432,6 +431,32 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                     return results;
                 } catch (error) {
                     this.logger.error('Capability autocomplete error:', error);
+                    return [];
+                }
+            });
+
+            // Register autocomplete for device argument
+            waitUntilCard.registerArgumentAutocompleteListener('device', async (query, args) => {
+                try {
+                    const devices = Object.values(this.homey.drivers.getDrivers())
+                        .flatMap(driver => driver.getDevices())
+                        .filter(device => {
+                            const capabilities = device.capabilities || [];
+                            if (capabilities.length === 0) return false;
+                            if (query) {
+                                return device.getName().toLowerCase().includes(query.toLowerCase());
+                            }
+                            return true;
+                        })
+                        .map(device => ({
+                            name: device.getName(),
+                            description: `${device.capabilities?.length || 0} capabilities`,
+                            id: device.getData().id,
+                            capabilities: device.capabilities
+                        }));
+                    return devices;
+                } catch (error) {
+                    this.logger.error('Device autocomplete error:', error);
                     return [];
                 }
             });

@@ -1978,21 +1978,24 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       previousAlarmState,
       previousOnState
     });
+    // Ensure values are never undefined (default to false)
+    const safeAlarmState = newAlarmState ?? false;
+    const safeOnState = newOnState ?? false;
 
     // ===== ALARM STATE TRIGGERS =====
-    if (previousAlarmState !== null && previousAlarmState !== newAlarmState) {
-      // Prepare alarm state trigger data
+    if (previousAlarmState !== null && previousAlarmState !== safeAlarmState) {
       const alarmTriggerData = {
-        state: newAlarmState,        // For deprecated triggers (boolean)
-        alarm_state: newAlarmState   // For new triggers (boolean)
+        state: safeAlarmState,
+        alarm_state: safeAlarmState,
+        device_name: this.getName() 
       };
       
       const alarmState = {
-        state: newAlarmState,        // For deprecated triggers
-        alarm_state: newAlarmState   // For new triggers
+        state: safeAlarmState,        // For deprecated triggers
+        alarm_state: safeAlarmState   // For new triggers
       };
 
-      this.logger.flow(`🚨 Alarm state changed: ${previousAlarmState} → ${newAlarmState}`);
+      this.logger.flow(`🚨 Alarm state changed: ${previousAlarmState} → ${safeAlarmState}`);
 
       // Fire deprecated triggers (for backward compatibility)
       await this.safeTriggerCard("state_changed_ld", alarmTriggerData, alarmState);
@@ -2004,17 +2007,17 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     }
 
     // ===== ON/OFF STATE TRIGGERS =====
-    if (previousOnState !== null && previousOnState !== newOnState) {
-      // Prepare on/off state trigger data
+    if (previousOnState !== null && previousOnState !== safeOnState) {
       const onTriggerData = {
-        on_state: newOnState
+        on_state: safeOnState,
+        device_name: this.getName() 
       };
       
       const onState = {
-        on_state: newOnState
+        on_state: safeOnState
       };
 
-      this.logger.flow(`🔘 On state changed: ${previousOnState} → ${newOnState}`);
+      this.logger.flow(`🔘 On state changed: ${previousOnState} → ${safeOnState}`);
 
       // Fire new on/off state triggers
       await this.safeTriggerCard("device_on_state_changed_ld", onTriggerData, onState);
