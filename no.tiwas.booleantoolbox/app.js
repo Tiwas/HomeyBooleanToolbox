@@ -534,6 +534,23 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                                 this.logger.info(`🔌 Initialized Homey API for capability listening`);
                             }
 
+                            // Check current value first - if already matches, resolve immediately
+                            try {
+                                const apiDevice = await this.api.devices.getDevice({ id: device.id });
+                                const currentValue = apiDevice.capabilitiesObj[capability]?.value;
+
+                                if (this.waiterManager.valueMatches(currentValue, targetValue)) {
+                                    this.logger.info(`✅ Value already matches! ${device.name}.${capability} = ${currentValue} (target: ${targetValue})`);
+                                    this.logger.info(`🎯 Resolving immediately to YES-output (no wait needed)`);
+                                    resolve(true);
+                                    return;
+                                }
+
+                                this.logger.info(`⏳ Current value: ${currentValue}, waiting for: ${targetValue}`);
+                            } catch (error) {
+                                this.logger.warn(`⚠️  Could not check current value, will wait for change: ${error.message}`);
+                            }
+
                             // Create waiter with flow context
                             const flowContext = {
                                 flowId: state?.flowId || 'unknown',
