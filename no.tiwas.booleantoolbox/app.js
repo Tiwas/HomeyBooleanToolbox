@@ -401,22 +401,13 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             this.logger.error(` -> FAILED: Registering APP TRIGGER 'any_config_alarm_state_changed'`, e);
         }
 
-<<<<<<< Updated upstream
-        // --- Wait Action ---
-
-=======
->>>>>>> Stashed changes
         // Action: Wait (simple delay)
         try {
             const waitCard = this.homey.flow.getActionCard("wait");
             waitCard.registerRunListener(async (args, state) => {
                 const timeoutValue = Number(args.timeout_value) || 0;
                 const timeoutUnit = args.timeout_unit || 's';
-<<<<<<< Updated upstream
 
-=======
-                
->>>>>>> Stashed changes
                 // Convert to milliseconds
                 const multipliers = {
                     'ms': 1,
@@ -425,7 +416,6 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                     'h': 3600000
                 };
                 const timeoutMs = timeoutValue * (multipliers[timeoutUnit] || 1000);
-<<<<<<< Updated upstream
 
                 this.logger.info(`⏸️  Waiting ${timeoutValue} ${timeoutUnit} (${timeoutMs}ms)...`);
 
@@ -436,26 +426,11 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                 return true;
             });
 
-=======
-                
-                this.logger.info(`⏸️  Waiting ${timeoutValue} ${timeoutUnit} (${timeoutMs}ms)...`);
-                
-                // Simple promise-based wait
-                await new Promise(resolve => setTimeout(resolve, timeoutMs));
-                
-                this.logger.info(`✅ Wait complete, continuing flow`);
-                return true;
-            });
-            
->>>>>>> Stashed changes
             this.logger.debug(` -> OK: ACTION registered: 'wait'`);
         } catch (e) {
             this.logger.error(` -> FAILED: Registering ACTION 'wait'`, e);
         }
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         // --- Waiter Gates ---
 
         // Condition: Wait until becomes true
@@ -494,29 +469,6 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             // Register autocomplete for device argument
             waitUntilCard.registerArgumentAutocompleteListener('device', async (query, args) => {
                 try {
-<<<<<<< Updated upstream
-                    const devices = Object.values(this.homey.drivers.getDrivers())
-                        .flatMap(driver => driver.getDevices())
-                        .filter(device => {
-                            // Filter devices with capabilities
-                            const capabilities = device.capabilities || [];
-                            if (capabilities.length === 0) return false;
-
-                            // Filter by query if provided
-                            if (query) {
-                                return device.getName().toLowerCase().includes(query.toLowerCase());
-                            }
-                            return true;
-                        })
-                        .map(device => ({
-                            name: device.getName(),
-                            description: `${device.capabilities?.length || 0} capabilities`,
-                            id: device.getData().id,
-                            capabilities: device.capabilities
-                        }));
-
-                    return devices;
-=======
                     this.logger.info(`🔍 Device autocomplete called! Query: "${query}"`);
                     
                     if (!this.api) {
@@ -549,9 +501,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
 
                     this.logger.info(`📋 Returning ${deviceList.length} devices with capabilities`);
                     
-                    return deviceList;
->>>>>>> Stashed changes
-                } catch (error) {
+                    return deviceList;                } catch (error) {
                     this.logger.error('Device autocomplete error:', error);
                     return [];
                 }

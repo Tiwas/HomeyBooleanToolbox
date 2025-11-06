@@ -1,0 +1,59 @@
+{
+  "title": {
+    "en": "Control Waiter Gate",
+    "no": "Kontroller Waiter Gate"
+  },
+  "titleFormatted": {
+    "en": "[[action]] waiter gate [[waiter_id]]",
+    "no": "[[action]] waiter gate [[waiter_id]]"
+  },
+  "hint": {
+    "en": "Enable, disable or stop a waiter gate by its ID",
+    "no": "Aktiver, deaktiver eller stopp en waiter gate ved dens ID"
+  },
+  "args": [
+    {
+      "type": "text",
+      "name": "waiter_id",
+      "title": {
+        "en": "Waiter ID",
+        "no": "Waiter ID"
+      },
+      "placeholder": {
+        "en": "my-waiter",
+        "no": "min-waiter"
+      }
+    },
+    {
+      "type": "dropdown",
+      "name": "action",
+      "title": {
+        "en": "Action",
+        "no": "Handling"
+      },
+      "values": [
+        {
+          "id": "enable",
+          "label": {
+            "en": "Enable",
+            "no": "Aktiver"
+          }
+        },
+        {
+          "id": "disable",
+          "label": {
+            "en": "Disable",
+            "no": "Deaktiver"
+          }
+        },
+        {
+          "id": "stop",
+          "label": {
+            "en": "Stop",
+            "no": "Stopp"
+          }
+        }
+      ]
+    }
+  ]
+}

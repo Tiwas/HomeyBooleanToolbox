@@ -1,0 +1,286 @@
+{
+  "title": {
+    "en": "Wait for trigger",
+    "no": "Vent på trigger",
+    "da": "Vent på trigger",
+    "de": "Auf Trigger warten",
+    "es": "Esperar activación",
+    "fr": "Attendre le déclenchement",
+    "it": "Aspetta attivazione",
+    "nl": "Wacht op trigger",
+    "sv": "Vänta på trigger",
+    "pl": "Czekaj na wyzwolenie",
+    "fi": "Odota laukaisua",
+    "ru": "Ждать триггера"
+  },
+  "titleFormatted": {
+    "en": "Wait [[timeout_value]] [[timeout_unit]] for [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])",
+    "no": "Vent [[timeout_value]] [[timeout_unit]] på at [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])",
+    "da": "Vent [[timeout_value]] [[timeout_unit]] på [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])",
+    "de": "Warte [[timeout_value]] [[timeout_unit]] auf [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])",
+    "es": "Esperar [[timeout_value]] [[timeout_unit]] para [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])",
+    "fr": "Attendre [[timeout_value]] [[timeout_unit]] pour [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])",
+    "it": "Aspetta [[timeout_value]] [[timeout_unit]] per [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])",
+    "nl": "Wacht [[timeout_value]] [[timeout_unit]] op [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])",
+    "sv": "Vänta [[timeout_value]] [[timeout_unit]] på [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])",
+    "pl": "Czekaj [[timeout_value]] [[timeout_unit]] na [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])",
+    "fi": "Odota [[timeout_value]] [[timeout_unit]] että [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])",
+    "ru": "Ждать [[timeout_value]] [[timeout_unit]] пока [[device]].[[capability]] = [[target_value]] (ID: [[waiter_id]])"
+  },
+  "hint": {
+    "en": "Keeps flow alive and listens for device capability changes. OUTPUTS: ✅ YES (green) = capability reached target value. ❌ NO (red) = timeout expired. ⚠️ ERROR (bottom) = system error. Timeout 0 = wait forever. Use 'Control waiter' to enable/disable/stop.",
+    "no": "Holder flowet i live og lytter på enhetsendringer. UTGANGER: ✅ JA (grønn) = kapabilitet nådde målverdi. ❌ NEI (rød) = timeout utløpt. ⚠️ FEIL (bunn) = systemfeil. Timeout 0 = vent evig. Bruk 'Kontroller waiter' for enable/disable/stop.",
+    "da": "Pauser denne flow-gren indtil udløst eller timeout. UDGANGE: ✅ JA (grøn) = udløst af anden flow med 'Kontrollér waiter'. ❌ NEJ (rød) = timeout udløbet. ⚠️ FEJL (bund) = systemfejl. Timeout 0 = vent for evigt (ingen timeout).",
+    "de": "Pausiert diesen Flow-Zweig bis Auslösung oder Timeout. AUSGÄNGE: ✅ JA (grün) = ausgelöst durch anderen Flow mit 'Waiter kontrollieren'. ❌ NEIN (rot) = Timeout abgelaufen. ⚠️ FEHLER (unten) = Systemfehler. Timeout 0 = ewig warten (kein Timeout).",
+    "es": "Pausa esta rama hasta activación o timeout. SALIDAS: ✅ SÍ (verde) = activado por otro flujo con 'Controlar esperador'. ❌ NO (rojo) = timeout expirado. ⚠️ ERROR (abajo) = error del sistema. Timeout 0 = esperar siempre (sin timeout).",
+    "fr": "Met en pause cette branche jusqu'au déclenchement ou timeout. SORTIES: ✅ OUI (vert) = déclenché par autre flux avec 'Contrôler le waiter'. ❌ NON (rouge) = timeout expiré. ⚠️ ERREUR (bas) = erreur système. Timeout 0 = attendre indéfiniment (pas de timeout).",
+    "it": "Mette in pausa questo ramo fino all'attivazione o timeout. USCITE: ✅ SÌ (verde) = attivato da altro flusso con 'Controlla waiter'. ❌ NO (rosso) = timeout scaduto. ⚠️ ERRORE (sotto) = errore di sistema. Timeout 0 = aspetta per sempre (nessun timeout).",
+    "nl": "Pauzeert deze flow-tak tot activering of timeout. UITGANGEN: ✅ JA (groen) = geactiveerd door andere flow met 'Beheer waiter'. ❌ NEE (rood) = timeout verlopen. ⚠️ FOUT (onder) = systeemfout. Timeout 0 = oneindig wachten (geen timeout).",
+    "sv": "Pausar denna flödesgren tills utlöst eller timeout. UTGÅNGAR: ✅ JA (grön) = utlöst av annat flöde med 'Kontrollera waiter'. ❌ NEJ (röd) = timeout utgånget. ⚠️ FEL (botten) = systemfel. Timeout 0 = vänta för evigt (ingen timeout).",
+    "pl": "Wstrzymuje tę gałąź do wyzwolenia lub timeout. WYJŚCIA: ✅ TAK (zielony) = wyzwolony przez inny przepływ z 'Kontroluj waiter'. ❌ NIE (czerwony) = timeout wygasł. ⚠️ BŁĄD (dół) = błąd systemu. Timeout 0 = czekaj w nieskończoność (bez timeout).",
+    "fi": "Keskeyttää tämän haaran kunnes laukaistu tai timeout. LÄHDÖT: ✅ KYLLÄ (vihreä) = laukaistu toisella virtauksella 'Hallitse waiteria'. ❌ EI (punainen) = timeout umpeutunut. ⚠️ VIRHE (ala) = järjestelmävirhe. Timeout 0 = odota ikuisesti (ei timeout).",
+    "ru": "Приостанавливает эту ветку до запуска или таймаута. ВЫХОДЫ: ✅ ДА (зелёный) = запущено другим потоком с 'Управление ожидателем'. ❌ НЕТ (красный) = таймаут истёк. ⚠️ ОШИБКА (внизу) = системная ошибка. Timeout 0 = ждать вечно (без таймаута)."
+  },
+  "args": [
+    {
+      "type": "text",
+      "name": "waiter_id",
+      "title": {
+        "en": "Waiter ID",
+        "no": "Waiter-ID",
+        "da": "Waiter-ID",
+        "de": "Waiter-ID",
+        "es": "ID del esperador",
+        "fr": "ID du waiter",
+        "it": "ID del waiter",
+        "nl": "Waiter-ID",
+        "sv": "Waiter-ID",
+        "pl": "ID waitera",
+        "fi": "Waiter-ID",
+        "ru": "ID ожидателя"
+      },
+      "placeholder": {
+        "en": "Leave empty for auto-generated UID",
+        "no": "La stå tomt for auto-generert UID",
+        "da": "Lad stå tom for auto-genereret UID",
+        "de": "Leer lassen für auto-generierte UID",
+        "es": "Dejar vacío para UID auto-generado",
+        "fr": "Laisser vide pour UID auto-généré",
+        "it": "Lascia vuoto per UID auto-generato",
+        "nl": "Leeg laten voor auto-gegenereerde UID",
+        "sv": "Lämna tomt för auto-genererat UID",
+        "pl": "Pozostaw puste dla auto-wygenerowanego UID",
+        "fi": "Jätä tyhjäksi automaattisesti luodulle UID",
+        "ru": "Оставьте пустым для автосоздания UID"
+      }
+    },
+    {
+      "type": "autocomplete",
+      "name": "device",
+      "title": {
+        "en": "Device",
+        "no": "Enhet",
+        "da": "Enhed",
+        "de": "Gerät",
+        "es": "Dispositivo",
+        "fr": "Appareil",
+        "it": "Dispositivo",
+        "nl": "Apparaat",
+        "sv": "Enhet",
+        "pl": "Urządzenie",
+        "fi": "Laite",
+        "ru": "Устройство"
+      },
+      "placeholder": {
+        "en": "Select device",
+        "no": "Velg enhet"
+      }
+    },
+    {
+      "type": "autocomplete",
+      "name": "capability",
+      "title": {
+        "en": "Capability",
+        "no": "Kapabilitet",
+        "da": "Kapabilitet",
+        "de": "Fähigkeit",
+        "es": "Capacidad",
+        "fr": "Capacité",
+        "it": "Capacità",
+        "nl": "Mogelijkheid",
+        "sv": "Kapacitet",
+        "pl": "Zdolność",
+        "fi": "Ominaisuus",
+        "ru": "Возможность"
+      },
+      "placeholder": {
+        "en": "Select capability",
+        "no": "Velg kapabilitet",
+        "da": "Vælg kapabilitet",
+        "de": "Fähigkeit auswählen",
+        "es": "Seleccionar capacidad",
+        "fr": "Sélectionner capacité",
+        "it": "Seleziona capacità",
+        "nl": "Selecteer mogelijkheid",
+        "sv": "Välj kapacitet",
+        "pl": "Wybierz zdolność",
+        "fi": "Valitse ominaisuus",
+        "ru": "Выберите возможность"
+      }
+    },
+    {
+      "type": "text",
+      "name": "target_value",
+      "title": {
+        "en": "Target value",
+        "no": "Målverdi",
+        "da": "Målværdi",
+        "de": "Zielwert",
+        "es": "Valor objetivo",
+        "fr": "Valeur cible",
+        "it": "Valore target",
+        "nl": "Doelwaarde",
+        "sv": "Målvärde",
+        "pl": "Wartość docelowa",
+        "fi": "Tavoitearvo",
+        "ru": "Целевое значение"
+      },
+      "placeholder": {
+        "en": "e.g. true, false, 50, 'on'",
+        "no": "f.eks. true, false, 50, 'on'",
+        "da": "f.eks. true, false, 50, 'on'",
+        "de": "z.B. true, false, 50, 'on'",
+        "es": "ej. true, false, 50, 'on'",
+        "fr": "ex. true, false, 50, 'on'",
+        "it": "es. true, false, 50, 'on'",
+        "nl": "bijv. true, false, 50, 'on'",
+        "sv": "t.ex. true, false, 50, 'on'",
+        "pl": "np. true, false, 50, 'on'",
+        "fi": "esim. true, false, 50, 'on'",
+        "ru": "напр. true, false, 50, 'on'"
+      }
+    },
+    {
+      "type": "number",
+      "name": "timeout_value",
+      "title": {
+        "en": "Timeout",
+        "no": "Timeout",
+        "da": "Timeout",
+        "de": "Timeout",
+        "es": "Timeout",
+        "fr": "Timeout",
+        "it": "Timeout",
+        "nl": "Timeout",
+        "sv": "Timeout",
+        "pl": "Timeout",
+        "fi": "Timeout",
+        "ru": "Timeout"
+      },
+      "placeholder": {
+        "en": "0 = no timeout",
+        "no": "0 = ingen timeout",
+        "da": "0 = ingen timeout",
+        "de": "0 = kein Timeout",
+        "es": "0 = sin timeout",
+        "fr": "0 = pas de timeout",
+        "it": "0 = nessun timeout",
+        "nl": "0 = geen timeout",
+        "sv": "0 = ingen timeout",
+        "pl": "0 = brak timeout",
+        "fi": "0 = ei timeout",
+        "ru": "0 = без timeout"
+      },
+      "min": 0,
+      "step": 1
+    },
+    {
+      "type": "dropdown",
+      "name": "timeout_unit",
+      "title": {
+        "en": "Unit",
+        "no": "Enhet",
+        "da": "Enhed",
+        "de": "Einheit",
+        "es": "Unidad",
+        "fr": "Unité",
+        "it": "Unità",
+        "nl": "Eenheid",
+        "sv": "Enhet",
+        "pl": "Jednostka",
+        "fi": "Yksikkö",
+        "ru": "Единица"
+      },
+      "values": [
+        {
+          "id": "ms",
+          "title": {
+            "en": "Milliseconds",
+            "no": "Millisekunder",
+            "da": "Millisekunder",
+            "de": "Millisekunden",
+            "es": "Milisegundos",
+            "fr": "Millisecondes",
+            "it": "Millisecondi",
+            "nl": "Milliseconden",
+            "sv": "Millisekunder",
+            "pl": "Milisekundy",
+            "fi": "Millisekuntia",
+            "ru": "Миллисекунды"
+          }
+        },
+        {
+          "id": "s",
+          "title": {
+            "en": "Seconds",
+            "no": "Sekunder",
+            "da": "Sekunder",
+            "de": "Sekunden",
+            "es": "Segundos",
+            "fr": "Secondes",
+            "it": "Secondi",
+            "nl": "Seconden",
+            "sv": "Sekunder",
+            "pl": "Sekundy",
+            "fi": "Sekuntia",
+            "ru": "Секунды"
+          }
+        },
+        {
+          "id": "m",
+          "title": {
+            "en": "Minutes",
+            "no": "Minutter",
+            "da": "Minutter",
+            "de": "Minuten",
+            "es": "Minutos",
+            "fr": "Minutes",
+            "it": "Minuti",
+            "nl": "Minuten",
+            "sv": "Minuter",
+            "pl": "Minuty",
+            "fi": "Minuuttia",
+            "ru": "Минуты"
+          }
+        },
+        {
+          "id": "h",
+          "title": {
+            "en": "Hours",
+            "no": "Timer",
+            "da": "Timer",
+            "de": "Stunden",
+            "es": "Horas",
+            "fr": "Heures",
+            "it": "Ore",
+            "nl": "Uren",
+            "sv": "Timmar",
+            "pl": "Godziny",
+            "fi": "Tuntia",
+            "ru": "Часы"
+          }
+        }
+      ]
+    }
+  ]
+}
