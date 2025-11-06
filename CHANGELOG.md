@@ -4,7 +4,7 @@ All notable changes to Boolean Toolbox for Homey will be documented in this file
 
 ---
 
-## [1.3.0] - January 2025 (Current)
+## [1.5.0] - November 2025 (Current)
 
 ### ✨ New Features
 - **Waiter Gates (BETA)** - Reactive flow cards that pause flows and wait for device capability changes
@@ -27,7 +27,7 @@ All notable changes to Boolean Toolbox for Homey will be documented in this file
 
 ---
 
-## [1.2.0] - 2024
+## [1.2.0] - 2025
 
 ### ✨ New Features
 - **Logic Device** - New device type with completely redesigned pairing experience
@@ -50,7 +50,7 @@ All notable changes to Boolean Toolbox for Homey will be documented in this file
 
 ---
 
-## [1.1.1] - 2023
+## [1.1.1] - 2025
 
 ### 🌍 Localization
 - Added machine-generated translations for multiple languages
@@ -60,7 +60,7 @@ All notable changes to Boolean Toolbox for Homey will be documented in this file
 
 ---
 
-## [1.1.0] - 2023
+## [1.1.0] - 2025
 
 ### ✨ New Features
 - **Isolated Input States Per Formula** - Each formula maintains its own input states
@@ -74,7 +74,7 @@ All notable changes to Boolean Toolbox for Homey will be documented in this file
 
 ---
 
-## [1.0.0] - 2023
+## [1.0.0] - 2025
 
 ### ✨ New Features
 - Support for up to 10 inputs (A-J)
@@ -87,7 +87,7 @@ All notable changes to Boolean Toolbox for Homey will be documented in this file
 
 ---
 
-## [0.7.0] - 2023
+## [0.7.0] - 2025
 
 ### 🐛 Bug Fixes
 - Major stability improvements
@@ -95,7 +95,7 @@ All notable changes to Boolean Toolbox for Homey will be documented in this file
 
 ---
 
-## [0.5.1] - 2023
+## [0.5.1] - 2025
 
 ### 🎨 Visual Improvements
 - UI/UX enhancements
@@ -103,7 +103,7 @@ All notable changes to Boolean Toolbox for Homey will be documented in this file
 
 ---
 
-## [0.5.0] - 2023
+## [0.5.0] - 2025
 
 ### 🎉 Initial Release
 - Logic Units (2-10 inputs) with boolean logic

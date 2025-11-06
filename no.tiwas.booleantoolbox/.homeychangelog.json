@@ -4,5 +4,8 @@
   },
   "1.4.1": {
     "en": "FIX: Three cards had \"strange\" arguments (just looked strange)"
+  },
+  "1.5.0": {
+    "en": "Mostly the new Waiter Gate (beta) and a card that'll do something as minor as...just wait for a while (user set, of course)"
   }
 }

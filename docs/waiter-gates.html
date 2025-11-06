@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waiter Gates (BETA) - Boolean Toolbox for Homey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        .beta-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        code {
+            background: #2d3748;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #2d3748;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="../README.md" class="text-xl font-bold text-purple-400 hover:text-purple-300">Boolean Toolbox</a>
+                <div class="space-x-4 text-sm">
+                    <a href="getting-started.html" class="text-gray-300 hover:text-white">Getting Started</a>
+                    <a href="devices.html" class="text-gray-300 hover:text-white">Devices</a>
+                    <a href="waiter-gates.html" class="text-white font-semibold">Waiter Gates</a>
+                    <a href="changelog.html" class="text-gray-300 hover:text-white">Changelog</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="mb-6">
+            <h1 class="text-4xl font-bold mb-2">Waiter Gates <span class="beta-badge">BETA</span></h1>
+            <p class="text-gray-400">Reactive flow cards that pause and wait for device states to change</p>
+        </div>
+
+        <!-- Warning Banner -->
+        <div class="bg-yellow-900 border-l-4 border-yellow-500 p-4 mb-8 rounded">
+            <h3 class="font-semibold mb-2 text-yellow-300">⚠️ Experimental Feature</h3>
+            <p class="text-yellow-200">I'm still exploring if Waiter Gates provide real value in practice. Your feedback is welcome! This feature may evolve or change based on user experience.</p>
+        </div>
+
+        <!-- What Are Waiter Gates -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-400">What Are Waiter Gates?</h2>
+            <p class="mb-4">Waiter Gates let your flows pause and wait for specific device states to change, with YES/NO paths based on the outcome:</p>
+            <ul class="list-disc ml-6 space-y-2 text-gray-300">
+                <li><strong>YES path (green):</strong> The device capability reached the target value</li>
+                <li><strong>NO path (red):</strong> Timeout expired before reaching the target value</li>
+            </ul>
+        </section>
+
+        <!-- How It Works -->
+        <section class="mb-8 bg-gray-800 rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-400">How It Works</h2>
+            <ol class="list-decimal ml-6 space-y-3 text-gray-300">
+                <li><strong>Flow hits the wait condition</strong> - Checks the current value immediately</li>
+                <li><strong>Already matches?</strong> → Continue immediately (YES path) ✅</li>
+                <li><strong>Doesn't match?</strong> → Register listener and wait for change ⏳</li>
+                <li><strong>Value changes to target?</strong> → YES path ✅</li>
+                <li><strong>Timeout expires?</strong> → NO path ❌</li>
+            </ol>
+        </section>
+
+        <!-- Flow Cards -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Flow Cards</h2>
+
+            <div class="space-y-4">
+                <!-- Wait Until Card -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-green-400">Wait until device capability becomes value</h3>
+                    <p class="text-sm text-gray-400 mb-3">Type: <span class="bg-blue-600 px-2 py-1 rounded text-xs">CONDITION</span></p>
+                    <p class="mb-4">Waits for a device capability to reach a target value. Has YES/NO paths.</p>
+
+                    <h4 class="font-semibold mb-2">Parameters:</h4>
+                    <ul class="space-y-2 text-sm text-gray-300 mb-4">
+                        <li><strong>Device:</strong> The device to monitor</li>
+                        <li><strong>Capability:</strong> Which capability to watch (e.g., onoff, dim, alarm_motion)</li>
+                        <li><strong>Target value:</strong> The value to wait for (e.g., true, false, 0.5)</li>
+                        <li><strong>Timeout:</strong> How long to wait before giving up</li>
+                        <li><strong>Waiter ID (optional):</strong> Unique identifier (auto-generated if empty)</li>
+                    </ul>
+
+                    <h4 class="font-semibold mb-2">Example Flow:</h4>
+                    <pre class="text-sm"><code>WHEN motion detected
+AND wait until [Living Room Light].onoff becomes true (timeout: 5 minutes)
+THEN ✅ announce "Light turned on!"
+ELSE ❌ notify "Light didn't turn on - check bulb?"</code></pre>
+                </div>
+
+                <!-- Control Waiter Card -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-blue-400">Control waiter gate</h3>
+                    <p class="text-sm text-gray-400 mb-3">Type: <span class="bg-green-600 px-2 py-1 rounded text-xs">ACTION</span></p>
+                    <p class="mb-4">Enable, disable, or stop a waiter gate by its ID.</p>
+
+                    <h4 class="font-semibold mb-2">Parameters:</h4>
+                    <ul class="space-y-2 text-sm text-gray-300 mb-4">
+                        <li><strong>Waiter ID:</strong> The ID of the waiter to control</li>
+                        <li><strong>Action:</strong> Enable, Disable, or Stop</li>
+                    </ul>
+
+                    <h4 class="font-semibold mb-2">Actions:</h4>
+                    <ul class="space-y-1 text-sm text-gray-300">
+                        <li><strong>Enable:</strong> Allows waiter to trigger YES/NO paths</li>
+                        <li><strong>Disable:</strong> Prevents waiter from triggering (stays in waiting state)</li>
+                        <li><strong>Stop:</strong> Removes waiter completely (no output)</li>
+                    </ul>
+                </div>
+
+                <!-- Wait Card (BONUS) -->
+                <div class="bg-gray-800 rounded-lg p-6 border-2 border-yellow-600">
+                    <div class="flex items-center gap-2 mb-2">
+                        <h3 class="text-xl font-semibold text-yellow-400">Wait</h3>
+                        <span class="bg-yellow-600 px-2 py-1 rounded text-xs font-semibold">BONUS</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">Type: <span class="bg-green-600 px-2 py-1 rounded text-xs">ACTION</span></p>
+                    <p class="mb-4">Simple delay without device monitoring. Just pauses the flow for a specified time.</p>
+
+                    <h4 class="font-semibold mb-2">Parameters:</h4>
+                    <ul class="space-y-2 text-sm text-gray-300 mb-4">
+                        <li><strong>Duration:</strong> Number value (e.g., 5)</li>
+                        <li><strong>Unit:</strong> Milliseconds, Seconds, Minutes, or Hours</li>
+                    </ul>
+
+                    <h4 class="font-semibold mb-2">Example:</h4>
+                    <pre class="text-sm"><code>WHEN motion detected
+THEN turn on light
+AND wait 5 seconds
+AND turn off light</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real-World Examples -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Real-World Examples</h2>
+
+            <div class="space-y-6">
+                <!-- Example 1 -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold mb-3 text-green-400">💡 Light Confirmation</h3>
+                    <p class="mb-3 text-gray-300">Verify that a smart bulb actually turned on after sending the command.</p>
+                    <pre class="text-sm"><code>WHEN light switch pressed
+THEN turn on [Smart Bulb]
+AND wait until [Smart Bulb].onoff becomes true (timeout: 10 seconds)
+THEN ✅ continue normally
+ELSE ❌ send notification "Bulb failed to turn on"
+     AND log error</code></pre>
+                </div>
+
+                <!-- Example 2 -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold mb-3 text-blue-400">🚪 Door Security</h3>
+                    <p class="mb-3 text-gray-300">Make sure door closes after opening, with notification if it stays open.</p>
+                    <pre class="text-sm"><code>WHEN front door opened
+AND wait until [Front Door].alarm_contact becomes false (timeout: 2 minutes)
+THEN ✅ log "Door closed normally"
+ELSE ❌ send notification "Front door still open!"
+     AND flash lights red</code></pre>
+                </div>
+
+                <!-- Example 3 -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold mb-3 text-purple-400">🌡️ Temperature Monitoring</h3>
+                    <p class="mb-3 text-gray-300">Wait for heater to reach target temperature, alert if it fails.</p>
+                    <pre class="text-sm"><code>WHEN heater turned on
+AND wait until [Heater].measure_temperature becomes 22 (timeout: 30 minutes)
+THEN ✅ log "Target temperature reached"
+ELSE ❌ notify "Heater not reaching temperature - check it!"</code></pre>
+                </div>
+
+                <!-- Example 4 -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold mb-3 text-yellow-400">🔌 Device Power State</h3>
+                    <p class="mb-3 text-gray-300">Verify a device actually started consuming power after turning on.</p>
+                    <pre class="text-sm"><code>WHEN washing machine turned on
+AND wait until [Power Meter].measure_power becomes >100 (timeout: 5 minutes)
+THEN ✅ log "Washing machine started"
+ELSE ❌ notify "Washing machine didn't start - door open?"</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waiter ID Management -->
+        <section class="mb-8 bg-gray-800 rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Waiter ID Management</h2>
+
+            <h3 class="text-lg font-semibold mb-2 text-blue-300">Auto-Generation (Recommended)</h3>
+            <p class="mb-4 text-gray-300">Leave the Waiter ID field empty, and the system automatically generates a unique ID like <code>waiter_1704123456789_x3k9m2</code></p>
+
+            <h3 class="text-lg font-semibold mb-2 text-blue-300">Custom IDs</h3>
+            <p class="mb-2 text-gray-300">You can provide your own ID for easier control:</p>
+            <pre class="text-sm mb-4"><code>light-check-123
+door-monitor-main
+heater-temp-wait</code></pre>
+
+            <div class="bg-yellow-900 border-l-4 border-yellow-500 p-4 rounded">
+                <h4 class="font-semibold mb-2 text-yellow-300">⚠️ Important: Unique IDs Required</h4>
+                <p class="text-yellow-200">Each waiter ID must be unique across ALL flows. If you use the same ID in multiple flows simultaneously, they will conflict.</p>
+            </div>
+        </section>
+
+        <!-- Known Limitations -->
+        <section class="mb-8 bg-gray-900 border border-gray-700 rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4 text-orange-400">⚠️ Known Limitations</h2>
+            <ul class="space-y-3 text-gray-300">
+                <li>
+                    <strong>IDs must be unique across flows</strong><br>
+                    <span class="text-sm text-gray-400">Using the same waiter ID in multiple flows simultaneously will cause conflicts. Use auto-generation to avoid this.</span>
+                </li>
+                <li>
+                    <strong>Active waiters consume memory</strong><br>
+                    <span class="text-sm text-gray-400">Each waiter listening for changes uses system resources. Clean up old waiters with the "stop" action.</span>
+                </li>
+                <li>
+                    <strong>Capability must exist on device</strong><br>
+                    <span class="text-sm text-gray-400">The system validates that the selected capability exists. Selecting wrong capability will show an error.</span>
+                </li>
+                <li>
+                    <strong>Real-world usefulness still being evaluated</strong><br>
+                    <span class="text-sm text-gray-400">This is a BETA feature. I'm still figuring out if this pattern is valuable for actual home automation. Your feedback is appreciated! 🤔</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Troubleshooting -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Troubleshooting</h2>
+
+            <div class="space-y-4">
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="font-semibold mb-2">❌ Waiter not triggering</h3>
+                    <ul class="list-disc ml-6 text-gray-300 space-y-1 text-sm">
+                        <li>Check that the device capability actually exists</li>
+                        <li>Verify the target value format is correct (true/false for boolean, number for numeric)</li>
+                        <li>Check Homey app logs for error messages</li>
+                        <li>Ensure timeout is long enough for the change to happen</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="font-semibold mb-2">❌ Always takes NO path</h3>
+                    <ul class="list-disc ml-6 text-gray-300 space-y-1 text-sm">
+                        <li>Check that timeout is reasonable (not too short)</li>
+                        <li>Verify the device is actually changing the capability value</li>
+                        <li>Use auto-generated IDs to avoid conflicts</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="font-semibold mb-2">❌ Error: "Capability not found"</h3>
+                    <ul class="list-disc ml-6 text-gray-300 space-y-1 text-sm">
+                        <li>The selected capability doesn't exist on the device</li>
+                        <li>Check available capabilities in device settings</li>
+                        <li>Some capabilities are write-only or read-only</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feedback -->
+        <section class="mb-8 bg-blue-900 bg-opacity-30 border-l-4 border-blue-500 rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-300">💬 We Need Your Feedback!</h2>
+            <p class="mb-4">Waiter Gates is an experimental feature. I'd love to hear about your experience:</p>
+            <ul class="space-y-2 text-gray-300">
+                <li>✅ Does this pattern make sense for your automations?</li>
+                <li>✅ What use cases work well?</li>
+                <li>✅ What limitations are most frustrating?</li>
+                <li>✅ Would you use this in production flows?</li>
+            </ul>
+            <p class="mt-4">
+                Share your thoughts on the
+                <a href="https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906" class="text-blue-400 hover:text-blue-300 underline">Homey Community Forum</a>
+                or
+                <a href="https://github.com/Tiwas/HomeyBooleanToolbox/issues" class="text-blue-400 hover:text-blue-300 underline">GitHub Issues</a>.
+            </p>
+        </section>
+
+        <!-- Back to top -->
+        <div class="text-center">
+            <a href="#top" class="text-purple-400 hover:text-purple-300">↑ Back to top</a>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 mt-12 py-6 text-center text-gray-400">
+        <p>Boolean Toolbox for Homey | <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-purple-400 hover:text-purple-300">GitHub</a></p>
+    </footer>
+</body>
+</html>

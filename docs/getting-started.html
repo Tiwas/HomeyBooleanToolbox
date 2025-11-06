@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - Boolean Toolbox for Homey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+        .code-block {
+            background-color: #2d3748;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+        .tip-box {
+            background-color: #2c5282;
+            border-left: 4px solid #4299e1;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="../README.md" class="text-xl font-bold text-purple-400 hover:text-purple-300">Boolean Toolbox</a>
+                <div class="space-x-4 text-sm">
+                    <a href="getting-started.html" class="text-white font-semibold">Getting Started</a>
+                    <a href="devices.html" class="text-gray-300 hover:text-white">Devices</a>
+                    <a href="waiter-gates.html" class="text-gray-300 hover:text-white">Waiter Gates</a>
+                    <a href="changelog.html" class="text-gray-300 hover:text-white">Changelog</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="text-4xl font-bold mb-2">Getting Started with Boolean Toolbox</h1>
+        <p class="text-gray-400 mb-8">Create your first logic device in under 5 minutes</p>
+
+        <!-- What You'll Build -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-400">What You'll Build</h2>
+            <p class="mb-4">In this guide, you'll create a simple motion-activated light that only works when it's dark outside.</p>
+            <div class="bg-gray-900 rounded p-4">
+                <p class="font-mono text-sm text-green-300">
+                    IF (Motion Detected) AND (Dark Outside)<br>
+                    THEN Turn On Lights
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 1: Add Device -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+            <div class="flex items-center mb-4">
+                <span class="step-number">1</span>
+                <h2 class="text-2xl font-semibold">Add Your First Device</h2>
+            </div>
+
+            <ol class="space-y-3 ml-12 text-gray-300">
+                <li><strong>1.</strong> Open Homey app → Navigate to <strong>Devices</strong></li>
+                <li><strong>2.</strong> Tap <strong>Add Device</strong> → Select <strong>Boolean Toolbox</strong></li>
+                <li><strong>3.</strong> Choose device type:
+                    <ul class="ml-6 mt-2 space-y-1">
+                        <li><strong class="text-purple-400">Logic Device</strong> - Recommended for beginners (visual setup, single formula)</li>
+                        <li><strong class="text-purple-400">Logic Unit</strong> - For advanced users (JSON config, multiple formulas)</li>
+                    </ul>
+                </li>
+                <li><strong>4.</strong> Give it a descriptive name like "Motion Light Controller"</li>
+            </ol>
+
+            <div class="tip-box mt-4">
+                <p class="font-semibold text-blue-300 mb-1">💡 Tip</p>
+                <p class="text-blue-200">Start with <strong>Logic Device</strong> if you're new to Boolean Toolbox. It has a visual pairing wizard that makes setup easier.</p>
+            </div>
+        </div>
+
+        <!-- Step 2: Define Inputs -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+            <div class="flex items-center mb-4">
+                <span class="step-number">2</span>
+                <h2 class="text-2xl font-semibold">Configure Your Inputs</h2>
+            </div>
+
+            <p class="mb-4 ml-12 text-gray-300">For our example, we need two inputs:</p>
+
+            <div class="ml-12 space-y-4">
+                <div class="bg-gray-900 rounded p-4">
+                    <p class="font-semibold text-purple-300">Input A: Motion Sensor</p>
+                    <p class="text-sm text-gray-400 mt-1">Browse to your motion sensor → Select <code>alarm_motion</code> capability</p>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4">
+                    <p class="font-semibold text-purple-300">Input B: Lux Sensor</p>
+                    <p class="text-sm text-gray-400 mt-1">Browse to your light sensor → Select <code>measure_luminance</code> capability</p>
+                </div>
+            </div>
+
+            <div class="tip-box mt-4">
+                <p class="font-semibold text-blue-300 mb-1">💡 Tip</p>
+                <p class="text-blue-200">Don't have a lux sensor? Use a virtual device or connect to weather data. You can also start with just motion detection!</p>
+            </div>
+        </div>
+
+        <!-- Step 3: Write Formula -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+            <div class="flex items-center mb-4">
+                <span class="step-number">3</span>
+                <h2 class="text-2xl font-semibold">Write Your First Formula</h2>
+            </div>
+
+            <p class="mb-4 ml-12 text-gray-300">Go to device settings and configure the formula:</p>
+
+            <div class="code-block ml-12 mb-4">
+                <pre class="text-sm"><code>[
+  {
+    "id": "motion_and_dark",
+    "name": "Motion & Dark",
+    "expression": "A AND B",
+    "enabled": true,
+    "timeout": 60,
+    "firstImpression": false
+  }
+]</code></pre>
+            </div>
+
+            <div class="ml-12">
+                <h3 class="font-semibold mb-2 text-purple-300">Understanding the Formula</h3>
+                <ul class="space-y-2 text-gray-300">
+                    <li><strong>id:</strong> Unique identifier for this formula</li>
+                    <li><strong>name:</strong> Human-readable name</li>
+                    <li><strong>expression:</strong> The boolean logic (<code>A AND B</code> means both must be true)</li>
+                    <li><strong>enabled:</strong> Formula is active</li>
+                    <li><strong>timeout:</strong> Wait max 60 seconds for all inputs</li>
+                    <li><strong>firstImpression:</strong> Don't lock inputs at first value</li>
+                </ul>
+            </div>
+
+            <div class="bg-yellow-900 border-l-4 border-yellow-500 p-4 mt-4 ml-12 rounded">
+                <p class="font-semibold text-yellow-300 mb-1">⚡ Quick Start</p>
+                <p class="text-yellow-200">For motion only (without lux sensor), use: <code>"expression": "A"</code></p>
+            </div>
+        </div>
+
+        <!-- Step 4: Test Formula -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+            <div class="flex items-center mb-4">
+                <span class="step-number">4</span>
+                <h2 class="text-2xl font-semibold">Test Your Logic</h2>
+            </div>
+
+            <p class="mb-4 ml-12 text-gray-300">Use the Boolean Logic Emulator to verify your expression works correctly:</p>
+
+            <div class="ml-12 mb-4">
+                <a href="https://tiwas.github.io/HomeyBooleanToolbox/emulator.html" target="_blank" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded">
+                    🧪 Open Boolean Logic Emulator
+                </a>
+            </div>
+
+            <div class="ml-12">
+                <h3 class="font-semibold mb-2 text-purple-300">Testing Checklist</h3>
+                <ul class="space-y-2 text-gray-300">
+                    <li>✅ Test with A=true, B=true (should be TRUE)</li>
+                    <li>✅ Test with A=true, B=false (should be FALSE)</li>
+                    <li>✅ Test with A=false, B=true (should be FALSE)</li>
+                    <li>✅ Test with A=false, B=false (should be FALSE)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 5: Create Flow -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+            <div class="flex items-center mb-4">
+                <span class="step-number">5</span>
+                <h2 class="text-2xl font-semibold">Create Your First Flow</h2>
+            </div>
+
+            <p class="mb-4 ml-12 text-gray-300">Now connect your logic device to actual actions:</p>
+
+            <div class="bg-gray-900 rounded-lg p-4 ml-12 mb-4">
+                <div class="space-y-3">
+                    <div>
+                        <p class="font-semibold text-green-400">WHEN</p>
+                        <p class="text-gray-300 ml-4">Formula [motion_and_dark] changed to TRUE</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-yellow-400">AND</p>
+                        <p class="text-gray-300 ml-4">(no conditions needed)</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-blue-400">THEN</p>
+                        <p class="text-gray-300 ml-4">Turn on [Living Room Lights]</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box ml-12">
+                <p class="font-semibold text-blue-300 mb-1">💡 Pro Tip</p>
+                <p class="text-blue-200">Create a second flow that turns lights OFF when the formula changes to FALSE. This creates automatic lighting control!</p>
+            </div>
+        </div>
+
+        <!-- Common Patterns -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Common Logic Patterns</h2>
+
+            <div class="space-y-4">
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-300 mb-2">Simple Motion Detection</h3>
+                    <div class="code-block">
+                        <code>"expression": "A"</code>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-2">Light turns on when motion detected</p>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-300 mb-2">Motion AND Dark</h3>
+                    <div class="code-block">
+                        <code>"expression": "A AND B"</code>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-2">Light only turns on when motion detected AND it's dark</p>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-300 mb-2">Any Sensor Triggered</h3>
+                    <div class="code-block">
+                        <code>"expression": "A OR B OR C"</code>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-2">Alert if ANY of multiple sensors trigger</p>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-300 mb-2">Home AND Night (with NOT)</h3>
+                    <div class="code-block">
+                        <code>"expression": "A AND NOT B"</code>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-2">Someone home (A) but NOT daytime (B) = Night mode</p>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-300 mb-2">Complex Condition</h3>
+                    <div class="code-block">
+                        <code>"expression": "(A OR B) AND C AND NOT D"</code>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-2">(Motion OR Door) AND Dark AND NOT Away Mode</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operators Reference -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Available Operators</h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="border-b border-gray-700">
+                        <tr>
+                            <th class="pb-2 text-purple-300">Operator</th>
+                            <th class="pb-2 text-purple-300">Alternative</th>
+                            <th class="pb-2 text-purple-300">Description</th>
+                            <th class="pb-2 text-purple-300">Example</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-b border-gray-700">
+                            <td class="py-2"><code>AND</code></td>
+                            <td><code>&</code></td>
+                            <td>Both must be true</td>
+                            <td><code>A AND B</code></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-2"><code>OR</code></td>
+                            <td><code>|</code></td>
+                            <td>At least one must be true</td>
+                            <td><code>A OR B</code></td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-2"><code>XOR</code></td>
+                            <td><code>^</code></td>
+                            <td>Exactly one must be true</td>
+                            <td><code>A XOR B</code></td>
+                        </tr>
+                        <tr>
+                            <td class="py-2"><code>NOT</code></td>
+                            <td><code>!</code></td>
+                            <td>Inverts the value</td>
+                            <td><code>NOT A</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- What's Next -->
+        <div class="bg-blue-900 bg-opacity-30 border-l-4 border-blue-500 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-300">🚀 What's Next?</h2>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <h3 class="font-semibold mb-2 text-blue-200">Learn More</h3>
+                    <ul class="space-y-1 text-blue-100">
+                        <li><a href="devices.html" class="hover:text-white">→ Understanding Devices</a></li>
+                        <li><a href="flow-cards.html" class="hover:text-white">→ All Flow Cards</a></li>
+                        <li><a href="waiter-gates.html" class="hover:text-white">→ Waiter Gates (BETA)</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-2 text-blue-200">Try Advanced Features</h3>
+                    <ul class="space-y-1 text-blue-100">
+                        <li>→ Multiple formulas per device</li>
+                        <li>→ First Impression mode</li>
+                        <li>→ Timeout detection</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to top -->
+        <div class="text-center">
+            <a href="#top" class="text-purple-400 hover:text-purple-300">↑ Back to top</a>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 mt-12 py-6 text-center text-gray-400">
+        <p>Boolean Toolbox for Homey | <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-purple-400 hover:text-purple-300">GitHub</a></p>
+    </footer>
+</body>
+</html>

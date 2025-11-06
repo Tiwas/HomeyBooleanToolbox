@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow Cards Reference - Boolean Toolbox for Homey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        .card-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        .badge-trigger {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .badge-condition {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        .badge-action {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+        .flow-card {
+            background-color: #2d3748;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .code-inline {
+            background-color: #1a202c;
+            padding: 0.125rem 0.375rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="../README.md" class="text-xl font-bold text-purple-400 hover:text-purple-300">Boolean Toolbox</a>
+                <div class="space-x-4 text-sm">
+                    <a href="getting-started.html" class="text-gray-300 hover:text-white">Getting Started</a>
+                    <a href="devices.html" class="text-gray-300 hover:text-white">Devices</a>
+                    <a href="waiter-gates.html" class="text-gray-300 hover:text-white">Waiter Gates</a>
+                    <a href="changelog.html" class="text-gray-300 hover:text-white">Changelog</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <h1 class="text-4xl font-bold mb-2">Flow Cards Reference</h1>
+        <p class="text-gray-400 mb-8">Complete guide to all available flow cards</p>
+
+        <!-- Quick Navigation -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 shadow-lg">
+            <h2 class="text-xl font-semibold mb-4 text-purple-400">Quick Navigation</h2>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                    <h3 class="font-semibold mb-2 text-green-400">WHEN (Triggers)</h3>
+                    <ul class="text-sm space-y-1 text-gray-300">
+                        <li><a href="#trigger-formula-changed" class="hover:text-white">→ Formula changed to...</a></li>
+                        <li><a href="#trigger-state-changed" class="hover:text-white">→ State changed (LD)</a></li>
+                        <li><a href="#trigger-timeout" class="hover:text-white">→ Formula timed out</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-2 text-yellow-400">AND (Conditions)</h3>
+                    <ul class="text-sm space-y-1 text-gray-300">
+                        <li><a href="#condition-formula-result" class="hover:text-white">→ Formula result is...</a></li>
+                        <li><a href="#condition-device-turned" class="hover:text-white">→ Device is turned...</a></li>
+                        <li><a href="#condition-has-error" class="hover:text-white">→ Has error</a></li>
+                        <li><a href="#condition-wait-until" class="hover:text-white">→ Wait until becomes (BETA)</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-2 text-blue-400">THEN (Actions)</h3>
+                    <ul class="text-sm space-y-1 text-gray-300">
+                        <li><a href="#action-set-input" class="hover:text-white">→ Set input</a></li>
+                        <li><a href="#action-evaluate" class="hover:text-white">→ Evaluate formula</a></li>
+                        <li><a href="#action-wait" class="hover:text-white">→ Wait</a></li>
+                        <li><a href="#action-control-waiter" class="hover:text-white">→ Control Waiter Gate</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- WHEN Cards (Triggers) -->
+        <div class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <h2 class="text-3xl font-bold text-green-400">WHEN Cards (Triggers)</h2>
+                <span class="card-type-badge badge-trigger">Trigger</span>
+            </div>
+
+            <!-- Formula Changed -->
+            <div id="trigger-formula-changed" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+                <h3 class="text-xl font-semibold mb-3 text-purple-300">Formula [formula] changed to [state]</h3>
+                <p class="text-gray-300 mb-4">Triggers when a formula evaluation result changes to TRUE or FALSE.</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Parameters:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">formula</span> - Select which formula to monitor (dropdown)</li>
+                        <li><span class="code-inline">state</span> - TRUE or FALSE (dropdown)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> Formula [security_alert] changed to [TRUE]</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Send notification "Security alert triggered!"</p>
+                </div>
+
+                <div class="bg-blue-900 bg-opacity-30 border-l-4 border-blue-500 p-3 mt-4 rounded">
+                    <p class="text-blue-200 text-sm">💡 Available for both Logic Device and Logic Unit</p>
+                </div>
+            </div>
+
+            <!-- State Changed (Logic Device only) -->
+            <div id="trigger-state-changed" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+                <h3 class="text-xl font-semibold mb-3 text-purple-300">State changed (Logic Device only)</h3>
+                <p class="text-gray-300 mb-4">Triggers on ANY state change (TRUE→FALSE or FALSE→TRUE) with a token containing the new state.</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Parameters:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">None</span> - Triggers on any change</li>
+                    </ul>
+                    <p class="text-sm text-gray-400 mt-3 mb-2">Tokens:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">state</span> - The new state (true/false)</li>
+                        <li><span class="code-inline">device_name</span> - Name of the Logic Device</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> [Motion Light] State changed</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Send notification "Motion Light is now {{state}}"</p>
+                </div>
+
+                <div class="bg-green-900 bg-opacity-30 border-l-4 border-green-500 p-3 mt-4 rounded">
+                    <p class="text-green-200 text-sm">✓ Logic Device exclusive feature - responds to both TRUE and FALSE changes</p>
+                </div>
+            </div>
+
+            <!-- Formula Timed Out -->
+            <div id="trigger-timeout" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+                <h3 class="text-xl font-semibold mb-3 text-purple-300">Formula [formula] timed out</h3>
+                <p class="text-gray-300 mb-4">Triggers when a formula's evaluation times out (inputs didn't arrive within timeout period).</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Parameters:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">formula</span> - Select which formula to monitor (dropdown)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> Formula [door_sequence] timed out</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Send notification "Door sequence incomplete - check sensors"</p>
+                </div>
+
+                <div class="bg-yellow-900 border-l-4 border-yellow-500 p-3 mt-4 rounded">
+                    <p class="text-yellow-200 text-sm">⚠️ Only triggers if timeout is configured in formula settings (timeout > 0)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- AND Cards (Conditions) -->
+        <div class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <h2 class="text-3xl font-bold text-yellow-400">AND Cards (Conditions)</h2>
+                <span class="card-type-badge badge-condition">Condition</span>
+            </div>
+
+            <!-- Formula Result Is -->
+            <div id="condition-formula-result" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+                <h3 class="text-xl font-semibold mb-3 text-purple-300">Formula [formula] result is [state]</h3>
+                <p class="text-gray-300 mb-4">Checks if a formula's current result matches the specified state.</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Parameters:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">formula</span> - Select which formula to check (dropdown)</li>
+                        <li><span class="code-inline">state</span> - TRUE or FALSE (dropdown)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> Motion detected</p>
+                    <p class="text-gray-300"><strong>AND</strong> Formula [nighttime] result is [TRUE]</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Turn on lights</p>
+                </div>
+            </div>
+
+            <!-- Device Is Turned -->
+            <div id="condition-device-turned" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+                <h3 class="text-xl font-semibold mb-3 text-purple-300">Device is turned [on/off]</h3>
+                <p class="text-gray-300 mb-4">Checks if the Logic Device/Unit is enabled or disabled.</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Parameters:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">state</span> - On or Off (dropdown)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> Time is 23:00</p>
+                    <p class="text-gray-300"><strong>AND</strong> [Security Logic] is turned [ON]</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Arm security system</p>
+                </div>
+            </div>
+
+            <!-- Has Error -->
+            <div id="condition-has-error" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+                <h3 class="text-xl font-semibold mb-3 text-purple-300">Has error / Has any error</h3>
+                <p class="text-gray-300 mb-4">Checks if a specific formula or the entire device has any errors.</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Variants:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">Formula [formula] has error</span> - Check specific formula</li>
+                        <li><span class="code-inline">Has any error</span> - Check if device has any errors</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> Every hour</p>
+                    <p class="text-gray-300"><strong>AND</strong> [Security Logic] has any error</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Send notification "Check security logic configuration"</p>
+                </div>
+            </div>
+
+            <!-- Wait Until Becomes (BETA) -->
+            <div id="condition-wait-until" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg border-l-4 border-yellow-500">
+                <div class="flex items-center gap-2 mb-3">
+                    <h3 class="text-xl font-semibold text-purple-300">Wait until [device].[capability] becomes [value]</h3>
+                    <span class="text-xs bg-yellow-600 px-2 py-1 rounded font-semibold">BETA</span>
+                </div>
+                <p class="text-gray-300 mb-4">Pauses flow execution and waits for a device capability to reach a target value. Creates YES/NO paths.</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Parameters:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">device</span> - Device to monitor (autocomplete)</li>
+                        <li><span class="code-inline">capability</span> - Capability to watch (dropdown, dynamic)</li>
+                        <li><span class="code-inline">target_value</span> - Value to wait for (text/number)</li>
+                        <li><span class="code-inline">timeout_value</span> - Maximum wait time (number)</li>
+                        <li><span class="code-inline">timeout_unit</span> - ms/s/m/h (dropdown)</li>
+                        <li><span class="code-inline">waiter_id</span> - Optional ID (auto-generated if empty)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> Motion detected in hallway</p>
+                    <p class="text-gray-300"><strong>AND</strong> Wait until [Hallway Light].onoff becomes [true] (timeout: 5 min)</p>
+                    <p class="text-gray-300"><strong>THEN ✅</strong> Announce "Light confirmed on"</p>
+                    <p class="text-gray-300"><strong>ELSE ❌</strong> Notify "Light didn't turn on - check bulb?"</p>
+                </div>
+
+                <div class="bg-yellow-900 border-l-4 border-yellow-500 p-3 mt-4 rounded">
+                    <p class="font-semibold text-yellow-300 mb-1">⚠️ Experimental Feature</p>
+                    <p class="text-yellow-200 text-sm">See <a href="waiter-gates.html" class="text-yellow-100 underline">Waiter Gates documentation</a> for complete details and limitations.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- THEN Cards (Actions) -->
+        <div class="mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <h2 class="text-3xl font-bold text-blue-400">THEN Cards (Actions)</h2>
+                <span class="card-type-badge badge-action">Action</span>
+            </div>
+
+            <!-- Set Input -->
+            <div id="action-set-input" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+                <h3 class="text-xl font-semibold mb-3 text-purple-300">Set input [input] to [value]</h3>
+                <p class="text-gray-300 mb-4">Manually sets an input value for formula evaluation.</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Parameters:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">input</span> - Which input (A, B, C...J) (dropdown)</li>
+                        <li><span class="code-inline">value</span> - true or false (dropdown)</li>
+                    </ul>
+                    <p class="text-sm text-gray-400 mt-3 mb-2">Variants:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">Set all inputs to [value]</span> - Set all inputs at once</li>
+                        <li><span class="code-inline">Set input [input] value to [device].[capability]</span> - Use device capability as value</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> Door opened</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Set input [A] to [true]</p>
+                </div>
+
+                <div class="bg-blue-900 bg-opacity-30 border-l-4 border-blue-500 p-3 mt-4 rounded">
+                    <p class="text-blue-200 text-sm">💡 Input values trigger formula re-evaluation automatically</p>
+                </div>
+            </div>
+
+            <!-- Evaluate Formula -->
+            <div id="action-evaluate" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+                <h3 class="text-xl font-semibold mb-3 text-purple-300">Evaluate formula [formula]</h3>
+                <p class="text-gray-300 mb-4">Manually triggers formula evaluation with current input values.</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Parameters:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">formula</span> - Which formula to evaluate (dropdown)</li>
+                    </ul>
+                    <p class="text-sm text-gray-400 mt-3 mb-2">Variants:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">Evaluate all formulas</span> - Evaluate all formulas at once (Logic Unit only)</li>
+                        <li><span class="code-inline">Evaluate expression [expression]</span> - Evaluate custom expression on-the-fly</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> Settings changed</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Evaluate all formulas</p>
+                </div>
+
+                <div class="bg-blue-900 bg-opacity-30 border-l-4 border-blue-500 p-3 mt-4 rounded">
+                    <p class="text-blue-200 text-sm">💡 Useful after setting multiple inputs, or to force re-evaluation</p>
+                </div>
+            </div>
+
+            <!-- Clear Error -->
+            <div id="action-clear-error" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+                <h3 class="text-xl font-semibold mb-3 text-purple-300">Clear error</h3>
+                <p class="text-gray-300 mb-4">Clears error state for a formula or device.</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Variants:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">Clear error for formula [formula]</span> - Clear specific formula error</li>
+                        <li><span class="code-inline">Clear all errors</span> - Clear all errors on device</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> Configuration updated</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Clear all errors</p>
+                </div>
+            </div>
+
+            <!-- Wait -->
+            <div id="action-wait" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+                <h3 class="text-xl font-semibold mb-3 text-purple-300">Wait [duration] [unit]</h3>
+                <p class="text-gray-300 mb-4">Simple wait/delay action. Pauses flow execution for specified duration.</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Parameters:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">duration</span> - How long to wait (number)</li>
+                        <li><span class="code-inline">unit</span> - Milliseconds, Seconds, Minutes, or Hours (dropdown)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> Motion detected</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Turn on light</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Wait [30] [seconds]</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Turn off light</p>
+                </div>
+
+                <div class="bg-blue-900 bg-opacity-30 border-l-4 border-blue-500 p-3 mt-4 rounded">
+                    <p class="text-blue-200 text-sm">💡 This is a simple delay card, not related to Waiter Gates reactive waiting</p>
+                </div>
+            </div>
+
+            <!-- Control Waiter Gate -->
+            <div id="action-control-waiter" class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg border-l-4 border-yellow-500">
+                <div class="flex items-center gap-2 mb-3">
+                    <h3 class="text-xl font-semibold text-purple-300">Control Waiter Gate [waiter_id] → [action]</h3>
+                    <span class="text-xs bg-yellow-600 px-2 py-1 rounded font-semibold">BETA</span>
+                </div>
+                <p class="text-gray-300 mb-4">Enable, disable, or stop a running Waiter Gate.</p>
+
+                <div class="flow-card">
+                    <p class="text-sm text-gray-400 mb-2">Parameters:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">waiter_id</span> - ID of the waiter to control (text)</li>
+                        <li><span class="code-inline">action</span> - Enable, Disable, or Stop (dropdown)</li>
+                    </ul>
+                    <p class="text-sm text-gray-400 mt-3 mb-2">Actions:</p>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><span class="code-inline">Enable</span> - Re-enable a disabled waiter</li>
+                        <li><span class="code-inline">Disable</span> - Temporarily disable waiter (doesn't stop current wait)</li>
+                        <li><span class="code-inline">Stop</span> - Immediately stop waiter and resolve to NO path</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-900 rounded p-4 mt-4">
+                    <p class="font-semibold text-purple-300 mb-2">Example:</p>
+                    <p class="text-gray-300"><strong>WHEN</strong> Manual override triggered</p>
+                    <p class="text-gray-300"><strong>THEN</strong> Control Waiter Gate [door_monitor] → [Stop]</p>
+                </div>
+
+                <div class="bg-yellow-900 border-l-4 border-yellow-500 p-3 mt-4 rounded">
+                    <p class="font-semibold text-yellow-300 mb-1">⚠️ Experimental Feature</p>
+                    <p class="text-yellow-200 text-sm">Part of Waiter Gates system. See <a href="waiter-gates.html" class="text-yellow-100 underline">full documentation</a>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Device-Specific Cards -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Device-Specific Cards</h2>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <h3 class="font-semibold text-green-400 mb-2">Logic Device Only</h3>
+                    <ul class="space-y-1 text-gray-300 text-sm">
+                        <li>✓ State changed trigger (with tokens)</li>
+                        <li>✓ Device alarm state changed trigger</li>
+                        <li>✓ Device on state changed trigger</li>
+                    </ul>
+                    <p class="text-xs text-gray-400 mt-2">These cards leverage the Logic Device's unified state model</p>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <h3 class="font-semibold text-blue-400 mb-2">Logic Unit Only</h3>
+                    <ul class="space-y-1 text-gray-300 text-sm">
+                        <li>✓ Evaluate all formulas action</li>
+                        <li>✓ Set all inputs action</li>
+                        <li>✓ Multiple formula management</li>
+                    </ul>
+                    <p class="text-xs text-gray-400 mt-2">Logic Unit excels at managing complex multi-formula scenarios</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Common Patterns -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Common Flow Patterns</h2>
+
+            <div class="space-y-4">
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-300 mb-2">Pattern 1: Simple Logic Flow</h3>
+                    <div class="space-y-1 text-gray-300 text-sm">
+                        <p><strong class="text-green-400">WHEN</strong> Motion detected</p>
+                        <p><strong class="text-blue-400">THEN</strong> Set input A to true</p>
+                        <p><em class="text-gray-500">→ Formula evaluates automatically, triggers other flows if result changes</em></p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-300 mb-2">Pattern 2: React to Logic Result</h3>
+                    <div class="space-y-1 text-gray-300 text-sm">
+                        <p><strong class="text-green-400">WHEN</strong> Formula [security] changed to TRUE</p>
+                        <p><strong class="text-blue-400">THEN</strong> Turn on alarm</p>
+                        <p><strong class="text-blue-400">THEN</strong> Send notification</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-300 mb-2">Pattern 3: Multi-Step Logic Setup</h3>
+                    <div class="space-y-1 text-gray-300 text-sm">
+                        <p><strong class="text-green-400">WHEN</strong> Time is sunset</p>
+                        <p><strong class="text-blue-400">THEN</strong> Set input A to true</p>
+                        <p><strong class="text-blue-400">THEN</strong> Set input B to [Living Room].motion</p>
+                        <p><strong class="text-blue-400">THEN</strong> Evaluate formula [evening_mode]</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-300 mb-2">Pattern 4: Error Handling</h3>
+                    <div class="space-y-1 text-gray-300 text-sm">
+                        <p><strong class="text-green-400">WHEN</strong> Formula [critical] timed out</p>
+                        <p><strong class="text-blue-400">THEN</strong> Send notification "Formula timeout"</p>
+                        <p><strong class="text-blue-400">THEN</strong> Clear error for formula [critical]</p>
+                        <p><strong class="text-blue-400">THEN</strong> Evaluate formula [critical]</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg p-4 border-l-4 border-yellow-500">
+                    <h3 class="font-semibold text-purple-300 mb-2">Pattern 5: Reactive Wait (BETA)</h3>
+                    <div class="space-y-1 text-gray-300 text-sm">
+                        <p><strong class="text-green-400">WHEN</strong> Button pressed</p>
+                        <p><strong class="text-yellow-400">AND</strong> Wait until [Device].capability becomes [value]</p>
+                        <p><strong class="text-blue-400">THEN ✅</strong> Action for success</p>
+                        <p><strong class="text-blue-400">ELSE ❌</strong> Action for timeout</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="bg-blue-900 bg-opacity-30 border-l-4 border-blue-500 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-300">💡 Pro Tips</h2>
+
+            <ul class="space-y-3 text-blue-200">
+                <li><strong>Combine triggers and conditions:</strong> Use "Formula changed to TRUE" as trigger, then check other conditions</li>
+                <li><strong>Use descriptive formula names:</strong> Makes flow cards more readable (e.g., "security_active" vs "formula1")</li>
+                <li><strong>Leverage State changed trigger:</strong> Logic Device's state changed trigger is perfect for toggle actions</li>
+                <li><strong>Test with Evaluate action:</strong> Manually trigger evaluation to test formulas without changing inputs</li>
+                <li><strong>Monitor timeouts:</strong> Use timeout triggers to detect sensor failures or missing inputs</li>
+            </ul>
+        </div>
+
+        <!-- Back to top -->
+        <div class="text-center">
+            <a href="#top" class="text-purple-400 hover:text-purple-300">↑ Back to top</a>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 mt-12 py-6 text-center text-gray-400">
+        <p>Boolean Toolbox for Homey | <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-purple-400 hover:text-purple-300">GitHub</a></p>
+    </footer>
+</body>
+</html>

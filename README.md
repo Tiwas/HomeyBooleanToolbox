@@ -2,7 +2,7 @@
 
 Advanced boolean logic for your Homey automations. Create smart devices that react to multiple inputs with customizable formulas.
 
-[![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
+[![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
 [![Homey](https://img.shields.io/badge/Homey-5.0+-green.svg)](https://homey.app)
 
 ---
