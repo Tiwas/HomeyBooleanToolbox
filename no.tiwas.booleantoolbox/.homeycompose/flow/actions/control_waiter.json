@@ -1,77 +1,27 @@
 {
   "title": {
-    "en": "Control waiter",
-    "no": "Kontroller waiter",
-    "da": "Kontrollér waiter",
-    "de": "Waiter kontrollieren",
-    "es": "Controlar esperador",
-    "fr": "Contrôler le waiter",
-    "it": "Controlla waiter",
-    "nl": "Beheer waiter",
-    "sv": "Kontrollera waiter",
-    "pl": "Kontroluj waiter",
-    "fi": "Hallitse waiteria",
-    "ru": "Управление ожидателем"
+    "en": "Control Waiter Gate",
+    "no": "Kontroller Waiter Gate"
   },
   "titleFormatted": {
-    "en": "Control waiter [[waiter_id]] [[action]]",
-    "no": "Kontroller waiter [[waiter_id]] [[action]]",
-    "da": "Kontrollér waiter [[waiter_id]] [[action]]",
-    "de": "Waiter [[waiter_id]] [[action]] kontrollieren",
-    "es": "Controlar esperador [[waiter_id]] [[action]]",
-    "fr": "Contrôler le waiter [[waiter_id]] [[action]]",
-    "it": "Controlla waiter [[waiter_id]] [[action]]",
-    "nl": "Beheer waiter [[waiter_id]] [[action]]",
-    "sv": "Kontrollera waiter [[waiter_id]] [[action]]",
-    "pl": "Kontroluj waiter [[waiter_id]] [[action]]",
-    "fi": "Hallitse waiteria [[waiter_id]] [[action]]",
-    "ru": "Управление ожидателем [[waiter_id]] [[action]]"
+    "en": "[[action]] waiter gate [[waiter_id]]",
+    "no": "[[action]] waiter gate [[waiter_id]]"
   },
   "hint": {
-    "en": "Trigger, enable, disable, or remove waiters. Supports wildcards: 'winter-*', '*-motion', etc.",
-    "no": "Utløs, aktiver, deaktiver eller fjern waiters. Støtter wildcards: 'winter-*', '*-motion', osv.",
-    "da": "Udløs, aktivér, deaktivér eller fjern waiters. Understøtter wildcards: 'winter-*', '*-motion', osv.",
-    "de": "Auslösen, aktivieren, deaktivieren oder entfernen von Waiters. Unterstützt Wildcards: 'winter-*', '*-motion', usw.",
-    "es": "Activar, habilitar, deshabilitar o eliminar esperadores. Soporta comodines: 'winter-*', '*-motion', etc.",
-    "fr": "Déclencher, activer, désactiver ou supprimer des waiters. Prend en charge les wildcards: 'winter-*', '*-motion', etc.",
-    "it": "Attiva, abilita, disabilita o rimuovi waiter. Supporta wildcard: 'winter-*', '*-motion', ecc.",
-    "nl": "Activeer, schakel in, schakel uit of verwijder waiters. Ondersteunt wildcards: 'winter-*', '*-motion', enz.",
-    "sv": "Utlös, aktivera, inaktivera eller ta bort waiters. Stöder wildcards: 'winter-*', '*-motion', etc.",
-    "pl": "Wyzwól, włącz, wyłącz lub usuń waitery. Obsługuje wildcards: 'winter-*', '*-motion', itp.",
-    "fi": "Laukaise, ota käyttöön, poista käytöstä tai poista waitereja. Tukee wildcard: 'winter-*', '*-motion', jne.",
-    "ru": "Запуск, включение, отключение или удаление ожидателей. Поддерживает подстановочные знаки: 'winter-*', '*-motion' и т.д."
+    "en": "Enable, disable or stop a waiter gate by its ID",
+    "no": "Aktiver, deaktiver eller stopp en waiter gate ved dens ID"
   },
   "args": [
     {
-      "type": "autocomplete",
+      "type": "text",
       "name": "waiter_id",
       "title": {
         "en": "Waiter ID",
-        "no": "Waiter-ID",
-        "da": "Waiter-ID",
-        "de": "Waiter-ID",
-        "es": "ID del esperador",
-        "fr": "ID du waiter",
-        "it": "ID del waiter",
-        "nl": "Waiter-ID",
-        "sv": "Waiter-ID",
-        "pl": "ID waitera",
-        "fi": "Waiter-ID",
-        "ru": "ID ожидателя"
+        "no": "Waiter ID"
       },
       "placeholder": {
-        "en": "door-sensor or winter-* (wildcards supported)",
-        "no": "door-sensor eller winter-* (wildcards støttes)",
-        "da": "door-sensor eller winter-* (wildcards understøttes)",
-        "de": "door-sensor oder winter-* (Wildcards unterstützt)",
-        "es": "door-sensor o winter-* (comodines soportados)",
-        "fr": "door-sensor ou winter-* (wildcards supportés)",
-        "it": "door-sensor o winter-* (wildcard supportati)",
-        "nl": "door-sensor of winter-* (wildcards ondersteund)",
-        "sv": "door-sensor eller winter-* (wildcards stöds)",
-        "pl": "door-sensor lub winter-* (wildcards obsługiwane)",
-        "fi": "door-sensor tai winter-* (wildcard tuettu)",
-        "ru": "door-sensor или winter-* (подстановочные знаки поддерживаются)"
+        "en": "my-waiter",
+        "no": "min-waiter"
       }
     },
     {
@@ -79,68 +29,28 @@
       "name": "action",
       "title": {
         "en": "Action",
-        "no": "Handling",
-        "da": "Handling",
-        "de": "Aktion",
-        "es": "Acción",
-        "fr": "Action",
-        "it": "Azione",
-        "nl": "Actie",
-        "sv": "Åtgärd",
-        "pl": "Akcja",
-        "fi": "Toiminto",
-        "ru": "Действие"
+        "no": "Handling"
       },
       "values": [
         {
           "id": "enable",
-          "title": {
+          "label": {
             "en": "Enable",
-            "no": "Aktiver",
-            "da": "Aktivér",
-            "de": "Aktivieren",
-            "es": "Habilitar",
-            "fr": "Activer",
-            "it": "Abilita",
-            "nl": "Inschakelen",
-            "sv": "Aktivera",
-            "pl": "Włącz",
-            "fi": "Ota käyttöön",
-            "ru": "Включить"
+            "no": "Aktiver"
           }
         },
         {
           "id": "disable",
-          "title": {
+          "label": {
             "en": "Disable",
-            "no": "Deaktiver",
-            "da": "Deaktivér",
-            "de": "Deaktivieren",
-            "es": "Deshabilitar",
-            "fr": "Désactiver",
-            "it": "Disabilita",
-            "nl": "Uitschakelen",
-            "sv": "Inaktivera",
-            "pl": "Wyłącz",
-            "fi": "Poista käytöstä",
-            "ru": "Отключить"
+            "no": "Deaktiver"
           }
         },
         {
           "id": "stop",
-          "title": {
-            "en": "Stop waiting",
-            "no": "Stopp venting",
-            "da": "Stop ventetid",
-            "de": "Warten beenden",
-            "es": "Detener espera",
-            "fr": "Arrêter l'attente",
-            "it": "Interrompi attesa",
-            "nl": "Stop wachten",
-            "sv": "Stoppa väntan",
-            "pl": "Zatrzymaj oczekiwanie",
-            "fi": "Lopeta odotus",
-            "ru": "Остановить ожидание"
+          "label": {
+            "en": "Stop",
+            "no": "Stopp"
           }
         }
       ]

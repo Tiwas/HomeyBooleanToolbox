@@ -1,0 +1,98 @@
+{
+  "title": {
+    "en": "Wait",
+    "no": "Vent",
+    "da": "Vent",
+    "de": "Warten",
+    "es": "Esperar",
+    "fr": "Attendre",
+    "it": "Aspetta",
+    "nl": "Wacht",
+    "sv": "Vänta",
+    "pl": "Czekaj",
+    "fi": "Odota",
+    "ru": "Ждать"
+  },
+  "titleFormatted": {
+    "en": "Wait [[timeout_value]] [[timeout_unit]]",
+    "no": "Vent [[timeout_value]] [[timeout_unit]]",
+    "da": "Vent [[timeout_value]] [[timeout_unit]]",
+    "de": "Warte [[timeout_value]] [[timeout_unit]]",
+    "es": "Esperar [[timeout_value]] [[timeout_unit]]",
+    "fr": "Attendre [[timeout_value]] [[timeout_unit]]",
+    "it": "Aspetta [[timeout_value]] [[timeout_unit]]",
+    "nl": "Wacht [[timeout_value]] [[timeout_unit]]",
+    "sv": "Vänta [[timeout_value]] [[timeout_unit]]",
+    "pl": "Czekaj [[timeout_value]] [[timeout_unit]]",
+    "fi": "Odota [[timeout_value]] [[timeout_unit]]",
+    "ru": "Ждать [[timeout_value]] [[timeout_unit]]"
+  },
+  "hint": {
+    "en": "Pauses the flow for the specified time before continuing.",
+    "no": "Pauser flyten i angitt tid før den fortsetter.",
+    "da": "Pauser flow i den angivne tid før fortsættelse.",
+    "de": "Pausiert den Flow für die angegebene Zeit.",
+    "es": "Pausa el flujo durante el tiempo especificado.",
+    "fr": "Met en pause le flux pendant le temps spécifié.",
+    "it": "Mette in pausa il flusso per il tempo specificato.",
+    "nl": "Pauzeert de flow voor de opgegeven tijd.",
+    "sv": "Pausar flödet under angiven tid.",
+    "pl": "Wstrzymuje przepływ na określony czas.",
+    "fi": "Keskeyttää virtauksen määritetyksi ajaksi.",
+    "ru": "Приостанавливает поток на указанное время."
+  },
+  "args": [
+    {
+      "type": "number",
+      "name": "timeout_value",
+      "title": {
+        "en": "Duration",
+        "no": "Varighet"
+      },
+      "min": 0,
+      "step": 1,
+      "placeholder": {
+        "en": "e.g. 5",
+        "no": "f.eks. 5"
+      }
+    },
+    {
+      "type": "dropdown",
+      "name": "timeout_unit",
+      "title": {
+        "en": "Unit",
+        "no": "Enhet"
+      },
+      "values": [
+        {
+          "id": "ms",
+          "title": {
+            "en": "Milliseconds",
+            "no": "Millisekunder"
+          }
+        },
+        {
+          "id": "s",
+          "title": {
+            "en": "Seconds",
+            "no": "Sekunder"
+          }
+        },
+        {
+          "id": "m",
+          "title": {
+            "en": "Minutes",
+            "no": "Minutter"
+          }
+        },
+        {
+          "id": "h",
+          "title": {
+            "en": "Hours",
+            "no": "Timer"
+          }
+        }
+      ]
+    }
+  ]
+}

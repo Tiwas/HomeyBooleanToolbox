@@ -1978,18 +1978,20 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
       previousAlarmState,
       previousOnState
     });
+
     // Ensure values are never undefined (default to false)
     const safeAlarmState = newAlarmState ?? false;
     const safeOnState = newOnState ?? false;
 
     // ===== ALARM STATE TRIGGERS =====
     if (previousAlarmState !== null && previousAlarmState !== safeAlarmState) {
+      // Prepare alarm state trigger data
       const alarmTriggerData = {
-        state: safeAlarmState,
-        alarm_state: safeAlarmState,
-        device_name: this.getName() 
+        state: safeAlarmState,        // For deprecated triggers (boolean)
+        alarm_state: safeAlarmState,  // For new triggers (boolean)
+        device_name: this.getName()   // Device name for triggers that need it
       };
-      
+
       const alarmState = {
         state: safeAlarmState,        // For deprecated triggers
         alarm_state: safeAlarmState   // For new triggers
@@ -2008,11 +2010,12 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
     // ===== ON/OFF STATE TRIGGERS =====
     if (previousOnState !== null && previousOnState !== safeOnState) {
+      // Prepare on/off state trigger data
       const onTriggerData = {
         on_state: safeOnState,
-        device_name: this.getName() 
+        device_name: this.getName()
       };
-      
+
       const onState = {
         on_state: safeOnState
       };

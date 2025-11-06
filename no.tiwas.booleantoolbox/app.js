@@ -401,6 +401,36 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             this.logger.error(` -> FAILED: Registering APP TRIGGER 'any_config_alarm_state_changed'`, e);
         }
 
+        // Action: Wait (simple delay)
+        try {
+            const waitCard = this.homey.flow.getActionCard("wait");
+            waitCard.registerRunListener(async (args, state) => {
+                const timeoutValue = Number(args.timeout_value) || 0;
+                const timeoutUnit = args.timeout_unit || 's';
+
+                // Convert to milliseconds
+                const multipliers = {
+                    'ms': 1,
+                    's': 1000,
+                    'm': 60000,
+                    'h': 3600000
+                };
+                const timeoutMs = timeoutValue * (multipliers[timeoutUnit] || 1000);
+
+                this.logger.info(`⏸️  Waiting ${timeoutValue} ${timeoutUnit} (${timeoutMs}ms)...`);
+
+                // Simple promise-based wait
+                await new Promise(resolve => setTimeout(resolve, timeoutMs));
+
+                this.logger.info(`✅ Wait complete, continuing flow`);
+                return true;
+            });
+
+            this.logger.debug(` -> OK: ACTION registered: 'wait'`);
+        } catch (e) {
+            this.logger.error(` -> FAILED: Registering ACTION 'wait'`, e);
+        }
+
         // --- Waiter Gates ---
 
         // Condition: Wait until becomes true
@@ -410,7 +440,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             // Register autocomplete for capability argument
             waitUntilCard.registerArgumentAutocompleteListener('capability', async (query, args) => {
                 try {
-                    const device = args.device;
+                    const device = args.device; // Get selected device
                     if (!device) return [];
 
                     const capabilities = device.capabilities || [];
@@ -422,6 +452,7 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                         };
                     });
 
+                    // Filter by query if provided
                     if (query) {
                         return results.filter(r =>
                             r.name.toLowerCase().includes(query.toLowerCase())
@@ -435,65 +466,83 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                 }
             });
 
-// Register autocomplete for device argument
-waitUntilCard.registerArgumentAutocompleteListener('device', async (query, args) => {
-    try {
-        this.logger.info(`🔍 Device autocomplete called! Query: "${query}"`);
-        
-        if (!this.api) {
-            const athomApi = require("athom-api");
-            const { HomeyAPI } = athomApi;
-            this.api = await HomeyAPI.forCurrentHomey(this.homey);
-        }
-        
-        const allDevices = await this.api.devices.getDevices();
-        this.logger.info(`📱 Found ${Object.keys(allDevices).length} total devices on system`);
-        
-        const deviceList = Object.values(allDevices)
-            .filter(device => {
-                // Only devices with capabilities
-                const capabilities = device.capabilities || [];
-                if (capabilities.length === 0) return false;
-                
-                // Filter by query if provided
-                if (query) {
-                    return device.name.toLowerCase().includes(query.toLowerCase());
-                }
-                return true;
-            })
-            .map(device => ({
-                name: device.name,
-                description: `${device.capabilities.length} capabilities`,
-                id: device.id,
-                capabilities: device.capabilities  // VIKTIG for capability autocomplete!
-            }));
+            // Register autocomplete for device argument
+            waitUntilCard.registerArgumentAutocompleteListener('device', async (query, args) => {
+                try {
+                    this.logger.info(`🔍 Device autocomplete called! Query: "${query}"`);
+                    
+                    if (!this.api) {
+                        const athomApi = require("athom-api");
+                        const { HomeyAPI } = athomApi;
+                        this.api = await HomeyAPI.forCurrentHomey(this.homey);
+                    }
+                    
+                    const allDevices = await this.api.devices.getDevices();
+                    this.logger.info(`📱 Found ${Object.keys(allDevices).length} total devices on system`);
+                    
+                    const deviceList = Object.values(allDevices)
+                        .filter(device => {
+                            // Only devices with capabilities
+                            const capabilities = device.capabilities || [];
+                            if (capabilities.length === 0) return false;
+                            
+                            // Filter by query if provided
+                            if (query) {
+                                return device.name.toLowerCase().includes(query.toLowerCase());
+                            }
+                            return true;
+                        })
+                        .map(device => ({
+                            name: device.name,
+                            description: `${device.capabilities.length} capabilities`,
+                            id: device.id,
+                            capabilities: device.capabilities  // VIKTIG for capability autocomplete!
+                        }));
 
-        this.logger.info(`📋 Returning ${deviceList.length} devices with capabilities`);
-        
-        return deviceList;
-    } catch (error) {
-        this.logger.error('Device autocomplete error:', error);
-        return [];
-    }
-});
+                    this.logger.info(`📋 Returning ${deviceList.length} devices with capabilities`);
+                    
+                    return deviceList;                } catch (error) {
+                    this.logger.error('Device autocomplete error:', error);
+                    return [];
+                }
+            });
 
             waitUntilCard.registerRunListener(async (args, state) => {
                 try {
-                    const waiterId = args.waiter_id || '';
+                    // Generate automatic id if not provided
+                    let waiterId = args.waiter_id?.trim();
+                    if (!waiterId) {
+                        waiterId = `waiter_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+                        this.logger.info(`🆔 Auto-generated waiter id: ${waiterId}`);
+                    }
+
                     const timeoutValue = Number(args.timeout_value) || 0;
                     const timeoutUnit = args.timeout_unit || 's';
 
-                    // NEW: Extract device config
+                    // Extract device config
                     const device = args.device;
-                    const capability = args.capability?.id || args.capability; // Handle autocomplete object
+                    const capability = args.capability?.id || args.capability;
                     const targetValue = args.target_value;
 
-                    this.logger.info(`🔷 Waiter condition triggered: ${waiterId || '(auto-generate)'}`);
+                    // Validate capability exists on device
+                    if (!device.capabilities || !device.capabilities.includes(capability)) {
+                        const availableCaps = device.capabilities ? device.capabilities.join(', ') : 'none';
+                        throw new Error(`Capability "${capability}" not found on device "${device.name}". Available capabilities: ${availableCaps}`);
+                    }
+
+                    this.logger.info(`🔷 Waiter condition triggered: ${waiterId}`);
                     this.logger.info(`📡 Listening for: ${device.name}.${capability} = ${targetValue}`);
 
                     // Create a promise that will be resolved when the waiter is triggered
                     return new Promise(async (resolve, reject) => {
                         try {
+                            // Initialize Homey API if needed
+                            if (!this.api) {
+                                const { HomeyAPI } = require("athom-api");
+                                this.api = await HomeyAPI.forCurrentHomey(this.homey);
+                                this.logger.info(`🔌 Initialized Homey API for capability listening`);
+                            }
+
                             // Create waiter with flow context
                             const flowContext = {
                                 flowId: state?.flowId || 'unknown',
@@ -525,10 +574,10 @@ waitUntilCard.registerArgumentAutocompleteListener('device', async (query, args)
                                 waiterData.resolver = resolve;
                             }
 
-                            // NEW: Register capability listener
+                            // NEW: Register capability listener (pass Homey API, not SDK)
                             await this.waiterManager.registerCapabilityListener(
                                 actualWaiterId,
-                                this.homey
+                                this.api
                             );
 
                             // Return false immediately to let other flow branches continue
