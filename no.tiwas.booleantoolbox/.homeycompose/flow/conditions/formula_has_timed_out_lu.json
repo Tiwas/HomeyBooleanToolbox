@@ -11,7 +11,8 @@
     "sv": "Formel !{{har|har inte}} fått timeout",
     "pl": "Formuła !{{przekroczyła|nie przekroczyła}} limit czasu",
     "it": "Formula !{{ha|non ha}} timeout",
-    "es": "Fórmula !{{ha|no ha}} expirado"
+    "es": "Fórmula !{{ha|no ha}} expirado",
+    "ru": "Формула !{{превысила|не превысила}} тайм-аут"
   },
   "titleFormatted": {
     "en": "Formula [[formula]] !{{has|has not}} timed out",
@@ -24,7 +25,8 @@
     "sv": "Formel [[formula]] !{{har|har inte}} fått timeout",
     "pl": "Formuła [[formula]] !{{przekroczyła|nie przekroczyła}} limit czasu",
     "it": "Formula [[formula]] !{{ha|non ha}} timeout",
-    "es": "Fórmula [[formula]] !{{ha|no ha}} expirado"
+    "es": "Fórmula [[formula]] !{{ha|no ha}} expirado",
+    "ru": "Формула [[formula]] !{{превысила|не превысила}} тайм-аут"
   },
   "args": [
     {
@@ -46,7 +48,8 @@
         "sv": "Formel",
         "pl": "Formuła",
         "it": "Formula",
-        "es": "Fórmula"
+        "es": "Fórmula",
+        "ru": "Формула"
       },
       "placeholder": {
         "en": "Select formula",
@@ -59,7 +62,8 @@
         "sv": "Välj formel",
         "pl": "Wybierz formułę",
         "it": "Seleziona formula",
-        "es": "Seleccionar fórmula"
+        "es": "Seleccionar fórmula",
+        "ru": "Выберите формулу"
       }
     }
   ]

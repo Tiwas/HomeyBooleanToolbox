@@ -12,7 +12,8 @@
     "sv": "Logikenhet alarm är...",
     "pl": "Alarm jednostki logicznej jest...",
     "ru": "Тревога логического блока...",
-    "ko": "논리 유닛 알람이..."
+    "ko": "논리 유닛 알람이...",
+    "fi": "Logic Unitin hälytys on..."
   },
   "titleFormatted": {
     "en": "Logic Unit alarm !{{is|isn't}} [[alarm_state]]",
@@ -26,7 +27,8 @@
     "sv": "Logikenhet alarm !{{är|är inte}} [[alarm_state]]",
     "pl": "Alarm jednostki logicznej !{{jest|nie jest}} [[alarm_state]]",
     "ru": "Тревога логического блока !{{включена|не включена}} [[alarm_state]]",
-    "ko": "논리 유닛 알람이 !{{켜져|꺼져}} [[alarm_state]] 있음"
+    "ko": "논리 유닛 알람이 !{{켜져|꺼져}} [[alarm_state]] 있음",
+    "fi": "Logic Unitin hälytys !{{on|ei ole}} [[alarm_state]]"
   },
   "hint": {
     "en": "Check if the Logic Unit's alarm is currently on or off.",
@@ -40,7 +42,8 @@
     "sv": "Kontrollera om logikenhetens alarm är på eller av.",
     "pl": "Sprawdź, czy alarm jednostki logicznej jest włączony lub wyłączony.",
     "ru": "Проверьте, включена или выключена тревога логического блока.",
-    "ko": "논리 유닛의 알람이 현재 켜져 있는지 꺼져 있는지 확인하세요."
+    "ko": "논리 유닛의 알람이 현재 켜져 있는지 꺼져 있는지 확인하세요.",
+    "fi": "Tarkista, onko Logic Unitin hälytys päällä vai pois päältä."
   },
   "args": [
     {

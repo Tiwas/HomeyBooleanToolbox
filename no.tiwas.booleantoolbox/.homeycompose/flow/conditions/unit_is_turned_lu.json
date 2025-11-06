@@ -12,7 +12,8 @@
     "sv": "Logikenhet är...",
     "pl": "Jednostka logiczna jest...",
     "ru": "Логический блок...",
-    "ko": "논리 유닛이..."
+    "ko": "논리 유닛이...",
+    "fi": "Logic Unit on..."
   },
   "titleFormatted": {
     "en": "Logic Unit !{{is|isn't}} turned [[on_state]]",
@@ -26,7 +27,8 @@
     "sv": "Logikenhet !{{är|är inte}} [[on_state]]",
     "pl": "Jednostka logiczna !{{jest|nie jest}} [[on_state]]",
     "ru": "Логический блок !{{включен|не включен}} [[on_state]]",
-    "ko": "논리 유닛이 !{{켜져|꺼져}} [[on_state]] 있음"
+    "ko": "논리 유닛이 !{{켜져|꺼져}} [[on_state]] 있음",
+    "fi": "Logic Unit !{{on|ei ole}} [[on_state]]"
   },
   "hint": {
     "en": "Check if the Logic Unit is currently turned on or off.",
@@ -40,7 +42,8 @@
     "sv": "Kontrollera om logikenheten är på eller av.",
     "pl": "Sprawdź, czy jednostka logiczna jest włączona lub wyłączona.",
     "ru": "Проверьте, включен или выключен логический блок.",
-    "ko": "논리 유닛이 현재 켜져 있는지 꺼져 있는지 확인하세요."
+    "ko": "논리 유닛이 현재 켜져 있는지 꺼져 있는지 확인하세요.",
+    "fi": "Tarkista, onko Logic Unit päällä vai pois päältä."
   },
   "args": [
     {

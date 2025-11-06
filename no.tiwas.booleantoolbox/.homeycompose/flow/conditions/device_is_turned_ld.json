@@ -12,7 +12,8 @@
     "sv": "Enheten är...",
     "pl": "Urządzenie jest...",
     "ru": "Устройство...",
-    "ko": "장치가..."
+    "ko": "장치가...",
+    "fi": "Laite on..."
   },
   "titleFormatted": {
     "en": "Device !{{is|isn't}} turned [[on_state]]",
@@ -26,7 +27,8 @@
     "sv": "Enheten !{{är|är inte}} [[on_state]]",
     "pl": "Urządzenie !{{jest|nie jest}} [[on_state]]",
     "ru": "Устройство !{{включено|не включено}} [[on_state]]",
-    "ko": "장치가 !{{켜져|꺼져}} [[on_state]] 있음"
+    "ko": "장치가 !{{켜져|꺼져}} [[on_state]] 있음",
+    "fi": "Laite !{{on|ei ole}} [[on_state]]"
   },
   "hint": {
     "en": "Check if the device is currently turned on or off.",
@@ -40,7 +42,8 @@
     "sv": "Kontrollera om enheten är på eller av.",
     "pl": "Sprawdź, czy urządzenie jest włączone lub wyłączone.",
     "ru": "Проверьте, включено или выключено устройство.",
-    "ko": "장치가 현재 켜져 있는지 꺼져 있는지 확인하세요."
+    "ko": "장치가 현재 켜져 있는지 꺼져 있는지 확인하세요.",
+    "fi": "Tarkista, onko laite päällä vai pois päältä."
   },
   "args": [
     {

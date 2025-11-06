@@ -11,7 +11,8 @@
     "sv": "Utvärdera specifik formel",
     "pl": "Oceń konkretną formułę",
     "it": "Valuta formula specifica",
-    "es": "Evaluar fórmula específica"
+    "es": "Evaluar fórmula específica",
+    "ru": "Вычислить определённую формулу"
   },
   "titleFormatted": {
     "en": "Evaluate formula [[formula]]",
@@ -24,7 +25,8 @@
     "sv": "Utvärdera formel [[formula]]",
     "pl": "Oceń formułę [[formula]]",
     "it": "Valuta formula [[formula]]",
-    "es": "Evaluar fórmula [[formula]]"
+    "es": "Evaluar fórmula [[formula]]",
+    "ru": "Вычислить формулу [[formula]]"
   },
   "args": [
     {
@@ -46,7 +48,8 @@
         "sv": "Formel",
         "pl": "Formuła",
         "it": "Formula",
-        "es": "Fórmula"
+        "es": "Fórmula",
+        "ru": "Формула"
       },
       "placeholder": {
         "en": "Select formula",
@@ -59,7 +62,8 @@
         "sv": "Välj formel",
         "pl": "Wybierz formułę",
         "it": "Seleziona formula",
-        "es": "Seleccionar fórmula"
+        "es": "Seleccionar fórmula",
+        "ru": "Выберите формулу"
       }
     }
   ]

@@ -11,7 +11,8 @@
     "sv": "Enhetens på-status ändrades",
     "pl": "Stan włączenia urządzenia zmienił się",
     "it": "Stato di accensione dispositivo cambiato",
-    "es": "Estado de encendido del dispositivo cambiado"
+    "es": "Estado de encendido del dispositivo cambiado",
+    "ru": "Состояние включения устройства изменено"
   },
   "hint": {
     "en": "Triggers when the Logic Device's on/off state changes (enabled/disabled)",
@@ -24,7 +25,8 @@
     "sv": "Utlöses när Logic Device:s på/av-status ändras (aktiverad/inaktiverad)",
     "pl": "Wyzwalane, gdy stan włączenia/wyłączenia Logic Device zmienia się (aktywowany/dezaktywowany)",
     "it": "Si attiva quando lo stato acceso/spento del Logic Device cambia (attivato/disattivato)",
-    "es": "Se activa cuando el estado encendido/apagado del Logic Device cambia (activado/desactivado)"
+    "es": "Se activa cuando el estado encendido/apagado del Logic Device cambia (activado/desactivado)",
+    "ru": "Срабатывает при изменении состояния вкл/выкл Logic Device (активировано/деактивировано)"
   },
   "args": [
     {
@@ -48,7 +50,8 @@
         "sv": "På-status",
         "pl": "Stan włączenia",
         "it": "Stato acceso",
-        "es": "Estado encendido"
+        "es": "Estado encendido",
+        "ru": "Состояние включения"
       }
     }
   ]

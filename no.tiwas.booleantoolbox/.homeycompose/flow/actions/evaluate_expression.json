@@ -10,7 +10,8 @@
     "sv": "Utvärdera uttryck",
     "pl": "Oceń wyrażenie",
     "it": "Valuta espressione",
-    "es": "Evaluar expresión"
+    "es": "Evaluar expresión",
+    "ru": "Вычислить выражение"
   },
   "titleFormatted": {
     "en": "Evaluate [[input]] [[op1]] min [[logical_op]] [[op2]] max with rules [[rules]]",
@@ -23,7 +24,8 @@
     "sv": "Utvärdera [[input]] [[op1]] min [[logical_op]] [[op2]] max med regler [[rules]]",
     "pl": "Oceń [[input]] [[op1]] min [[logical_op]] [[op2]] max z regułami [[rules]]",
     "it": "Valuta [[input]] [[op1]] min [[logical_op]] [[op2]] max con regole [[rules]]",
-    "es": "Evaluar [[input]] [[op1]] min [[logical_op]] [[op2]] max con reglas [[rules]]"
+    "es": "Evaluar [[input]] [[op1]] min [[logical_op]] [[op2]] max con reglas [[rules]]",
+    "ru": "Вычислить [[input]] [[op1]] min [[logical_op]] [[op2]] max с правилами [[rules]]"
   },
   "args": [
     {
@@ -40,7 +42,8 @@
         "sv": "Ingångsvärde",
         "pl": "Wartość wejściowa",
         "it": "Valore di input",
-        "es": "Valor de entrada"
+        "es": "Valor de entrada",
+        "ru": "Входное значение"
       },
       "placeholder": {
         "en": "Enter number",
@@ -53,7 +56,8 @@
         "sv": "Ange nummer",
         "pl": "Wprowadź numer",
         "it": "Inserisci numero",
-        "es": "Introducir número"
+        "es": "Introducir número",
+        "ru": "Введите число"
       }
     },
     {
@@ -70,7 +74,8 @@
         "sv": "Regler",
         "pl": "Reguły",
         "it": "Regole",
-        "es": "Reglas"
+        "es": "Reglas",
+        "ru": "Правила"
       },
       "placeholder": {
         "en": "min,max,output; ...",
@@ -83,7 +88,8 @@
         "sv": "min,max,utgång; ...",
         "pl": "min,max,wyjście; ...",
         "it": "min,max,uscita; ...",
-        "es": "min,max,salida; ..."
+        "es": "min,max,salida; ...",
+        "ru": "min,max,выход; ..."
       }
     },
     {
@@ -100,7 +106,8 @@
         "sv": "Första operator",
         "pl": "Pierwszy operator",
         "it": "Primo operatore",
-        "es": "Primer operador"
+        "es": "Primer operador",
+        "ru": "Первый оператор"
       },
       "values": [
         {
@@ -147,7 +154,8 @@
         "sv": "Andra operator",
         "pl": "Drugi operator",
         "it": "Secondo operatore",
-        "es": "Segundo operador"
+        "es": "Segundo operador",
+        "ru": "Второй оператор"
       },
       "values": [
         {
@@ -194,7 +202,8 @@
         "sv": "Logisk operator",
         "pl": "Operator logiczny",
         "it": "Operatore logico",
-        "es": "Operador lógico"
+        "es": "Operador lógico",
+        "ru": "Логический оператор"
       },
       "values": [
         {
@@ -210,7 +219,8 @@
             "sv": "OCH",
             "pl": "I",
             "it": "E",
-            "es": "Y"
+            "es": "Y",
+            "ru": "И"
           }
         },
         {
@@ -226,7 +236,8 @@
             "sv": "ELLER",
             "pl": "LUB",
             "it": "O",
-            "es": "O"
+            "es": "O",
+            "ru": "ИЛИ"
           }
         }
       ]
@@ -247,7 +258,8 @@
         "sv": "Utgångsvärde",
         "pl": "Wartość wyjściowa",
         "it": "Valore di output",
-        "es": "Valor de salida"
+        "es": "Valor de salida",
+        "ru": "Выходное значение"
       },
       "example": 100
     },
@@ -265,7 +277,8 @@
         "sv": "Felmeddelande",
         "pl": "Komunikat o błędzie",
         "it": "Messaggio di errore",
-        "es": "Mensaje de error"
+        "es": "Mensaje de error",
+        "ru": "Сообщение об ошибке"
       },
       "example": "No error"
     }

@@ -11,7 +11,8 @@
     "sv": "Formelresultat är...",
     "pl": "Wynik formuły to...",
     "it": "Risultato formula è...",
-    "es": "Resultado de fórmula es..."
+    "es": "Resultado de fórmula es...",
+    "ru": "Результат формулы..."
   },
   "titleFormatted": {
     "en": "Formula [[formula]] result is [[what_is]]",
@@ -24,7 +25,8 @@
     "sv": "Formel [[formula]] resultat är [[what_is]]",
     "pl": "Formuła [[formula]] wynik to [[what_is]]",
     "it": "Formula [[formula]] risultato è [[what_is]]",
-    "es": "Fórmula [[formula]] resultado es [[what_is]]"
+    "es": "Fórmula [[formula]] resultado es [[what_is]]",
+    "ru": "Результат формулы [[formula]] [[what_is]]"
   },
   "args": [
     {
@@ -46,7 +48,8 @@
         "sv": "Formel",
         "pl": "Formuła",
         "it": "Formula",
-        "es": "Fórmula"
+        "es": "Fórmula",
+        "ru": "Формула"
       },
       "placeholder": {
         "en": "Select formula",
@@ -59,7 +62,8 @@
         "sv": "Välj formel",
         "pl": "Wybierz formułę",
         "it": "Seleziona formula",
-        "es": "Seleccionar fórmula"
+        "es": "Seleccionar fórmula",
+        "ru": "Выберите формулу"
       }
     },
     {
@@ -76,7 +80,8 @@
         "sv": "Värde",
         "pl": "Wartość",
         "it": "Valore",
-        "es": "Valor"
+        "es": "Valor",
+        "ru": "Значение"
       },
       "values": [
         {
@@ -92,7 +97,8 @@
             "sv": "SANT",
             "pl": "PRAWDA",
             "it": "VERO",
-            "es": "VERDADERO"
+            "es": "VERDADERO",
+            "ru": "ИСТИНА"
           }
         },
         {
@@ -108,7 +114,8 @@
             "sv": "FALSKT",
             "pl": "FAŁSZ",
             "it": "FALSO",
-            "es": "FALSO"
+            "es": "FALSO",
+            "ru": "ЛОЖЬ"
           }
         }
       ]

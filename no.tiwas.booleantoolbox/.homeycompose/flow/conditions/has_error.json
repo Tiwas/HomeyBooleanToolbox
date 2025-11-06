@@ -10,7 +10,8 @@
     "sv": "!{{Har|Har inget}} fel",
     "pl": "!{{Ma|Nie ma}} błąd",
     "it": "!{{Ha|Non ha}} errore",
-    "es": "!{{Tiene|No tiene}} error"
+    "es": "!{{Tiene|No tiene}} error",
+    "ru": "!{{Есть|Нет}} ошибка"
   },
   "titleFormatted": {
     "en": "!{{Has|Has no}} error in [[text_input]]",
@@ -23,7 +24,8 @@
     "sv": "!{{Har|Har inget}} fel i [[text_input]]",
     "pl": "!{{Ma|Nie ma}} błąd w [[text_input]]",
     "it": "!{{Ha|Non ha}} errore in [[text_input]]",
-    "es": "!{{Tiene|No tiene}} error en [[text_input]]"
+    "es": "!{{Tiene|No tiene}} error en [[text_input]]",
+    "ru": "!{{Есть|Нет}} ошибка в [[text_input]]"
   },
   "args": [
     {
@@ -40,7 +42,8 @@
         "sv": "Felmeddelande",
         "pl": "Komunikat o błędzie",
         "it": "Messaggio di errore",
-        "es": "Mensaje de error"
+        "es": "Mensaje de error",
+        "ru": "Сообщение об ошибке"
       },
       "placeholder": {
         "en": "Enter error message or token",
@@ -53,7 +56,8 @@
         "sv": "Ange felmeddelande eller token",
         "pl": "Wprowadź komunikat o błędzie lub token",
         "it": "Inserisci messaggio di errore o token",
-        "es": "Introducir mensaje de error o token"
+        "es": "Introducir mensaje de error o token",
+        "ru": "Введите сообщение об ошибке или токен"
       }
     }
   ]

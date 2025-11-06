@@ -11,7 +11,8 @@
     "sv": "Rensa formelfelstatus",
     "pl": "Wyczyść stan błędu formuły",
     "it": "Cancella stato di errore formula",
-    "es": "Limpiar estado de error de fórmula"
+    "es": "Limpiar estado de error de fórmula",
+    "ru": "Очистить состояние ошибки формулы"
   },
   "titleFormatted": {
     "en": "Clear error state for formula [[formula]]",
@@ -24,7 +25,8 @@
     "sv": "Rensa felstatus för formel [[formula]]",
     "pl": "Wyczyść stan błędu dla formuły [[formula]]",
     "it": "Cancella errore per formula [[formula]]",
-    "es": "Limpiar error para fórmula [[formula]]"
+    "es": "Limpiar error para fórmula [[formula]]",
+    "ru": "Очистить состояние ошибки для формулы [[formula]]"
   },
   "args": [
     {
@@ -46,7 +48,8 @@
         "sv": "Formel",
         "pl": "Formuła",
         "it": "Formula",
-        "es": "Fórmula"
+        "es": "Fórmula",
+        "ru": "Формула"
       },
       "placeholder": {
         "en": "Select formula",
@@ -59,7 +62,8 @@
         "sv": "Välj formel",
         "pl": "Wybierz formułę",
         "it": "Seleziona formula",
-        "es": "Seleccionar fórmula"
+        "es": "Seleccionar fórmula",
+        "ru": "Выберите формулу"
       }
     }
   ]

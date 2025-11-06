@@ -11,7 +11,8 @@
     "sv": "Enhet !{{har|har inget}} fel",
     "pl": "Urządzenie !{{ma|nie ma}} błędu",
     "it": "Dispositivo !{{ha|non ha}} errori",
-    "es": "Dispositivo !{{tiene|no tiene}} error"
+    "es": "Dispositivo !{{tiene|no tiene}} error",
+    "ru": "Устройство !{{имеет|не имеет}} ошибку"
   },
   "titleFormatted": {
     "en": "Device !{{has|has no}} error",
@@ -24,7 +25,8 @@
     "sv": "Enhet !{{har|har inget}} fel",
     "pl": "Urządzenie !{{ma|nie ma}} błędu",
     "it": "Dispositivo !{{ha|non ha}} errori",
-    "es": "Dispositivo !{{tiene|no tiene}} error"
+    "es": "Dispositivo !{{tiene|no tiene}} error",
+    "ru": "Устройство !{{имеет|не имеет}} ошибку"
   },
   "args": [
     {

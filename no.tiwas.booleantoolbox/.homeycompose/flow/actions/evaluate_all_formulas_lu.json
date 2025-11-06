@@ -11,7 +11,8 @@
     "sv": "Omvärdera alla formler",
     "pl": "Ponownie oceń wszystkie formuły",
     "it": "Rivaluta tutte le formule",
-    "es": "Re-evaluar todas las fórmulas"
+    "es": "Re-evaluar todas las fórmulas",
+    "ru": "Пересчитать все формулы"
   },
   "titleFormatted": {
     "en": "Re-evaluate all formulas",
@@ -24,7 +25,8 @@
     "sv": "Omvärdera alla formler",
     "pl": "Ponownie oceń wszystkie formuły",
     "it": "Rivaluta tutte le formule",
-    "es": "Re-evaluar todas las fórmulas"
+    "es": "Re-evaluar todas las fórmulas",
+    "ru": "Пересчитать все формулы"
   },
   "args": [
     {
