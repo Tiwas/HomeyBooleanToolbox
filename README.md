@@ -1,114 +1,94 @@
 # Boolean Toolbox for Homey
 
-Create advanced, state-aware logic units with multiple formulas and intelligent input handling.
+Advanced boolean logic for your Homey automations. Create smart devices that react to multiple inputs with customizable formulas.
 
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
+[![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
 [![Homey](https://img.shields.io/badge/Homey-5.0+-green.svg)](https://homey.app)
+
+---
 
 ## 🛠️ Interactive Tools
 
-**🎮 [Boolean Logic Emulator](https://tiwas.github.io/HomeyBooleanToolbox/emulator.html)** - Test your expressions interactively with live truth tables!
+Test and build your logic before deploying:
 
-**🔧 [Formula Builder](https://tiwas.github.io/HomeyBooleanToolbox/formula-builder.html)** - Build and validate formulas with a visual editor!
+- **[Boolean Logic Emulator](https://tiwas.github.io/HomeyBooleanToolbox/emulator.html)** - Test expressions with live truth tables
+- **[Formula Builder](https://tiwas.github.io/HomeyBooleanToolbox/formula-builder.html)** - Visual formula editor with validation
 
 ---
 
-## 🎉 What's New in v1.2.0
+## 📦 What's Inside
 
-### ✨ New Features
+### Logic Units & Logic Devices
 
-#### 1. **Logic Device with Visual Pairing**
-NEW device type with a completely redesigned pairing experience:
+Two flavors of boolean logic devices - choose what fits your needs:
 
-- 🎨 **Visual setup wizard** - Select devices by zone/room
-- 📍 **Browse by location** - Find your devices organized by room
-- 🔗 **Direct device linking** - Connect inputs to real devices during pairing
-- 🎯 **One-click configuration** - Everything set up before you finish pairing
-- 📈 **Dynamic inputs** - Automatically expands to support 2-10 inputs as needed
+| Feature | Logic Device | Logic Unit |
+|---------|-------------|------------|
+| **Setup** | Visual pairing wizard | Quick add |
+| **Inputs** | Dynamic (2-10, auto-expands) | Fixed (2, 3, 4...10) |
+| **Configuration** | Zone/room selection | Manual JSON |
+| **Best for** | Most users, growing setups | Simple, fixed configurations |
 
-#### 2. **Dynamic Input Capacity**
-Your Logic Device automatically adapts to your needs:
+**Capabilities:**
+- `alarm_generic` - Formula result (true/false)
+- `onoff` - Enable/disable device
+- Multiple formulas per device (Logic Units only - Logic Device uses single formula)
 
-```json
-{
-  "expression": "A AND B AND C AND D AND E"
-}
+[📚 Read detailed guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/devices.html)
+
+---
+
+### ⏳ Waiter Gates (BETA)
+
+**⚠️ Experimental feature** - I'm still exploring if these provide real value. Feedback welcome!
+
+Waiter Gates let your flows pause and wait for device states to change, with YES/NO outputs:
+
+**Flow Cards:**
+- **Wait until device capability becomes value** *(condition)* - Waits for a device capability to reach a target value
+  - ✅ YES path: Value matches (or already matched)
+  - ❌ NO path: Timeout expired
+- **Control waiter gate** *(action)* - Enable/disable/stop a waiter by ID
+- **Wait** *(action)* - Simple delay (BONUS: basic pause without device monitoring)
+
+**Example use case:**
+```
+WHEN motion detected
+AND wait until [Living Room Light].onoff becomes true (timeout: 5 minutes)
+THEN announce "Light turned on!"
+ELSE notify "Light didn't turn on - check bulb?"
 ```
 
-Created device with 2 inputs? No problem! The device will automatically expand to support 5 inputs when you save this formula. 🚀
+**How it works:**
+1. Flow hits the wait condition and checks current value
+2. If already matches → Continue immediately (YES path)
+3. If not → Registers listener and waits for change
+4. On match → YES path | On timeout → NO path
 
-#### 3. **Auto-Formatting JSON**
-Save time with automatic JSON beautification:
+**Known limitations:**
+- IDs must be unique across flows (or leave empty for auto-generation)
+- Active waiters consume memory
+- Still figuring out real-world usefulness 🤔
 
-- ✨ Paste compressed JSON → Get beautifully formatted output
-- 🔄 Edit formulas → Auto-formats on save
-- 📝 Cleaner, more readable configuration
-
-### 🔧 Improvements
-
-- Event-driven architecture (removed polling)
-- "State changed" trigger with state token
-- Better initial value detection
-- Shared base classes for maintainability
-
----
-
-## 📖 Device Types
-
-### Logic Device (NEW! 🎉)
-
-**Perfect for:** Dynamic setups, visual configuration, growing automations
-
-**Features:**
-- 🎨 Visual pairing wizard with zone/room selection
-- 📈 Dynamic input capacity (2-10 inputs, auto-expands)
-- 🔗 Direct device linking during setup
-- ✨ JSON auto-formatting
-- 🎯 Easier to configure and maintain
-
-**Use when you want:**
-- Easy visual setup
-- Flexibility to add more inputs later
-- Direct device connections
-- A cleaner configuration experience
-
-### Logic Units (2-10 inputs)
-
-**Perfect for:** Fixed configurations, simple setups
-
-**Features:**
-- 🎯 Pre-defined input count (choose 2, 3, 4... up to 10)
-- ⚡ Quick setup for simple cases
-- 🔧 Manual JSON configuration
-
-**Use when you want:**
-- A simple, fixed number of inputs
-- Quick setup for straightforward logic
+[📚 Read waiter gates guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/waiter-gates.html)
 
 ---
 
 ## 🚀 Quick Start
 
-### Option 1: Logic Device (Recommended for most users)
+### 1. Add a Device
 
-1. **Add Device**
-   - Go to **Devices** → **Add Device**
-   - Select **Boolean Toolbox** → **Logic Device**
+**Logic Device (recommended):**
+- Go to **Devices** → **Add Device** → **Boolean Toolbox** → **Logic Device**
+- Choose inputs (2-10) - don't worry, it expands automatically if needed
+- Configure inputs by selecting room → device → capability
+- Save and configure formulas in device settings
 
-2. **Choose Number of Inputs**
-   - Select how many inputs you need (2-10)
-   - Don't worry - this will auto-expand if you need more later!
+**Logic Unit:**
+- Go to **Devices** → **Add Device** → **Boolean Toolbox** → **Logic Unit (X inputs)**
+- Configure via settings JSON
 
-3. **Configure Inputs by Room**
-   - Select a room/zone
-   - Choose a device from that room
-   - Pick which capability to monitor (e.g., onoff, alarm_motion)
-   - Repeat for each input
-   - Give your device a name
-
-4. **Configure Formulas** (after pairing)
-   - Go to device settings
-   - Edit the "Formulas" JSON:
+### 2. Write Formulas
 
 ```json
 [
@@ -123,414 +103,131 @@ Save time with automatic JSON beautification:
 ]
 ```
 
-5. **Done!** Your Logic Device is ready to use in flows.
+**Operators:** `AND`, `OR`, `XOR`, `NOT` (plus `&`, `|`, `^`, `!`)
 
-### Option 2: Logic Unit (For simple, fixed setups)
+### 3. Use in Flows
 
-1. Go to **Devices** → **Add Device**
-2. Select **Boolean Toolbox** → Choose **Logic Unit (X inputs)**
-3. Add device and configure via settings
-
----
-
-## 🎯 Use Cases & Examples
-
-### Example 1: Security System with Visual Setup
-
-**Using Logic Device:**
-
-**During Pairing:**
-1. Choose 3 inputs
-2. Input A → Living Room → Motion Sensor → alarm_motion
-3. Input B → Front Door → Contact Sensor → alarm_contact  
-4. Input C → Back Door → Contact Sensor → alarm_contact
-5. Name: "Security Monitor"
-
-**After Pairing (Settings):**
-
-```json
-[
-  {
-    "id": "intrusion",
-    "name": "Intrusion Detection",
-    "expression": "A AND (B OR C)",
-    "enabled": true,
-    "timeout": 0,
-    "firstImpression": false
-  }
-]
+```
+WHEN: Formula [motion_detected] changed to TRUE
+THEN: Turn on lights
 ```
 
-**In Flows:**
-```
-WHEN: Formula [intrusion] changed to TRUE
-THEN: Send notification "Motion detected with door open!"
-      Turn on all lights
-      Start recording
-```
-
-### Example 2: Smart Lighting - Growing Complexity
-
-**Start Simple (2 inputs):**
-
-```json
-{
-  "id": "auto_light",
-  "name": "Motion & Dark",
-  "expression": "A AND B",
-  "enabled": true
-}
-```
-
-**Later, Expand (5 inputs) - Just edit and save!**
-
-```json
-{
-  "id": "auto_light",
-  "name": "Smart Conditions",
-  "expression": "(A OR B) AND C AND NOT D AND NOT E",
-  "enabled": true
-}
-```
-
-The device **automatically expands** from 2 to 5 inputs! 🎉
-
-### Example 3: Multiple Formulas with Isolated States
-
-```json
-[
-  {
-    "id": "day_mode",
-    "name": "Daytime Logic",
-    "expression": "A AND B AND C",
-    "firstImpression": false
-  },
-  {
-    "id": "night_mode",
-    "name": "Nighttime Security",
-    "expression": "A OR B OR C",
-    "firstImpression": true,
-    "timeout": 300
-  },
-  {
-    "id": "away_mode",
-    "name": "Away Detection",
-    "expression": "NOT A AND NOT B",
-    "firstImpression": false
-  }
-]
-```
-
-Each formula has **completely independent** input states!
-
----
-
-## ⚙️ Formula Configuration
-
-### Formula Properties
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `id` | string | required | Unique identifier |
-| `name` | string | required | Display name (shown in flows) |
-| `expression` | string | required | Boolean expression (e.g., "A AND B") |
-| `enabled` | boolean | `true` | Enable/disable formula |
-| `timeout` | number | `0` | Seconds before timeout (0 = infinite) |
-| `firstImpression` | boolean | `false` | Lock inputs at first value |
-
-### Input Links
-
-The Logic Device stores device connections in `input_links`:
-
-```json
-[
-  {
-    "input": "a",
-    "deviceId": "abc123...",
-    "capability": "onoff",
-    "deviceName": "Living Room Light"
-  },
-  {
-    "input": "b",
-    "deviceId": "def456...",
-    "capability": "alarm_motion",
-    "deviceName": "Motion Sensor"
-  }
-]
-```
-
-These are automatically created during pairing and stored for reference.
-
-### Supported Operators
-
-| Operator | Symbols | Example | Description |
-|----------|---------|---------|-------------|
-| AND | `AND`, `&`, `*` | `A AND B` | Both must be true |
-| OR | `OR`, `+`, `|` | `A OR B` | At least one must be true |
-| XOR | `XOR`, `^`, `!=` | `A XOR B` | Exactly one must be true |
-| NOT | `NOT`, `!` | `NOT A` | Inverts the value |
-
-### Expression Examples
-
-```javascript
-// Simple
-"A AND B"
-
-// Complex grouping
-"(A OR B) AND (C OR D)"
-
-// With NOT
-"A AND NOT B"
-
-// All 10 inputs
-"A AND B AND C AND D AND E AND F AND G AND H AND I AND J"
-```
-
----
-
-## 📊 Dynamic Input Capacity
-
-The Logic Device automatically detects required inputs from:
-
-1. **Formula expressions** - Scans for letters A-J
-2. **Input links** - Checks configured device connections
-
-**Example:**
-
-```json
-// Device created with 2 inputs
-
-// You save this formula:
-{
-  "expression": "A AND B AND C AND D AND E AND F"
-}
-
-// Device automatically expands to 6 inputs! ✨
-```
-
-**Benefits:**
-- ✅ Start small, grow as needed
-- ✅ No need to recreate devices
-- ✅ Handles up to 10 inputs (A-J)
-- ✅ Auto-detects from both formulas and links
-
----
-
-## 🔄 First Impression vs Reactive Mode
-
-### First Impression Mode (`firstImpression: true`)
-
-**How it works:**
-- 🔒 Locks each input at its **first received value**
-- ⚡ Evaluates when **all required inputs** are set
-- 🛡️ Ignores subsequent changes until manual re-evaluation
-
-**Use for:**
-- Sequences that should complete in order
-- One-time trigger evaluations
-- Startup condition checks
-- Timeout-sensitive logic
-
-**Example:**
-```json
-{
-  "expression": "A AND B AND C",
-  "timeout": 30,
-  "firstImpression": true
-}
-```
-
-### Reactive Mode (`firstImpression: false` - default)
-
-**How it works:**
-- 🔄 Inputs can change continuously
-- ⚡ Re-evaluates on every input change
-- 📊 Real-time monitoring
-
-**Use for:**
-- Live sensor monitoring
-- Dynamic conditions
-- Continuous state tracking
-
-**Example:**
-```json
-{
-  "expression": "A AND B",
-  "timeout": 0,
-  "firstImpression": false
-}
-```
-
----
-
-## 🎨 JSON Auto-Formatting
-
-The Logic Device automatically formats your JSON when you save:
-
-**Before Save:**
-```json
-[{"id":"f1","name":"Test","expression":"A AND B","enabled":true,"timeout":0,"firstImpression":false}]
-```
-
-**After Save:**
-```json
-[
-  {
-    "id": "f1",
-    "name": "Test",
-    "expression": "A AND B",
-    "enabled": true,
-    "timeout": 0,
-    "firstImpression": false
-  }
-]
-```
-
-Works for both `formulas` and `input_links`! ✨
+[📚 Read complete setup guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/getting-started.html)
 
 ---
 
 ## 🎮 Flow Cards
 
 ### Triggers (WHEN)
-
-- **Formula result changed to TRUE** - Specific formula became true
-- **Formula result changed to FALSE** - Specific formula became false
-- **Formula timed out** - Didn't receive all inputs in time
-- **State changed** (Logic Device only) - Any state change with state token
-
-### Actions (THEN)
-
-- **Set input value for formula** - Manually set input for specific formula
-- **Evaluate formula** - Reset locks and re-evaluate one formula
-- **Re-evaluate all formulas** - Reset locks and re-evaluate all
+- Formula result changed to TRUE/FALSE
+- Formula timed out
+- State changed *(Logic Device only)*
+- ~~Waiter Gates~~ *(use condition card)*
 
 ### Conditions (AND)
+- Formula result is...
+- Formula has timed out
+- **Wait until device capability becomes value** *(Waiter Gates - BETA)*
 
-- **Formula result is...** - Check if true/false
-- **Formula has timed out** - Check timeout status
+### Actions (THEN)
+- Set input value for formula
+- Evaluate formula / Re-evaluate all
+- **Control waiter gate** *(Waiter Gates - BETA)*
+- **Wait** *(Simple delay - BONUS)*
+
+[📚 See all flow cards →](https://tiwas.github.io/HomeyBooleanToolbox/docs/flow-cards.html)
+
+---
+
+## 💡 Key Features
+
+### Dynamic Input Expansion
+Start with 2 inputs, grow to 10 automatically:
+```json
+// Created with 2 inputs, saved with:
+{"expression": "A AND B AND C AND D"}
+// Device auto-expands to 4 inputs! ✨
+```
+
+### First Impression Mode
+Lock inputs at first value for sequence-based logic:
+```json
+{"firstImpression": true, "timeout": 30}
+```
+
+### Multiple Independent Formulas
+Each formula maintains its own input states:
+```json
+[
+  {"id": "day_mode", "expression": "A AND B"},
+  {"id": "night_mode", "expression": "A OR B"}
+]
+```
+
+### JSON Auto-Formatting
+Paste ugly JSON, get beautiful formatting on save. Works in all settings fields.
+
+[📚 Read advanced features →](https://tiwas.github.io/HomeyBooleanToolbox/docs/advanced.html)
 
 ---
 
 ## 🛠️ Troubleshooting
 
-### Device Not Expanding Inputs
+**Device not expanding inputs?**
+- Check formula syntax (must use A-J)
+- Verify settings saved successfully
 
-**Check:**
-- ✅ Formula syntax is correct (uses A-J)
-- ✅ Input links are properly formatted JSON
-- ✅ Settings were saved successfully
+**Formula not evaluating?**
+- Ensure `"enabled": true`
+- Check all required inputs have values
 
-**Logs will show:**
-```
-🔍 Detected max input: E (5 inputs needed)
-📈 Detected 5 inputs needed (originally 2). Expanding capacity!
-```
+**Waiter Gates not working?**
+- Verify device capability exists
+- Check timeout values are reasonable
+- Look for errors in Homey app logs
 
-### JSON Not Auto-Formatting
-
-**Common causes:**
-- ❌ Invalid JSON syntax
-- ❌ Missing quotes or commas
-
-**Look for log message:**
-```
-✨ Auto-formatted formulas JSON
-```
-
-### Formula Not Evaluating
-
-**Check:**
-- ✅ Formula is `"enabled": true`
-- ✅ All required inputs have values
-- ✅ Expression syntax is correct
-- ✅ Device has enough input capacity
+[📚 Read full troubleshooting guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/troubleshooting.html)
 
 ---
 
-## 📚 Technical Details
+## 🤝 Support & Community
 
-### Device Comparison
-
-| Feature | Logic Device | Logic Units |
-|---------|-------------|-------------|
-| Pairing | Visual wizard | Simple add |
-| Input Count | Dynamic (2-10) | Fixed (2-10) |
-| Setup | Zone-based | Manual JSON |
-| Expansion | Automatic | Fixed |
-| JSON Format | Auto-format | Manual |
-| Best For | Most users | Simple setups |
-
-### System Requirements
-
-- **Homey Pro:** ✅ Fully supported
-- **Homey Cloud:** ✅ Fully supported  
-- **Minimum Version:** Homey 5.0.0
-- **SDK:** 3
-
----
-
-## 🤝 Support & Contribution
-
-- **Community:** [Homey Forum](https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906)
+- **Forum:** [Homey Community](https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906)
 - **Issues:** [GitHub Issues](https://github.com/Tiwas/HomeyBooleanToolbox/issues)
-- **Source:** [GitHub](https://github.com/Tiwas/HomeyBooleanToolbox)
-- **Docs:** [GitHub Pages](https://tiwas.github.io/HomeyBooleanToolbox/)
-
-### Author
-
-Created by **Lars Kvanum** ([@Tiwas](https://github.com/Tiwas))
+- **Source:** [GitHub Repository](https://github.com/Tiwas/HomeyBooleanToolbox)
 
 ### Support Development
+
+If this app makes your life easier, consider buying me a coffee ☕
 
 [![PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/paypalme/tiwasno)
 
 ---
 
-## 📝 Changelog
+## 📝 Recent Changes
 
-### v1.2.0 (Current)
-- ✨ NEW: Logic Device with visual pairing wizard
-- ✨ NEW: Dynamic input capacity (auto-expands 2-10)
-- ✨ NEW: Zone/room-based device selection during pairing
-- ✨ NEW: JSON auto-formatting for formulas and input links
-- ✨ NEW: "State changed" trigger with state token
-- 🔧 IMPROVED: Event-driven architecture (removed polling)
-- 🔧 IMPROVED: Better initial value detection
-- 🔧 IMPROVED: Shared base classes for code maintainability
-- 📚 IMPROVED: Enhanced documentation
+### v1.3.0 (Current)
+- ✨ NEW: Waiter Gates (BETA) - Reactive flow cards with device capability monitoring
+- ✨ NEW: Simple "Wait" action card
+- 🌍 Complete localization: 12 languages (en, no, da, de, es, fr, it, nl, sv, pl, fi, ru)
+- 🔧 Improved logging (less verbose)
+- 🧹 Code quality improvements
 
-### v1.1.1
-- 🌍 Added machine-generated translations
-- 📚 Documentation updates
+### v1.2.0
+- ✨ Logic Device with visual pairing wizard
+- ✨ Dynamic input capacity (2-10, auto-expands)
+- ✨ JSON auto-formatting
 
-### v1.1.0
-- ✨ Isolated input states per formula
-- ✨ "First Impression" mode
-- ✨ Timeout detection
-- ✨ Manual re-evaluation actions
-- ⚠️ Breaking: Flow cards changed
-- ⚠️ Recommended to create new devices
-
-### v1.0.0
-- ✨ Support for 10 inputs
-- ✨ Advanced flow cards
-
-### v0.7.0
-- 🐛 Major stability improvements
-
-### v0.5.1
-- 🎨 Visual improvements
-
-### v0.5.0
-- 🎉 Initial release
+[📚 See full changelog →](https://tiwas.github.io/HomeyBooleanToolbox/docs/changelog.html)
 
 ---
 
-## 📄 License
+## 📄 License & Credits
+
+Created by **Lars Kvanum** ([@Tiwas](https://github.com/Tiwas))
 
 This app is provided as-is. Use at your own risk.
 
 ---
 
-**Boolean Toolbox v1.2.0** - Create smarter automations with advanced boolean logic! 🚀
+**Boolean Toolbox v1.3.0** - Smarter automations with advanced boolean logic 🚀
