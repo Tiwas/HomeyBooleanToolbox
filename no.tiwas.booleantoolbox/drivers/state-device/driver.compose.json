@@ -1,0 +1,146 @@
+{
+  "name": {
+    "en": "State Device",
+    "no": "Tilstandsenhet",
+    "de": "Zustandsgerät",
+    "nl": "Statusapparaat",
+    "fr": "Appareil d'État",
+    "da": "Tilstandsenhed",
+    "fi": "State Device",
+    "sv": "Tillståndsenhet",
+    "pl": "Urządzenie Stanu",
+    "it": "Dispositivo di Stato",
+    "es": "Dispositivo de Estado"
+  },
+  "class": "other",
+  "capabilities": [
+    "onoff",
+    "alarm_generic"
+  ],
+  "settings": [
+    {
+      "id": "json_data",
+      "type": "textarea",
+      "label": {
+        "en": "Configuration (JSON)",
+        "no": "Konfigurasjon (JSON)",
+        "de": "Konfiguration (JSON)",
+        "nl": "Configuratie (JSON)",
+        "fr": "Configuration (JSON)",
+        "da": "Konfiguration (JSON)",
+        "fi": "Konfiguraatio (JSON)",
+        "sv": "Konfiguration (JSON)",
+        "pl": "Konfiguracja (JSON)",
+        "it": "Configurazione (JSON)",
+        "es": "Configuración (JSON)"
+      },
+      "value": "{\n  \"config\": {\n    \"default_delay\": 200,\n    \"ignore_errors\": true\n  },\n  \"items\": []\n}"
+    },
+    {
+      "id": "log_errors",
+      "type": "checkbox",
+      "label": {
+        "en": "Log errors to Timeline",
+        "no": "Logg feil til Tidslinjen",
+        "de": "Fehler in Timeline protokollieren",
+        "nl": "Log fouten naar tijdlijn",
+        "fr": "Journaliser les erreurs dans la chronologie",
+        "da": "Log fejl til tidslinjen",
+        "fi": "Log errors to Timeline",
+        "sv": "Logga fel till tidslinjen",
+        "pl": "Loguj błędy do osi czasu",
+        "it": "Registra errori nella timeline",
+        "es": "Registrar errores en la línea de tiempo"
+      },
+      "value": true
+    }
+  ],
+  "images": {
+    "large": "/assets/images_state_device/large.png",
+    "small": "/assets/images_state_device/small.png"
+  },
+  "pair": [
+    {
+      "id": "select_scope"
+    },
+    {
+      "id": "select_devices"
+    },
+    {
+      "id": "edit_configuration"
+    }
+  ],
+  "flow": {
+    "triggers": [
+      {
+        "id": "state_applied_successfully_sd",
+        "title": {
+          "en": "State applied successfully",
+          "no": "Tilstand brukt vellykket",
+          "de": "Zustand erfolgreich angewendet",
+          "nl": "Status succesvol toegepast",
+          "fr": "État appliqué avec succès",
+          "da": "Tilstand anvendt succesfuldt",
+          "fi": "State applied successfully",
+          "sv": "Tillstånd tillämpat framgångsrikt",
+          "pl": "Stan zastosowany pomyślnie",
+          "it": "Stato applicato con successo",
+          "es": "Estado aplicado con éxito"
+        }
+      },
+      {
+        "id": "state_error_occurred_sd",
+        "title": {
+          "en": "Error occurred",
+          "no": "Feil oppstod",
+          "de": "Fehler aufgetreten",
+          "nl": "Fout opgetreden",
+          "fr": "Une erreur est survenue",
+          "da": "Fejl opstod",
+          "fi": "Error occurred",
+          "sv": "Fel inträffade",
+          "pl": "Wystąpił błąd",
+          "it": "Si è verificato un errore",
+          "es": "Ocurrió un error"
+        },
+        "tokens": [
+          {
+            "name": "error",
+            "type": "string",
+            "title": {
+              "en": "Error",
+              "no": "Feil",
+              "de": "Fehler",
+              "nl": "Fout",
+              "fr": "Erreur",
+              "da": "Fejl",
+              "fi": "Virhe",
+              "sv": "Fel",
+              "pl": "Błąd",
+              "it": "Errore",
+              "es": "Error"
+            }
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "apply_state_sd",
+        "title": {
+          "en": "Apply state",
+          "no": "Bruk tilstand",
+          "de": "Zustand anwenden",
+          "nl": "Status toepassen",
+          "fr": "Appliquer l'état",
+          "da": "Anvend tilstand",
+          "fi": "Apply state",
+          "sv": "Tillämpa tillstånd",
+          "pl": "Zastosuj stan",
+          "it": "Applica stato",
+          "es": "Aplicar estado"
+        }
+      }
+    ]
+  }
+}

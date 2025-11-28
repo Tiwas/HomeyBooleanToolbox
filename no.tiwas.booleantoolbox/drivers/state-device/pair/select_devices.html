@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .homey-header {
+            margin-bottom: 20px;
+        }
+        .homey-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .homey-subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+        .device-list {
+            max-height: 350px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            padding: 10px;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 5px;
+        }
+        .device-item {
+            padding: 8px 5px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .device-item:last-child {
+            border-bottom: none;
+        }
+        .device-item label {
+            margin-left: 10px;
+            cursor: pointer;
+            flex-grow: 1;
+        }
+        .zone-name {
+            color: #999;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .toolbar a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        button {
+            padding: 15px 40px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="homey-header">
+        <h1 class="homey-title" data-i18n="pair.select_devices.title">Select Devices</h1>
+        <p class="homey-subtitle" data-i18n="pair.select_devices.subtitle">Uncheck devices you don't want to include.</p>
+    </header>
+
+    <div class="homey-view-content">
+        <div class="toolbar">
+            <a id="devices-select-all" data-i18n="pair.select_devices.select_all">Select All</a>
+            <a id="devices-deselect-all" data-i18n="pair.select_devices.deselect_all">Deselect All</a>
+        </div>
+
+        <div id="devices-list-container" class="device-list">
+            <p>Loading devices...</p>
+        </div>
+    </div>
+
+    <div class="homey-view-buttons">
+        <button id="devices-next-button" data-i18n="pair.next">Next</button>
+    </div>
+
+    <script type="text/javascript">
+        // Variables unique to this view (suffixed with Dev)
+        const devicesContainerDev = document.getElementById('devices-list-container');
+        const nextButtonDev = document.getElementById('devices-next-button');
+        const selectAllBtnDev = document.getElementById('devices-select-all');
+        const deselectAllBtnDev = document.getElementById('devices-deselect-all');
+        let candidateDevices = [];
+        let isHomeyReadyDev = false;
+
+        function applyTranslationsDev() {
+            if (typeof Homey === 'undefined' || typeof Homey.__ !== 'function') return;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                try { el.textContent = Homey.__(key); } catch(e) {}
+            });
+        }
+
+        function onHomeyReadyDev() {
+            if (isHomeyReadyDev) return;
+            isHomeyReadyDev = true;
+
+            console.log('[Select Devices] onHomeyReadyDev called');
+            Homey.setTitle(Homey.__('pair.select_devices.title'));
+            applyTranslationsDev();
+
+            // Fetch candidates
+            console.log('[Select Devices] Emitting get_snapshot_candidates...');
+            Homey.emit('get_snapshot_candidates', {}, function(err, result) {
+                console.log('[Select Devices] get_snapshot_candidates callback:', err, result);
+                if (err) {
+                    Homey.alert(err.message || 'Error fetching devices');
+                    devicesContainerDev.innerHTML = '<p style="padding:10px; color:red;">Error: ' + (err.message || err) + '</p>';
+                    return;
+                }
+
+                // Robust parsing
+                if (typeof result === 'string') {
+                    try {
+                        result = JSON.parse(result);
+                    } catch (e) {
+                        console.error('[Select Devices] Failed to parse result:', e);
+                        result = [];
+                    }
+                }
+
+                candidateDevices = Array.isArray(result) ? result : [];
+                renderDevicesDev();
+            });
+        }
+
+        // Robust check for Homey readiness with manual unique poller
+        function waitForHomeyDev() {
+            if (typeof Homey !== 'undefined') {
+                onHomeyReadyDev();
+            } else {
+                setTimeout(waitForHomeyDev, 100);
+            }
+        }
+        waitForHomeyDev();
+
+        function renderDevicesDev() {
+            devicesContainerDev.innerHTML = '';
+            if (!candidateDevices || candidateDevices.length === 0) {
+                devicesContainerDev.innerHTML = '<p style="padding:10px;">No devices found matching the criteria.</p>';
+                return;
+            }
+
+            candidateDevices.forEach(device => {
+                const div = document.createElement('div');
+                div.className = 'device-item';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = device.id;
+                checkbox.id = `device-${device.id}`;
+                checkbox.checked = true; // Default to checked
+
+                const label = document.createElement('label');
+                label.htmlFor = `device-${device.id}`;
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.innerText = device.name;
+                
+                const zoneSpan = document.createElement('span');
+                zoneSpan.className = 'zone-name';
+                // If zone name is available in the device object
+                if (device.zoneName) {
+                    zoneSpan.innerText = `(${device.zoneName})`;
+                }
+
+                label.appendChild(nameSpan);
+                label.appendChild(zoneSpan);
+
+                div.appendChild(checkbox);
+                div.appendChild(label);
+                devicesContainerDev.appendChild(div);
+            });
+        }
+
+        selectAllBtnDev.addEventListener('click', () => {
+            devicesContainerDev.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
+        });
+
+        deselectAllBtnDev.addEventListener('click', () => {
+            devicesContainerDev.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+        });
+
+        nextButtonDev.addEventListener('click', function() {
+            console.log('[Select Devices] Next button clicked');
+            nextButtonDev.disabled = true;
+            nextButtonDev.innerText = (typeof Homey !== 'undefined' ? Homey.__('pair.generating_snapshot') : 'Generating...');
+
+            const selectedIds = [];
+            const checkboxes = devicesContainerDev.querySelectorAll('input[type="checkbox"]:checked');
+            checkboxes.forEach(cb => selectedIds.push(cb.value));
+
+            console.log('[Select Devices] Saving selection:', selectedIds.length);
+            // Generate final snapshot on backend
+            Homey.emit('save_selection', { 
+                selectedIds: selectedIds 
+            }, function(err, result) {
+                nextButtonDev.disabled = false;
+                nextButtonDev.innerText = Homey.__('pair.next');
+
+                if (err) {
+                    Homey.alert(err.message || 'Error generating snapshot');
+                    return;
+                }
+                
+                // Proceed to next view (Edit Configuration)
+                Homey.showView('edit_configuration');
+            });
+        });
+    </script>
+</body>
+</html>

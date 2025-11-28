@@ -458,9 +458,29 @@
         "title": "Legg til logisk enhet",
         "unknown_capability_fallback": "Ukjent kapabilitet",
         "unknown_device": "Ukjent enhet",
-        "zone_label": "Sone/Rom:"
-    },
-    "parse": {
+            "zone_label": "Sone/Rom:",
+        "select_devices": {
+            "deselect_all": "Fjern alle",
+            "select_all": "Velg alle",
+            "subtitle": "Fjern haken for enheter du ikke vil inkludere.",
+            "title": "Velg enheter"
+        },
+        "select_scope": {
+            "description": "Velg sonene (rommene) du vil hente tilstand fra. Velg \"Hele huset\" for å inkludere alt (bruk med forsiktighet på store oppsett).",
+            "error_no_selection": "Vennligst velg minst én sone.",
+            "subtitle": "Velg hvilke soner som skal inkluderes i øyeblikksbildet.",
+            "title": "Velg omfang",
+            "whole_house": "Hele huset"
+        },
+            "generating_snapshot": "Genererer øyeblikksbilde...",
+            "edit_configuration": {
+              "title": "Rediger konfigurasjon",
+              "subtitle": "Se over og rediger den fangede tilstanden.",
+              "description": "JSON-koden nedenfor inneholder den fangede tilstanden til enhetene dine. Du kan redigere verdier, fjerne enheter eller endre forsinkelser."
+            },
+            "error_name_required": "Vennligst skriv inn et enhetsnavn.",
+            "error_invalid_json": "Ugyldig JSON:"
+          },    "parse": {
         "error_detecting_inputs": "Feil ved deteksjon av nødvendige innganger:",
         "error_formulas": "Klarte ikke å parse formler:",
         "error_formulas_invalid": "Ugyldig formler JSON: {message}",
@@ -489,9 +509,18 @@
         "applied": "Innstillinger anvendt vellykket",
         "applying_formatted": "Anvender auto-formaterte innstillinger...",
         "auto_formatted": "Innstillinger auto-formatert",
+        "auto_update": {
+            "enable_label": "Aktiver automatisk oppdatering",
+            "help": "Oppdater konfigurasjon/øyeblikksbilder automatisk når endringer oppdages."
+        },
         "cancel": "Avbryt",
         "changed": "Innstillinger endret:",
         "changed_dynamic": "Innstillinger endret (dynamisk enhet):",
+        "debug": {
+            "enable_label": "Aktiver feilsøkingsmodus",
+            "help": "Aktiverer detaljert logging for feilsøking. Anbefales ikke for daglig bruk da det genererer mye logg.",
+            "legend": "Feilsøking"
+        },
         "description": "Konfigurer din Boolean Toolbox logiske enhet",
         "error": "Kunne ikke lagre innstillinger",
         "expanded": "Kapasitet utvidet til {numInputs} innganger: {availableInputs}",
@@ -499,6 +528,9 @@
         "expansion_failed": "Klarte ikke å auto-utvide kapasitet:",
         "format_failed": "Klarte ikke å auto-formatere innstillinger:",
         "formatting": "Vil auto-formatere {type} JSON",
+        "general": {
+            "legend": "Generelt"
+        },
         "reset": "Tilbakestill til standard",
         "save": "Lagre",
         "saved": "Innstillinger lagret",

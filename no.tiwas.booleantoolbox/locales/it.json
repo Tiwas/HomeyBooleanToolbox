@@ -458,7 +458,28 @@
     "title": "Aggiungi dispositivo logico",
     "unknown_capability_fallback": "Capacità sconosciuta",
     "unknown_device": "Dispositivo sconosciuto",
-    "zone_label": "Zona/Stanza:"
+    "zone_label": "Zona/Stanza:",
+    "select_scope": {
+      "title": "Select Scope",
+      "subtitle": "Choose which zones to include in the snapshot.",
+      "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
+      "whole_house": "Whole House",
+      "error_no_selection": "Please select at least one zone."
+    },
+    "generating_snapshot": "Generating snapshot...",
+    "edit_configuration": {
+      "title": "Edit Configuration",
+      "subtitle": "Review and edit the captured state.",
+      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
+    },
+    "error_name_required": "Please enter a device name.",
+    "error_invalid_json": "Invalid JSON:",
+    "select_devices": {
+      "deselect_all": "Deselect All",
+      "select_all": "Select All",
+      "subtitle": "Uncheck devices you don't want to include.",
+      "title": "Select Devices"
+    }
   },
   "parse": {
     "error_detecting_inputs": "Errore nel rilevamento degli input richiesti:",
@@ -502,7 +523,19 @@
     "reset": "Ripristina predefiniti",
     "save": "Salva",
     "saved": "Impostazioni salvate",
-    "title": "Impostazioni"
+    "title": "Impostazioni",
+    "auto_update": {
+      "enable_label": "Enable Automatic Update",
+      "help": "Automatically update configuration/snapshots when changes are detected."
+    },
+    "debug": {
+      "enable_label": "Enable Debug Mode",
+      "help": "Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.",
+      "legend": "Debug"
+    },
+    "general": {
+      "legend": "General"
+    }
   },
   "timeout": {
     "error": "Errore nell'attivazione del timeout:"

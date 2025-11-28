@@ -457,7 +457,28 @@
     "title": "Add logic device",
     "unknown_capability_fallback": "Unknown Capability",
     "unknown_device": "Unknown Device",
-    "zone_label": "Zone/Room:"
+    "zone_label": "Zone/Room:",
+    "select_devices": {
+      "deselect_all": "Deselect All",
+      "select_all": "Select All",
+      "subtitle": "Uncheck devices you don't want to include.",
+      "title": "Select Devices"
+    },
+    "select_scope": {
+      "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
+      "error_no_selection": "Please select at least one zone.",
+      "subtitle": "Choose which zones to include in the snapshot.",
+      "title": "Select Scope",
+      "whole_house": "Whole House"
+    },
+    "generating_snapshot": "Generating snapshot...",
+    "edit_configuration": {
+      "title": "Edit Configuration",
+      "subtitle": "Review and edit the captured state.",
+      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
+    },
+    "error_name_required": "Please enter a device name.",
+    "error_invalid_json": "Invalid JSON:"
   },
   "parse": {
     "error_detecting_inputs": "Error detecting required inputs:",
@@ -491,6 +512,15 @@
     "cancel": "Cancel",
     "changed": "Settings changed:",
     "changed_dynamic": "Settings changed (dynamic device):",
+    "auto_update": {
+      "enable_label": "Enable Automatic Update",
+      "help": "Automatically update configuration/snapshots when changes are detected."
+    },
+    "debug": {
+      "enable_label": "Enable Debug Mode",
+      "help": "Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.",
+      "legend": "Debug"
+    },
     "description": "Configure your Boolean Toolbox logic device",
     "error": "Could not save settings",
     "expanded": "Capacity expanded to {numInputs} inputs: {availableInputs}",
@@ -498,6 +528,9 @@
     "expansion_failed": "Failed to auto-expand capacity:",
     "format_failed": "Failed to auto-format settings:",
     "formatting": "Will auto-format {type} JSON",
+    "general": {
+      "legend": "General"
+    },
     "reset": "Reset to default",
     "save": "Save",
     "saved": "Settings saved",

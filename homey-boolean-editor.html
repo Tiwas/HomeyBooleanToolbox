@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boolean Editor</title>
+    <title>Boolean Editor & Snapshot</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -153,7 +153,7 @@
                             </li>
                             <li class="flex gap-3">
                                 <span class="font-bold">4.</span>
-                                <span data-i18n="apiSetup.step4">Add your <strong>Redirect URL</strong> (see below)</span>
+                                <span data-i18n="apiSetup.step4">Add your Redirect URL (see below)</span>
                             </li>
                             <li class="flex gap-3">
                                 <span class="font-bold">5.</span>
@@ -192,9 +192,11 @@
             </div>
 
             <div id="login-screen" class="screen text-center p-16"></div>
+            
+            <!-- Main Menu -->
             <div id="main-menu-screen" class="screen">
                 <h2 class="text-xl font-bold mb-6 text-center">What would you like to work with?</h2>
-                <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div class="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
                     <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="window.app.showScreen('edit-devices-screen')">
                         <h3 class="text-lg font-semibold mb-2">⚙️ Manage Existing Devices</h3>
                         <p class="text-gray-400 text-sm">View and modify settings for existing Boolean Toolbox devices.</p>
@@ -209,8 +211,15 @@
                         <p class="text-gray-200 text-sm">Connect device capabilities and create boolean expressions.</p>
                         <p class="text-xs text-green-200 mt-2">• Single formula with device inputs</p>
                     </div>
+                    <div class="bg-gradient-to-br from-purple-600 to-purple-700 p-6 rounded-lg hover:from-purple-500 hover:to-purple-600 transition-all cursor-pointer shadow-lg" onclick="window.app.startSnapshotFlow()">
+                        <h3 class="text-lg font-semibold mb-2">📸 Snapshot Manager</h3>
+                        <p class="text-gray-200 text-sm">Capture device states and create Restore JSON.</p>
+                        <p class="text-xs text-purple-200 mt-2">• Filter and export state</p>
+                    </div>
                 </div>
             </div>
+
+            <!-- Edit Devices Screen -->
             <div id="edit-devices-screen" class="screen">
                 <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
                     <span data-i18n="back">← Back to menu</span>
@@ -218,6 +227,8 @@
                 <h2 class="text-xl font-bold mb-4" data-i18n="editDevices.title">Edit Boolean Toolbox Devices</h2>
                 <div id="edit-devices-list" class="space-y-6"></div>
             </div>
+
+            <!-- Settings Modal -->
             <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center p-4 z-50">
                 <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-700">
                     <h3 id="settings-modal-title" class="text-lg font-bold mb-4" data-i18n="settings.title">Settings</h3>
@@ -228,6 +239,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Logic Unit Select Screen -->
             <div id="logic-unit-select-screen" class="screen">
                 <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
                     <span>← Back to menu</span>
@@ -245,6 +258,7 @@
                 </div>
             </div>
             
+            <!-- Logic Unit Port Select -->
             <div id="logic-unit-port-screen" class="screen">
                 <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('logic-unit-select-screen')">
                     <span>← Back</span>
@@ -264,6 +278,7 @@
                 </div>
             </div>
             
+            <!-- Logic Unit Editor -->
             <div id="logic-unit-editor-screen" class="screen">
                 <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('logic-unit-select-screen')">
                     <span>← Back</span>
@@ -282,6 +297,7 @@
                 </button>
             </div>
             
+            <!-- Logic Device Select -->
             <div id="logic-device-select-screen" class="screen">
                 <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
                     <span>← Back to menu</span>
@@ -299,6 +315,7 @@
                 </div>
             </div>
             
+            <!-- Logic Device Editor -->
             <div id="logic-device-editor-screen" class="screen">
                 <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('logic-device-select-screen')">
                     <span>← Back</span>
@@ -323,7 +340,7 @@
                                 Operators: <code class="bg-gray-700 px-1 rounded">AND</code> <code class="bg-gray-700 px-1 rounded">*</code> · 
                                 <code class="bg-gray-700 px-1 rounded">OR</code> <code class="bg-gray-700 px-1 rounded">+</code> · 
                                 <code class="bg-gray-700 px-1 rounded">NOT</code> <code class="bg-gray-700 px-1 rounded">!</code> · 
-                                <code class="bg-gray-700 px-1 rounded">XOR</code> <code class="bg-gray-700 px-1 rounded">^</code> · 
+                                <code class="bg-gray-700 px-1 rounded">XOR</code> <code class="bg-gray-700 px-1 rounded">^</code>
                                 Parentheses <code class="bg-gray-700 px-1 rounded">()</code>
                             </p>
                             <textarea id="logic-device-formula" class="w-full h-32 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm" placeholder="Examples: (A AND B) OR C
@@ -339,14 +356,40 @@ a or (b and c)"></textarea>
                     </aside>
                 </div>
             </div>
-            
-            <div id="json-import-screen" class="screen">
+
+            <!-- Snapshot Screen -->
+            <div id="snapshot-screen" class="screen">
                 <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
                     <span>← Back to menu</span>
                 </button>
-                <h2 class="text-xl font-bold mb-4">This feature has been redesigned</h2>
-                <p class="text-gray-400 mb-6">Please use the new Logic Unit or Logic Device flows from the main menu.</p>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold">Snapshot Manager</h2>
+                        <p class="text-gray-400 text-sm mt-1">Capture device states, remove unwanted items, and export JSON.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="app.captureState()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2">
+                            📸 Capture Current State
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                    <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
+                        <h3 class="font-semibold text-lg">Captured Items (<span id="snapshot-count">0</span>)</h3>
+                        <button id="snapshot-copy-btn" onclick="app.copySnapshotJSON()" class="hidden bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold py-1 px-3 rounded transition-colors">
+                            📋 Copy JSON
+                        </button>
+                    </div>
+                    
+                    <div id="snapshot-list" class="space-y-0 max-h-[60vh] overflow-y-auto">
+                        <div class="text-gray-500 text-center py-10 italic">
+                            Click "Capture Current State" to begin.
+                        </div>
+                    </div>
+                </div>
             </div>
+            
         </main>
         
         <!-- Loading Modal -->
@@ -370,7 +413,6 @@ a or (b and c)"></textarea>
             nl: '🇳🇱'
         };
 
-        // Simple translations fallback (will be replaced by loaded files)
         const defaultTranslations = {
             en: {
                 subtitle: "For Homey Boolean Toolbox (Self-hosted)",
@@ -378,7 +420,6 @@ a or (b and c)"></textarea>
                 back: "← Back to menu",
                 close: "Close",
                 save: "Save",
-                next: "Next →",
                 apiSettings: "⚙️ API Settings",
                 apiSetup: {
                     title: "🔧 API Setup Required",
@@ -411,23 +452,11 @@ a or (b and c)"></textarea>
                     noHomey: "No Homey found on your account.",
                     afterLogin: "Error after login:",
                     fetchData: "Failed to fetch data:",
-                    deviceNotFound: "Device not found: {id}",
-                    capabilityNotFound: "Capability {cap} not found on device {device}"
-                },
-                menu: {
-                    editDevices: "Edit existing devices",
-                    editDevicesDesc: "View and modify settings for devices created with Boolean Toolbox.",
-                    createExpression: "Create new expression",
-                    createExpressionDesc: "Select devices and capabilities to build a new boolean formula.",
-                    importJson: "Import from JSON",
-                    importJsonDesc: "Start with an existing expression by pasting JSON data."
                 },
                 editDevices: {
                     title: "Edit Boolean Toolbox Devices",
                     noDevices: "No Boolean Toolbox devices found",
                     settings: "Settings",
-                    debugTitle: "🔍 Debug: All Driver IDs (click to expand)",
-                    debugHelp: "Check the debug info above to find the correct driver ID, or all devices will be shown below."
                 },
                 settings: {
                     title: "Settings",
@@ -438,31 +467,8 @@ a or (b and c)"></textarea>
                     saved: "Settings saved successfully!"
                 },
                 step1: {
-                    title: "Step 1: Select devices and capabilities",
-                    description: "Select between 2 and 10 capabilities to include in the expression.",
-                    selected: "Selected capabilities",
-                    noneSelected: "No capabilities selected yet",
-                    maxCapabilities: "Maximum 10 capabilities allowed"
-                },
-                step2: {
-                    title: "Step 2: Build boolean formula",
-                    yourVariables: "Your selected variables:",
-                    formulaEditor: "Formula editor",
-                    formulaHelp: "Use variables A-J and operators AND, OR, NOT, XOR and parentheses ()."
-                },
-                import: {
-                    title: "Import from JSON",
-                    devicesTitle: "Devices and capabilities",
-                    devicesHelp: "Paste a JSON array with objects containing 'deviceId' and 'capabilityId'.",
-                    formulaTitle: "Formula (optional)",
-                    formulaHelp: "Paste the boolean formula as text.",
-                    button: "Import and continue",
-                    errorEmpty: "Please enter device and capability data",
-                    errorRange: "Please select between 2 and 10 capabilities",
-                    errorParsing: "Failed to parse JSON:"
-                },
-                saveExpression: "Save expression",
-                backToSelection: "← Back to selection"
+                    noneSelected: "No capabilities selected yet"
+                }
             }
         };
 
@@ -481,6 +487,7 @@ a or (b and c)"></textarea>
                 processingAuth = false;
                 currentLang = 'en';
                 translations = {};
+                snapshotData = [];
 
                 constructor() {
                     this.currentLang = localStorage.getItem('language') || 'en';
@@ -488,7 +495,7 @@ a or (b and c)"></textarea>
                     this.logicUnitFormulas = [];
                     this.logicUnitPorts = 0;
                     this.logicDeviceCapabilities = [];
-                    this.evaluationDebounceTimer = null; // For debouncing truth table updates
+                    this.evaluationDebounceTimer = null; 
                     this.init();
                 }
 
@@ -573,7 +580,6 @@ a or (b and c)"></textarea>
                         element.textContent = this.t(key);
                     });
                     
-                    // Update placeholders
                     const clientIdInput = document.getElementById('client-id-input');
                     const clientSecretInput = document.getElementById('client-secret-input');
                     if (clientIdInput) clientIdInput.placeholder = this.t('apiSetup.clientIdPlaceholder');
@@ -586,28 +592,20 @@ a or (b and c)"></textarea>
                             throw new Error("AthomCloudAPI script did not load correctly. Please check your internet connection and ad-blockers.");
                         }
 
-                        // Wait for libraries to load
                         await window.HomeyLibrariesReady;
-
-                        // Set redirect URL display
                         document.getElementById('redirect-url-display').value = this.getRedirectUrl();
-                        
                         await this.initLanguageSelector();
 
-                        // Check if API credentials are saved
                         this.CLIENT_ID = localStorage.getItem('homey_client_id');
                         this.CLIENT_SECRET = localStorage.getItem('homey_client_secret');
 
                         if (!this.CLIENT_ID || !this.CLIENT_SECRET) {
-                            // Show API setup screen
                             this.showScreen('api-setup-screen');
                             this.setupApiForm();
                             return;
                         }
 
-                        // Initialize CloudAPI
                         this.cloudApi = new AthomCloudAPI({ clientId: this.CLIENT_ID, clientSecret: this.CLIENT_SECRET });
-                        
                         this.setupEventListeners();
                         this.renderLoginScreen();
 
@@ -615,10 +613,9 @@ a or (b and c)"></textarea>
                         const code = urlParams.get('code');
 
                         if (code) {
-                            // Check if we have credentials before processing auth code
                             if (!this.CLIENT_ID || !this.CLIENT_SECRET) {
                                 console.warn('Received auth code but no credentials stored');
-                                window.location.href = window.location.pathname; // Remove code param
+                                window.location.href = window.location.pathname; 
                                 return;
                             }
                             await this.handleAuthRedirect(code);
@@ -628,7 +625,6 @@ a or (b and c)"></textarea>
                             this.showScreen('login-screen');
                         }
 
-                        // Show API settings button
                         document.getElementById('api-settings-button').classList.remove('hidden');
                     } catch (error) {
                         console.error("Initialization failed:", error);
@@ -648,8 +644,6 @@ a or (b and c)"></textarea>
                             localStorage.setItem('homey_client_secret', clientSecret);
                             this.CLIENT_ID = clientId;
                             this.CLIENT_SECRET = clientSecret;
-                            
-                            // Reload to apply new settings
                             window.location.reload();
                         }
                     });
@@ -684,23 +678,16 @@ a or (b and c)"></textarea>
                 }
 
                 async handleAuthRedirect(code) {
-                    if (this.processingAuth) {
-                        console.log('Already processing auth, skipping...');
-                        return;
-                    }
+                    if (this.processingAuth) return;
                     this.processingAuth = true;
-                    
                     window.history.replaceState({}, document.title, window.location.pathname);
                     
                     this.showLoader('Authenticating...');
                     try {
-                        // Exchange code for token using the CloudAPI
                         await this.cloudApi.authenticateWithAuthorizationCode({
                             code: code,
                             redirectUrl: this.getRedirectUrl()
                         });
-                        
-                        console.log('Authentication successful');
                         await this.postLogin();
                     } catch (error) {
                         console.error('Auth error:', error);
@@ -712,12 +699,7 @@ a or (b and c)"></textarea>
                 }
                 
                 async logout() {
-                    try { 
-                        await this.cloudApi.logout(); 
-                    } catch(e) { 
-                        console.error("Logout failed, continuing.", e); 
-                    }
-                    
+                    try { await this.cloudApi.logout(); } catch(e) { console.error("Logout failed, continuing.", e); }
                     this.authenticatedUser = null; 
                     this.homey = null; 
                     this.api = null;
@@ -734,16 +716,8 @@ a or (b and c)"></textarea>
                         this.homey = homeys[0];
                         if (!this.homey) throw new Error(this.t('errors.noHomey'));
                         
-                        console.log('Authenticating Homey...');
                         this.api = await this.homey.authenticate();
-                        
-                        console.log('✅ API created successfully');
-                        console.log('API has devices?', !!this.api.devices);
-                        console.log('API has zones?', !!this.api.zones);
-                        
-                        if (!this.api.devices || !this.api.zones) {
-                            throw new Error('API missing required properties (devices or zones)');
-                        }
+                        if (!this.api.devices || !this.api.zones) throw new Error('API missing required properties (devices or zones)');
 
                         document.getElementById('user-name').textContent = this.authenticatedUser.nickname;
                         document.getElementById('homey-name').textContent = `Homey: ${this.homey.name}`;
@@ -764,16 +738,10 @@ a or (b and c)"></textarea>
                 async fetchData() {
                     this.showLoader('Loading devices...');
                     try {
-                        console.log('Fetching devices and zones...');
-                        
                         const devices = await this.api.devices.getDevices();
                         const zones = await this.api.zones.getZones();
-                        
                         this.allDevices = devices || {};
                         this.allZones = zones || {};
-                        
-                        console.log(`✅ Loaded ${Object.keys(this.allDevices).length} devices and ${Object.keys(this.allZones).length} zones`);
-                        
                     } catch (error) { 
                         this.hideLoader();
                         console.error('fetchData error:', error);
@@ -788,18 +756,14 @@ a or (b and c)"></textarea>
                 renderEditDevices() {
                     const container = document.getElementById('edit-devices-list');
                     container.innerHTML = '';
-                    
                     const allDevicesList = Object.values(this.allDevices);
-                    
                     const possibleDriverIds = ['booleantoolbox', 'logic', 'boolean', 'toolbox'];
                     let toolboxDevices = allDevicesList.filter(d => 
                         possibleDriverIds.some(id => d.driverId.toLowerCase().includes(id))
                     );
                     
                     if (toolboxDevices.length === 0) {
-                        container.innerHTML = `<div class="bg-yellow-700 p-4 rounded-lg text-center">
-                            <p class="font-semibold mb-2">${this.t('editDevices.noDevices')}</p>
-                        </div>`;
+                        container.innerHTML = `<div class="bg-yellow-700 p-4 rounded-lg text-center"><p class="font-semibold mb-2">${this.t('editDevices.noDevices')}</p></div>`;
                         return;
                     }
                     
@@ -814,11 +778,9 @@ a or (b and c)"></textarea>
                         zoneEl.className = 'mt-6';
                         zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${zoneDevices.map(device => {
-                                // Determine if this is a logic-unit (only formulas) or logic-device (capabilities + formulas)
                                 const isLogicUnit = device.driverId.includes('logic-unit');
                                 const buttonText = isLogicUnit ? 'Edit Formula' : 'Edit Expression';
                                 const buttonClass = isLogicUnit ? 'edit-formula-button' : 'edit-expression-button';
-                                
                                 return `
                                 <div class="bg-gray-700 p-4 rounded-lg">
                                     <div class="flex justify-between items-start mb-2">
@@ -829,8 +791,7 @@ a or (b and c)"></textarea>
                                         </div>
                                     </div>
                                     <div class="text-xs text-gray-400 font-mono">${device.driverId}</div>
-                                </div>
-                                `;
+                                </div>`;
                             }).join('')}</div>`;
                         container.appendChild(zoneEl);
                     });
@@ -840,18 +801,10 @@ a or (b and c)"></textarea>
                     container.querySelectorAll('.edit-formula-button').forEach(button => button.addEventListener('click', (e) => this.editDeviceFormula(e.target.dataset.deviceId)));
                 }
 
-                renderDeviceCapabilityList() {
-                    // DEPRECATED: This method is no longer used in the new UI structure
-                    // Keeping empty stub to prevent crashes if called from old code paths
-                    console.log('renderDeviceCapabilityList() called - deprecated, doing nothing');
-                }
-
                 renderLogicDeviceCapabilityList() {
                     const container = document.getElementById('logic-device-capability-list');
                     if (!container) return;
-                    
                     container.innerHTML = '';
-                    
                     const allDevicesList = Object.values(this.allDevices);
                     const devicesByZone = this.groupDevicesByZone(allDevicesList);
                     const sortedZones = this.sortZones(Object.keys(devicesByZone));
@@ -868,9 +821,7 @@ a or (b and c)"></textarea>
                         zoneHeader.className = 'bg-gray-700 p-3 cursor-pointer hover:bg-gray-650 flex justify-between items-center';
                         zoneHeader.innerHTML = `
                             <h3 class="font-semibold">${zone.name}</h3>
-                            <svg class="zone-chevron w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
+                            <svg class="zone-chevron w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         `;
                         
                         const zoneContent = document.createElement('div');
@@ -879,7 +830,6 @@ a or (b and c)"></textarea>
                         zoneDevices.forEach(device => {
                             if (!device.capabilitiesObj || Object.keys(device.capabilitiesObj).length === 0) return;
                             
-                            // Device wrapper with collapsible header
                             const deviceWrapper = document.createElement('div');
                             deviceWrapper.className = 'border border-gray-600 rounded overflow-hidden';
                             
@@ -887,9 +837,7 @@ a or (b and c)"></textarea>
                             deviceHeader.className = 'bg-gray-700 p-2 cursor-pointer hover:bg-gray-650 flex justify-between items-center';
                             deviceHeader.innerHTML = `
                                 <div class="font-medium text-sm">${device.name}</div>
-                                <svg class="device-chevron w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
+                                <svg class="device-chevron w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                             `;
                             
                             const capsEl = document.createElement('div');
@@ -903,28 +851,19 @@ a or (b and c)"></textarea>
                                 const label = document.createElement('label');
                                 label.className = 'flex items-center gap-2 text-sm cursor-pointer hover:bg-gray-700 p-1 rounded';
                                 label.innerHTML = `
-                                    <input type="checkbox" 
-                                        ${isSelected ? 'checked' : ''}
-                                        data-device-id="${device.id}" 
-                                        data-capability-id="${cap.id}"
-                                        data-device-name="${device.name}"
-                                        data-capability-title="${cap.title}"
-                                        class="form-checkbox h-4 w-4">
+                                    <input type="checkbox" ${isSelected ? 'checked' : ''} data-device-id="${device.id}" data-capability-id="${cap.id}" data-device-name="${device.name}" data-capability-title="${cap.title}" class="form-checkbox h-4 w-4">
                                     <span>${cap.title}</span>
                                 `;
                                 
                                 const checkbox = label.querySelector('input');
                                 checkbox.addEventListener('change', (e) => this.handleLogicDeviceCapabilityChange(e.target));
-                                
                                 capsEl.appendChild(label);
                             });
                             
-                            // Device click handler - toggle capabilities visibility
                             deviceHeader.addEventListener('click', () => {
                                 const isHidden = capsEl.classList.contains('hidden');
                                 capsEl.classList.toggle('hidden');
-                                deviceHeader.querySelector('.device-chevron').style.transform = 
-                                    isHidden ? 'rotate(90deg)' : 'rotate(0deg)';
+                                deviceHeader.querySelector('.device-chevron').style.transform = isHidden ? 'rotate(90deg)' : 'rotate(0deg)';
                             });
                             
                             deviceWrapper.appendChild(deviceHeader);
@@ -932,12 +871,10 @@ a or (b and c)"></textarea>
                             zoneContent.appendChild(deviceWrapper);
                         });
                         
-                        // Zone click handler - toggle devices visibility
                         zoneHeader.addEventListener('click', () => {
                             const isHidden = zoneContent.classList.contains('hidden');
                             zoneContent.classList.toggle('hidden');
-                            zoneHeader.querySelector('.zone-chevron').style.transform = 
-                                isHidden ? 'rotate(90deg)' : 'rotate(0deg)';
+                            zoneHeader.querySelector('.zone-chevron').style.transform = isHidden ? 'rotate(90deg)' : 'rotate(0deg)';
                         });
                         
                         zoneWrapper.appendChild(zoneHeader);
@@ -965,11 +902,7 @@ a or (b and c)"></textarea>
                         );
                     }
                     
-                    // Update the selected list (this replaces the formula input element)
                     this.updateLogicDeviceSelectedList();
-                    
-                    // IMPORTANT: Get the NEW formula input element after updateLogicDeviceSelectedList()
-                    // because it was replaced with a clone
                     const formulaInput = document.getElementById('logic-device-formula');
                     if (formulaInput && formulaInput.value.trim()) {
                         this.updateLogicDeviceTruthTable(formulaInput.value.trim());
@@ -979,9 +912,7 @@ a or (b and c)"></textarea>
                 updateLogicDeviceSelectedList() {
                     const list = document.getElementById('logic-device-selected-list');
                     const count = document.getElementById('logic-device-count');
-                    
                     if (!list || !count) return;
-                    
                     count.textContent = this.logicDeviceCapabilities.length;
                     
                     list.innerHTML = this.logicDeviceCapabilities.length === 0 
@@ -990,52 +921,31 @@ a or (b and c)"></textarea>
                             <li class="bg-gray-700 p-2 rounded text-sm">
                                 <div class="flex items-center gap-2">
                                     <div class="flex flex-col gap-1">
-                                        <button onclick="window.app.moveLogicDeviceCapability(${idx}, -1)" 
-                                            ${idx === 0 ? 'disabled' : ''}
-                                            class="text-gray-400 hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed text-xs leading-none"
-                                            title="Move up">▲</button>
-                                        <button onclick="window.app.moveLogicDeviceCapability(${idx}, 1)"
-                                            ${idx === this.logicDeviceCapabilities.length - 1 ? 'disabled' : ''}
-                                            class="text-gray-400 hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed text-xs leading-none"
-                                            title="Move down">▼</button>
+                                        <button onclick="window.app.moveLogicDeviceCapability(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="text-gray-400 hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed text-xs leading-none" title="Move up">▲</button>
+                                        <button onclick="window.app.moveLogicDeviceCapability(${idx}, 1)" ${idx === this.logicDeviceCapabilities.length - 1 ? 'disabled' : ''} class="text-gray-400 hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed text-xs leading-none" title="Move down">▼</button>
                                     </div>
                                     <div class="flex-grow min-w-0">
                                         <span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + idx)}:</span>
                                         <span class="text-xs block truncate">${cap.deviceName} - ${cap.capabilityTitle}</span>
                                     </div>
-                                    <button onclick="window.app.removeLogicDeviceCapability(${idx})" 
-                                        class="text-red-400 hover:text-red-300 font-bold text-lg flex-shrink-0"
-                                        title="Remove">×</button>
+                                    <button onclick="window.app.removeLogicDeviceCapability(${idx})" class="text-red-400 hover:text-red-300 font-bold text-lg flex-shrink-0" title="Remove">×</button>
                                 </div>
                             </li>
                         `).join('');
                     
-                    // Get current formula value BEFORE replacing element
                     const formulaInput = document.getElementById('logic-device-formula');
                     const currentFormula = formulaInput ? formulaInput.value : '';
-                    
-                    // Replace formula input to remove old event listeners
                     if (formulaInput) {
                         const newInput = formulaInput.cloneNode(true);
                         formulaInput.parentNode.replaceChild(newInput, formulaInput);
-                        
-                        // Add new listener with debouncing to reduce console spam
                         newInput.addEventListener('input', () => {
                             const formula = newInput.value.trim();
-                            
-                            // Clear previous debounce timer
-                            if (this.evaluationDebounceTimer) {
-                                clearTimeout(this.evaluationDebounceTimer);
-                            }
-                            
-                            // Only evaluate after user stops typing for 500ms
+                            if (this.evaluationDebounceTimer) clearTimeout(this.evaluationDebounceTimer);
                             this.evaluationDebounceTimer = setTimeout(() => {
                                 this.updateLogicDeviceTruthTable(formula);
                             }, 500);
                         });
                     }
-                    
-                    // Update truth table immediately with current formula (non-debounced)
                     if (currentFormula.trim()) {
                         this.updateLogicDeviceTruthTable(currentFormula.trim());
                     }
@@ -1043,16 +953,10 @@ a or (b and c)"></textarea>
 
                 moveLogicDeviceCapability(idx, direction) {
                     const newIdx = idx + direction;
-                    
                     if (newIdx < 0 || newIdx >= this.logicDeviceCapabilities.length) return;
-                    
-                    // Swap elements
                     [this.logicDeviceCapabilities[idx], this.logicDeviceCapabilities[newIdx]] = 
                     [this.logicDeviceCapabilities[newIdx], this.logicDeviceCapabilities[idx]];
-                    
                     this.updateLogicDeviceSelectedList();
-                    
-                    // Update truth table with current formula
                     const formulaInput = document.getElementById('logic-device-formula');
                     if (formulaInput && formulaInput.value.trim()) {
                         this.updateLogicDeviceTruthTable(formulaInput.value.trim());
@@ -1062,16 +966,11 @@ a or (b and c)"></textarea>
                 removeLogicDeviceCapability(idx) {
                     const removed = this.logicDeviceCapabilities[idx];
                     this.logicDeviceCapabilities.splice(idx, 1);
-                    
-                    // Uncheck the checkbox in the device list
                     const checkbox = document.querySelector(
                         `input[data-device-id="${removed.deviceId}"][data-capability-id="${removed.capabilityId}"]`
                     );
                     if (checkbox) checkbox.checked = false;
-                    
                     this.updateLogicDeviceSelectedList();
-                    
-                    // Update truth table with current formula
                     const formulaInput = document.getElementById('logic-device-formula');
                     if (formulaInput && formulaInput.value.trim()) {
                         this.updateLogicDeviceTruthTable(formulaInput.value.trim());
@@ -1081,13 +980,10 @@ a or (b and c)"></textarea>
                 updateLogicDeviceTruthTable(formula) {
                     const truthTableContainer = document.getElementById('logic-device-truth-table');
                     if (!truthTableContainer) return;
-                    
                     if (!formula || this.logicDeviceCapabilities.length === 0) {
                         truthTableContainer.innerHTML = '';
                         return;
                     }
-                    
-                    // renderTruthTable now handles all validation and error display internally
                     this.renderTruthTable(formula, this.logicDeviceCapabilities.length, 'logic-device-truth-table');
                 }
 
@@ -1096,20 +992,12 @@ a or (b and c)"></textarea>
                         alert('Please add at least one formula');
                         return;
                     }
-                    
                     const output = {
                         formulas: this.logicUnitFormulas.map(f => ({
-                            id: f.id,
-                            name: f.name,
-                            expression: f.expression,
-                            enabled: f.enabled !== false,
-                            timeout: 30,
-                            firstImpression: false
+                            id: f.id, name: f.name, expression: f.expression, enabled: f.enabled !== false, timeout: 30, firstImpression: false
                         }))
                     };
-                    
-                    this.showOutputModal('Logic Unit Output', output, 
-                        'Copy this JSON and paste it in the "Formulas (JSON)" field in your Logic Unit device settings.');
+                    this.showOutputModal('Logic Unit Output', output, 'Copy this JSON and paste it in the "Formulas (JSON)" field in your Logic Unit device settings.');
                 }
 
                 saveLogicDevice() {
@@ -1117,22 +1005,11 @@ a or (b and c)"></textarea>
                         alert('Please select between 2 and 10 capabilities');
                         return;
                     }
-                    
                     const formula = document.getElementById('logic-device-formula').value.trim();
-                    if (!formula) {
-                        alert('Please enter a formula');
-                        return;
-                    }
+                    if (!formula) { alert('Please enter a formula'); return; }
                     
-                    // Validate formula before saving (case-insensitive)
-                    const availableVars = Array.from(
-                        {length: this.logicDeviceCapabilities.length}, 
-                        (_, i) => String.fromCharCode(65 + i)
-                    );
-                    const usedVars = new Set(
-                        (formula.toUpperCase().match(/\b[A-J]\b/g) || [])
-                    );
-                    
+                    const availableVars = Array.from({length: this.logicDeviceCapabilities.length}, (_, i) => String.fromCharCode(65 + i));
+                    const usedVars = new Set((formula.toUpperCase().match(/\b[A-J]\b/g) || []));
                     const missingVars = Array.from(usedVars).filter(v => {
                         const idx = v.charCodeAt(0) - 65;
                         return idx >= this.logicDeviceCapabilities.length;
@@ -1145,23 +1022,16 @@ a or (b and c)"></textarea>
                     
                     const output = {
                         input_links: this.logicDeviceCapabilities.map((cap, idx) => ({
-                            input: String.fromCharCode(97 + idx).toLowerCase(), // a, b, c... (lowercase for Homey compatibility)
+                            input: String.fromCharCode(97 + idx).toLowerCase(),
                             deviceId: cap.deviceId,
                             capability: cap.capabilityId,
                             deviceName: cap.deviceName
                         })),
                         formulas: [{
-                            id: 'formula_1',
-                            name: 'Main Formula',
-                            expression: formula, // Keep original case - evaluation is case-insensitive
-                            enabled: true,
-                            timeout: 30,
-                            firstImpression: false
+                            id: 'formula_1', name: 'Main Formula', expression: formula, enabled: true, timeout: 30, firstImpression: false
                         }]
                     };
-                    
-                    this.showOutputModal('Logic Device Output', output,
-                        'Copy these JSON objects and paste them in the respective fields in your Logic Device settings.');
+                    this.showOutputModal('Logic Device Output', output, 'Copy these JSON objects and paste them in the respective fields in your Logic Device settings.');
                 }
 
                 showOutputModal(title, output, instructions) {
@@ -1171,66 +1041,32 @@ a or (b and c)"></textarea>
                         <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
                             <h3 class="text-lg font-bold mb-4">${title}</h3>
                             <p class="text-sm text-gray-400 mb-4">${instructions}</p>
-                            
                             ${output.input_links ? `
-                                <div class="mb-4">
-                                    <h4 class="font-semibold mb-2">Input Links (JSON):</h4>
-                                    <textarea readonly class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg font-mono text-sm" rows="8">${JSON.stringify(output.input_links, null, 2)}</textarea>
-                                </div>
+                                <div class="mb-4"><h4 class="font-semibold mb-2">Input Links (JSON):</h4><textarea readonly class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg font-mono text-sm" rows="8">${JSON.stringify(output.input_links, null, 2)}</textarea></div>
                             ` : ''}
-                            
-                            <div class="mb-6">
-                                <h4 class="font-semibold mb-2">Formulas (JSON):</h4>
-                                <textarea readonly class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg font-mono text-sm" rows="12">${JSON.stringify(output.formulas, null, 2)}</textarea>
-                            </div>
-                            
+                            <div class="mb-6"><h4 class="font-semibold mb-2">Formulas (JSON):</h4><textarea readonly class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg font-mono text-sm" rows="12">${JSON.stringify(output.formulas, null, 2)}</textarea></div>
                             <div class="flex justify-end gap-4">
                                 <button onclick="this.closest('.fixed').remove()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Close</button>
                                 <button onclick="navigator.clipboard.writeText('${JSON.stringify(output, null, 2).replace(/'/g, "\\'")}'); alert('Copied to clipboard!')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Copy All JSON</button>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                     document.body.appendChild(modal);
                 }
 
                 async editDeviceFormula(deviceId) {
                     const device = this.allDevices[deviceId];
-                    if (!device || !device.settings) {
-                        alert('Could not load device settings');
-                        return;
-                    }
-                    
+                    if (!device || !device.settings) { alert('Could not load device settings'); return; }
                     this.editingDeviceId = deviceId;
-                    
                     try {
-                        const settings = device.settings;
-                        console.log('Editing formulas for Logic Unit:', device.name, settings);
-                        
-                        // Load formulas
-                        let formulas = settings.formulas || [];
-                        
-                        // If it's a string, parse it as JSON
+                        let formulas = device.settings.formulas || [];
                         if (typeof formulas === 'string') {
-                            try {
-                                formulas = JSON.parse(formulas);
-                                console.log('Parsed formulas from JSON string');
-                            } catch (e) {
-                                console.warn('Failed to parse formulas JSON:', e);
-                                formulas = [];
-                            }
+                            try { formulas = JSON.parse(formulas); } catch (e) { formulas = []; }
                         }
-                        
-                        this.logicUnitFormulas = formulas;
-                        if (this.logicUnitFormulas.length === 0) {
-                            this.logicUnitFormulas = [{id: 'formula_1', name: 'My Formula', expression: '', enabled: true}];
-                        }
-                        
-                        // Determine port count from device name or formulas
+                        this.logicUnitFormulas = formulas.length > 0 ? formulas : [{id: 'formula_1', name: 'My Formula', expression: '', enabled: true}];
                         const match = device.name.match(/\((\d+)\s+input/i);
                         if (match) {
                             this.logicUnitPorts = parseInt(match[1]);
                         } else {
-                            // Count unique variables in formulas
                             const allVars = new Set();
                             this.logicUnitFormulas.forEach(f => {
                                 const matches = f.expression.match(/\b[A-J]\b/g);
@@ -1238,159 +1074,61 @@ a or (b and c)"></textarea>
                             });
                             this.logicUnitPorts = Math.max(3, allVars.size);
                         }
-                        
                         this.showScreen('logic-unit-editor-screen');
                         this.renderLogicUnitEditor();
-                        
                     } catch (error) {
-                        console.error('Error loading formula:', error);
                         alert('Failed to load formula: ' + error.message);
                     }
                 }
 
                 async editDeviceExpression(deviceId) {
                     const device = this.allDevices[deviceId];
-                    if (!device) {
-                        alert('Could not load device');
-                        return;
-                    }
-                    
+                    if (!device) { alert('Could not load device'); return; }
                     this.showLoader('Loading expression...');
-                    
                     try {
-                        console.log('Editing expression for Logic Device:', device.name);
-                        console.log('Device object:', device);
-                        
-                        // Get settings - try multiple sources
                         let settings = device.settings || {};
-                        console.log('Device.settings:', settings);
-                        
-                        // Also try to get fresh settings from API
                         try {
                             const freshSettings = await this.api.devices.getDevice({ id: deviceId });
-                            console.log('Fresh device from API:', freshSettings);
-                            if (freshSettings && freshSettings.settings) {
-                                settings = freshSettings.settings;
-                                console.log('Using fresh settings:', settings);
-                            }
-                        } catch (e) {
-                            console.warn('Could not fetch fresh settings, using cached:', e);
-                        }
-                        
-                        // Parse input_links to get selected capabilities
+                            if (freshSettings && freshSettings.settings) settings = freshSettings.settings;
+                        } catch (e) {}
                         let inputLinks = settings.input_links || [];
-                        
-                        console.log('Input links type:', typeof inputLinks);
-                        console.log('Input links is array?', Array.isArray(inputLinks));
-                        
-                        // If it's a string, parse it as JSON
                         if (typeof inputLinks === 'string') {
-                            try {
-                                inputLinks = JSON.parse(inputLinks);
-                                console.log('Parsed input links from JSON string');
-                            } catch (e) {
-                                this.hideLoader();
-                                alert('Failed to parse input links JSON: ' + e.message);
-                                return;
+                            try { inputLinks = JSON.parse(inputLinks); } catch (e) {
+                                this.hideLoader(); alert('Failed to parse input links JSON'); return;
                             }
                         }
-                        
-                        console.log('Input links length:', inputLinks.length);
-                        console.log('Input links content:', JSON.stringify(inputLinks, null, 2));
-                        
-                        if (!Array.isArray(inputLinks)) {
-                            this.hideLoader();
-                            alert('Input links format is invalid. Expected an array but got: ' + typeof inputLinks);
-                            return;
+                        if (!Array.isArray(inputLinks) || inputLinks.length === 0) {
+                            this.hideLoader(); alert('No input links found.'); return;
                         }
-                        
-                        if (inputLinks.length === 0) {
-                            this.hideLoader();
-                            alert('No input links found on this device. Please add capabilities through Settings first, or create a new Logic Device.');
-                            return;
-                        }
-                        
-                        // Build logicDeviceCapabilities array
                         this.logicDeviceCapabilities = [];
-                        
                         for (const link of inputLinks) {
-                            console.log('Processing link:', link);
-                            
                             const linkedDevice = this.allDevices[link.deviceId];
-                            if (!linkedDevice) {
-                                console.warn(`Device not found: ${link.deviceId}`);
-                                continue;
-                            }
-                            
+                            if (!linkedDevice) continue;
                             const capability = linkedDevice.capabilitiesObj?.[link.capability];
-                            if (!capability) {
-                                console.warn(`Capability not found: ${link.capability} on device ${linkedDevice.name}`);
-                                continue;
-                            }
-                            
+                            if (!capability) continue;
                             this.logicDeviceCapabilities.push({
-                                deviceId: link.deviceId,
-                                capabilityId: link.capability,
-                                deviceName: link.deviceName || linkedDevice.name,
-                                capabilityTitle: capability.title
+                                deviceId: link.deviceId, capabilityId: link.capability,
+                                deviceName: link.deviceName || linkedDevice.name, capabilityTitle: capability.title
                             });
                         }
-                        
-                        console.log('Loaded capabilities:', this.logicDeviceCapabilities);
-                        
-                        if (this.logicDeviceCapabilities.length === 0) {
-                            this.hideLoader();
-                            alert('Could not load any valid capabilities from input links. The devices or capabilities might not exist anymore.');
-                            return;
-                        }
-                        
-                        // Get the first enabled formula
                         let formulas = settings.formulas || [];
-                        
-                        // If it's a string, parse it as JSON
-                        if (typeof formulas === 'string') {
-                            try {
-                                formulas = JSON.parse(formulas);
-                                console.log('Parsed formulas from JSON string');
-                            } catch (e) {
-                                console.warn('Failed to parse formulas JSON:', e);
-                                formulas = [];
-                            }
-                        }
-                        
+                        if (typeof formulas === 'string') { try { formulas = JSON.parse(formulas); } catch (e) { formulas = []; } }
                         let formulaText = '';
-                        
                         if (Array.isArray(formulas) && formulas.length > 0) {
                             const enabledFormula = formulas.find(f => f.enabled !== false);
-                            if (enabledFormula) {
-                                formulaText = enabledFormula.expression || '';
-                            }
+                            if (enabledFormula) formulaText = enabledFormula.expression || '';
                         }
-                        
-                        console.log('Loaded formula:', formulaText);
-                        
-                        // Store the device ID so we know we're editing an existing device
                         this.editingDeviceId = deviceId;
-                        
-                        // Navigate to editor
                         this.hideLoader();
                         this.showScreen('logic-device-editor-screen');
                         this.renderLogicDeviceCapabilityList();
-                        
-                        // Set formula
                         const formulaInput = document.getElementById('logic-device-formula');
                         if (formulaInput) {
                             formulaInput.value = formulaText;
-                            // Trigger truth table render
-                            if (formulaText && this.logicDeviceCapabilities.length > 0) {
-                                this.updateLogicDeviceTruthTable(formulaText);
-                            }
+                            if (formulaText && this.logicDeviceCapabilities.length > 0) this.updateLogicDeviceTruthTable(formulaText);
                         }
-                        
                     } catch (error) {
-                        console.error('Error loading expression:', error);
-                        this.hideLoader();
-                        alert('Failed to load expression: ' + error.message);
+                        this.hideLoader(); alert('Failed to load expression: ' + error.message);
                     }
                 }
 
@@ -1398,51 +1136,16 @@ a or (b and c)"></textarea>
                     const { id, title, value, type, hint, min, max, units } = setting;
                     const displayValue = typeof value === 'object' ? JSON.stringify(value, null, 2) : value;
                     const isObject = typeof value === 'object';
-                    
-                    let fieldHtml = `<div class="mb-4">`;
-                    fieldHtml += `<label for="setting-${id}" class="block text-sm font-medium text-gray-300 mb-1">${title || id}</label>`;
-                    
-                    if (hint) {
-                        fieldHtml += `<p class="text-xs text-gray-500 mb-2">${hint}</p>`;
-                    }
-                    
-                    // Determine field type
+                    let fieldHtml = `<div class="mb-4"><label for="setting-${id}" class="block text-sm font-medium text-gray-300 mb-1">${title || id}</label>`;
+                    if (hint) fieldHtml += `<p class="text-xs text-gray-500 mb-2">${hint}</p>`;
                     if (type === 'textarea' || isObject) {
                         const rows = isObject ? Math.min(10, displayValue.split('\n').length + 1) : 4;
-                        fieldHtml += `
-                            <textarea 
-                                id="setting-${id}" 
-                                data-setting-id="${id}" 
-                                data-is-object="${isObject}"
-                                class="block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm"
-                                rows="${rows}"
-                            >${displayValue}</textarea>`;
+                        fieldHtml += `<textarea id="setting-${id}" data-setting-id="${id}" data-is-object="${isObject}" class="block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm" rows="${rows}">${displayValue}</textarea>`;
                     } else if (type === 'number') {
-                        fieldHtml += `
-                            <div class="flex gap-2 items-center">
-                                <input 
-                                    type="number" 
-                                    id="setting-${id}" 
-                                    data-setting-id="${id}"
-                                    ${min !== undefined ? `min="${min}"` : ''}
-                                    ${max !== undefined ? `max="${max}"` : ''}
-                                    class="flex-grow p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500"
-                                    value="${value}"
-                                >
-                                ${units ? `<span class="text-gray-400 text-sm">${units.en || units}</span>` : ''}
-                            </div>`;
+                        fieldHtml += `<div class="flex gap-2 items-center"><input type="number" id="setting-${id}" data-setting-id="${id}" ${min !== undefined ? `min="${min}"` : ''} ${max !== undefined ? `max="${max}"` : ''} class="flex-grow p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" value="${value}">${units ? `<span class="text-gray-400 text-sm">${units.en || units}</span>` : ''}</div>`;
                     } else {
-                        // Default text input
-                        fieldHtml += `
-                            <input 
-                                type="text" 
-                                id="setting-${id}" 
-                                data-setting-id="${id}"
-                                class="block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500"
-                                value="${displayValue}"
-                            >`;
+                        fieldHtml += `<input type="text" id="setting-${id}" data-setting-id="${id}" class="block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" value="${displayValue}">`;
                     }
-                    
                     fieldHtml += `</div>`;
                     return fieldHtml;
                 }
@@ -1454,38 +1157,26 @@ a or (b and c)"></textarea>
                     const content = document.getElementById('settings-modal-content');
                     const fields = content.querySelectorAll('[data-setting-id]');
                     const newSettings = {};
-                    
                     try {
                         fields.forEach(field => {
                             const id = field.dataset.settingId;
                             const isObject = field.dataset.isObject === 'true';
                             const value = field.value.trim();
-                            
                             if (isObject) {
-                                // Parse JSON back to object
-                                try {
-                                    newSettings[id] = JSON.parse(value);
-                                } catch (e) {
-                                    throw new Error(`Invalid JSON for field "${id}": ${e.message}`);
-                                }
+                                try { newSettings[id] = JSON.parse(value); } catch (e) { throw new Error(`Invalid JSON for field "${id}": ${e.message}`); }
                             } else if (field.type === 'number') {
-                                // Convert to number
                                 newSettings[id] = parseFloat(value);
                             } else {
                                 newSettings[id] = value;
                             }
                         });
-                        
-                        console.log('Saving settings:', newSettings);
-                        
                         this.showLoader('Saving settings...');
                         await this.api.devices.setDeviceSettings({ id: deviceId, settings: newSettings });
                         this.hideLoader();
                         alert(this.t('settings.saved'));
                         this.closeSettingsModal();
                     } catch (error) { 
-                        this.hideLoader();
-                        alert(this.t('settings.error') + ' ' + error.message); 
+                        this.hideLoader(); alert(this.t('settings.error') + ' ' + error.message); 
                     }
                 }
 
@@ -1500,72 +1191,42 @@ a or (b and c)"></textarea>
                     content.innerHTML = `<p>${this.t('settings.loading')}</p>`;
                     saveBtn.dataset.deviceId = deviceId;
                     modal.style.display = 'flex';
-                    
                     this.showLoader('Loading settings...');
                     try {
-                        // Get settings schema (structure with types, hints, etc.)
                         const settingsSchema = await this.api.devices.getDeviceSettingsObj({ id: deviceId });
-                        console.log('Settings schema received:', settingsSchema);
-                        console.log('Device settings values:', device.settings);
-                        
-                        // Merge schema with actual values from device
                         const mergeValues = (schema, values) => {
                             if (Array.isArray(schema)) {
                                 return schema.map(item => {
                                     if (item.type === 'group' && item.children) {
-                                        return {
-                                            ...item,
-                                            children: item.children.map(child => ({
-                                                ...child,
-                                                value: values?.[child.id] !== undefined ? values[child.id] : child.value
-                                            }))
-                                        };
+                                        return { ...item, children: item.children.map(child => ({ ...child, value: values?.[child.id] !== undefined ? values[child.id] : child.value })) };
                                     } else if (item.id) {
-                                        return {
-                                            ...item,
-                                            value: values?.[item.id] !== undefined ? values[item.id] : item.value
-                                        };
+                                        return { ...item, value: values?.[item.id] !== undefined ? values[item.id] : item.value };
                                     }
                                     return item;
                                 });
                             }
                             return schema;
                         };
-                        
                         const settingsWithValues = mergeValues(settingsSchema, device.settings);
-                        console.log('Merged settings:', settingsWithValues);
-                        
                         let settingsHtml = '';
-                        
-                        // Check if settings is an array (Homey settings structure)
                         if (Array.isArray(settingsWithValues)) {
                             settingsWithValues.forEach(group => {
                                 if (group.type === 'group' && group.children) {
-                                    // Render group title
                                     settingsHtml += `<div class="mb-4"><h4 class="text-md font-semibold text-gray-200 mb-3">${group.title || 'Settings'}</h4>`;
-                                    
-                                    // Render children
-                                    group.children.forEach(setting => {
-                                        settingsHtml += this.renderSettingField(setting);
-                                    });
-                                    
+                                    group.children.forEach(setting => { settingsHtml += this.renderSettingField(setting); });
                                     settingsHtml += `</div>`;
                                 } else {
-                                    // Single setting (not in a group)
                                     settingsHtml += this.renderSettingField(group);
                                 }
                             });
                         } else {
-                            // Fallback for simple key-value settings
                             for (const key in settingsWithValues) {
                                 const value = settingsWithValues[key];
                                 settingsHtml += this.renderSettingField({ id: key, title: key, value: value });
                             }
                         }
-                        
                         content.innerHTML = settingsHtml || `<p>${this.t('settings.noSettings')}</p>`;
                     } catch(error) { 
-                        console.error('Error loading settings:', error);
                         content.innerHTML = `<p class="text-red-400">${this.t('settings.error')} ${error.message}</p>`; 
                     } finally {
                         this.hideLoader();
@@ -1574,25 +1235,16 @@ a or (b and c)"></textarea>
 
                 renderSelectedCapabilities() {
                     const list = document.getElementById('selected-capabilities-list');
-                    const countEl = document.getElementById('selected-count');
-                    const nextButton = document.getElementById('next-step-button');
-                    
                     if (!list) return;
-                    
                     list.innerHTML = '';
-                    if (countEl) countEl.textContent = this.selectedCapabilities.length;
-                    if (this.selectedCapabilities.length === 0 && list) list.innerHTML = `<li class="text-gray-500 text-center italic">${this.t('step1.noneSelected')}</li>`;
+                    if (this.selectedCapabilities.length === 0) list.innerHTML = `<li class="text-gray-500 text-center italic">${this.t('step1.noneSelected')}</li>`;
                     this.selectedCapabilities.forEach((item, index) => {
                         const li = document.createElement('li');
                         li.className = 'bg-gray-700 p-2 rounded-md flex justify-between items-center text-sm';
                         li.innerHTML = `<span class="truncate"><span class="font-bold">${String.fromCharCode(65 + index)}:</span> ${item.deviceName} - ${item.capabilityTitle}</span><button data-index="${index}" class="remove-capability-btn text-red-400 hover:text-red-300 p-1 font-bold text-lg">&times;</button>`;
                         list.appendChild(li);
                     });
-                    if (list) {
-                        list.querySelectorAll('.remove-capability-btn').forEach(btn => btn.addEventListener('click', e => this.removeCapability(parseInt(e.currentTarget.dataset.index))));
-                    }
-                    const count = this.selectedCapabilities.length;
-                    if (nextButton) nextButton.disabled = !(count >= 2 && count <= 10);
+                    list.querySelectorAll('.remove-capability-btn').forEach(btn => btn.addEventListener('click', e => this.removeCapability(parseInt(e.currentTarget.dataset.index))));
                 }
 
                 renderLoginScreen() {
@@ -1645,7 +1297,6 @@ a or (b and c)"></textarea>
                     });
                 }
 
-                // Logic Unit methods
                 startLogicUnitFlow() {
                     this.editingDeviceId = null;
                     this.logicUnitFormulas = [];
@@ -1656,10 +1307,7 @@ a or (b and c)"></textarea>
                 setLogicUnitPorts(num) {
                     this.logicUnitPorts = num;
                     this.logicUnitFormulas = [{
-                        id: 'formula_1',
-                        name: 'My Formula',
-                        expression: '',
-                        enabled: true
+                        id: 'formula_1', name: 'My Formula', expression: '', enabled: true
                     }];
                     this.showScreen('logic-unit-editor-screen');
                     this.renderLogicUnitEditor();
@@ -1668,255 +1316,254 @@ a or (b and c)"></textarea>
                 renderLogicUnitEditor() {
                     const infoBox = document.getElementById('logic-unit-inputs-info');
                     const container = document.getElementById('logic-unit-formulas-container');
-                    
                     if (!infoBox || !container) return;
-                    
                     const inputs = Array.from({length: this.logicUnitPorts}, (_, i) => String.fromCharCode(65 + i));
-                    infoBox.innerHTML = `
-                        <h3 class="font-semibold mb-2">Available Inputs:</h3>
-                        <p class="text-gray-300">${inputs.join(', ')}</p>
-                    `;
-                    
+                    infoBox.innerHTML = `<h3 class="font-semibold mb-2">Available Inputs:</h3><p class="text-gray-300">${inputs.join(', ')}</p>`;
                     container.innerHTML = this.logicUnitFormulas.map((formula, idx) => `
                         <div class="bg-gray-700 p-4 rounded-lg">
                             <div class="flex justify-between items-center mb-3">
                                 <h3 class="font-semibold">Formula ${idx + 1}</h3>
-                                ${this.logicUnitFormulas.length > 1 ? 
-                                    `<button onclick="window.app.removeLogicUnitFormula(${idx})" class="text-red-400 hover:text-red-300 text-sm">Remove</button>` 
-                                    : ''}
+                                ${this.logicUnitFormulas.length > 1 ? `<button onclick="window.app.removeLogicUnitFormula(${idx})" class="text-red-400 hover:text-red-300 text-sm">Remove</button>` : ''}
                             </div>
-                            <div class="mb-3">
-                                <label class="block text-sm mb-1">Name</label>
-                                <input type="text" 
-                                    value="${formula.name}" 
-                                    onchange="window.app.updateLogicUnitFormulaName(${idx}, this.value)"
-                                    class="w-full p-2 bg-gray-600 border border-gray-500 rounded">
-                            </div>
-                            <div class="mb-3">
-                                <label class="block text-sm mb-1">Expression</label>
-                                <p class="text-xs text-gray-400 mb-1">
-                                    Operators: <code class="bg-gray-600 px-1 rounded">AND</code> <code class="bg-gray-600 px-1 rounded">*</code> · 
-                                    <code class="bg-gray-600 px-1 rounded">OR</code> <code class="bg-gray-600 px-1 rounded">+</code> · 
-                                    <code class="bg-gray-600 px-1 rounded">NOT</code> <code class="bg-gray-600 px-1 rounded">!</code> · 
-                                    <code class="bg-gray-600 px-1 rounded">XOR</code> <code class="bg-gray-600 px-1 rounded">^</code>
-                                </p>
-                                <textarea 
-                                    oninput="window.app.updateLogicUnitFormulaExpression(${idx}, this.value)"
-                                    class="w-full h-24 p-2 bg-gray-600 border border-gray-500 rounded font-mono"
-                                    placeholder="Examples: (A AND B) OR C
-A * B + !C"
-                                >${formula.expression}</textarea>
-                            </div>
+                            <div class="mb-3"><label class="block text-sm mb-1">Name</label><input type="text" value="${formula.name}" onchange="window.app.updateLogicUnitFormulaName(${idx}, this.value)" class="w-full p-2 bg-gray-600 border border-gray-500 rounded"></div>
+                            <div class="mb-3"><label class="block text-sm mb-1">Expression</label><p class="text-xs text-gray-400 mb-1">Operators: AND, OR, NOT, XOR</p><textarea oninput="window.app.updateLogicUnitFormulaExpression(${idx}, this.value)" class="w-full h-24 p-2 bg-gray-600 border border-gray-500 rounded font-mono">${formula.expression}</textarea></div>
                             <div id="truth-table-${idx}" class="mt-3"></div>
                         </div>
                     `).join('');
-                    
-                    this.logicUnitFormulas.forEach((formula, idx) => {
-                        if (formula.expression) {
-                            this.renderTruthTable(formula.expression, this.logicUnitPorts, `truth-table-${idx}`);
-                        }
-                    });
+                    this.logicUnitFormulas.forEach((formula, idx) => { if (formula.expression) this.renderTruthTable(formula.expression, this.logicUnitPorts, `truth-table-${idx}`); });
                 }
 
-                updateLogicUnitFormulaName(idx, name) {
-                    this.logicUnitFormulas[idx].name = name;
-                }
-
+                updateLogicUnitFormulaName(idx, name) { this.logicUnitFormulas[idx].name = name; }
                 updateLogicUnitFormulaExpression(idx, expr) {
                     this.logicUnitFormulas[idx].expression = expr;
-                    
-                    // Clear previous debounce timer
-                    if (this.evaluationDebounceTimer) {
-                        clearTimeout(this.evaluationDebounceTimer);
-                    }
-                    
-                    // Only evaluate after user stops typing for 500ms
-                    if (expr) {
-                        this.evaluationDebounceTimer = setTimeout(() => {
-                            this.renderTruthTable(expr, this.logicUnitPorts, `truth-table-${idx}`);
-                        }, 500);
-                    } else {
-                        // Clear truth table immediately if expression is empty
-                        const container = document.getElementById(`truth-table-${idx}`);
-                        if (container) container.innerHTML = '';
-                    }
+                    if (this.evaluationDebounceTimer) clearTimeout(this.evaluationDebounceTimer);
+                    if (expr) { this.evaluationDebounceTimer = setTimeout(() => { this.renderTruthTable(expr, this.logicUnitPorts, `truth-table-${idx}`); }, 500); }
+                    else { const c = document.getElementById(`truth-table-${idx}`); if(c) c.innerHTML = ''; }
                 }
 
-                addLogicUnitFormula() {
-                    this.logicUnitFormulas.push({
-                        id: `formula_${this.logicUnitFormulas.length + 1}`,
-                        name: `Formula ${this.logicUnitFormulas.length + 1}`,
-                        expression: '',
-                        enabled: true
-                    });
-                    this.renderLogicUnitEditor();
-                }
+                addLogicUnitFormula() { this.logicUnitFormulas.push({ id: `formula_${this.logicUnitFormulas.length + 1}`, name: `Formula ${this.logicUnitFormulas.length + 1}`, expression: '', enabled: true }); this.renderLogicUnitEditor(); }
+                removeLogicUnitFormula(idx) { this.logicUnitFormulas.splice(idx, 1); this.renderLogicUnitEditor(); }
 
-                removeLogicUnitFormula(idx) {
-                    this.logicUnitFormulas.splice(idx, 1);
-                    this.renderLogicUnitEditor();
-                }
-
-                selectExistingLogicUnit() {
-                    this.showDeviceSelectionModal('logic-unit');
-                }
-
-                selectExistingLogicDevice() {
-                    this.showDeviceSelectionModal('logic-device');
-                }
+                selectExistingLogicUnit() { this.showDeviceSelectionModal('logic-unit'); }
+                selectExistingLogicDevice() { this.showDeviceSelectionModal('logic-device'); }
 
                 showDeviceSelectionModal(type) {
                     const allDevicesList = Object.values(this.allDevices);
                     const devices = allDevicesList.filter(d => d.driverId.includes(type));
-                    
-                    if (devices.length === 0) {
-                        alert(`No ${type} devices found`);
-                        return;
-                    }
-                    
+                    if (devices.length === 0) { alert(`No ${type} devices found`); return; }
                     const modal = document.createElement('div');
                     modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50';
                     modal.innerHTML = `
                         <div class="bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
                             <h3 class="text-lg font-bold mb-4">Select Device to Edit</h3>
-                            <div class="space-y-2">
-                                ${devices.map(d => `
-                                    <button onclick="window.app.${type === 'logic-unit' ? 'editLogicUnit' : 'editLogicDevice'}('${d.id}'); this.closest('.fixed').remove()"
-                                        class="w-full text-left p-3 bg-gray-700 hover:bg-gray-600 rounded transition-colors">
-                                        <div class="font-semibold">${d.name}</div>
-                                        <div class="text-xs text-gray-400">${this.allZones[d.zone]?.name || 'Unknown zone'}</div>
-                                    </button>
-                                `).join('')}
-                            </div>
-                            <button onclick="this.closest('.fixed').remove()" 
-                                class="mt-4 w-full bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">
-                                Cancel
-                            </button>
-                        </div>
-                    `;
+                            <div class="space-y-2">${devices.map(d => `<button onclick="window.app.${type === 'logic-unit' ? 'editLogicUnit' : 'editLogicDevice'}('${d.id}'); this.closest('.fixed').remove()" class="w-full text-left p-3 bg-gray-700 hover:bg-gray-600 rounded transition-colors"><div class="font-semibold">${d.name}</div><div class="text-xs text-gray-400">${this.allZones[d.zone]?.name || 'Unknown zone'}</div></button>`).join('')}</div>
+                            <button onclick="this.closest('.fixed').remove()" class="mt-4 w-full bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Cancel</button>
+                        </div>`;
                     document.body.appendChild(modal);
                 }
 
-                editLogicUnit(deviceId) {
-                    this.editDeviceFormula(deviceId);
-                }
+                editLogicUnit(deviceId) { this.editDeviceFormula(deviceId); }
+                editLogicDevice(deviceId) { this.editDeviceExpression(deviceId); }
 
-                editLogicDevice(deviceId) {
-                    this.editDeviceExpression(deviceId);
-                }
-
-                // Logic Device methods
                 startLogicDeviceFlow() {
                     this.editingDeviceId = null;
                     this.logicDeviceCapabilities = [];
                     this.showScreen('logic-device-select-screen');
                 }
 
-                // Truth table and expression evaluation
                 evaluateExpression(expression, values) {
                     try {
-                        // Normalize expression to uppercase for evaluation
-                        let jsExpr = expression.toUpperCase()
-                            .replace(/\bAND\b/gi, '&&')
-                            .replace(/\bOR\b/gi, '||')
-                            .replace(/\bNOT\b/gi, '!')
-                            .replace(/\bXOR\b/gi, '^');
-                        
-                        // Replace variables with their boolean values
+                        let jsExpr = expression.toUpperCase().replace(/\bAND\b/gi, '&&').replace(/\bOR\b/gi, '||').replace(/\bNOT\b/gi, '!').replace(/\bXOR\b/gi, '^');
                         Object.keys(values).forEach(variable => {
                             const upperVar = variable.toUpperCase();
                             const regex = new RegExp(`\\b${upperVar}\\b`, 'g');
                             jsExpr = jsExpr.replace(regex, values[variable] ? 'true' : 'false');
                         });
                         return eval(jsExpr) ? 1 : 0;
-                    } catch (e) {
-                        // console.warn('Error evaluating expression:', e);
-                        return null;
-                    }
+                    } catch (e) { return null; }
                 }
 
                 renderTruthTable(expression, numInputs, containerId) {
                     const container = document.getElementById(containerId);
                     if (!container) return;
-                    
                     const inputs = Array.from({length: numInputs}, (_, i) => String.fromCharCode(65 + i));
                     const rows = Math.pow(2, numInputs);
+                    if (rows > 256) { container.innerHTML = '<p class="text-yellow-400 text-sm">Too many inputs for truth table preview (max 8)</p>'; return; }
                     
-                    if (rows > 256) {
-                        container.innerHTML = '<p class="text-yellow-400 text-sm">Too many inputs for truth table preview (max 8)</p>';
-                        return;
-                    }
-                    
-                    // Validate that expression doesn't use undefined inputs
-                    const usedInputs = new Set(
-                        (expression.toUpperCase().match(/\b[A-J]\b/g) || [])
-                    );
+                    const usedInputs = new Set((expression.toUpperCase().match(/\b[A-J]\b/g) || []));
                     const missingInputs = Array.from(usedInputs).filter(input => {
                         const idx = input.charCodeAt(0) - 65;
                         return idx >= numInputs;
                     });
                     
                     if (missingInputs.length > 0) {
-                        container.innerHTML = `
-                            <div class="bg-red-900/30 border border-red-500 rounded p-3 text-sm">
-                                <p class="font-semibold">❌ Error:</p>
-                                <p>Formula uses <strong>${missingInputs.join(', ')}</strong> but only <strong>${inputs.join(', ')}</strong> ${numInputs === 1 ? 'is' : 'are'} selected.</p>
-                                <p class="mt-2">Please select more capabilities or update your formula.</p>
-                            </div>
-                        `;
+                        container.innerHTML = `<div class="bg-red-900/30 border border-red-500 rounded p-3 text-sm"><p class="font-semibold">❌ Error:</p><p>Formula uses <strong>${missingInputs.join(', ')}</strong> but only <strong>${inputs.join(', ')}</strong> ${numInputs === 1 ? 'is' : 'are'} selected.</p></div>`;
                         return;
                     }
                     
-                    let html = `
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-xs border-collapse">
-                                <thead>
-                                    <tr class="bg-gray-600">
-                                        ${inputs.map(i => `<th class="border border-gray-500 p-1">${i}</th>`).join('')}
-                                        <th class="border border-gray-500 p-1 font-bold">Result</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                    `;
-                    
-                    let hasErrors = false;
-                    
+                    let html = `<div class="overflow-x-auto"><table class="w-full text-xs border-collapse"><thead><tr class="bg-gray-600">${inputs.map(i => `<th class="border border-gray-500 p-1">${i}</th>`).join('')}<th class="border border-gray-500 p-1 font-bold">Result</th></tr></thead><tbody>`;
                     for (let i = 0; i < rows; i++) {
                         const values = {};
                         let rowHtml = '<tr>';
-                        
                         for (let j = 0; j < numInputs; j++) {
                             const val = (i >> (numInputs - 1 - j)) & 1;
                             values[inputs[j]] = val;
                             rowHtml += `<td class="border border-gray-500 p-1 text-center ${val ? 'bg-green-900' : 'bg-red-900'}">${val}</td>`;
                         }
-                        
                         const result = this.evaluateExpression(expression, values);
-                        
-                        if (result === null) {
-                            hasErrors = true;
-                            rowHtml += `<td class="border border-gray-500 p-1 text-center font-bold bg-yellow-700">?</td>`;
-                        } else {
-                            const resultClass = result === 1 ? 'bg-green-700' : 'bg-red-700';
-                            rowHtml += `<td class="border border-gray-500 p-1 text-center font-bold ${resultClass}">${result}</td>`;
-                        }
-                        
-                        rowHtml += '</tr>';
+                        const resultClass = result === 1 ? 'bg-green-700' : (result === 0 ? 'bg-red-700' : 'bg-yellow-700');
+                        rowHtml += `<td class="border border-gray-500 p-1 text-center font-bold ${resultClass}">${result === null ? '?' : result}</td></tr>`;
                         html += rowHtml;
                     }
+                    html += '</tbody></table></div>';
+                    container.innerHTML = html;
+                }
+
+                // --- Snapshot Manager Functions ---
+
+                startSnapshotFlow() {
+                    this.snapshotData = [];
+                    this.showScreen('snapshot-screen');
+                    this.renderSnapshotList();
+                }
+
+                async captureState() {
+                    this.showLoader('Capturing state...');
                     
-                    html += '</tbody></table>';
+                    // Ensure we have fresh data
+                    try {
+                         const devices = await this.api.devices.getDevices();
+                         this.allDevices = devices;
+                    } catch (e) {
+                        console.error("Could not refresh devices", e);
+                    }
+
+                    const snapshot = {};
+                    // Define what we consider "Safe" to restore automatically.
+                    // We exclude 'sensor' and 'lock' classes by default for safety.
+                    const unsafeClasses = ['sensor', 'lock', 'alarm', 'garage']; 
                     
-                    if (hasErrors) {
-                        html += `
-                            <div class="mt-2 text-xs text-yellow-400">
-                                ⚠️ Some rows could not be evaluated due to syntax errors
-                            </div>
-                        `;
+                    // Define capabilities we are interested in
+                    const targetCapabilities = ['onoff', 'dim', 'light_hue', 'light_saturation', 'light_temperature', 'light_mode', 'target_temperature', 'volume_set', 'windowcoverings_set'];
+
+                    for (const device of Object.values(this.allDevices)) {
+                        if (!device.ready) continue;
+                        if (unsafeClasses.includes(device.class)) continue;
+
+                        const savedCaps = {};
+                        let hasData = false;
+
+                        for (const cap of targetCapabilities) {
+                            // Check if device has capability AND if it is setable
+                            if (device.capabilitiesObj && device.capabilitiesObj[cap] && device.capabilitiesObj[cap].setable) {
+                                savedCaps[cap] = device.capabilitiesObj[cap].value;
+                                hasData = true;
+                            }
+                        }
+
+                        if (hasData) {
+                            snapshot[device.id] = savedCaps;
+                        }
+                    }
+
+                    // Convert to array format for UI
+                    this.snapshotData = [];
+                    for (const [deviceId, caps] of Object.entries(snapshot)) {
+                        const device = this.allDevices[deviceId];
+                        for (const [capId, value] of Object.entries(caps)) {
+                            this.snapshotData.push({
+                                deviceId: deviceId,
+                                deviceName: device ? device.name : 'Unknown',
+                                zoneName: device && this.allZones[device.zone] ? this.allZones[device.zone].name : 'Unknown',
+                                capabilityId: capId,
+                                capabilityTitle: device.capabilitiesObj[capId].title || capId,
+                                value: value
+                            });
+                        }
                     }
                     
-                    html += '</div>';
-                    container.innerHTML = html;
+                    // Sort by Zone then Name
+                    this.snapshotData.sort((a, b) => {
+                        if (a.zoneName !== b.zoneName) return a.zoneName.localeCompare(b.zoneName);
+                        return a.deviceName.localeCompare(b.deviceName);
+                    });
+
+                    this.hideLoader();
+                    this.renderSnapshotList();
+                }
+
+                renderSnapshotList() {
+                    const list = document.getElementById('snapshot-list');
+                    const count = document.getElementById('snapshot-count');
+                    const copyBtn = document.getElementById('snapshot-copy-btn');
+                    
+                    if (!list) return;
+
+                    count.innerText = this.snapshotData.length;
+                    if (this.snapshotData.length > 0) {
+                        copyBtn.classList.remove('hidden');
+                    } else {
+                        copyBtn.classList.add('hidden');
+                        list.innerHTML = `<div class="text-gray-500 text-center py-10 italic">No data captured. Click "Capture Current State".</div>`;
+                        return;
+                    }
+
+                    let html = '';
+                    let currentZone = '';
+
+                    this.snapshotData.forEach((item, index) => {
+                        // Zone Header
+                        if (item.zoneName !== currentZone) {
+                            currentZone = item.zoneName;
+                            html += `<div class="bg-gray-800 text-gray-300 px-3 py-2 font-bold text-sm border-t border-gray-700 mt-2 first:mt-0 sticky top-0">${currentZone}</div>`;
+                        }
+
+                        html += `
+                            <div class="flex items-center justify-between p-3 border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
+                                <div class="flex flex-col overflow-hidden">
+                                    <div class="font-medium truncate">${item.deviceName}</div>
+                                    <div class="text-xs text-gray-400 flex gap-2">
+                                        <span class="bg-gray-700 px-1.5 rounded text-blue-300">${item.capabilityTitle}</span>
+                                        <span class="text-green-400 font-mono">${String(item.value)}</span>
+                                    </div>
+                                </div>
+                                <button onclick="app.removeSnapshotItem(${index})" class="text-red-500 hover:text-red-400 hover:bg-red-900/20 p-2 rounded-full transition-colors" title="Remove from snapshot">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        `;
+                    });
+
+                    list.innerHTML = html;
+                }
+
+                removeSnapshotItem(index) {
+                    this.snapshotData.splice(index, 1);
+                    this.renderSnapshotList();
+                }
+
+                copySnapshotJSON() {
+                    // Convert back to the nested structure required by Homey flows
+                    const output = {};
+                    
+                    this.snapshotData.forEach(item => {
+                        if (!output[item.deviceId]) {
+                            output[item.deviceId] = {};
+                        }
+                        output[item.deviceId][item.capabilityId] = item.value;
+                    });
+
+                    const jsonString = JSON.stringify(output);
+                    
+                    navigator.clipboard.writeText(jsonString).then(() => {
+                        alert('JSON copied to clipboard! You can now paste this into a variable or flow card.');
+                    }).catch(err => {
+                        console.error('Could not copy text: ', err);
+                        // Fallback modal
+                        this.showOutputModal('Snapshot JSON', { json: output }, 'Copy the JSON below:');
+                    });
                 }
             }
             

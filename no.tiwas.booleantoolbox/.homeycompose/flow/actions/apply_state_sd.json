@@ -1,0 +1,23 @@
+{
+  "id": "apply_state_sd",
+  "title": {
+    "en": "Apply state",
+    "no": "Bruk tilstand",
+    "de": "Zustand anwenden",
+    "nl": "Status toepassen",
+    "fr": "Appliquer l'état",
+    "da": "Anvend tilstand",
+    "fi": "Apply state",
+    "sv": "Tillämpa tillstånd",
+    "pl": "Zastosuj stan",
+    "it": "Applica stato",
+    "es": "Aplicar estado"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-device"
+    }
+  ]
+}

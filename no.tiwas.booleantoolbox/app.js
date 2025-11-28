@@ -41,9 +41,22 @@ module.exports = class BooleanToolboxApp extends Homey.App {
             this.logger.banner(`BOOLEAN TOOLBOX vUNKNOWN`); // Fallback banner
         }
 
+        // --- DEBUG SETTING ---
+        const debugMode = this.homey.settings.get('debug_mode');
+        this.logger.setLevel(debugMode ? 'DEBUG' : 'INFO');
+        
+        this.homey.settings.on('set', (key, value) => {
+            if (key === 'debug_mode') {
+                const level = value ? 'DEBUG' : 'INFO';
+                this.logger.setLevel(level);
+                this.logger.info(`Log level updated to ${level}`);
+            }
+        });
+
         // Initialize API
         try {
             const athomApi = require("athom-api");
+// ... rest of the code
 
             this.logger.debug("app.athom_api_loaded");
 
@@ -98,7 +111,13 @@ module.exports = class BooleanToolboxApp extends Homey.App {
                 const { HomeyAPI } = athomApi;
                 this.api = await HomeyAPI.forCurrentHomey(this.homey);
             }
+
             const zones = await this.api.zones.getZones();
+            
+            if (!zones) {
+                return [];
+            }
+            
             const zoneList = Object.values(zones).map((zone) => ({
                 id: zone.id,
                 name: zone.name,

@@ -1,0 +1,23 @@
+{
+  "id": "state_applied_successfully_sd",
+  "title": {
+    "en": "State applied successfully",
+    "no": "Tilstand brukt vellykket",
+    "de": "Zustand erfolgreich angewendet",
+    "nl": "Status succesvol toegepast",
+    "fr": "État appliqué avec succès",
+    "da": "Tilstand anvendt succesfuldt",
+    "fi": "State applied successfully",
+    "sv": "Tillstånd tillämpat framgångsrikt",
+    "pl": "Stan zastosowany pomyślnie",
+    "it": "Stato applicato con successo",
+    "es": "Estado aplicado con éxito"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-device"
+    }
+  ]
+}

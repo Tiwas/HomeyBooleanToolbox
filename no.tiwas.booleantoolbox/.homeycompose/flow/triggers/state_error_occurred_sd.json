@@ -1,0 +1,42 @@
+{
+  "id": "state_error_occurred_sd",
+  "title": {
+    "en": "Error occurred",
+    "no": "Feil oppstod",
+    "de": "Fehler aufgetreten",
+    "nl": "Fout opgetreden",
+    "fr": "Une erreur est survenue",
+    "da": "Fejl opstod",
+    "fi": "Error occurred",
+    "sv": "Fel inträffade",
+    "pl": "Wystąpił błąd",
+    "it": "Si è verificato un errore",
+    "es": "Ocurrió un error"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-device"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "error",
+      "type": "string",
+      "title": {
+        "en": "Error",
+        "no": "Feil",
+        "de": "Fehler",
+        "nl": "Fout",
+        "fr": "Erreur",
+        "da": "Fejl",
+        "fi": "Virhe",
+        "sv": "Fel",
+        "pl": "Błąd",
+        "it": "Errore",
+        "es": "Error"
+      }
+    }
+  ]
+}
