@@ -7,5 +7,8 @@
   },
   "1.5.0": {
     "en": "Mostly the new Waiter Gate (beta) and a card that'll do something as minor as...just wait for a while (user set, of course)"
+  },
+  "1.6.0": {
+    "en": "Added a state device - easy set multiple devices/scenes (ADVANCED)"
   }
 }
