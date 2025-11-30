@@ -18,6 +18,36 @@
       "type": "device",
       "name": "device",
       "filter": "driver_id=state-device"
+    },
+    {
+      "name": "reset_all",
+      "type": "checkbox",
+      "title": {
+        "en": "Turn off other State Devices first?",
+        "no": "Slå av andre tilstandsenheter først?",
+        "de": "Andere Zustandsgeräte zuerst ausschalten?",
+        "nl": "Andere statusapparaten eerst uitschakelen?",
+        "fr": "Éteindre d'abord les autres appareils d'état?",
+        "da": "Sluk andre tilstandsenheder først?",
+        "fi": "Turn off other State Devices first?",
+        "sv": "Stäng av andra tillståndsenheter först?",
+        "pl": "Wyłącz inne urządzenia stanu najpierw?",
+        "it": "Spegni prima gli altri dispositivi di stato?",
+        "es": "¿Apagar primero otros dispositivos de estado?"
+      }
     }
-  ]
+  ],
+  "titleFormatted": {
+    "en": "Apply state (Reset all: [[reset_all]])",
+    "no": "Bruk tilstand (Nullstill alle: [[reset_all]])",
+    "de": "Zustand anwenden (Alle zurücksetzen: [[reset_all]])",
+    "nl": "Status toepassen (Alles resetten: [[reset_all]])",
+    "fr": "Appliquer l'état (Tout réinitialiser : [[reset_all]])",
+    "da": "Anvend tilstand (Nulstil alle: [[reset_all]])",
+    "fi": "Käytä tilaa (Nollaa kaikki: [[reset_all]])",
+    "sv": "Tillämpa tillstånd (Återställ alla: [[reset_all]])",
+    "pl": "Zastosuj stan (Zresetuj wszystko: [[reset_all]])",
+    "it": "Applica stato (Ripristina tutto: [[reset_all]])",
+    "es": "Aplicar estado (Restablecer todo: [[reset_all]])"
+  }
 }

@@ -197,6 +197,98 @@
     },
     {
       "type": "trigger",
+      "id": "device_on_state_changed_ld",
+      "title": {
+        "en": "State changed (On/Off)",
+        "no": "Tilstand endret (På/Av)"
+      },
+      "tokens": [
+        {
+          "name": "on_state",
+          "type": "boolean",
+          "title": {
+            "en": "State",
+            "no": "Tilstand"
+          }
+        },
+        {
+          "name": "device_name",
+          "type": "string",
+          "title": {
+            "en": "Device Name",
+            "no": "Enhetsnavn"
+          }
+        }
+      ]
+    },
+    {
+      "type": "trigger",
+      "id": "device_turned_ld",
+      "title": {
+        "en": "Device turned On/Off",
+        "no": "Enhet slått På/Av"
+      },
+      "tokens": [
+        {
+          "name": "on_state",
+          "type": "boolean",
+          "title": {
+            "en": "State",
+            "no": "Tilstand"
+          }
+        },
+        {
+          "name": "device_name",
+          "type": "string",
+          "title": {
+            "en": "Device Name",
+            "no": "Enhetsnavn"
+          }
+        }
+      ]
+    },
+    {
+      "type": "trigger",
+      "id": "device_alarm_state_changed_ld",
+      "title": {
+        "en": "Alarm state changed",
+        "no": "Alarmtilstand endret"
+      },
+      "tokens": [
+        {
+          "name": "alarm_state",
+          "type": "boolean",
+          "title": { "en": "Alarm State", "no": "Alarmtilstand" }
+        },
+        {
+          "name": "device_name",
+          "type": "string",
+          "title": { "en": "Device Name", "no": "Enhetsnavn" }
+        }
+      ]
+    },
+    {
+      "type": "trigger",
+      "id": "device_alarm_changed_to_ld",
+      "title": {
+        "en": "Alarm changed to...",
+        "no": "Alarm endret til..."
+      },
+      "tokens": [
+        {
+          "name": "alarm_state",
+          "type": "boolean",
+          "title": { "en": "Alarm State", "no": "Alarmtilstand" }
+        },
+        {
+          "name": "device_name",
+          "type": "string",
+          "title": { "en": "Device Name", "no": "Enhetsnavn" }
+        }
+      ]
+    },
+    {
+      "type": "trigger",
       "id": "config_alarm_changed_to_ld"
     },
     {

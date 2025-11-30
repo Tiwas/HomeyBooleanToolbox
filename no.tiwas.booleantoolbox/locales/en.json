@@ -471,6 +471,10 @@
       "title": "Select Scope",
       "whole_house": "Whole House"
     },
+    "select_capabilities": {
+      "title": "Configure Devices",
+      "subtitle": "Reorder devices and select capabilities."
+    },
     "generating_snapshot": "Generating snapshot...",
     "edit_configuration": {
       "title": "Edit Configuration",

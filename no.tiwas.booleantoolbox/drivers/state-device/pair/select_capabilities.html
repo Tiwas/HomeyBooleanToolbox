@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .homey-header {
+            margin-bottom: 20px;
+        }
+        .homey-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .homey-subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+        .help-link {
+            float: right;
+            color: #2196F3;
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .device-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        .device-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            padding: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .device-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .device-controls {
+            display: flex;
+            gap: 5px;
+        }
+        .ctrl-btn {
+            background: #f0f0f0;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .ctrl-btn:hover { background: #e0e0e0; }
+        
+        .cap-list {
+            margin-left: 10px;
+            border-left: 2px solid #f0f0f0;
+            padding-left: 10px;
+        }
+        .cap-item {
+            display: flex;
+            align-items: center;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+        .cap-item label {
+            flex-grow: 1;
+            margin-left: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+        .cap-value {
+            color: #666;
+            font-family: monospace;
+        }
+        .cap-controls {
+            opacity: 0.3;
+            transition: opacity 0.2s;
+        }
+        .cap-item:hover .cap-controls {
+            opacity: 1;
+        }
+
+        button.main-btn {
+            padding: 15px 40px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        button.main-btn:hover {
+            background-color: #45a049;
+        }
+        button.main-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="homey-header">
+        <h1 class="homey-title" data-i18n="pair.select_capabilities.title">Configure Devices</h1>
+        <p class="homey-subtitle" data-i18n="pair.select_capabilities.subtitle">Reorder devices and select capabilities.</p>
+    </header>
+
+    <div class="homey-view-content">
+        <div id="device-config-list" class="device-list">
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <div class="homey-view-buttons">
+        <button id="cap-next-button" class="main-btn" data-i18n="pair.next">Next</button>
+    </div>
+
+    <script type="text/javascript">
+        const deviceListEl = document.getElementById('device-config-list');
+        const nextBtnCap = document.getElementById('cap-next-button');
+        
+        // Local state
+        let devicesData = []; // [ { id, name, zoneName, capabilities: { id: val } } ]
+
+        function applyTranslationsCap() {
+            if (typeof Homey === 'undefined' || typeof Homey.__ !== 'function') return;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                try { el.textContent = Homey.__(key); } catch(e) {}
+            });
+        }
+
+        function onHomeyReadyCap() {
+            Homey.setTitle(Homey.__('pair.select_capabilities.title'));
+            applyTranslationsCap();
+
+            Homey.emit('get_selected_devices_detailed', {}, function(err, result) {
+                if (err) {
+                    deviceListEl.innerHTML = '<p style="color:red">Error: ' + err.message + '</p>';
+                    return;
+                }
+                
+                // Transform object capabilities to array for local state
+                devicesData = (result || []).map(dev => ({
+                    ...dev,
+                    capabilitiesArr: Object.entries(dev.capabilities).map(([id, val]) => ({
+                        id: id, 
+                        value: val,
+                        selected: true // Default selected
+                    }))
+                }));
+
+                renderList();
+            });
+        }
+
+        function renderList() {
+            deviceListEl.innerHTML = '';
+            
+            devicesData.forEach((device, devIndex) => {
+                const card = document.createElement('div');
+                card.className = 'device-card';
+                
+                // Header
+                const header = document.createElement('header');
+                header.className = 'device-header';
+                
+                const title = document.createElement('span');
+                title.innerHTML = `<b>${device.name}</b> <small>(${device.zoneName})</small>`;
+                
+                const controls = document.createElement('div');
+                controls.className = 'device-controls';
+                
+                const upBtn = document.createElement('button');
+                upBtn.className = 'ctrl-btn';
+                upBtn.innerHTML = '↑';
+                upBtn.onclick = () => moveDevice(devIndex, -1);
+                if (devIndex === 0) upBtn.disabled = true;
+
+                const downBtn = document.createElement('button');
+                downBtn.className = 'ctrl-btn';
+                downBtn.innerHTML = '↓';
+                downBtn.onclick = () => moveDevice(devIndex, 1);
+                if (devIndex === devicesData.length - 1) downBtn.disabled = true;
+
+                controls.appendChild(upBtn);
+                controls.appendChild(downBtn);
+                
+                header.appendChild(title);
+                header.appendChild(controls);
+                card.appendChild(header);
+
+                // Capabilities
+                const capList = document.createElement('div');
+                capList.className = 'cap-list';
+
+                device.capabilitiesArr.forEach((cap, capIndex) => {
+                    const item = document.createElement('div');
+                    item.className = 'cap-item';
+
+                    const cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.checked = cap.selected;
+                    cb.onchange = (e) => { cap.selected = e.target.checked; };
+
+                    const label = document.createElement('label');
+                    label.innerHTML = `<span>${cap.id}</span> <span class="cap-value">${cap.value}</span>`;
+                    label.onclick = () => { cb.click(); };
+
+                    const capCtrls = document.createElement('div');
+                    capCtrls.className = 'cap-controls';
+                    
+                    const cUp = document.createElement('button');
+                    cUp.className = 'ctrl-btn';
+                    cUp.innerHTML = '↑';
+                    cUp.style.padding = '2px 6px';
+                    cUp.onclick = (e) => { e.stopPropagation(); moveCap(devIndex, capIndex, -1); };
+                    if (capIndex === 0) cUp.style.visibility = 'hidden';
+
+                    const cDown = document.createElement('button');
+                    cDown.className = 'ctrl-btn';
+                    cDown.innerHTML = '↓';
+                    cDown.style.padding = '2px 6px';
+                    cDown.onclick = (e) => { e.stopPropagation(); moveCap(devIndex, capIndex, 1); };
+                    if (capIndex === device.capabilitiesArr.length - 1) cDown.style.visibility = 'hidden';
+
+                    capCtrls.appendChild(cUp);
+                    capCtrls.appendChild(cDown);
+
+                    item.appendChild(cb);
+                    item.appendChild(label);
+                    item.appendChild(capCtrls);
+                    capList.appendChild(item);
+                });
+
+                card.appendChild(capList);
+                deviceListEl.appendChild(card);
+            });
+        }
+
+        function moveDevice(index, direction) {
+            if (index + direction < 0 || index + direction >= devicesData.length) return;
+            const temp = devicesData[index];
+            devicesData[index] = devicesData[index + direction];
+            devicesData[index + direction] = temp;
+            renderList();
+        }
+
+        function moveCap(devIndex, capIndex, direction) {
+            const caps = devicesData[devIndex].capabilitiesArr;
+            if (capIndex + direction < 0 || capIndex + direction >= caps.length) return;
+            const temp = caps[capIndex];
+            caps[capIndex] = caps[capIndex + direction];
+            caps[capIndex + direction] = temp;
+            renderList();
+        }
+
+        // Handlers
+        nextBtnCap.addEventListener('click', () => {
+            nextBtnCap.disabled = true;
+            nextBtnCap.innerText = (typeof Homey !== 'undefined' ? Homey.__('pair.generating_snapshot') : 'Processing...');
+
+            // Prepare data for backend
+            const finalData = devicesData.map(dev => ({
+                id: dev.id,
+                name: dev.name,
+                zoneName: dev.zoneName,
+                capabilities: dev.capabilitiesArr.filter(c => c.selected).map(c => ({
+                    id: c.id,
+                    value: c.value
+                }))
+            })).filter(d => d.capabilities.length > 0);
+
+            Homey.emit('save_final_configuration', { devices: finalData }, (err, result) => {
+                nextBtnCap.disabled = false;
+                nextButtonDev.innerText = Homey.__('pair.next');
+
+                if (err) {
+                    Homey.alert(err.message);
+                    return;
+                }
+                Homey.showView('edit_configuration');
+            });
+        });
+
+        function waitForHomeyCap() {
+            if (typeof Homey !== 'undefined') {
+                onHomeyReadyCap();
+            } else {
+                setTimeout(waitForHomeyCap, 100);
+            }
+        }
+        waitForHomeyCap();
+
+    </script>
+</body>
+</html>

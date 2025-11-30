@@ -472,6 +472,10 @@
             "title": "Velg omfang",
             "whole_house": "Hele huset"
         },
+        "select_capabilities": {
+            "title": "Konfigurer enheter",
+            "subtitle": "Endre rekkefølge og velg egenskaper."
+        },
             "generating_snapshot": "Genererer øyeblikksbilde...",
             "edit_configuration": {
               "title": "Rediger konfigurasjon",

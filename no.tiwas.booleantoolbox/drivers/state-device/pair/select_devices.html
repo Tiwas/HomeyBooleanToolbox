@@ -219,7 +219,7 @@
 
             console.log('[Select Devices] Saving selection:', selectedIds.length);
             // Generate final snapshot on backend
-            Homey.emit('save_selection', { 
+            Homey.emit('save_device_selection', { 
                 selectedIds: selectedIds 
             }, function(err, result) {
                 nextButtonDev.disabled = false;
@@ -230,8 +230,8 @@
                     return;
                 }
                 
-                // Proceed to next view (Edit Configuration)
-                Homey.showView('edit_configuration');
+                // Proceed to next view (Select Capabilities)
+                Homey.showView('select_capabilities');
             });
         });
     </script>

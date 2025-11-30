@@ -34,7 +34,7 @@
         "it": "Configurazione (JSON)",
         "es": "Configuración (JSON)"
       },
-      "value": "{\n  \"config\": {\n    \"default_delay\": 200,\n    \"ignore_errors\": true\n  },\n  \"items\": []\n}"
+      "value": "{\n  \"_comment\": \"Documentation: https://tiwas.github.io/HomeyBooleanToolbox/docs/state-device.html\",\n  \"config\": {\n    \"default_delay\": 1000,\n    \"ignore_errors\": true\n  },\n  \"items\": []\n}"
     },
     {
       "id": "log_errors",
@@ -65,6 +65,9 @@
     },
     {
       "id": "select_devices"
+    },
+    {
+      "id": "select_capabilities"
     },
     {
       "id": "edit_configuration"
@@ -126,20 +129,7 @@
     ],
     "actions": [
       {
-        "id": "apply_state_sd",
-        "title": {
-          "en": "Apply state",
-          "no": "Bruk tilstand",
-          "de": "Zustand anwenden",
-          "nl": "Status toepassen",
-          "fr": "Appliquer l'état",
-          "da": "Anvend tilstand",
-          "fi": "Apply state",
-          "sv": "Tillämpa tillstånd",
-          "pl": "Zastosuj stan",
-          "it": "Applica stato",
-          "es": "Aplicar estado"
-        }
+        "id": "apply_state_sd"
       }
     ]
   }

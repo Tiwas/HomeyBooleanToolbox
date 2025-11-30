@@ -61,16 +61,34 @@ class StateDriver extends Homey.Driver {
                 const allDevices = await api.devices.getDevices();
                 const allZones = await api.zones.getZones(); // Get zones for name resolution
                 
+                // Create a map of zones for easier parent lookup
+                const zoneMap = {};
+                Object.values(allZones).forEach(zone => {
+                    zoneMap[zone.id] = zone;
+                });
+
                 const selectedZones = new Set(data.zones || []);
                 const wholeHouse = data.wholeHouse === true;
+
+                // Helper to check if a zone or its parents are selected
+                const isZoneSelected = (zoneId) => {
+                    if (wholeHouse) return true;
+                    let currentId = zoneId;
+                    while (currentId) {
+                        if (selectedZones.has(currentId)) return true;
+                        const zone = zoneMap[currentId];
+                        currentId = zone ? zone.parent : null;
+                    }
+                    return false;
+                };
 
                 candidateItems = [];
 
                 for (const deviceId in allDevices) {
                     const device = allDevices[deviceId];
 
-                    // Filter by Zone
-                    if (!wholeHouse && !selectedZones.has(device.zone)) {
+                    // Filter by Zone (Recursive check)
+                    if (!isZoneSelected(device.zone)) {
                         continue;
                     }
                     
@@ -140,29 +158,68 @@ class StateDriver extends Homey.Driver {
             }
         });
 
-        // Handler: Save Selection and Generate Final JSON
-        session.setHandler('save_selection', async (data) => {
+        // Handler: Save Device Selection (Step 2)
+        session.setHandler('save_device_selection', async (data) => {
             const selectedIds = new Set(data.selectedIds || []);
+            this.currentSelection = candidateItems.filter(item => selectedIds.has(item.id));
+            this.debug(`Saved device selection: ${this.currentSelection.length} devices.`);
+            return { success: true };
+        });
+
+        // Handler: Get Detailed Selection for Capabilities View (Step 3)
+        session.setHandler('get_selected_devices_detailed', async () => {
+            // Return the devices with their capabilities for the UI to render
+            // We enrich the capabilities with titles if possible, but we only have values stored
+            // The UI will have to do with IDs and values
+            return this.currentSelection || [];
+        });
+
+        // Handler: Save Final Configuration (Step 3 -> 4)
+        session.setHandler('save_final_configuration', async (data) => {
+            const orderedDevices = data.devices || []; // Expecting [ { id, name, zoneName, capabilities: [{id, value}] } ]
             
-            const finalItems = candidateItems.filter(item => selectedIds.has(item.id));
-            
-            // Remove zoneName property from final JSON as it's not needed for logic
-            const cleanItems = finalItems.map(item => ({
-                name: item.name,
-                id: item.id,
-                capabilities: item.capabilities
-                // delay: 0 // optional
-            }));
+            // Build Hierarchical JSON
+            const zonesMap = {};
+
+            orderedDevices.forEach(device => {
+                const zoneName = device.zoneName || 'Unknown';
+                if (!zonesMap[zoneName]) {
+                    zonesMap[zoneName] = {
+                        config: {
+                            delay_between: 0 // Default, can be overridden by user in JSON
+                        },
+                        items: []
+                    };
+                }
+                
+                // Convert capabilities array back to object for cleaner JSON (or keep as array for order?)
+                // User asked for "change order of capabilities".
+                // Standard JSON objects are unordered. We MUST use an array for ordered capabilities.
+                // Let's use an array of objects: [ { "capability": "onoff", "value": true }, ... ]
+                const capabilitiesArr = device.capabilities.map(cap => ({
+                    capability: cap.id,
+                    value: cap.value
+                }));
+
+                zonesMap[zoneName].items.push({
+                    id: device.id,
+                    name: device.name,
+                    active: true, // Default active
+                    capabilities: capabilitiesArr
+                });
+            });
 
             generatedConfig = {
+                _comment: "Documentation: https://tiwas.github.io/HomeyBooleanToolbox/docs/state-device.html",
                 config: {
-                    default_delay: 200,
-                    ignore_errors: true
+                    default_delay: 1000,
+                    ignore_errors: true,
+                    debug: false
                 },
-                items: cleanItems
+                zones: zonesMap
             };
 
-            this.debug(`Final configuration generated with ${cleanItems.length} devices.`);
+            this.debug('Final configuration generated.');
             return { success: true };
         });
 

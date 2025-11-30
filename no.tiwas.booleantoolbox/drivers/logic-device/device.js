@@ -2011,13 +2011,17 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     // ===== ON/OFF STATE TRIGGERS =====
     if (previousOnState !== null && previousOnState !== safeOnState) {
       // Prepare on/off state trigger data
+      // Explicitly cast to boolean to prevent 'undefined' errors
+      const onStateBool = !!safeOnState;
+      const deviceName = this.getName() || "Unknown Device";
+
       const onTriggerData = {
-        on_state: safeOnState,
-        device_name: this.getName()
+        on_state: onStateBool,
+        device_name: deviceName
       };
 
       const onState = {
-        on_state: safeOnState
+        on_state: onStateBool
       };
 
       this.logger.flow(`🔘 On state changed: ${previousOnState} → ${safeOnState}`);
