@@ -9,8 +9,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a202c;
-            color: #e2e8f0;
+            background-color: #f8fafc;
+            color: #1a202c;
         }
         .step-number {
             display: inline-flex;
@@ -22,71 +22,73 @@
             border-radius: 50%;
             font-weight: 700;
             margin-right: 1rem;
+            color: white;
         }
         .code-block {
-            background-color: #2d3748;
-            border-left: 4px solid #667eea;
+            background-color: #f1f5f9;
+            border-left: 4px solid #8b5cf6;
             padding: 1rem;
             border-radius: 0.5rem;
             overflow-x: auto;
             font-family: monospace;
+            color: #1e293b;
         }
         .tip-box {
-            background-color: #2c5282;
-            border-left: 4px solid #4299e1;
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
             padding: 1rem;
             border-radius: 0.5rem;
             margin: 1rem 0;
         }
         .warning-box {
-            background-color: #742a2a;
-            border-left: 4px solid #f56565;
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
             padding: 1rem;
             border-radius: 0.5rem;
             margin: 1rem 0;
         }
     </style>
 </head>
-<body class="min-h-screen">
-    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+<body class="min-h-screen flex flex-col">
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
-                <a href="../README.md" class="text-xl font-bold text-purple-400 hover:text-purple-300">Boolean Toolbox</a>
+                <a href="../README.md" class="text-xl font-bold text-purple-600 hover:text-purple-800">Boolean Toolbox</a>
                 <div class="space-x-4 text-sm hidden md:block">
-                    <a href="getting-started.html" class="text-gray-300 hover:text-white">Getting Started</a>
-                    <a href="devices.html" class="text-gray-300 hover:text-white">Devices</a>
-                    <a href="state-device.html" class="text-white font-semibold">State Device</a>
-                    <a href="waiter-gates.html" class="text-gray-300 hover:text-white">Waiter Gates</a>
+                    <a href="getting-started.html" class="text-gray-600 hover:text-purple-600">Getting Started</a>
+                    <a href="devices.html" class="text-gray-600 hover:text-purple-600">Devices</a>
+                    <a href="state-device.html" class="text-gray-900 font-semibold">State Device</a>
+                    <a href="waiter-gates.html" class="text-gray-600 hover:text-purple-600">Waiter Gates</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 class="text-4xl font-bold mb-2">State Device</h1>
-        <p class="text-gray-400 mb-8">Capture, manage, and restore the state of multiple devices with a single click.</p>
+    <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+        <h1 class="text-4xl font-bold mb-2 text-gray-900">State Device</h1>
+        <p class="text-gray-600 mb-8">Capture, manage, and restore the state of multiple devices with a single click.</p>
 
         <!-- Introduction -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-purple-400">What is a State Device?</h2>
-            <p class="mb-4">A State Device allows you to take a "snapshot" of the current state of devices in one or more zones (rooms). You can then use this snapshot to restore those devices to that exact state later.</p>
-            <p class="mb-4">This is perfect for setting scenes (e.g., "Movie Night", "Cleaning", "Romantic Dinner") where you want to control many devices with specific settings (dim level, color, on/off) simultaneously.</p>
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">What is a State Device?</h2>
+            <p class="mb-4 text-gray-700">A State Device allows you to take a "snapshot" of the current state of devices in one or more zones (rooms). You can then use this snapshot to restore those devices to that exact state later.</p>
+            <p class="mb-4 text-gray-700">This is perfect for setting scenes (e.g., "Movie Night", "Cleaning", "Romantic Dinner") where you want to control many devices with specific settings (dim level, color, on/off) simultaneously.</p>
         </div>
 
         <!-- Setup Guide -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
-            <h2 class="text-2xl font-semibold mb-6 text-purple-400">Setting Up a State Device</h2>
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-6 text-purple-600">Setting Up a State Device</h2>
 
             <!-- Step 1 -->
             <div class="mb-8">
                 <div class="flex items-center mb-4">
                     <span class="step-number">1</span>
-                    <h3 class="text-xl font-semibold">Select Scope</h3>
+                    <h3 class="text-xl font-semibold text-gray-900">Select Scope</h3>
                 </div>
-                <p class="ml-12 text-gray-300 mb-2">Choose which zones (rooms) to capture. You can select specific rooms or the entire house.</p>
+                <p class="ml-12 text-gray-700 mb-2">Choose which zones (rooms) to capture. You can select specific rooms or the entire house.</p>
                 <div class="ml-12 tip-box">
-                    <p class="font-semibold text-blue-300">💡 Tip</p>
-                    <p class="text-blue-200">Start with a single room to get familiar with how it works.</p>
+                    <p class="font-semibold text-blue-700">💡 Tip</p>
+                    <p class="text-blue-800">Start with a single room to get familiar with how it works.</p>
                 </div>
             </div>
 
@@ -94,20 +96,20 @@
             <div class="mb-8">
                 <div class="flex items-center mb-4">
                     <span class="step-number">2</span>
-                    <h3 class="text-xl font-semibold">Select Devices</h3>
+                    <h3 class="text-xl font-semibold text-gray-900">Select Devices</h3>
                 </div>
-                <p class="ml-12 text-gray-300 mb-2">The app will scan the selected zones and list all compatible devices. Uncheck any devices you don't want to include in this state.</p>
+                <p class="ml-12 text-gray-700 mb-2">The app will scan the selected zones and list all compatible devices. Uncheck any devices you don't want to include in this state.</p>
             </div>
 
             <!-- Step 3 -->
             <div class="mb-8">
                 <div class="flex items-center mb-4">
                     <span class="step-number">3</span>
-                    <h3 class="text-xl font-semibold">Configure Devices</h3>
+                    <h3 class="text-xl font-semibold text-gray-900">Configure Devices</h3>
                 </div>
-                <p class="ml-12 text-gray-300 mb-4">Fine-tune your selection:</p>
-                <ul class="ml-16 list-disc space-y-2 text-gray-300 mb-4">
-                    <li><strong>Reorder Devices:</strong> Use the <span class="bg-gray-700 px-2 py-1 rounded text-xs">↑</span> and <span class="bg-gray-700 px-2 py-1 rounded text-xs">↓</span> buttons to determine the order in which devices will be activated.</li>
+                <p class="ml-12 text-gray-700 mb-4">Fine-tune your selection:</p>
+                <ul class="ml-16 list-disc space-y-2 text-gray-700 mb-4">
+                    <li><strong>Reorder Devices:</strong> Use the <span class="bg-gray-200 px-2 py-1 rounded text-xs">↑</span> and <span class="bg-gray-200 px-2 py-1 rounded text-xs">↓</span> buttons to determine the order in which devices will be activated.</li>
                     <li><strong>Select Capabilities:</strong> Choose which capabilities to control (e.g., include <code>dim</code> but ignore <code>onoff</code>).</li>
                     <li><strong>Reorder Capabilities:</strong> Change the order of capabilities for a specific device (e.g., set <code>dim</code> level <em>before</em> turning <code>on</code>).</li>
                 </ul>
@@ -117,32 +119,32 @@
             <div class="mb-8">
                 <div class="flex items-center mb-4">
                     <span class="step-number">4</span>
-                    <h3 class="text-xl font-semibold">Review & Save</h3>
+                    <h3 class="text-xl font-semibold text-gray-900">Review & Save</h3>
                 </div>
-                <p class="ml-12 text-gray-300 mb-2">Review the generated JSON configuration. You can edit values manually here if needed (e.g., tweak a dim level from 0.5 to 0.6). Give your device a name and click <strong>Create Device</strong>.</p>
+                <p class="ml-12 text-gray-700 mb-2">Review the generated JSON configuration. You can edit values manually here if needed (e.g., tweak a dim level from 0.5 to 0.6). Give your device a name and click <strong>Create Device</strong>.</p>
             </div>
         </div>
 
         <!-- Key Features -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Key Features</h2>
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Key Features</h2>
 
             <div class="space-y-6">
                 <!-- Supported Capabilities -->
                 <div class="border-l-4 border-purple-500 pl-4">
-                    <h3 class="text-lg font-semibold text-purple-400">Supported Capabilities</h3>
-                    <p class="text-gray-300 mt-1">
+                    <h3 class="text-lg font-semibold text-purple-600">Supported Capabilities</h3>
+                    <p class="text-gray-700 mt-1">
                         State Device can only control capabilities that are marked as <strong>setable</strong> by the device driver (e.g., <code>onoff</code>, <code>dim</code>, <code>light_hue</code>).
                     </p>
-                    <p class="text-gray-400 mt-2 text-sm">
+                    <p class="text-gray-500 mt-2 text-sm">
                         <strong>Note:</strong> Some drivers may list a capability as setable but not actually implement the control logic. In these cases, you might see a "Missing Capability Listener" warning in the logs. These capabilities should be removed from your State Device configuration.
                     </p>
                 </div>
 
                 <!-- Feature 1 -->
                 <div class="border-l-4 border-green-500 pl-4">
-                    <h3 class="text-lg font-semibold text-green-400">Reset All Option</h3>
-                    <p class="text-gray-300 mt-1">
+                    <h3 class="text-lg font-semibold text-green-600">Reset All Option</h3>
+                    <p class="text-gray-700 mt-1">
                         When activating a State Device via a Flow, you can choose to <strong>"Turn off other State Devices first?"</strong>.
                         If checked, all other State Devices will be turned OFF before the new one is applied. This ensures you don't have conflicting scenes active at the same time.
                     </p>
@@ -150,19 +152,19 @@
 
                 <!-- Feature 2 -->
                 <div class="border-l-4 border-blue-500 pl-4">
-                    <h3 class="text-lg font-semibold text-blue-400">Persistent State</h3>
-                    <p class="text-gray-300 mt-1">
+                    <h3 class="text-lg font-semibold text-blue-600">Persistent State</h3>
+                    <p class="text-gray-700 mt-1">
                         Unlike a simple push button, the State Device stays <strong>ON</strong> after activation. It acts as a visual indicator of the currently active scene.
                     </p>
                 </div>
 
                 <!-- Feature 3 -->
                 <div class="border-l-4 border-yellow-500 pl-4">
-                    <h3 class="text-lg font-semibold text-yellow-400">Hierarchical Execution</h3>
-                    <p class="text-gray-300 mt-1">
+                    <h3 class="text-lg font-semibold text-yellow-600">Hierarchical Execution</h3>
+                    <p class="text-gray-700 mt-1">
                         Devices are organized by Zone for better readability in the configuration. You can set delays at different levels:
                     </p>
-                    <ul class="list-disc list-inside text-gray-400 mt-2 text-sm">
+                    <ul class="list-disc list-inside text-gray-500 mt-2 text-sm">
                         <li><strong>Global Delay:</strong> Default pause between all actions.</li>
                         <li><strong>Zone Delay:</strong> Override for a specific zone.</li>
                         <li><strong>Item Delay:</strong> Override for a specific device.</li>
@@ -172,11 +174,11 @@
         </div>
 
         <!-- JSON Configuration Reference -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Advanced Configuration (JSON)</h2>
-            <p class="text-gray-300 mb-4">For advanced users, the device configuration is stored as JSON in the device settings. You can edit this at any time.</p>
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Advanced Configuration (JSON)</h2>
+            <p class="text-gray-700 mb-4">For advanced users, the device configuration is stored as JSON in the device settings. You can edit this at any time.</p>
 
-            <h3 class="font-semibold text-gray-300 mb-2">Structure Example</h3>
+            <h3 class="font-semibold text-gray-700 mb-2">Structure Example</h3>
             <div class="code-block text-sm">
 <pre>{
   "config": {
@@ -209,12 +211,12 @@
 
         <!-- Back to top -->
         <div class="text-center">
-            <a href="#top" class="text-purple-400 hover:text-purple-300">↑ Back to top</a>
+            <a href="#top" class="text-purple-600 hover:text-purple-800">↑ Back to top</a>
         </div>
     </div>
 
-    <footer class="bg-gray-900 mt-12 py-6 text-center text-gray-400">
-        <p>Boolean Toolbox for Homey | <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-purple-400 hover:text-purple-300">GitHub</a></p>
+    <footer class="bg-white border-t border-gray-200 mt-12 py-6 text-center text-gray-600">
+        <p>Boolean Toolbox for Homey | <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-purple-600 hover:text-purple-300">GitHub</a></p>
     </footer>
 </body>
 </html>

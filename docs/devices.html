@@ -9,8 +9,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a202c;
-            color: #e2e8f0;
+            background-color: #f8fafc;
+            color: #1a202c;
         }
         .device-badge {
             display: inline-block;
@@ -18,6 +18,7 @@
             border-radius: 0.5rem;
             font-weight: 600;
             font-size: 0.875rem;
+            color: white;
         }
         .badge-new {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
@@ -26,85 +27,86 @@
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         }
         .code-block {
-            background-color: #2d3748;
-            border-left: 4px solid #667eea;
+            background-color: #f1f5f9;
+            border-left: 4px solid #8b5cf6;
             padding: 1rem;
             border-radius: 0.5rem;
             overflow-x: auto;
+            color: #1e293b;
         }
     </style>
 </head>
-<body class="min-h-screen">
-    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+<body class="min-h-screen flex flex-col">
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
-                <a href="../README.md" class="text-xl font-bold text-purple-400 hover:text-purple-300">Boolean Toolbox</a>
+                <a href="../README.md" class="text-xl font-bold text-purple-600 hover:text-purple-800">Boolean Toolbox</a>
                 <div class="space-x-4 text-sm">
-                    <a href="getting-started.html" class="text-gray-300 hover:text-white">Getting Started</a>
-                    <a href="devices.html" class="text-white font-semibold">Devices</a>
-                    <a href="waiter-gates.html" class="text-gray-300 hover:text-white">Waiter Gates</a>
-                    <a href="changelog.html" class="text-gray-300 hover:text-white">Changelog</a>
+                    <a href="getting-started.html" class="text-gray-600 hover:text-purple-600">Getting Started</a>
+                    <a href="devices.html" class="text-gray-900 font-semibold">Devices</a>
+                    <a href="waiter-gates.html" class="text-gray-600 hover:text-purple-600">Waiter Gates</a>
+                    <a href="changelog.html" class="text-gray-600 hover:text-purple-600">Changelog</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 class="text-4xl font-bold mb-2">Device Types Guide</h1>
-        <p class="text-gray-400 mb-8">Understanding Logic Units, Logic Devices, and Legacy devices</p>
+    <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+        <h1 class="text-4xl font-bold mb-2 text-gray-900">Device Types Guide</h1>
+        <p class="text-gray-600 mb-8">Understanding Logic Units, Logic Devices, and Legacy devices</p>
 
         <!-- Quick Comparison -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Device Types Comparison</h2>
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Device Types Comparison</h2>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="border-b-2 border-purple-500">
                         <tr>
-                            <th class="pb-3 text-purple-300">Feature</th>
-                            <th class="pb-3 text-purple-300">Logic Device</th>
-                            <th class="pb-3 text-purple-300">Logic Unit</th>
-                            <th class="pb-3 text-purple-300 opacity-60">Logic Unit X</th>
+                            <th class="pb-3 text-purple-700">Feature</th>
+                            <th class="pb-3 text-purple-700">Logic Device</th>
+                            <th class="pb-3 text-purple-700">Logic Unit</th>
+                            <th class="pb-3 text-purple-700 opacity-60">Logic Unit X</th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-300">
-                        <tr class="border-b border-gray-700">
+                    <tbody class="text-gray-700">
+                        <tr class="border-b border-gray-200">
                             <td class="py-3 font-semibold">Status</td>
                             <td><span class="device-badge badge-new">Current</span></td>
                             <td><span class="device-badge badge-new">Current</span></td>
                             <td class="opacity-60"><span class="device-badge badge-legacy">Legacy</span></td>
                         </tr>
-                        <tr class="border-b border-gray-700">
+                        <tr class="border-b border-gray-200">
                             <td class="py-3 font-semibold">Setup Method</td>
                             <td>Visual pairing wizard</td>
                             <td>Quick add</td>
                             <td class="opacity-60">Quick add</td>
                         </tr>
-                        <tr class="border-b border-gray-700">
+                        <tr class="border-b border-gray-200">
                             <td class="py-3 font-semibold">Input Configuration</td>
                             <td>Zone/room selection</td>
                             <td>Manual JSON</td>
                             <td class="opacity-60">Manual JSON</td>
                         </tr>
-                        <tr class="border-b border-gray-700">
+                        <tr class="border-b border-gray-200">
                             <td class="py-3 font-semibold">Input Count</td>
-                            <td class="text-green-400">Dynamic (2-10, auto-expands)</td>
-                            <td class="text-green-400">Dynamic (2-10, auto-expands)</td>
+                            <td class="text-green-600">Dynamic (2-10, auto-expands)</td>
+                            <td class="text-green-600">Dynamic (2-10, auto-expands)</td>
                             <td class="opacity-60">Fixed (2, 3, 4...10)</td>
                         </tr>
-                        <tr class="border-b border-gray-700">
+                        <tr class="border-b border-gray-200">
                             <td class="py-3 font-semibold">Formulas Per Device</td>
                             <td>Single formula</td>
-                            <td class="text-green-400">Multiple formulas</td>
+                            <td class="text-green-600">Multiple formulas</td>
                             <td class="opacity-60">Multiple formulas</td>
                         </tr>
-                        <tr class="border-b border-gray-700">
+                        <tr class="border-b border-gray-200">
                             <td class="py-3 font-semibold">State Changed Trigger</td>
-                            <td class="text-green-400">✓ Yes</td>
+                            <td class="text-green-600">✓ Yes</td>
                             <td>✗ No</td>
                             <td class="opacity-60">✗ No</td>
                         </tr>
-                        <tr class="border-b border-gray-700">
+                        <tr class="border-b border-gray-200">
                             <td class="py-3 font-semibold">Best For</td>
                             <td>Simple setups, beginners</td>
                             <td>Advanced users, multi-formula</td>
@@ -114,51 +116,51 @@
                 </table>
             </div>
 
-            <div class="bg-orange-900 border-l-4 border-orange-500 p-4 mt-4 rounded">
-                <p class="font-semibold text-orange-300 mb-1">⚠️ Legacy Devices</p>
-                <p class="text-orange-200">Logic Unit X (2, 3, 4...10 inputs) devices are still functional but deprecated. Use Logic Device or Logic Unit for new setups.</p>
+            <div class="bg-orange-50 border-l-4 border-orange-500 p-4 mt-4 rounded">
+                <p class="font-semibold text-orange-700 mb-1">⚠️ Legacy Devices</p>
+                <p class="text-orange-800">Logic Unit X (2, 3, 4...10 inputs) devices are still functional but deprecated. Use Logic Device or Logic Unit for new setups.</p>
             </div>
         </div>
 
         <!-- Logic Device -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg border-l-4 border-green-500">
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200 border-l-4 border-l-green-500">
             <div class="flex items-center gap-3 mb-4">
-                <h2 class="text-2xl font-semibold text-green-400">Logic Device</h2>
+                <h2 class="text-2xl font-semibold text-green-600">Logic Device</h2>
                 <span class="device-badge badge-new">Recommended</span>
             </div>
 
-            <p class="mb-4 text-gray-300">The easiest way to create boolean logic devices with a visual pairing wizard.</p>
+            <p class="mb-4 text-gray-700">The easiest way to create boolean logic devices with a visual pairing wizard.</p>
 
-            <h3 class="text-xl font-semibold mb-3 text-purple-300">Key Features</h3>
-            <ul class="space-y-2 mb-4 text-gray-300">
+            <h3 class="text-xl font-semibold mb-3 text-purple-700">Key Features</h3>
+            <ul class="space-y-2 mb-4 text-gray-700">
                 <li class="flex items-start">
-                    <span class="text-green-400 mr-2">✓</span>
+                    <span class="text-green-600 mr-2">✓</span>
                     <span><strong>Visual Setup Wizard</strong> - Browse zones/rooms to select devices and capabilities</span>
                 </li>
                 <li class="flex items-start">
-                    <span class="text-green-400 mr-2">✓</span>
+                    <span class="text-green-600 mr-2">✓</span>
                     <span><strong>Dynamic Input Expansion</strong> - Starts with 2 inputs, auto-expands to 10 based on formula</span>
                 </li>
                 <li class="flex items-start">
-                    <span class="text-green-400 mr-2">✓</span>
+                    <span class="text-green-600 mr-2">✓</span>
                     <span><strong>Single Formula</strong> - Simplified configuration for straightforward logic</span>
                 </li>
                 <li class="flex items-start">
-                    <span class="text-green-400 mr-2">✓</span>
+                    <span class="text-green-600 mr-2">✓</span>
                     <span><strong>State Changed Trigger</strong> - Get notified on any state change with state token</span>
                 </li>
             </ul>
 
-            <h3 class="text-xl font-semibold mb-3 text-purple-300">When to Use</h3>
-            <ul class="space-y-1 text-gray-300 ml-6">
+            <h3 class="text-xl font-semibold mb-3 text-purple-700">When to Use</h3>
+            <ul class="space-y-1 text-gray-700 ml-6">
                 <li>→ You're new to Boolean Toolbox</li>
                 <li>→ You need only one formula per device</li>
                 <li>→ You want visual device selection during pairing</li>
                 <li>→ You want the "State changed" trigger</li>
             </ul>
 
-            <h3 class="text-xl font-semibold mb-3 mt-4 text-purple-300">Setup Example</h3>
-            <div class="bg-gray-900 rounded p-4 space-y-2 text-gray-300">
+            <h3 class="text-xl font-semibold mb-3 mt-4 text-purple-700">Setup Example</h3>
+            <div class="bg-gray-50 border border-gray-200 rounded p-4 space-y-2 text-gray-700">
                 <p><strong>1.</strong> Devices → Add Device → Boolean Toolbox → Logic Device</p>
                 <p><strong>2.</strong> Pairing wizard:</p>
                 <ul class="ml-6 space-y-1">
@@ -180,43 +182,43 @@
         </div>
 
         <!-- Logic Unit -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg border-l-4 border-blue-500">
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200 border-l-4 border-l-blue-500">
             <div class="flex items-center gap-3 mb-4">
-                <h2 class="text-2xl font-semibold text-blue-400">Logic Unit</h2>
+                <h2 class="text-2xl font-semibold text-blue-600">Logic Unit</h2>
                 <span class="device-badge badge-new">Advanced</span>
             </div>
 
-            <p class="mb-4 text-gray-300">Powerful device for advanced users who need multiple formulas or prefer JSON configuration.</p>
+            <p class="mb-4 text-gray-700">Powerful device for advanced users who need multiple formulas or prefer JSON configuration.</p>
 
-            <h3 class="text-xl font-semibold mb-3 text-purple-300">Key Features</h3>
-            <ul class="space-y-2 mb-4 text-gray-300">
+            <h3 class="text-xl font-semibold mb-3 text-purple-700">Key Features</h3>
+            <ul class="space-y-2 mb-4 text-gray-700">
                 <li class="flex items-start">
-                    <span class="text-blue-400 mr-2">✓</span>
+                    <span class="text-blue-600 mr-2">✓</span>
                     <span><strong>Dynamic Input Expansion</strong> - Starts with 2 inputs, auto-expands to 10 based on formula</span>
                 </li>
                 <li class="flex items-start">
-                    <span class="text-blue-400 mr-2">✓</span>
+                    <span class="text-blue-600 mr-2">✓</span>
                     <span><strong>Multiple Formulas</strong> - Configure multiple independent formulas per device</span>
                 </li>
                 <li class="flex items-start">
-                    <span class="text-blue-400 mr-2">✓</span>
+                    <span class="text-blue-600 mr-2">✓</span>
                     <span><strong>Manual JSON Config</strong> - Full control over all settings</span>
                 </li>
                 <li class="flex items-start">
-                    <span class="text-blue-400 mr-2">✓</span>
+                    <span class="text-blue-600 mr-2">✓</span>
                     <span><strong>Advanced Features</strong> - First Impression mode, timeout detection, isolated input states</span>
                 </li>
             </ul>
 
-            <h3 class="text-xl font-semibold mb-3 text-purple-300">When to Use</h3>
-            <ul class="space-y-1 text-gray-300 ml-6">
+            <h3 class="text-xl font-semibold mb-3 text-purple-700">When to Use</h3>
+            <ul class="space-y-1 text-gray-700 ml-6">
                 <li>→ You need multiple formulas per device</li>
                 <li>→ You're comfortable editing JSON</li>
                 <li>→ You need advanced features (First Impression, timeouts)</li>
                 <li>→ You want maximum flexibility</li>
             </ul>
 
-            <h3 class="text-xl font-semibold mb-3 mt-4 text-purple-300">Multiple Formulas Example</h3>
+            <h3 class="text-xl font-semibold mb-3 mt-4 text-purple-700">Multiple Formulas Example</h3>
             <div class="code-block">
                 <pre class="text-sm"><code>[
   {
@@ -243,36 +245,36 @@
 ]</code></pre>
             </div>
 
-            <p class="text-sm text-gray-400 mt-2">Each formula maintains its own input states and can be controlled independently.</p>
+            <p class="text-sm text-gray-500 mt-2">Each formula maintains its own input states and can be controlled independently.</p>
         </div>
 
         <!-- Capabilities -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Device Capabilities</h2>
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Device Capabilities</h2>
 
-            <p class="mb-4 text-gray-300">Both Logic Device and Logic Unit share these standard capabilities:</p>
+            <p class="mb-4 text-gray-700">Both Logic Device and Logic Unit share these standard capabilities:</p>
 
             <div class="space-y-4">
-                <div class="bg-gray-900 rounded-lg p-4">
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center justify-between mb-2">
-                        <h3 class="font-semibold text-purple-300">alarm_generic</h3>
-                        <span class="text-xs bg-gray-700 px-2 py-1 rounded">boolean</span>
+                        <h3 class="font-semibold text-purple-700">alarm_generic</h3>
+                        <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded">boolean</span>
                     </div>
-                    <p class="text-gray-300 mb-2">The formula result (true/false)</p>
-                    <ul class="text-sm text-gray-400 ml-4 space-y-1">
+                    <p class="text-gray-700 mb-2">The formula result (true/false)</p>
+                    <ul class="text-sm text-gray-600 ml-4 space-y-1">
                         <li>• Used to trigger flows when formula result changes</li>
                         <li>• Read-only (changes based on formula evaluation)</li>
                         <li>• Each formula has its own result state</li>
                     </ul>
                 </div>
 
-                <div class="bg-gray-900 rounded-lg p-4">
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
                     <div class="flex items-center justify-between mb-2">
-                        <h3 class="font-semibold text-purple-300">onoff</h3>
-                        <span class="text-xs bg-gray-700 px-2 py-1 rounded">boolean</span>
+                        <h3 class="font-semibold text-purple-700">onoff</h3>
+                        <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded">boolean</span>
                     </div>
-                    <p class="text-gray-300 mb-2">Enable/disable the device</p>
-                    <ul class="text-sm text-gray-400 ml-4 space-y-1">
+                    <p class="text-gray-700 mb-2">Enable/disable the device</p>
+                    <ul class="text-sm text-gray-600 ml-4 space-y-1">
                         <li>• User controllable (can be toggled in UI or flows)</li>
                         <li>• When OFF, formulas don't evaluate</li>
                         <li>• Use to temporarily disable logic without changing configuration</li>
@@ -282,14 +284,14 @@
         </div>
 
         <!-- Dynamic Input Expansion -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Dynamic Input Expansion</h2>
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Dynamic Input Expansion</h2>
 
-            <p class="mb-4 text-gray-300">Both Logic Device and Logic Unit automatically expand inputs based on your formula requirements:</p>
+            <p class="mb-4 text-gray-700">Both Logic Device and Logic Unit automatically expand inputs based on your formula requirements:</p>
 
-            <div class="bg-gray-900 rounded-lg p-4 mb-4">
-                <h3 class="font-semibold text-purple-300 mb-2">How It Works</h3>
-                <ol class="space-y-2 text-gray-300">
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+                <h3 class="font-semibold text-purple-700 mb-2">How It Works</h3>
+                <ol class="space-y-2 text-gray-700">
                     <li><strong>1.</strong> Device created with 2 inputs (A, B)</li>
                     <li><strong>2.</strong> You save formula: <code>"expression": "A AND B AND C AND D"</code></li>
                     <li><strong>3.</strong> Device detects formula uses C and D</li>
@@ -298,9 +300,9 @@
                 </ol>
             </div>
 
-            <div class="bg-blue-900 bg-opacity-30 border-l-4 border-blue-500 p-4 rounded">
-                <p class="font-semibold text-blue-300 mb-1">💡 Tips</p>
-                <ul class="text-blue-200 space-y-1">
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                <p class="font-semibold text-blue-700 mb-1">💡 Tips</p>
+                <ul class="text-blue-800 space-y-1">
                     <li>• Maximum 10 inputs (A-J)</li>
                     <li>• Expansion happens on formula save</li>
                     <li>• Unused inputs are hidden but still available</li>
@@ -310,18 +312,18 @@
         </div>
 
         <!-- Formula Isolation -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Formula Isolation & Flow Behavior</h2>
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Formula Isolation & Flow Behavior</h2>
 
-            <div class="bg-yellow-900 border-l-4 border-yellow-500 p-4 mb-4 rounded">
-                <p class="font-semibold text-yellow-300 mb-2">⚠️ Important: No Flow Isolation</p>
-                <p class="text-yellow-200">Within a formula, there is <strong>no isolation between flows</strong>. This is by design to allow formulas to work across multiple flows.</p>
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4 rounded">
+                <p class="font-semibold text-yellow-700 mb-2">⚠️ Important: No Flow Isolation</p>
+                <p class="text-yellow-800">Within a formula, there is <strong>no isolation between flows</strong>. This is by design to allow formulas to work across multiple flows.</p>
             </div>
 
-            <h3 class="text-xl font-semibold mb-3 text-purple-300">What This Means</h3>
+            <h3 class="text-xl font-semibold mb-3 text-purple-700">What This Means</h3>
 
-            <div class="bg-gray-900 rounded-lg p-4 mb-4">
-                <p class="font-semibold text-gray-200 mb-2">Scenario: Multiple flows using the same formula</p>
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+                <p class="font-semibold text-gray-800 mb-2">Scenario: Multiple flows using the same formula</p>
                 <div class="code-block mt-2">
                     <pre class="text-sm"><code>Flow 1: Set input A = true for formula "security"
 Flow 2: Set input B = true for formula "security"
@@ -331,13 +333,13 @@ Result: Flow 3 triggers when (A AND B) from different flows!</code></pre>
                 </div>
             </div>
 
-            <h3 class="text-xl font-semibold mb-3 text-purple-300">When You Need Isolation</h3>
+            <h3 class="text-xl font-semibold mb-3 text-purple-700">When You Need Isolation</h3>
 
-            <p class="mb-3 text-gray-300">If you need to use the same logic in multiple places within one flow with isolated states:</p>
+            <p class="mb-3 text-gray-700">If you need to use the same logic in multiple places within one flow with isolated states:</p>
 
-            <div class="bg-gray-900 rounded-lg p-4">
-                <p class="font-semibold text-purple-300 mb-2">Solution: Create Multiple Device Copies</p>
-                <ul class="space-y-2 text-gray-300">
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                <p class="font-semibold text-purple-700 mb-2">Solution: Create Multiple Device Copies</p>
+                <ul class="space-y-2 text-gray-700">
                     <li><strong>1.</strong> Create "Motion Light - Kitchen"</li>
                     <li><strong>2.</strong> Create "Motion Light - Bedroom"</li>
                     <li><strong>3.</strong> Each has the same formula but isolated state</li>
@@ -345,25 +347,25 @@ Result: Flow 3 triggers when (A AND B) from different flows!</code></pre>
                 </ul>
             </div>
 
-            <div class="bg-blue-900 bg-opacity-30 border-l-4 border-blue-500 p-4 mt-4 rounded">
-                <p class="font-semibold text-blue-300 mb-1">💡 Pro Tip</p>
-                <p class="text-blue-200">For Logic Unit with multiple formulas: Each formula IS isolated from each other (formula "A" doesn't affect formula "B"), but each individual formula can be accessed from any flow.</p>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4 rounded">
+                <p class="font-semibold text-blue-700 mb-1">💡 Pro Tip</p>
+                <p class="text-blue-800">For Logic Unit with multiple formulas: Each formula IS isolated from each other (formula "A" doesn't affect formula "B"), but each individual formula can be accessed from any flow.</p>
             </div>
         </div>
 
         <!-- Migration Guide -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Migration: Logic Unit X → Logic Unit/Device</h2>
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Migration: Logic Unit X → Logic Unit/Device</h2>
 
-            <div class="bg-orange-900 border-l-4 border-orange-500 p-4 mb-4 rounded">
-                <p class="font-semibold text-orange-300 mb-1">⚠️ Legacy Device Warning</p>
-                <p class="text-orange-200">Logic Unit X (2, 3, 4...10 inputs) devices have fixed input counts and should be migrated to the new dynamic devices.</p>
+            <div class="bg-orange-50 border-l-4 border-orange-500 p-4 mb-4 rounded">
+                <p class="font-semibold text-orange-700 mb-1">⚠️ Legacy Device Warning</p>
+                <p class="text-orange-800">Logic Unit X (2, 3, 4...10 inputs) devices have fixed input counts and should be migrated to the new dynamic devices.</p>
             </div>
 
-            <h3 class="text-xl font-semibold mb-3 text-purple-300">Migration Steps</h3>
+            <h3 class="text-xl font-semibold mb-3 text-purple-700">Migration Steps</h3>
 
-            <ol class="space-y-3 text-gray-300">
-                <li class="bg-gray-900 rounded p-3">
+            <ol class="space-y-3 text-gray-700">
+                <li class="bg-gray-50 border border-gray-200 rounded p-3">
                     <strong>1. Choose New Device Type</strong>
                     <ul class="ml-6 mt-1 space-y-1 text-sm">
                         <li>• Single formula → Logic Device</li>
@@ -371,12 +373,12 @@ Result: Flow 3 triggers when (A AND B) from different flows!</code></pre>
                     </ul>
                 </li>
 
-                <li class="bg-gray-900 rounded p-3">
+                <li class="bg-gray-50 border border-gray-200 rounded p-3">
                     <strong>2. Copy Formula JSON</strong>
                     <p class="text-sm mt-1">Go to old device settings → Copy the entire formula JSON</p>
                 </li>
 
-                <li class="bg-gray-900 rounded p-3">
+                <li class="bg-gray-50 border border-gray-200 rounded p-3">
                     <strong>3. Create New Device</strong>
                     <ul class="ml-6 mt-1 space-y-1 text-sm">
                         <li>• Logic Device: Use pairing wizard or paste JSON in settings</li>
@@ -384,25 +386,25 @@ Result: Flow 3 triggers when (A AND B) from different flows!</code></pre>
                     </ul>
                 </li>
 
-                <li class="bg-gray-900 rounded p-3">
+                <li class="bg-gray-50 border border-gray-200 rounded p-3">
                     <strong>4. Test Formulas</strong>
                     <p class="text-sm mt-1">Verify all formulas evaluate correctly with test inputs</p>
                 </li>
 
-                <li class="bg-gray-900 rounded p-3">
+                <li class="bg-gray-50 border border-gray-200 rounded p-3">
                     <strong>5. Update Flows</strong>
                     <p class="text-sm mt-1">Replace old device references with new device in all flows</p>
                 </li>
 
-                <li class="bg-gray-900 rounded p-3">
+                <li class="bg-gray-50 border border-gray-200 rounded p-3">
                     <strong>6. Remove Old Device</strong>
                     <p class="text-sm mt-1">Once verified, delete the legacy Logic Unit X device</p>
                 </li>
             </ol>
 
-            <div class="bg-green-900 bg-opacity-30 border-l-4 border-green-500 p-4 mt-4 rounded">
-                <p class="font-semibold text-green-300 mb-1">✅ Benefits After Migration</p>
-                <ul class="text-green-200 space-y-1">
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 mt-4 rounded">
+                <p class="font-semibold text-green-700 mb-1">✅ Benefits After Migration</p>
+                <ul class="text-green-800 space-y-1">
                     <li>• Automatic input expansion (no need to choose 2, 3, 4...10)</li>
                     <li>• Future-proof (new features only added to current devices)</li>
                     <li>• Better performance with event-driven architecture</li>
@@ -412,45 +414,45 @@ Result: Flow 3 triggers when (A AND B) from different flows!</code></pre>
         </div>
 
         <!-- Best Practices -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-8 shadow-lg">
-            <h2 class="text-2xl font-semibold mb-4 text-purple-400">Best Practices</h2>
+        <div class="bg-white rounded-lg p-6 mb-8 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Best Practices</h2>
 
             <div class="space-y-3">
-                <div class="bg-gray-900 rounded-lg p-4">
-                    <h3 class="font-semibold text-purple-300 mb-2">✓ Use Descriptive Names</h3>
-                    <p class="text-gray-300 text-sm">Name devices and formulas clearly: "Motion Light - Living Room" instead of "Logic 1"</p>
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-700 mb-2">✓ Use Descriptive Names</h3>
+                    <p class="text-gray-700 text-sm">Name devices and formulas clearly: "Motion Light - Living Room" instead of "Logic 1"</p>
                 </div>
 
-                <div class="bg-gray-900 rounded-lg p-4">
-                    <h3 class="font-semibold text-purple-300 mb-2">✓ Start Simple</h3>
-                    <p class="text-gray-300 text-sm">Begin with Logic Device for single formulas, upgrade to Logic Unit when you need multiple formulas</p>
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-700 mb-2">✓ Start Simple</h3>
+                    <p class="text-gray-700 text-sm">Begin with Logic Device for single formulas, upgrade to Logic Unit when you need multiple formulas</p>
                 </div>
 
-                <div class="bg-gray-900 rounded-lg p-4">
-                    <h3 class="font-semibold text-purple-300 mb-2">✓ Test Formulas First</h3>
-                    <p class="text-gray-300 text-sm">Use the <a href="https://tiwas.github.io/HomeyBooleanToolbox/emulator.html" class="text-blue-400 hover:text-blue-300">Boolean Logic Emulator</a> to verify expressions before deploying</p>
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-700 mb-2">✓ Test Formulas First</h3>
+                    <p class="text-gray-700 text-sm">Use the <a href="https://tiwas.github.io/HomeyBooleanToolbox/emulator.html" class="text-blue-600 hover:text-blue-800">Boolean Logic Emulator</a> to verify expressions before deploying</p>
                 </div>
 
-                <div class="bg-gray-900 rounded-lg p-4">
-                    <h3 class="font-semibold text-purple-300 mb-2">✓ Use Device Copies for Isolation</h3>
-                    <p class="text-gray-300 text-sm">Create separate device copies when you need the same logic with isolated states</p>
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-700 mb-2">✓ Use Device Copies for Isolation</h3>
+                    <p class="text-gray-700 text-sm">Create separate device copies when you need the same logic with isolated states</p>
                 </div>
 
-                <div class="bg-gray-900 rounded-lg p-4">
-                    <h3 class="font-semibold text-purple-300 mb-2">✓ Leverage Dynamic Inputs</h3>
-                    <p class="text-gray-300 text-sm">Don't worry about input count during setup - devices expand automatically based on your formulas</p>
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-700 mb-2">✓ Leverage Dynamic Inputs</h3>
+                    <p class="text-gray-700 text-sm">Don't worry about input count during setup - devices expand automatically based on your formulas</p>
                 </div>
             </div>
         </div>
 
         <!-- Back to top -->
         <div class="text-center">
-            <a href="#top" class="text-purple-400 hover:text-purple-300">↑ Back to top</a>
+            <a href="#top" class="text-purple-600 hover:text-purple-800">↑ Back to top</a>
         </div>
     </div>
 
-    <footer class="bg-gray-900 mt-12 py-6 text-center text-gray-400">
-        <p>Boolean Toolbox for Homey | <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-purple-400 hover:text-purple-300">GitHub</a></p>
+    <footer class="bg-white border-t border-gray-200 mt-12 py-6 text-center text-gray-600">
+        <p>Boolean Toolbox for Homey | <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-purple-600 hover:text-purple-800">GitHub</a></p>
     </footer>
 </body>
 </html>

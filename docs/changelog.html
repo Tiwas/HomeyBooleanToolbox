@@ -9,8 +9,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a202c;
-            color: #e2e8f0;
+            background-color: #f8fafc;
+            color: #1a202c;
         }
         .version-badge {
             display: inline-block;
@@ -19,6 +19,7 @@
             border-radius: 0.5rem;
             font-weight: 600;
             font-size: 0.875rem;
+            color: white;
         }
         .feature-list li {
             margin-bottom: 0.5rem;
@@ -35,36 +36,36 @@
         }
     </style>
 </head>
-<body class="min-h-screen">
-    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+<body class="min-h-screen flex flex-col">
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
-                <a href="../README.md" class="text-xl font-bold text-purple-400 hover:text-purple-300">Boolean Toolbox</a>
+                <a href="../README.md" class="text-xl font-bold text-purple-600 hover:text-purple-800">Boolean Toolbox</a>
                 <div class="space-x-4 text-sm">
-                    <a href="getting-started.html" class="text-gray-300 hover:text-white">Getting Started</a>
-                    <a href="devices.html" class="text-gray-300 hover:text-white">Devices</a>
-                    <a href="waiter-gates.html" class="text-gray-300 hover:text-white">Waiter Gates</a>
-                    <a href="changelog.html" class="text-white font-semibold">Changelog</a>
+                    <a href="getting-started.html" class="text-gray-600 hover:text-purple-600">Getting Started</a>
+                    <a href="devices.html" class="text-gray-600 hover:text-purple-600">Devices</a>
+                    <a href="waiter-gates.html" class="text-gray-600 hover:text-purple-600">Waiter Gates</a>
+                    <a href="changelog.html" class="text-gray-900 font-semibold">Changelog</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 class="text-4xl font-bold mb-2">Changelog</h1>
-        <p class="text-gray-400 mb-8">All notable changes to Boolean Toolbox for Homey</p>
+    <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+        <h1 class="text-4xl font-bold mb-2 text-gray-900">Changelog</h1>
+        <p class="text-gray-600 mb-8">All notable changes to Boolean Toolbox for Homey</p>
 
         <!-- Version 1.5.0 -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg border-l-4 border-purple-500">
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200 border-l-4 border-l-purple-500">
             <div class="flex items-center gap-3 mb-4">
                 <span class="version-badge">v1.5.0</span>
-                <span class="text-gray-400">November 2025 (Current)</span>
+                <span class="text-gray-500">November 2025 (Current)</span>
             </div>
 
-            <h3 class="text-xl font-semibold mb-3 text-purple-400">✨ New Features</h3>
-            <ul class="feature-list mb-4">
+            <h3 class="text-xl font-semibold mb-3 text-purple-600">✨ New Features</h3>
+            <ul class="feature-list mb-4 text-gray-700">
                 <li><strong>Waiter Gates (BETA)</strong> - Reactive flow cards that pause flows and wait for device capability changes
-                    <ul class="ml-6 mt-2 text-gray-400">
+                    <ul class="ml-6 mt-2 text-gray-500">
                         <li>Wait until device capability becomes value (condition card with YES/NO paths)</li>
                         <li>Control waiter gate (enable/disable/stop by ID)</li>
                         <li>Auto-generate waiter IDs when not specified</li>
@@ -74,14 +75,14 @@
                 <li><strong>Wait action card</strong> - Simple delay without device monitoring (BONUS feature)</li>
             </ul>
 
-            <h3 class="text-xl font-semibold mb-3 text-green-400">🌍 Localization</h3>
-            <ul class="feature-list mb-4">
+            <h3 class="text-xl font-semibold mb-3 text-green-600">🌍 Localization</h3>
+            <ul class="feature-list mb-4 text-gray-700">
                 <li>Complete translation coverage for all flow cards</li>
                 <li>12 languages supported: English, Norwegian, Danish, German, Spanish, French, Italian, Dutch, Swedish, Polish, Finnish, Russian</li>
             </ul>
 
-            <h3 class="text-xl font-semibold mb-3 text-blue-400">🔧 Improvements</h3>
-            <ul class="feature-list">
+            <h3 class="text-xl font-semibold mb-3 text-blue-600">🔧 Improvements</h3>
+            <ul class="feature-list text-gray-700">
                 <li>Reduced logging verbosity (13 statements changed from info to debug)</li>
                 <li>Code quality improvements (translated comments, removed unnecessary comments)</li>
                 <li>Improved code documentation</li>
@@ -89,16 +90,16 @@
         </div>
 
         <!-- Version 1.2.0 -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
             <div class="flex items-center gap-3 mb-4">
                 <span class="version-badge">v1.2.0</span>
-                <span class="text-gray-400">2025</span>
+                <span class="text-gray-500">2025</span>
             </div>
 
-            <h3 class="text-xl font-semibold mb-3 text-purple-400">✨ New Features</h3>
-            <ul class="feature-list mb-4">
+            <h3 class="text-xl font-semibold mb-3 text-purple-600">✨ New Features</h3>
+            <ul class="feature-list mb-4 text-gray-700">
                 <li><strong>Logic Device</strong> - New device type with completely redesigned pairing experience
-                    <ul class="ml-6 mt-2 text-gray-400">
+                    <ul class="ml-6 mt-2 text-gray-500">
                         <li>Visual setup wizard with zone/room selection</li>
                         <li>Browse devices by location</li>
                         <li>Direct device linking during pairing</li>
@@ -109,8 +110,8 @@
                 <li><strong>JSON Auto-Formatting</strong> - Automatic beautification of JSON in settings fields</li>
             </ul>
 
-            <h3 class="text-xl font-semibold mb-3 text-blue-400">🔧 Improvements</h3>
-            <ul class="feature-list">
+            <h3 class="text-xl font-semibold mb-3 text-blue-600">🔧 Improvements</h3>
+            <ul class="feature-list text-gray-700">
                 <li>Event-driven architecture (removed polling)</li>
                 <li>"State changed" trigger with state token (Logic Device only)</li>
                 <li>Better initial value detection</li>
@@ -119,35 +120,35 @@
         </div>
 
         <!-- Version 1.1.1 -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
             <div class="flex items-center gap-3 mb-4">
                 <span class="version-badge">v1.1.1</span>
-                <span class="text-gray-400">2025</span>
+                <span class="text-gray-500">2025</span>
             </div>
-            <ul class="feature-list">
+            <ul class="feature-list text-gray-700">
                 <li>Added machine-generated translations for multiple languages</li>
                 <li>Documentation improvements and clarifications</li>
             </ul>
         </div>
 
         <!-- Version 1.1.0 -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
             <div class="flex items-center gap-3 mb-4">
                 <span class="version-badge">v1.1.0</span>
-                <span class="text-gray-400">2025</span>
+                <span class="text-gray-500">2025</span>
             </div>
 
-            <h3 class="text-xl font-semibold mb-3 text-purple-400">✨ New Features</h3>
-            <ul class="feature-list mb-4">
+            <h3 class="text-xl font-semibold mb-3 text-purple-600">✨ New Features</h3>
+            <ul class="feature-list mb-4 text-gray-700">
                 <li><strong>Isolated Input States Per Formula</strong> - Each formula maintains its own input states</li>
                 <li><strong>First Impression Mode</strong> - Lock inputs at first received value</li>
                 <li><strong>Timeout Detection</strong> - Formulas can timeout if inputs not received within specified time</li>
                 <li><strong>Manual Re-evaluation Actions</strong> - Force formula re-evaluation via flow cards</li>
             </ul>
 
-            <div class="bg-yellow-900 border-l-4 border-yellow-500 p-4 mt-4 rounded">
-                <h4 class="font-semibold mb-2 text-yellow-300">⚠️ Breaking Changes</h4>
-                <ul class="feature-list text-yellow-200">
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-4 rounded">
+                <h4 class="font-semibold mb-2 text-yellow-700">⚠️ Breaking Changes</h4>
+                <ul class="feature-list text-yellow-800">
                     <li>Flow cards structure changed</li>
                     <li><strong>Recommendation:</strong> Create new devices for smooth transition</li>
                 </ul>
@@ -155,12 +156,12 @@
         </div>
 
         <!-- Version 1.0.0 -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
             <div class="flex items-center gap-3 mb-4">
                 <span class="version-badge">v1.0.0</span>
-                <span class="text-gray-400">2025</span>
+                <span class="text-gray-500">2025</span>
             </div>
-            <ul class="feature-list">
+            <ul class="feature-list text-gray-700">
                 <li>Support for up to 10 inputs (A-J)</li>
                 <li>Advanced flow cards for formula control</li>
                 <li>Multiple formulas per Logic Unit</li>
@@ -170,15 +171,15 @@
         </div>
 
         <!-- Older Versions -->
-        <div class="bg-gray-800 rounded-lg p-6 mb-6 shadow-lg">
-            <h3 class="text-2xl font-semibold mb-4">Earlier Versions</h3>
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h3 class="text-2xl font-semibold mb-4 text-gray-900">Earlier Versions</h3>
 
             <div class="mb-4">
                 <div class="flex items-center gap-3 mb-2">
                     <span class="version-badge bg-gray-600">v0.7.0</span>
-                    <span class="text-gray-400">2025</span>
+                    <span class="text-gray-500">2025</span>
                 </div>
-                <ul class="feature-list text-gray-400">
+                <ul class="feature-list text-gray-500">
                     <li>Major stability improvements</li>
                     <li>Fixed critical issues affecting reliability</li>
                 </ul>
@@ -187,9 +188,9 @@
             <div class="mb-4">
                 <div class="flex items-center gap-3 mb-2">
                     <span class="version-badge bg-gray-600">v0.5.1</span>
-                    <span class="text-gray-400">2025</span>
+                    <span class="text-gray-500">2025</span>
                 </div>
-                <ul class="feature-list text-gray-400">
+                <ul class="feature-list text-gray-500">
                     <li>UI/UX enhancements</li>
                     <li>Better visual feedback</li>
                 </ul>
@@ -198,9 +199,9 @@
             <div>
                 <div class="flex items-center gap-3 mb-2">
                     <span class="version-badge bg-gray-600">v0.5.0</span>
-                    <span class="text-gray-400">2023 - Initial Release</span>
+                    <span class="text-gray-500">2023 - Initial Release</span>
                 </div>
-                <ul class="feature-list text-gray-400">
+                <ul class="feature-list text-gray-500">
                     <li>Logic Units (2-10 inputs) with boolean logic</li>
                     <li>Basic flow cards (triggers, conditions, actions)</li>
                     <li>Formula configuration via JSON</li>
@@ -212,22 +213,22 @@
         </div>
 
         <!-- Deprecated Features -->
-        <div class="bg-gray-900 border border-gray-700 rounded-lg p-6 mb-6">
-            <h3 class="text-xl font-semibold mb-3 text-orange-400">⚠️ Deprecated Features</h3>
-            <p class="mb-2"><strong>Logic Unit X (2, 3, 4...10 inputs)</strong> - Legacy devices with fixed input counts</p>
-            <ul class="feature-list text-gray-400">
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
+            <h3 class="text-xl font-semibold mb-3 text-orange-600">⚠️ Deprecated Features</h3>
+            <p class="mb-2 text-gray-700"><strong>Logic Unit X (2, 3, 4...10 inputs)</strong> - Legacy devices with fixed input counts</p>
+            <ul class="feature-list text-gray-600">
                 <li>Still functional but no longer recommended</li>
                 <li>Use new Logic Unit or Logic Device instead for dynamic input expansion</li>
             </ul>
         </div>
 
         <!-- Migration Guide -->
-        <div class="bg-blue-900 bg-opacity-30 border-l-4 border-blue-500 rounded-lg p-6 mb-8">
-            <h3 class="text-xl font-semibold mb-3 text-blue-300">📖 Migration Guides</h3>
+        <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-6 mb-8">
+            <h3 class="text-xl font-semibold mb-3 text-blue-700">📖 Migration Guides</h3>
 
             <div class="mb-4">
-                <h4 class="font-semibold mb-2">From Logic Unit X to Logic Unit/Logic Device:</h4>
-                <ol class="list-decimal ml-6 space-y-1 text-gray-300">
+                <h4 class="font-semibold mb-2 text-gray-800">From Logic Unit X to Logic Unit/Logic Device:</h4>
+                <ol class="list-decimal ml-6 space-y-1 text-gray-700">
                     <li>Create new Logic Unit or Logic Device</li>
                     <li>Copy formula JSON from old device settings</li>
                     <li>Configure input links (Logic Device) or use manual JSON (Logic Unit)</li>
@@ -238,8 +239,8 @@
             </div>
 
             <div>
-                <h4 class="font-semibold mb-2">From v1.0.0 to v1.1.0:</h4>
-                <ul class="feature-list text-gray-300">
+                <h4 class="font-semibold mb-2 text-gray-800">From v1.0.0 to v1.1.0:</h4>
+                <ul class="feature-list text-gray-700">
                     <li>Flow card structure changed - recommended to create new devices</li>
                     <li>Input states are now isolated per formula</li>
                     <li>Update flows to use new flow card structure</li>
@@ -249,12 +250,12 @@
 
         <!-- Back to top -->
         <div class="text-center">
-            <a href="#top" class="text-purple-400 hover:text-purple-300">↑ Back to top</a>
+            <a href="#top" class="text-purple-600 hover:text-purple-800">↑ Back to top</a>
         </div>
     </div>
 
-    <footer class="bg-gray-900 mt-12 py-6 text-center text-gray-400">
-        <p>Boolean Toolbox for Homey | <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-purple-400 hover:text-purple-300">GitHub</a></p>
+    <footer class="bg-white border-t border-gray-200 mt-12 py-6 text-center text-gray-600">
+        <p>Boolean Toolbox for Homey | <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-purple-600 hover:text-purple-800">GitHub</a></p>
     </footer>
 </body>
 </html>
