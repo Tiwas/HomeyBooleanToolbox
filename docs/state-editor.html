@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Device Editor - Boolean Toolbox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1a202c; }
+        .slide-enter-active, .slide-leave-active { transition: all 0.3s ease; }
+        .slide-enter-from, .slide-leave-to { opacity: 0; transform: translateY(-20px); }
+        .list-move { transition: transform 0.5s; }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #edf2f7; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
+
+        /* Simulation Active State */
+        .active-simulation-card {
+            background-color: #eff6ff !important; /* blue-50 */
+            border-color: #3b82f6 !important; /* blue-500 */
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5);
+            transform: scale(1.01);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .cap-arrow {
+            animation: pulse-arrow 1s infinite;
+        }
+        
+        @keyframes pulse-arrow {
+            0%, 100% { transform: translateX(0); opacity: 1; }
+            50% { transform: translateX(5px); opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <div id="app" class="flex-grow flex flex-col">
+        <!-- Navbar -->
+        <nav class="bg-white shadow sticky top-0 z-50 border-b border-gray-200">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <a href="../README.md" class="text-xl font-bold text-purple-600 hover:text-purple-700">Boolean Toolbox</a>
+                    <span class="text-gray-300">|</span>
+                    <span class="text-gray-700 font-semibold">State Editor</span>
+                </div>
+                <div class="space-x-3">
+                    <button @click="showImportModal = true" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-sm transition shadow-sm">
+                        <i class="fas fa-file-import mr-2"></i>Import / Merge
+                    </button>
+                    <button @click="copyToClipboard" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-sm transition shadow-sm">
+                        <i class="fas fa-copy mr-2"></i>Copy JSON
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container mx-auto px-4 py-6 flex-grow flex flex-col md:flex-row gap-6">
+            
+            <!-- Left Column: Configuration & Visual Editor -->
+            <div class="w-full md:w-2/3 space-y-6">
+                
+                <!-- Global Config Card -->
+                <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4 cursor-pointer" @click="toggleConfig">
+                        <h2 class="text-lg font-semibold text-purple-600"><i class="fas fa-cogs mr-2"></i>Global Configuration</h2>
+                        <i class="fas text-gray-400" :class="showConfig ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </div>
+                    <div v-if="showConfig" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-500 uppercase mb-1">Default Delay (ms)</label>
+                            <input type="number" v-model.number="config.default_delay" class="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none text-gray-900">
+                        </div>
+                        <div class="flex items-center mt-6">
+                            <input type="checkbox" v-model="config.ignore_errors" id="ignore_errors" class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500">
+                            <label for="ignore_errors" class="ml-2 text-sm text-gray-700">Ignore Errors (Continue sequence)</label>
+                        </div>
+                        <div class="flex items-center mt-6">
+                            <input type="checkbox" v-model="config.debug" id="debug" class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500">
+                            <label for="debug" class="ml-2 text-sm text-gray-700">Debug Mode</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zones & Items Editor -->
+                <div class="space-y-4">
+                    <div v-for="(zone, zoneName) in zones" :key="zoneName" class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                        <!-- Zone Header -->
+                        <div class="bg-gray-50 p-3 flex justify-between items-center border-b border-gray-200">
+                            <div class="flex items-center space-x-3">
+                                <span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-1 rounded border border-purple-200">ZONE</span>
+                                <input v-model="zoneNameKeys[zoneName]" @change="renameZone(zoneName, $event.target.value)" class="bg-transparent border-b border-transparent hover:border-gray-300 focus:border-purple-500 focus:outline-none font-semibold text-lg w-48 text-gray-800" />
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <label class="text-xs text-gray-500 mr-2">Zone Delay:</label>
+                                <input type="number" v-model.number="zone.config.delay_between" class="w-20 bg-white border border-gray-300 rounded px-2 py-1 text-xs text-center text-gray-700 focus:border-purple-500 focus:outline-none">
+                                <button @click="deleteZone(zoneName)" class="text-red-400 hover:text-red-600 px-2 transition"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Items List -->
+                        <div class="p-4 space-y-3 min-h-[50px] bg-gray-50/50" @dragover.prevent @drop="onDropItem($event, zoneName)">
+                            <div v-if="(!zone.items || zone.items.length === 0)" class="text-center text-gray-400 py-6 border-2 border-dashed border-gray-300 rounded bg-white">
+                                No devices in this zone. Drag devices here or add new.
+                            </div>
+                            
+                            <!-- ITEM CARD -->
+                            <div v-for="(item, index) in zone.items" :key="item.id + index" 
+                                 :id="'card-' + getItemDomId(zoneName, index)"
+                                 class="bg-white rounded border border-gray-200 p-3 shadow-sm hover:border-purple-300 hover:shadow-md transition relative group"
+                                 :class="{'active-simulation-card': simulationState.currentItem === item}"
+                                 draggable="true"
+                                 @dragstart="onDragStart($event, zoneName, index)"
+                                 @dragend="onDragEnd"
+                                 @dragover.prevent
+                                 @drop.stop="onDropItem($event, zoneName, index)">
+                                
+                                <!-- Drag Handle & Header -->
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex flex-col flex-grow mr-4">
+                                        <div class="flex items-center space-x-2 cursor-move mb-1">
+                                            <i class="fas fa-grip-vertical text-gray-400 group-hover:text-gray-600"></i>
+                                            <input type="text" v-model="item.name" class="font-medium text-gray-800 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none w-full" placeholder="Device Name">
+                                            <span v-if="!item.active" class="text-xs bg-red-100 text-red-600 px-1.5 py-0.5 rounded border border-red-200 font-medium whitespace-nowrap">INACTIVE</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center space-x-1">
+                                        <div class="flex flex-col space-y-0.5 mr-2">
+                                            <button @click="moveItem(zoneName, index, -1)" :disabled="index === 0" class="text-gray-400 hover:text-gray-700 disabled:opacity-20 text-xs"><i class="fas fa-chevron-up"></i></button>
+                                            <button @click="moveItem(zoneName, index, 1)" :disabled="index === zone.items.length - 1" class="text-gray-400 hover:text-gray-700 disabled:opacity-20 text-xs"><i class="fas fa-chevron-down"></i></button>
+                                        </div>
+                                        <button @click="item.active = !item.active" class="text-xs px-2 py-1 rounded border transition" :class="item.active ? 'bg-gray-100 text-gray-600 hover:bg-gray-200' : 'bg-green-100 text-green-700 border-green-200 hover:bg-green-200'">
+                                            {{ item.active ? 'Disable' : 'Enable' }}
+                                        </button>
+                                        <button @click="removeItem(zoneName, index)" class="text-red-300 hover:text-red-500 ml-1"><i class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+
+                                <!-- Delay / Pause Config -->
+                                <div class="flex items-center space-x-2 mb-3 bg-yellow-50 p-2 rounded border border-yellow-100">
+                                    <i class="fas fa-hourglass-half text-yellow-500 text-xs"></i>
+                                    <label class="text-xs text-gray-600">Wait before this:</label>
+                                    <input type="number" v-model.number="item.delay" placeholder="Default" class="w-20 bg-white border border-gray-300 rounded px-2 py-1 text-xs text-gray-700 focus:border-yellow-500 focus:outline-none">
+                                    <span class="text-xs text-gray-500">ms</span>
+                                    <button @click="item.delay = (item.delay || 0) + 1000" class="text-xs bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-2 py-1 rounded ml-2 shadow-sm">+1s Pause</button>
+                                </div>
+
+                                <!-- Capabilities List -->
+                                <div class="space-y-2 pl-4 border-l-2 border-gray-200 relative">
+                                    <div v-for="(cap, cIndex) in item.capabilities" :key="cIndex" class="flex items-center space-x-2 text-sm relative">
+                                        
+                                        <!-- Simulation Arrow Indicator -->
+                                        <div v-if="simulationState.currentCapability === cap" class="absolute -left-8 text-red-500 text-lg cap-arrow">
+                                            <i class="fas fa-hand-point-right"></i>
+                                        </div>
+
+                                        <!-- Reorder Capabilities -->
+                                        <div class="flex flex-col space-y-0.5 mr-1">
+                                            <button @click="moveCapability(item, cIndex, -1)" :disabled="cIndex === 0" class="text-gray-300 hover:text-blue-600 disabled:opacity-0 text-[10px]"><i class="fas fa-caret-up"></i></button>
+                                            <button @click="moveCapability(item, cIndex, 1)" :disabled="cIndex === item.capabilities.length - 1" class="text-gray-300 hover:text-blue-600 disabled:opacity-0 text-[10px]"><i class="fas fa-caret-down"></i></button>
+                                        </div>
+
+                                        <input type="text" v-model="cap.capability" class="w-1/3 bg-transparent border-b border-gray-300 text-blue-600 text-xs font-mono focus:border-blue-500 focus:outline-none" placeholder="Capability ID">
+                                        <span class="text-gray-400">=</span>
+                                        
+                                        <!-- Value Input -->
+                                        <input v-if="cap.capability === 'onoff'" type="checkbox" v-model="cap.value" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                        <input v-else-if="typeof cap.value === 'number'" type="number" step="0.01" v-model.number="cap.value" class="flex-1 bg-gray-50 border border-gray-300 rounded px-2 py-0.5 text-xs text-gray-800 focus:border-blue-500 focus:outline-none">
+                                        <input v-else type="text" v-model="cap.value" class="flex-1 bg-gray-50 border border-gray-300 rounded px-2 py-0.5 text-xs text-gray-800 focus:border-blue-500 focus:outline-none">
+                                        
+                                        <button @click="removeCapability(item, cIndex)" class="text-gray-400 hover:text-red-500 ml-1"><i class="fas fa-minus-circle"></i></button>
+                                    </div>
+                                    <button @click="addCapability(item)" class="text-xs text-blue-600 hover:text-blue-800 mt-1 font-medium ml-5"><i class="fas fa-plus mr-1"></i> Add Capability</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <button @click="addZone" class="w-full py-3 border-2 border-dashed border-gray-300 text-gray-500 hover:text-purple-600 hover:border-purple-300 hover:bg-purple-50 rounded-lg transition font-medium">
+                    <i class="fas fa-plus-square mr-2"></i>Add New Zone
+                </button>
+            </div>
+
+            <!-- Right Column: JSON & Simulation -->
+            <div class="w-full md:w-1/3 space-y-6">
+                
+                <!-- Simulation Card -->
+                <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm sticky top-24">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-play-circle mr-2 text-green-500"></i> Simulator
+                    </h2>
+                    
+                    <div class="flex space-x-2 mb-4">
+                        <button @click="startSimulation" :disabled="simulationState.running" class="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-200 disabled:text-gray-400 text-white py-2 rounded font-semibold transition shadow-sm">
+                            <i class="fas fa-play mr-2"></i>Play
+                        </button>
+                        <button @click="stopSimulation" :disabled="!simulationState.running" class="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-200 disabled:text-gray-400 text-white py-2 rounded font-semibold transition shadow-sm">
+                            <i class="fas fa-stop mr-2"></i>Stop
+                        </button>
+                    </div>
+
+                    <!-- Progress Log -->
+                    <div class="bg-gray-900 rounded p-3 h-48 overflow-y-auto font-mono text-xs border border-gray-700 shadow-inner" id="sim-log">
+                        <div v-if="simulationState.logs.length === 0" class="text-gray-500 italic">Ready to simulate...</div>
+                        <div v-for="(log, i) in simulationState.logs" :key="i" :class="log.type === 'error' ? 'text-red-400' : (log.type === 'wait' ? 'text-yellow-400' : 'text-green-400')">
+                            <span class="text-gray-500">[{{ log.time }}]</span> {{ log.msg }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status / Validation -->
+                <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-2"><i class="fas fa-check-circle mr-2 text-blue-500"></i>Validation</h2>
+                    <div v-if="isValid" class="text-green-600 flex items-center font-medium">
+                        <i class="fas fa-check mr-2"></i> Valid Configuration
+                    </div>
+                    <div v-else class="text-red-600 flex items-center font-medium">
+                        <i class="fas fa-exclamation-triangle mr-2"></i> Invalid Configuration
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Checks for required fields (ID, Name) and valid JSON structure.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Import Modal -->
+        <div v-if="showImportModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full flex flex-col max-h-[90vh]">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50 rounded-t-lg">
+                    <h2 class="text-xl font-bold text-gray-800">Import JSON</h2>
+                    <button @click="showImportModal = false" class="text-gray-400 hover:text-gray-600 transition"><i class="fas fa-times text-lg"></i></button>
+                </div>
+                <div class="p-4 flex-grow flex flex-col">
+                    <p class="text-sm text-gray-600 mb-2">Paste your existing JSON configuration or a new one to merge.</p>
+                    <textarea v-model="importText" class="w-full flex-grow bg-gray-50 border border-gray-300 rounded p-3 font-mono text-xs text-gray-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none min-h-[200px]" placeholder='{ "zones": { ... } }'></textarea>
+                    
+                    <div v-if="importError" class="mt-2 text-red-600 text-sm bg-red-50 p-2 rounded border border-red-200">
+                        <i class="fas fa-exclamation-circle mr-1"></i> {{ importError }}
+                    </div>
+                </div>
+                <div class="p-4 border-t border-gray-200 flex justify-end space-x-3 bg-gray-50 rounded-b-lg">
+                    <button @click="processImport('merge_keep')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm shadow-sm transition">
+                        Merge (Keep Existing)
+                    </button>
+                    <button @click="processImport('merge_overwrite')" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded text-sm shadow-sm transition">
+                        Merge (Overwrite)
+                    </button>
+                    <button @click="processImport('replace')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm shadow-sm transition">
+                        Replace All
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const { createApp, ref, computed, reactive, watch, nextTick } = Vue;
+
+        createApp({
+            setup() {
+                // State
+                const config = ref({
+                    default_delay: 200,
+                    ignore_errors: true,
+                    debug: false
+                });
+                
+                const zones = ref({
+                    "New Zone": {
+                        config: { delay_between: 500 },
+                        items: []
+                    }
+                });
+
+                const zoneNameKeys = ref({ "New Zone": "New Zone" });
+                const showConfig = ref(true);
+                const showImportModal = ref(false);
+                const importText = ref('');
+                const importError = ref(null);
+
+                // Simulation State
+                const simulationState = reactive({
+                    running: false,
+                    currentItem: null,
+                    currentCapability: null,
+                    logs: []
+                });
+
+                // Validation
+                const isValid = computed(() => {
+                    return Object.keys(zones.value).length > 0;
+                });
+
+                // Helper for DOM IDs
+                const getItemDomId = (zoneName, index) => {
+                     return zoneName.replace(/\s+/g, '-') + '-' + index;
+                };
+
+                // Actions
+                const toggleConfig = () => showConfig.value = !showConfig.value;
+
+                const addZone = () => {
+                    let name = "Zone " + (Object.keys(zones.value).length + 1);
+                    zones.value[name] = { config: { delay_between: 500 }, items: [] };
+                    zoneNameKeys.value[name] = name;
+                };
+
+                const renameZone = (oldName, newName) => {
+                    if (oldName === newName) return;
+                    if (zones.value[newName]) {
+                        alert('Zone name already exists!');
+                        zoneNameKeys.value[oldName] = oldName; 
+                        return;
+                    }
+                    const content = zones.value[oldName];
+                    delete zones.value[oldName];
+                    zones.value[newName] = content;
+                    delete zoneNameKeys.value[oldName];
+                    zoneNameKeys.value[newName] = newName;
+                };
+
+                const deleteZone = (name) => {
+                    if (confirm(`Delete zone "${name}"?`)) {
+                        delete zones.value[name];
+                        delete zoneNameKeys.value[name];
+                    }
+                };
+
+                // addItem function removed as requested
+
+                const removeItem = (zoneName, index) => {
+                    zones.value[zoneName].items.splice(index, 1);
+                };
+
+                const moveItem = (zoneName, index, direction) => {
+                    const items = zones.value[zoneName].items;
+                    const newIndex = index + direction;
+                    if (newIndex >= 0 && newIndex < items.length) {
+                        const temp = items[index];
+                        items[index] = items[newIndex];
+                        items[newIndex] = temp;
+                    }
+                };
+
+                const addCapability = (item) => {
+                    item.capabilities.push({ capability: "", value: "" });
+                };
+
+                const removeCapability = (item, index) => {
+                    item.capabilities.splice(index, 1);
+                };
+                
+                const moveCapability = (item, index, direction) => {
+                    const caps = item.capabilities;
+                    const newIndex = index + direction;
+                    if (newIndex >= 0 && newIndex < caps.length) {
+                        const temp = caps[index];
+                        caps[index] = caps[newIndex];
+                        caps[newIndex] = temp;
+                    }
+                };
+
+                // Drag and Drop Logic
+                const dragSource = ref(null);
+
+                const onDragStart = (evt, zoneName, index) => {
+                    dragSource.value = { zone: zoneName, index: index };
+                    evt.dataTransfer.effectAllowed = 'move';
+                    evt.target.style.opacity = '0.5';
+                };
+
+                const onDragEnd = (evt) => {
+                    evt.target.style.opacity = '1';
+                    dragSource.value = null;
+                };
+
+                const onDropItem = (evt, targetZone, targetIndex = null) => {
+                    const src = dragSource.value;
+                    if (!src) return;
+                    
+                    const item = zones.value[src.zone].items.splice(src.index, 1)[0];
+                    
+                    if (targetIndex === null) {
+                        zones.value[targetZone].items.push(item);
+                    } else {
+                        zones.value[targetZone].items.splice(targetIndex, 0, item);
+                    }
+                };
+
+
+                // Import Logic
+                const processImport = (mode) => {
+                    importError.value = null;
+                    try {
+                        const data = JSON.parse(importText.value);
+                        let importedZones = {};
+                        let importedConfig = data.config || {};
+
+                        if (data.zones) {
+                            importedZones = data.zones;
+                        } else if (data.items) {
+                            importedZones["Default Zone"] = {
+                                config: {},
+                                items: data.items
+                            };
+                        } else {
+                            throw new Error("Invalid JSON: No 'zones' or 'items' found.");
+                        }
+
+                        if (mode === 'replace') {
+                            config.value = { ...config.value, ...importedConfig };
+                            zones.value = importedZones;
+                            zoneNameKeys.value = {};
+                            Object.keys(zones.value).forEach(k => zoneNameKeys.value[k] = k);
+                        } else {
+                            if (importedConfig) {
+                                config.value = { ...config.value, ...importedConfig };
+                            }
+                            
+                            for (const [zName, zData] of Object.entries(importedZones)) {
+                                if (!zones.value[zName]) {
+                                    zones.value[zName] = zData;
+                                    zoneNameKeys.value[zName] = zName;
+                                } else {
+                                    const existingItemsMap = new Map();
+                                    zones.value[zName].items.forEach((item, idx) => {
+                                        if(item.id) existingItemsMap.set(item.id, idx);
+                                    });
+
+                                    for (const newItem of zData.items) {
+                                        if (newItem.id && existingItemsMap.has(newItem.id)) {
+                                            if (mode === 'merge_overwrite') {
+                                                const idx = existingItemsMap.get(newItem.id);
+                                                zones.value[zName].items[idx] = newItem;
+                                            }
+                                        } else {
+                                            zones.value[zName].items.push(newItem);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        showImportModal.value = false;
+                        importText.value = '';
+                    } catch (e) {
+                        importError.value = e.message;
+                    }
+                };
+
+                // Export Logic
+                const generatedJson = computed(() => {
+                    return JSON.stringify({
+                        _meta: {
+                            editor: "https://tiwas.github.io/HomeyBooleanToolbox/docs/state-editor.html",
+                            documentation: "https://tiwas.github.io/HomeyBooleanToolbox/docs/state-device.html"
+                        },
+                        config: config.value,
+                        zones: zones.value
+                    }, null, 2);
+                });
+
+                const copyToClipboard = () => {
+                    navigator.clipboard.writeText(generatedJson.value).then(() => {
+                        alert("JSON copied to clipboard!");
+                    });
+                };
+
+                // Simulator Logic
+                const addLog = (msg, type='info') => {
+                    const time = new Date().toLocaleTimeString().split(' ')[0];
+                    simulationState.logs.unshift({ time, msg, type });
+                };
+
+                const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+                
+                const scrollToElement = (elementId) => {
+                    const el = document.getElementById(elementId);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                };
+
+                const startSimulation = async () => {
+                    if (simulationState.running) return;
+                    simulationState.running = true;
+                    simulationState.logs = [];
+                    addLog("Starting simulation...");
+
+                    const globalDelay = config.value.default_delay || 200;
+                    
+                    for (const [zoneName, zoneData] of Object.entries(zones.value)) {
+                        if (!simulationState.running) break;
+
+                        const zoneDelay = zoneData.config?.delay_between ?? globalDelay;
+                        addLog(`Entering Zone: ${zoneName}`, 'info');
+
+                        let itemIndex = 0;
+                        for (const item of zoneData.items) {
+                            if (!simulationState.running) break;
+                            if (!item.active) {
+                                addLog(`Skipping inactive: ${item.name}`, 'info');
+                                itemIndex++;
+                                continue;
+                            }
+                            
+                            // Highlight & Scroll
+                            simulationState.currentItem = item;
+                            scrollToElement('card-' + getItemDomId(zoneName, itemIndex));
+                            
+                            // Delay
+                            let delay = item.delay;
+                            if (delay === undefined || delay === null || delay === "") delay = zoneDelay;
+                            
+                            if (delay > 0) {
+                                addLog(`Waiting ${delay}ms...`, 'wait');
+                                await sleep(delay);
+                            }
+
+                            // Execute
+                            addLog(`Executing: ${item.name}`, 'success');
+                            
+                            if (item.capabilities && item.capabilities.length > 0) {
+                                for(let cap of item.capabilities) {
+                                    if (!simulationState.running) break;
+                                    
+                                    simulationState.currentCapability = cap;
+                                    addLog(` -> Set ${cap.capability} = ${cap.value}`, 'info');
+                                    await sleep(800); // Visual delay to see the arrow
+                                }
+                                simulationState.currentCapability = null;
+                            } else {
+                                addLog(` -> No capabilities (Pause only?)`, 'wait');
+                            }
+                            
+                            simulationState.currentItem = null;
+                            itemIndex++;
+                        }
+                    }
+
+                    addLog("Simulation completed.", 'success');
+                    simulationState.running = false;
+                    simulationState.currentItem = null;
+                    simulationState.currentCapability = null;
+                };
+
+                const stopSimulation = () => {
+                    simulationState.running = false;
+                    simulationState.currentItem = null;
+                    simulationState.currentCapability = null;
+                    addLog("Simulation stopped by user.", 'error');
+                };
+
+                return {
+                    config, zones, zoneNameKeys,
+                    showConfig, showImportModal, importText, importError,
+                    simulationState, isValid, generatedJson, getItemDomId,
+                    toggleConfig, addZone, renameZone, deleteZone,
+                    addItem: () => {}, removeItem, moveItem,
+                    addCapability, removeCapability, moveCapability,
+                    onDragStart, onDragEnd, onDropItem,
+                    processImport, copyToClipboard,
+                    startSimulation, stopSimulation
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
