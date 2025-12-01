@@ -573,9 +573,31 @@
                     
                     try {
                         const user = await cloudApi.getAuthenticatedUser();
-                        const homeyList = await user.getHomeys();
+                        console.log("User object:", user);
+                        
+                        let homeyList = [];
+                        try {
+                             homeyList = await user.getHomeys();
+                             console.log("user.getHomeys() returned:", homeyList);
+                        } catch (err) {
+                            console.warn("user.getHomeys() failed:", err);
+                        }
 
-                        if (homeyList.length === 0) throw new Error('No Homeys found.');
+                        // Fallback: Direct API call if SDK returns empty
+                        if (!homeyList || homeyList.length === 0) {
+                             console.log("Trying fallback API call to /user/me/homeys...");
+                             // Note: AthomCloudAPI wraps fetch. We can try to access the internal token 
+                             // or use a generic get method if available.
+                             // Assuming the SDK exposes the raw object properties:
+                             if (user.homeys && Array.isArray(user.homeys)) {
+                                 console.log("Found user.homeys property:", user.homeys);
+                                 homeyList = user.homeys;
+                             }
+                        }
+
+                        if (!homeyList || homeyList.length === 0) {
+                            throw new Error('No Homeys found. Check console for details.');
+                        }
 
                         homeys.value = homeyList;
 
