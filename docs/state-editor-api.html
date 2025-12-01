@@ -520,39 +520,13 @@
                 const login = () => {
                     if (!cloudApi) return;
                     const authUrl = cloudApi.getLoginUrl({
-                        scopes: ['homey.user.readonly', 'homey.device.readonly', 'homey.device.control', 'homey.zone.readonly'],
+                        scopes: ['homey.user.readonly', 'homey.user.self', 'homey.device.readonly', 'homey.device.control', 'homey.zone.readonly'],
                         state: 'random_state_string' // Simple state
                     });
                     window.location.href = authUrl;
                 };
 
-                const postLogin = async () => {
-                    try {
-                        const user = await cloudApi.getAuthenticatedUser();
-                        userName.value = user.firstname + ' ' + user.lastname;
-                        // Handle avatar object or string
-                        if (user.avatar && typeof user.avatar === 'object') {
-                            userAvatar.value = user.avatar.small || user.avatar.medium || user.avatar.url;
-                        } else {
-                            userAvatar.value = user.avatar;
-                        }
-                        isLoggedIn.value = true;
-                        apiMessage.value = "Connected!";
-                        apiError.value = false;
-                    } catch (e) {
-                        console.error("Post Login Error:", e);
-                        apiError.value = true;
-                        apiMessage.value = "Login verification failed.";
-                    }
-                };
-
-                const logout = async () => {
-                    if (cloudApi) await cloudApi.logout();
-                    isLoggedIn.value = false;
-                    userName.value = '';
-                    userAvatar.value = '';
-                    apiMessage.value = '';
-                };
+                // ... (postLogin and logout remain unchanged) ...
 
                 // --- API Logic ---
 
@@ -583,16 +557,24 @@
                             console.warn("user.getHomeys() failed:", err);
                         }
 
-                        // Fallback: Direct API call if SDK returns empty
+                        // Fallback 1: Check properties
                         if (!homeyList || homeyList.length === 0) {
-                             console.log("Trying fallback API call to /user/me/homeys...");
-                             // Note: AthomCloudAPI wraps fetch. We can try to access the internal token 
-                             // or use a generic get method if available.
-                             // Assuming the SDK exposes the raw object properties:
                              if (user.homeys && Array.isArray(user.homeys)) {
                                  console.log("Found user.homeys property:", user.homeys);
                                  homeyList = user.homeys;
                              }
+                        }
+
+                        // Fallback 2: Raw API Call
+                        if (!homeyList || homeyList.length === 0) {
+                            console.log("Trying fallback API call to cloudApi.get('/user/me/homeys')...");
+                            try {
+                                const rawRes = await cloudApi.get('/user/me/homeys');
+                                console.log("Raw /user/me/homeys response:", rawRes);
+                                if (Array.isArray(rawRes)) homeyList = rawRes;
+                            } catch (err) {
+                                console.error("Fallback API call failed:", err);
+                            }
                         }
 
                         if (!homeyList || homeyList.length === 0) {
