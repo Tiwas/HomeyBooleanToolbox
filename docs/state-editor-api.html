@@ -617,22 +617,27 @@
                         // Connect to Homey API for this specific Homey
                         // Must authenticate first to get the API instance
                         const api = await homey.authenticate();
-                        const devices = await api.devices.getDevices();
+                        
+                        // Fetch devices and zones in parallel
+                        // We need zones to look up zone names correctly (Device.zoneName is deprecated)
+                        const [devices, zones] = await Promise.all([
+                            api.devices.getDevices(),
+                            api.zones.getZones()
+                        ]);
+                        
                         const devicesArray = Object.values(devices);
                         
-                        console.log("Fetched devices (first 5):", devicesArray.slice(0, 5).map(d => ({ name: d.name, driverId: d.driverId, driverUri: d.driverUri })));
-
                         // Filter for State Devices
                         homeyDevices.value = devicesArray.filter(d => {
                             // Check driverId (preferred)
+                            // Device.driverUri is deprecated, so we rely on driverId
                             if (d.driverId && d.driverId.toLowerCase().includes('state-device')) return true;
-                            // Check driverUri (legacy/fallback)
-                            if (d.driverUri && d.driverUri.toLowerCase().includes('state-device')) return true;
                             return false;
                         }).map(d => ({
                             id: d.id,
                             name: d.name,
-                            zoneName: d.zoneName || 'Unknown', 
+                            // Look up zone name from zones object using zone ID
+                            zoneName: (zones[d.zone] && zones[d.zone].name) || 'Unknown', 
                             settings: d.settings
                         }));
 
