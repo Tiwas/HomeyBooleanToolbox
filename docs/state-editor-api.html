@@ -6,6 +6,7 @@
     <title>State Device Editor (API) - Boolean Toolbox</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.athom.com/homey-api/3.14.8.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -74,29 +75,56 @@
                         <i class="fas text-gray-400" :class="showApiConfig ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                     </div>
                     <div v-if="showApiConfig" class="flex flex-col gap-4">
-                        <div>
-                            <label class="block text-xs text-gray-500 uppercase mb-1">Bearer Token</label>
-                            <div class="flex gap-2">
-                                <input type="password" v-model="apiKey" placeholder="Paste your Homey API Bearer Token here" class="flex-grow bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none text-gray-900">
-                                <button @click="fetchDevices" :disabled="!apiKey || isFetching" class="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-300 disabled:text-gray-500 text-white px-4 py-2 rounded text-sm font-semibold transition shadow-sm">
-                                    <i class="fas" :class="isFetching ? 'fa-spinner fa-spin' : 'fa-plug'"></i> Connect
+                        
+                        <!-- State 1: Setup Credentials -->
+                        <div v-if="!hasCredentials">
+                            <p class="text-sm text-gray-600 mb-3">To connect, you need a Client ID and Client Secret. <a href="https://tools.developer.homey.app/tools/api-playground" target="_blank" class="text-blue-500 hover:underline">Create one here</a> (or use an existing one).</p>
+                            <div class="grid grid-cols-1 gap-3">
+                                <input type="text" v-model="clientId" placeholder="Client ID" class="bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:border-purple-500 focus:outline-none">
+                                <input type="password" v-model="clientSecret" placeholder="Client Secret" class="bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:border-purple-500 focus:outline-none">
+                                <button @click="saveCredentials" :disabled="!clientId || !clientSecret" class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded text-sm font-semibold transition shadow-sm disabled:opacity-50">
+                                    Save Credentials
                                 </button>
                             </div>
-                            <div class="flex items-center mt-1">
-                                <input type="checkbox" v-model="rememberApiKey" id="remember_api_key" class="w-3 h-3 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500">
-                                <label for="remember_api_key" class="ml-1.5 text-xs text-gray-500">Remember Token (saved in browser)</label>
-                            </div>
-                            <p class="text-xs text-gray-400 mt-2">
-                                Used to fetch device list only. Not stored permanently (unless checked). 
-                                <span class="font-bold text-gray-500">Requires a User Token</span> (not a Homey API Key).
-                                Get it from <a href="https://tools.developer.homey.app/tools/api-playground" target="_blank" class="text-blue-500 hover:underline">API Playground</a> (Network tab).
-                                <br>
-                                <span class="text-purple-600 font-medium mt-1 inline-block"><i class="fas fa-shield-alt mr-1"></i>Scope recommendation:</span> 
-                                <code>homey.readonly</code> (or <code>homey.user</code> + <code>homey.device</code> read) is required. 
-                                <br>For saving changes later, include <code>homey.device.control</code>.
-                            </p>
                         </div>
-                        <div v-if="apiMessage" :class="apiError ? 'text-red-500' : 'text-green-500'" class="text-sm font-medium">
+
+                        <!-- State 2: Login -->
+                        <div v-else-if="!isLoggedIn">
+                            <div class="flex flex-col items-start gap-3">
+                                <button @click="login" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded text-sm font-semibold transition shadow-sm flex items-center">
+                                    <i class="fas fa-sign-in-alt mr-2"></i> Log in with Homey
+                                </button>
+                                <button @click="resetCredentials" class="text-xs text-gray-400 hover:text-gray-600 underline">Change Client ID/Secret</button>
+                            </div>
+                        </div>
+
+                        <!-- State 3: Connected -->
+                        <div v-else class="flex flex-col gap-3">
+                            <div class="flex justify-between items-center bg-green-50 p-3 rounded border border-green-100">
+                                <div class="flex items-center gap-3">
+                                    <div v-if="userAvatar" class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
+                                        <img :src="userAvatar" alt="User" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold" v-else>
+                                        {{ userName.charAt(0) }}
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-semibold text-gray-800">Connected as {{ userName }}</span>
+                                        <span class="text-xs text-green-600">Authenticated</span>
+                                    </div>
+                                </div>
+                                <button @click="logout" class="text-red-400 hover:text-red-600 text-xs font-medium">Logout</button>
+                            </div>
+
+                            <div class="flex gap-2 mt-2">
+                                <button @click="fetchDevices" :disabled="isFetching" class="flex-grow bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500 text-white px-4 py-2 rounded text-sm font-semibold transition shadow-sm">
+                                    <i class="fas" :class="isFetching ? 'fa-spinner fa-spin' : 'fa-sync'"></i> Fetch Devices
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Status Messages -->
+                        <div v-if="apiMessage" :class="apiError ? 'text-red-500' : 'text-green-500'" class="text-sm font-medium mt-2">
                             <i class="fas" :class="apiError ? 'fa-exclamation-circle' : 'fa-check-circle'"></i> {{ apiMessage }}
                         </div>
                     </div>
@@ -376,15 +404,15 @@
 
         createApp({
             setup() {
-                // State
+                // Global Config
                 const config = ref({
                     default_delay: 200,
                     ignore_errors: true,
                     debug: false
                 });
                 
+                // Editor State
                 const zones = ref({});
-
                 const zoneNameKeys = ref({});
                 const showConfig = ref(true);
                 const showInactive = ref(true);
@@ -395,9 +423,15 @@
                 const importText = ref('');
                 const importError = ref(null);
 
+                // Auth State
+                const clientId = ref('');
+                const clientSecret = ref('');
+                const hasCredentials = ref(false);
+                const isLoggedIn = ref(false);
+                const userName = ref('');
+                const userAvatar = ref('');
+                
                 // API State
-                const apiKey = ref('');
-                const rememberApiKey = ref(false);
                 const isFetching = ref(false);
                 const apiMessage = ref('');
                 const apiError = ref(false);
@@ -406,13 +440,101 @@
                 const selectedHomey = ref(null);
                 
                 const deviceSearchQuery = ref('');
+                let cloudApi = null;
 
-                // Init
-                const savedKey = localStorage.getItem('homey_api_key');
-                if (savedKey) {
-                    apiKey.value = savedKey;
-                    rememberApiKey.value = true;
-                }
+                // --- Auth Logic ---
+
+                const initAuth = async () => {
+                    const storedId = localStorage.getItem('homey_client_id');
+                    const storedSecret = localStorage.getItem('homey_client_secret');
+
+                    if (storedId && storedSecret) {
+                        clientId.value = storedId;
+                        clientSecret.value = storedSecret;
+                        hasCredentials.value = true;
+                        
+                        try {
+                            cloudApi = new AthomCloudAPI({
+                                clientId: storedId,
+                                clientSecret: storedSecret,
+                                redirectUrl: window.location.href.split('?')[0] // Current page
+                            });
+
+                            // Check for auth code in URL
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const code = urlParams.get('code');
+
+                            if (code) {
+                                apiMessage.value = "Completing login...";
+                                // Clean URL
+                                window.history.replaceState({}, document.title, window.location.pathname);
+                                await cloudApi.authenticateWithAuthorizationCode(code);
+                                await postLogin();
+                            } else if (await cloudApi.isLoggedIn()) {
+                                await postLogin();
+                            }
+                        } catch (e) {
+                            console.error("Auth Init Error:", e);
+                            apiError.value = true;
+                            apiMessage.value = "Auth Error: " + e.message;
+                        }
+                    }
+                };
+
+                const saveCredentials = () => {
+                    if (clientId.value && clientSecret.value) {
+                        localStorage.setItem('homey_client_id', clientId.value);
+                        localStorage.setItem('homey_client_secret', clientSecret.value);
+                        hasCredentials.value = true;
+                        // Reload to init fresh
+                        window.location.reload();
+                    }
+                };
+
+                const resetCredentials = () => {
+                    if (confirm("Remove Client ID and Secret? You will be logged out.")) {
+                        localStorage.removeItem('homey_client_id');
+                        localStorage.removeItem('homey_client_secret');
+                        clientId.value = '';
+                        clientSecret.value = '';
+                        hasCredentials.value = false;
+                        logout();
+                    }
+                };
+
+                const login = () => {
+                    if (!cloudApi) return;
+                    const authUrl = cloudApi.getAuthorizationUrl({
+                        scopes: ['homey.readonly', 'homey.user', 'homey.device', 'homey.device.control'],
+                        state: 'random_state_string' // Simple state
+                    });
+                    window.location.href = authUrl;
+                };
+
+                const postLogin = async () => {
+                    try {
+                        const user = await cloudApi.getAuthenticatedUser();
+                        userName.value = user.firstname + ' ' + user.lastname;
+                        userAvatar.value = user.avatar;
+                        isLoggedIn.value = true;
+                        apiMessage.value = "Connected!";
+                        apiError.value = false;
+                    } catch (e) {
+                        console.error("Post Login Error:", e);
+                        apiError.value = true;
+                        apiMessage.value = "Login verification failed.";
+                    }
+                };
+
+                const logout = async () => {
+                    if (cloudApi) await cloudApi.logout();
+                    isLoggedIn.value = false;
+                    userName.value = '';
+                    userAvatar.value = '';
+                    apiMessage.value = '';
+                };
+
+                // --- API Logic ---
 
                 const filteredDevices = computed(() => {
                     if (!deviceSearchQuery.value) return homeyDevices.value;
@@ -424,56 +546,16 @@
                 });
 
                 const fetchDevices = async () => {
+                    if (!cloudApi || !isLoggedIn.value) return;
                     isFetching.value = true;
-                    apiMessage.value = 'Connecting to API...';
+                    apiMessage.value = 'Fetching Homeys...';
                     apiError.value = false;
                     
-                    // Save or Clear API Key based on checkbox
-                    if (rememberApiKey.value) {
-                        localStorage.setItem('homey_api_key', apiKey.value);
-                    } else {
-                        localStorage.removeItem('homey_api_key');
-                    }
-                    
                     try {
-                        // 1. Validate Token & Get User
-                        const cleanKey = apiKey.value.replace(/^Bearer\s+/i, '').trim();
-                        const headers = { 'Authorization': `Bearer ${cleanKey}` };
-                        const userRes = await fetch('https://api.athom.com/user/me', { headers });
-                        
-                        if (!userRes.ok) {
-                            const text = await userRes.text();
-                            throw new Error(`API Error (${userRes.status}): ${text || userRes.statusText}`);
-                        }
-                        const user = await userRes.json();
-                        
-                        // 2. Get Homeys
-                        // Note: user.homeys might be available directly in user object for some scopes, 
-                        // otherwise verify endpoint. api.athom.com/user/homeys is common.
-                        // Or /api/manager/users/user/me/homeys
-                        // Let's try to extract from user object first if present
-                        let homeyList = user.homeys;
-                        
-                        if (!homeyList) {
-                             // Try fetching
-                             // This endpoint returns all homeys the user has access to
-                             // NOTE: This endpoint structure might vary. Using standard assumption.
-                             const homeysRes = await fetch(`https://api.athom.com/user/${user._id}/homeys`, { headers });
-                             if(homeysRes.ok) homeyList = await homeysRes.json();
-                        }
-                        
-                        // If still no list, fallback to simplified assumption or try another endpoint
-                        if(!homeyList) {
-                             const meRes = await fetch('https://api.athom.com/user/me', { headers });
-                             if(meRes.ok) {
-                                 const me = await meRes.json();
-                                 homeyList = me.homeys;
-                             }
-                        }
+                        const user = await cloudApi.getAuthenticatedUser();
+                        const homeyList = await user.getHomeys();
 
-                        if (!homeyList || homeyList.length === 0) {
-                            throw new Error('No Homeys found for this user.');
-                        }
+                        if (homeyList.length === 0) throw new Error('No Homeys found.');
 
                         homeys.value = homeyList;
 
@@ -486,12 +568,7 @@
                         
                     } catch (e) {
                         apiError.value = true;
-                        console.error(e);
-                        if (e.name === 'TypeError' && e.message === 'Failed to fetch') {
-                             apiMessage.value = "Connection failed (CORS?). See Console.";
-                        } else {
-                             apiMessage.value = "Connection failed: " + e.message;
-                        }
+                        apiMessage.value = "Fetch failed: " + e.message;
                         isFetching.value = false;
                     }
                 };
@@ -502,27 +579,19 @@
                     apiMessage.value = `Connecting to ${homey.name}...`;
                     
                     try {
-                        const cleanKey = apiKey.value.replace(/^Bearer\s+/i, '').trim();
-                        const headers = { 'Authorization': `Bearer ${cleanKey}` };
-                        // Fetch devices from Homey
-                        // Note: The cloud URL format
-                        const cloudUrl = `https://${homey.id}.connect.athom.com/api/manager/devices/device`;
-                        
-                        const devicesRes = await fetch(cloudUrl, { headers });
-                        if (!devicesRes.ok) throw new Error(`Failed to fetch devices from Homey (${devicesRes.status})`);
-                        
-                        const allDevices = await devicesRes.json();
-                        const devicesArray = Object.values(allDevices);
+                        // Connect to Homey API for this specific Homey
+                        // The AthomCloudAPI handles the routing/tunneling
+                        const devices = await homey.devices.getDevices();
+                        const devicesArray = Object.values(devices);
                         
                         // Filter for State Devices
-                        // Look for driverUri containing 'state-device' or specific ID
                         homeyDevices.value = devicesArray.filter(d => 
                             (d.driverUri && d.driverUri.includes('state-device')) ||
                             (d.driverId && d.driverId === 'state-device')
                         ).map(d => ({
                             id: d.id,
                             name: d.name,
-                            zoneName: d.zoneName || 'Unknown', // Might need zone map to resolve name
+                            zoneName: d.zoneName || 'Unknown', 
                             settings: d.settings
                         }));
 
@@ -533,11 +602,7 @@
                     } catch (e) {
                         apiError.value = true;
                         console.error(e);
-                        if (e.name === 'TypeError' && e.message === 'Failed to fetch') {
-                             apiMessage.value = "Fetch failed (CORS?). See Console.";
-                        } else {
-                             apiMessage.value = "Failed to fetch devices: " + e.message;
-                        }
+                        apiMessage.value = "Failed to fetch devices: " + e.message;
                         isFetching.value = false;
                     }
                 };
@@ -556,6 +621,8 @@
                         alert("This device has no configuration data.");
                     }
                 };
+
+                // --- Standard Logic (unchanged) ---
 
                 // Simulation State
                 const simulationState = reactive({
@@ -604,8 +671,6 @@
                         delete zoneNameKeys.value[name];
                     }
                 };
-
-                // addItem function removed as requested
 
                 const removeItem = (zoneName, index) => {
                     zones.value[zoneName].items.splice(index, 1);
@@ -830,12 +895,24 @@
                     simulationState.currentCapability = null;
                     addLog("Simulation stopped by user.", 'error');
                 };
+                
+                // Init
+                nextTick(() => {
+                    initAuth();
+                });
 
                 return {
                     config, zones, zoneNameKeys,
                     showConfig, showInactive, showImportModal, showApiConfig, showHomeyModal, showDeviceModal, importText, importError,
-                    apiKey, rememberApiKey, isFetching, apiMessage, apiError, homeys, homeyDevices, fetchDevices, selectHomey, selectDevice,
+                    
+                    // Auth
+                    clientId, clientSecret, hasCredentials, isLoggedIn, userName, userAvatar,
+                    saveCredentials, resetCredentials, login, logout,
+                    
+                    // API
+                    isFetching, apiMessage, apiError, homeys, homeyDevices, fetchDevices, selectHomey, selectDevice,
                     deviceSearchQuery, filteredDevices,
+                    
                     simulationState, isValid, generatedJson, getItemDomId,
                     toggleConfig, addZone, renameZone, deleteZone,
                     addItem: () => {}, removeItem, moveItem,
