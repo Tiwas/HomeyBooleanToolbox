@@ -433,7 +433,10 @@
                         const headers = { 'Authorization': `Bearer ${cleanKey}` };
                         const userRes = await fetch('https://api.athom.com/user/me', { headers });
                         
-                        if (!userRes.ok) throw new Error(`API Error (${userRes.status}): ${userRes.statusText}`);
+                        if (!userRes.ok) {
+                            const text = await userRes.text();
+                            throw new Error(`API Error (${userRes.status}): ${text || userRes.statusText}`);
+                        }
                         const user = await userRes.json();
                         
                         // 2. Get Homeys
@@ -491,7 +494,8 @@
                     apiMessage.value = `Connecting to ${homey.name}...`;
                     
                     try {
-                        const headers = { 'Authorization': `Bearer ${apiKey.value}` };
+                        const cleanKey = apiKey.value.replace(/^Bearer\s+/i, '').trim();
+                        const headers = { 'Authorization': `Bearer ${cleanKey}` };
                         // Fetch devices from Homey
                         // Note: The cloud URL format
                         const cloudUrl = `https://${homey.id}.connect.athom.com/api/manager/devices/device`;
