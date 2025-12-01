@@ -547,7 +547,7 @@
                             try {
                                 // Try to extract token from cloudApi internals
                                 // Inspecting possible locations for the token
-                                const tokenObj = cloudApi.token || (cloudApi.getToken && cloudApi.getToken()) || (cloudApi._token);
+                                const tokenObj = cloudApi.token || cloudApi.__token || (cloudApi.getToken && cloudApi.getToken()) || (cloudApi._token);
                                 const accessToken = tokenObj ? (tokenObj.access_token || tokenObj.accessToken) : null;
                                 
                                 console.log("Extracted access token:", accessToken ? "Yes (hidden)" : "No");
