@@ -88,10 +88,12 @@
                             </div>
                             <p class="text-xs text-gray-400 mt-2">
                                 Used to fetch device list only. Not stored permanently (unless checked). 
-                                Get token from <a href="https://tools.developer.homey.app/tools/api-playground" target="_blank" class="text-blue-500 hover:underline">API Playground</a>.
+                                <span class="font-bold text-gray-500">Requires a User Token</span> (not a Homey API Key).
+                                Get it from <a href="https://tools.developer.homey.app/tools/api-playground" target="_blank" class="text-blue-500 hover:underline">API Playground</a> (Network tab).
                                 <br>
                                 <span class="text-purple-600 font-medium mt-1 inline-block"><i class="fas fa-shield-alt mr-1"></i>Scope recommendation:</span> 
-                                A token with <code>homey.readonly</code> (or <code>homey.user</code> + <code>homey.device</code> read) is sufficient.
+                                <code>homey.readonly</code> (or <code>homey.user</code> + <code>homey.device</code> read) is required. 
+                                <br>For saving changes later, include <code>homey.device.control</code>.
                             </p>
                         </div>
                         <div v-if="apiMessage" :class="apiError ? 'text-red-500' : 'text-green-500'" class="text-sm font-medium">
