@@ -530,7 +530,12 @@
                     try {
                         const user = await cloudApi.getAuthenticatedUser();
                         userName.value = user.firstname + ' ' + user.lastname;
-                        userAvatar.value = user.avatar;
+                        // Handle avatar object or string
+                        if (user.avatar && typeof user.avatar === 'object') {
+                            userAvatar.value = user.avatar.small || user.avatar.medium || user.avatar.url;
+                        } else {
+                            userAvatar.value = user.avatar;
+                        }
                         isLoggedIn.value = true;
                         apiMessage.value = "Connected!";
                         apiError.value = false;
