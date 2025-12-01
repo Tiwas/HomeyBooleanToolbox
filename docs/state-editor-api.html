@@ -449,6 +449,7 @@
                 
                 const deviceSearchQuery = ref('');
                 let cloudApi = null;
+                let activeHomeyApi = null;
 
                 // --- Auth Logic ---
 
@@ -510,6 +511,7 @@
                     userAvatar.value = '';
                     apiMessage.value = '';
                     currentDevice.value = null;
+                    activeHomeyApi = null;
                 };
 
 
@@ -617,6 +619,7 @@
                         // Connect to Homey API for this specific Homey
                         // Must authenticate first to get the API instance
                         const api = await homey.authenticate();
+                        activeHomeyApi = api;
                         
                         // Fetch devices and zones in parallel
                         // We need zones to look up zone names correctly (Device.zoneName is deprecated)
@@ -671,13 +674,16 @@
                 };
 
                 const saveToDevice = async () => {
-                    if (!currentDevice.value || !currentDevice.value.raw) return;
+                    if (!currentDevice.value || !activeHomeyApi) return;
                     
                     if (!confirm(`Overwrite configuration on device "${currentDevice.value.name}"?`)) return;
 
                     try {
                         apiMessage.value = "Saving to device...";
-                        await currentDevice.value.raw.setSettings({ json_data: generatedJson.value });
+                        await activeHomeyApi.devices.setDeviceSettings({
+                            id: currentDevice.value.id,
+                            settings: { json_data: generatedJson.value }
+                        });
                         apiMessage.value = "Saved successfully!";
                         // Update local settings copy too just in case
                         currentDevice.value.settings.json_data = generatedJson.value;
