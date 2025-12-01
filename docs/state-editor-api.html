@@ -519,11 +519,9 @@
 
                 const login = () => {
                     if (!cloudApi) return;
-                    // Debug: Reduced scopes to isolate issue
                     const authUrl = cloudApi.getLoginUrl({
-                        scopes: ['homey.user.readonly'], 
-                        // scopes: ['homey.user.readonly', 'homey.device.readonly', 'homey.device.control', 'homey.zone.readonly'],
-                        state: 'random_state_string'
+                        scopes: ['homey.user.readonly', 'homey.device.readonly', 'homey.device.control', 'homey.zone.readonly'],
+                        state: 'random_state_string' // Simple state
                     });
                     window.location.href = authUrl;
                 };
