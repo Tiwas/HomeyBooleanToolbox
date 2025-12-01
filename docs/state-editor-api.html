@@ -444,58 +444,6 @@
 
                 // --- Auth Logic ---
 
-                const initAuth = async () => {
-                    const storedId = localStorage.getItem('homey_client_id');
-                    const storedSecret = localStorage.getItem('homey_client_secret');
-
-                    if (storedId && storedSecret) {
-                        clientId.value = storedId;
-                        clientSecret.value = storedSecret;
-                        hasCredentials.value = true;
-                        
-                        try {
-                            cloudApi = new AthomCloudAPI({
-                                clientId: storedId,
-                                clientSecret: storedSecret,
-                                redirectUrl: window.location.href.split('?')[0] // Current page
-                            });
-
-                            // Check for auth code in URL
-                            const urlParams = new URLSearchParams(window.location.search);
-                            const code = urlParams.get('code');
-
-                            if (code) {
-                                apiMessage.value = "Completing login...";
-                                try {
-                                    await cloudApi.authenticateWithAuthorizationCode({ code });
-                                    // Clean URL only after success
-                                    window.history.replaceState({}, document.title, window.location.pathname);
-                                    await postLogin();
-                                } catch (err) {
-                                    console.error("Auth Code Error:", err);
-                                    // Try passing raw string if object failed, or just log error
-                                    if (err.message === "Missing Code") {
-                                         // Fallback: Library might parse URL itself, so we shouldn't have cleaned it.
-                                         // But we didn't clean it yet.
-                                         // Maybe it expects the raw string?
-                                         await cloudApi.authenticateWithAuthorizationCode(code);
-                                         window.history.replaceState({}, document.title, window.location.pathname);
-                                         await postLogin();
-                                    } else {
-                                        throw err;
-                                    }
-                                }
-                            } else if (await cloudApi.isLoggedIn()) {
-                                await postLogin();
-                            }
-                        } catch (e) {
-                            console.error("Auth Init Error:", e);
-                            apiError.value = true;
-                            apiMessage.value = "Auth Error: " + e.message;
-                        }
-                    }
-                };
-
                 const saveCredentials = () => {
                     if (clientId.value && clientSecret.value) {
                         localStorage.setItem('homey_client_id', clientId.value);
@@ -526,7 +474,83 @@
                     window.location.href = authUrl;
                 };
 
-                // ... (postLogin and logout remain unchanged) ...
+                const postLogin = async () => {
+                    try {
+                        const user = await cloudApi.getAuthenticatedUser();
+                        userName.value = user.firstname + ' ' + user.lastname;
+                        // Handle avatar object or string
+                        if (user.avatar && typeof user.avatar === 'object') {
+                            userAvatar.value = user.avatar.small || user.avatar.medium || user.avatar.url;
+                        } else {
+                            userAvatar.value = user.avatar;
+                        }
+                        isLoggedIn.value = true;
+                        apiMessage.value = "Connected!";
+                        apiError.value = false;
+                    } catch (e) {
+                        console.error("Post Login Error:", e);
+                        apiError.value = true;
+                        apiMessage.value = "Login verification failed.";
+                    }
+                };
+
+                const logout = async () => {
+                    if (cloudApi) await cloudApi.logout();
+                    isLoggedIn.value = false;
+                    userName.value = '';
+                    userAvatar.value = '';
+                    apiMessage.value = '';
+                };
+
+                const initAuth = async () => {
+                    const storedId = localStorage.getItem('homey_client_id');
+                    const storedSecret = localStorage.getItem('homey_client_secret');
+
+                    if (storedId && storedSecret) {
+                        clientId.value = storedId;
+                        clientSecret.value = storedSecret;
+                        hasCredentials.value = true;
+                        
+                        try {
+                            cloudApi = new AthomCloudAPI({
+                                clientId: storedId,
+                                clientSecret: storedSecret,
+                                redirectUrl: window.location.href.split('?')[0] // Current page
+                            });
+
+                            // Check for auth code in URL
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const code = urlParams.get('code');
+
+                            if (code) {
+                                apiMessage.value = "Completing login...";
+                                try {
+                                    await cloudApi.authenticateWithAuthorizationCode({ code });
+                                    // Clean URL only after success
+                                    window.history.replaceState({}, document.title, window.location.pathname);
+                                    await postLogin();
+                                } catch (err) {
+                                    console.error("Auth Code Error:", err);
+                                    // Try passing raw string if object failed
+                                    if (err.message === "Missing Code") {
+                                         await cloudApi.authenticateWithAuthorizationCode(code);
+                                         window.history.replaceState({}, document.title, window.location.pathname);
+                                         await postLogin();
+                                    } else {
+                                        throw err;
+                                    }
+                                }
+                            } else if (await cloudApi.isLoggedIn()) {
+                                await postLogin();
+                            }
+                        } catch (e) {
+                            console.error("Auth Init Error:", e);
+                            apiError.value = true;
+                            apiMessage.value = "Auth Error: " + e.message;
+                        }
+                    }
+                };
+
 
                 // --- API Logic ---
 
