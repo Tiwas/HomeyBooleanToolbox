@@ -615,8 +615,9 @@
                     
                     try {
                         // Connect to Homey API for this specific Homey
-                        // The AthomCloudAPI handles the routing/tunneling
-                        const devices = await homey.devices.getDevices();
+                        // Must authenticate first to get the API instance
+                        const api = await homey.authenticate();
+                        const devices = await api.devices.getDevices();
                         const devicesArray = Object.values(devices);
                         
                         // Filter for State Devices
