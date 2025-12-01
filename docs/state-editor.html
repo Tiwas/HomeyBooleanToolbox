@@ -228,13 +228,15 @@
                 <!-- Status / Validation -->
                 <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
                     <h2 class="text-lg font-semibold text-gray-800 mb-2"><i class="fas fa-check-circle mr-2 text-blue-500"></i>Validation</h2>
-                    <div v-if="isValid" class="text-green-600 flex items-center font-medium">
+                    
+                    <div v-if="Object.keys(zones).length === 0" class="text-gray-500 flex items-center font-medium">
+                        <i class="fas fa-info-circle mr-2"></i> Waiting for Import
+                    </div>
+                    <div v-else class="text-green-600 flex items-center font-medium">
                         <i class="fas fa-check mr-2"></i> Valid Configuration
                     </div>
-                    <div v-else class="text-red-600 flex items-center font-medium">
-                        <i class="fas fa-exclamation-triangle mr-2"></i> Invalid Configuration
-                    </div>
-                    <p class="text-xs text-gray-500 mt-2">Checks for required fields (ID, Name) and valid JSON structure.</p>
+                    
+                    <p class="text-xs text-gray-500 mt-2">Import a JSON configuration to validate and edit.</p>
                 </div>
 
             </div>
