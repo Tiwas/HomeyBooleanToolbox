@@ -90,7 +90,18 @@
                 </div>
 
                 <!-- Zones & Items Editor -->
-                <div class="space-y-4">
+                <div v-if="Object.keys(zones).length === 0" class="text-center py-12 bg-white rounded-lg border-2 border-dashed border-gray-300 shadow-sm">
+                    <div class="mb-4">
+                        <i class="fas fa-file-code text-5xl text-gray-300"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No Configuration Loaded</h3>
+                    <p class="text-gray-500 mb-6">Import a JSON configuration from Homey to get started.</p>
+                    <button @click="showImportModal = true" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md transition transform hover:scale-105">
+                        <i class="fas fa-file-import mr-2"></i>Read JSON
+                    </button>
+                </div>
+
+                <div v-else class="space-y-4">
                     <div v-for="(zone, zoneName) in zones" :key="zoneName" class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
                         <!-- Zone Header -->
                         <div class="bg-gray-50 p-3 flex justify-between items-center border-b border-gray-200">
@@ -185,10 +196,6 @@
                         
                     </div>
                 </div>
-                
-                <button @click="addZone" class="w-full py-3 border-2 border-dashed border-gray-300 text-gray-500 hover:text-purple-600 hover:border-purple-300 hover:bg-purple-50 rounded-lg transition font-medium">
-                    <i class="fas fa-plus-square mr-2"></i>Add New Zone
-                </button>
             </div>
 
             <!-- Right Column: JSON & Simulation -->
@@ -249,15 +256,22 @@
                     </div>
                 </div>
                 <div class="p-4 border-t border-gray-200 flex justify-end space-x-3 bg-gray-50 rounded-b-lg">
-                    <button @click="processImport('merge_keep')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm shadow-sm transition">
-                        Merge (Keep Existing)
-                    </button>
-                    <button @click="processImport('merge_overwrite')" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded text-sm shadow-sm transition">
-                        Merge (Overwrite)
-                    </button>
-                    <button @click="processImport('replace')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm shadow-sm transition">
-                        Replace All
-                    </button>
+                    <template v-if="Object.keys(zones).length === 0">
+                        <button @click="processImport('replace')" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded text-sm font-semibold shadow-sm transition">
+                            Import
+                        </button>
+                    </template>
+                    <template v-else>
+                        <button @click="processImport('merge_keep')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm shadow-sm transition">
+                            Merge (Keep Existing)
+                        </button>
+                        <button @click="processImport('merge_overwrite')" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded text-sm shadow-sm transition">
+                            Merge (Overwrite)
+                        </button>
+                        <button @click="processImport('replace')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm shadow-sm transition">
+                            Replace All
+                        </button>
+                    </template>
                 </div>
             </div>
         </div>
