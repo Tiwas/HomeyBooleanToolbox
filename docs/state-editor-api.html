@@ -466,10 +466,25 @@
 
                             if (code) {
                                 apiMessage.value = "Completing login...";
-                                // Clean URL
-                                window.history.replaceState({}, document.title, window.location.pathname);
-                                await cloudApi.authenticateWithAuthorizationCode(code);
-                                await postLogin();
+                                try {
+                                    await cloudApi.authenticateWithAuthorizationCode({ code });
+                                    // Clean URL only after success
+                                    window.history.replaceState({}, document.title, window.location.pathname);
+                                    await postLogin();
+                                } catch (err) {
+                                    console.error("Auth Code Error:", err);
+                                    // Try passing raw string if object failed, or just log error
+                                    if (err.message === "Missing Code") {
+                                         // Fallback: Library might parse URL itself, so we shouldn't have cleaned it.
+                                         // But we didn't clean it yet.
+                                         // Maybe it expects the raw string?
+                                         await cloudApi.authenticateWithAuthorizationCode(code);
+                                         window.history.replaceState({}, document.title, window.location.pathname);
+                                         await postLogin();
+                                    } else {
+                                        throw err;
+                                    }
+                                }
                             } else if (await cloudApi.isLoggedIn()) {
                                 await postLogin();
                             }
