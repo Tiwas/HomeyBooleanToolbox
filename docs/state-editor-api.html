@@ -86,7 +86,13 @@
                                 <input type="checkbox" v-model="rememberApiKey" id="remember_api_key" class="w-3 h-3 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500">
                                 <label for="remember_api_key" class="ml-1.5 text-xs text-gray-500">Remember Token (saved in browser)</label>
                             </div>
-                            <p class="text-xs text-gray-400 mt-1">Used to fetch device list only. Not stored permanently (unless checked). Get token from <a href="https://tools.developer.homey.app/tools/api-playground" target="_blank" class="text-blue-500 hover:underline">API Playground</a> (Network tab) or similar.</p>
+                            <p class="text-xs text-gray-400 mt-2">
+                                Used to fetch device list only. Not stored permanently (unless checked). 
+                                Get token from <a href="https://tools.developer.homey.app/tools/api-playground" target="_blank" class="text-blue-500 hover:underline">API Playground</a>.
+                                <br>
+                                <span class="text-purple-600 font-medium mt-1 inline-block"><i class="fas fa-shield-alt mr-1"></i>Scope recommendation:</span> 
+                                A token with <code>homey.readonly</code> (or <code>homey.user</code> + <code>homey.device</code> read) is sufficient.
+                            </p>
                         </div>
                         <div v-if="apiMessage" :class="apiError ? 'text-red-500' : 'text-green-500'" class="text-sm font-medium">
                             <i class="fas" :class="apiError ? 'fa-exclamation-circle' : 'fa-check-circle'"></i> {{ apiMessage }}
