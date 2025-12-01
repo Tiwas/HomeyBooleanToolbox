@@ -559,9 +559,18 @@
                                     }
                                     
                                     console.log("Fetching homeys from:", url);
-                                    const res = await fetch(url, {
+                                    let res = await fetch(url, {
                                         headers: { 'Authorization': `Bearer ${accessToken}` }
                                     });
+
+                                    // If 404, try legacy endpoint
+                                    if (res.status === 404) {
+                                        console.warn("Primary endpoint 404, trying legacy: /api/manager/users/user/me/homeys");
+                                        url = 'https://api.athom.com/api/manager/users/user/me/homeys';
+                                        res = await fetch(url, {
+                                            headers: { 'Authorization': `Bearer ${accessToken}` }
+                                        });
+                                    }
                                     
                                     if (res.ok) {
                                         const rawRes = await res.json();
