@@ -620,11 +620,16 @@
                         const devices = await api.devices.getDevices();
                         const devicesArray = Object.values(devices);
                         
+                        console.log("Fetched devices (first 5):", devicesArray.slice(0, 5).map(d => ({ name: d.name, driverId: d.driverId, driverUri: d.driverUri })));
+
                         // Filter for State Devices
-                        homeyDevices.value = devicesArray.filter(d => 
-                            (d.driverUri && d.driverUri.includes('state-device')) ||
-                            (d.driverId && d.driverId === 'state-device')
-                        ).map(d => ({
+                        homeyDevices.value = devicesArray.filter(d => {
+                            // Check driverId (preferred)
+                            if (d.driverId && d.driverId.toLowerCase().includes('state-device')) return true;
+                            // Check driverUri (legacy/fallback)
+                            if (d.driverUri && d.driverUri.toLowerCase().includes('state-device')) return true;
+                            return false;
+                        }).map(d => ({
                             id: d.id,
                             name: d.name,
                             zoneName: d.zoneName || 'Unknown', 
