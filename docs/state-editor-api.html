@@ -553,9 +553,16 @@
                                 console.log("Extracted access token:", accessToken ? "Yes (hidden)" : "No");
 
                                 if (accessToken) {
-                                    const res = await fetch('https://api.athom.com/user/me/homeys', {
+                                    let url = 'https://api.athom.com/user/me/homeys';
+                                    if (user && user._id) {
+                                        url = `https://api.athom.com/user/${user._id}/homeys`;
+                                    }
+                                    
+                                    console.log("Fetching homeys from:", url);
+                                    const res = await fetch(url, {
                                         headers: { 'Authorization': `Bearer ${accessToken}` }
                                     });
+                                    
                                     if (res.ok) {
                                         const rawRes = await res.json();
                                         console.log("Manual fetch response:", rawRes);
