@@ -276,14 +276,9 @@
                     debug: false
                 });
                 
-                const zones = ref({
-                    "New Zone": {
-                        config: { delay_between: 500 },
-                        items: []
-                    }
-                });
+                const zones = ref({});
 
-                const zoneNameKeys = ref({ "New Zone": "New Zone" });
+                const zoneNameKeys = ref({});
                 const showConfig = ref(true);
                 const showImportModal = ref(false);
                 const importText = ref('');
