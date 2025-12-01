@@ -82,7 +82,7 @@
                                     <i class="fas" :class="isFetching ? 'fa-spinner fa-spin' : 'fa-plug'"></i> Connect
                                 </button>
                             </div>
-                            <p class="text-xs text-gray-400 mt-1">Used to fetch device list only. Not stored permanently.</p>
+                            <p class="text-xs text-gray-400 mt-1">Used to fetch device list only. Not stored permanently. Get token from <a href="https://tools.developer.homey.app/tools/api-playground" target="_blank" class="text-blue-500 hover:underline">API Playground</a> (Network tab) or similar.</p>
                         </div>
                         <div v-if="apiMessage" :class="apiError ? 'text-red-500' : 'text-green-500'" class="text-sm font-medium">
                             <i class="fas" :class="apiError ? 'fa-exclamation-circle' : 'fa-check-circle'"></i> {{ apiMessage }}
@@ -302,6 +302,54 @@
             </div>
         </div>
 
+        <!-- Homey Selection Modal -->
+        <div v-if="showHomeyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full flex flex-col">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50 rounded-t-lg">
+                    <h2 class="text-xl font-bold text-gray-800">Select Homey</h2>
+                    <button @click="showHomeyModal = false; isFetching = false" class="text-gray-400 hover:text-gray-600 transition"><i class="fas fa-times text-lg"></i></button>
+                </div>
+                <div class="p-2 flex-grow overflow-y-auto max-h-[60vh]">
+                    <div v-for="homey in homeys" :key="homey.id" @click="selectHomey(homey)" class="p-3 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-0 flex items-center gap-3 transition">
+                        <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-900">{{ homey.name }}</div>
+                            <div class="text-xs text-gray-500">{{ homey.role }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Device Selection Modal -->
+        <div v-if="showDeviceModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full flex flex-col max-h-[80vh]">
+                <div class="p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-xl font-bold text-gray-800">Select State Device</h2>
+                        <button @click="showDeviceModal = false; isFetching = false" class="text-gray-400 hover:text-gray-600 transition"><i class="fas fa-times text-lg"></i></button>
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" v-model="deviceSearchQuery" placeholder="Search devices by name or zone..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
+                    </div>
+                </div>
+                <div class="p-4 flex-grow overflow-y-auto">
+                    <div v-if="filteredDevices.length === 0" class="text-center text-gray-500 py-8">
+                        No matching State Devices found.
+                    </div>
+                    <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div v-for="device in filteredDevices" :key="device.id" @click="selectDevice(device)" class="border border-gray-200 rounded-lg p-3 hover:border-blue-500 hover:bg-blue-50 cursor-pointer transition shadow-sm">
+                            <div class="font-semibold text-gray-900">{{ device.name }}</div>
+                            <div class="text-xs text-gray-500 mt-1">{{ device.zoneName || 'Unknown Zone' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Floating Action Button -->
         <button @click="showInactive = !showInactive"
                 class="fixed bottom-8 right-8 bg-purple-600 hover:bg-purple-700 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-xl transition transform hover:scale-110 z-40"
@@ -330,6 +378,8 @@
                 const showInactive = ref(true);
                 const showImportModal = ref(false);
                 const showApiConfig = ref(true);
+                const showHomeyModal = ref(false);
+                const showDeviceModal = ref(false);
                 const importText = ref('');
                 const importError = ref(null);
 
@@ -338,30 +388,140 @@
                 const isFetching = ref(false);
                 const apiMessage = ref('');
                 const apiError = ref(false);
-                const homeyDevices = ref([]); // To store fetched devices
+                const homeys = ref([]);
+                const homeyDevices = ref([]);
+                const selectedHomey = ref(null);
+                
+                const deviceSearchQuery = ref('');
+
+                const filteredDevices = computed(() => {
+                    if (!deviceSearchQuery.value) return homeyDevices.value;
+                    const lower = deviceSearchQuery.value.toLowerCase();
+                    return homeyDevices.value.filter(d => 
+                        d.name.toLowerCase().includes(lower) || 
+                        (d.zoneName && d.zoneName.toLowerCase().includes(lower))
+                    );
+                });
 
                 const fetchDevices = async () => {
                     isFetching.value = true;
-                    apiMessage.value = '';
+                    apiMessage.value = 'Connecting to API...';
                     apiError.value = false;
                     
                     try {
-                        // Simulation for now, as requested
-                        console.log("Attempting to fetch devices with key:", apiKey.value.substring(0, 5) + "...");
+                        // 1. Validate Token & Get User
+                        const headers = { 'Authorization': `Bearer ${apiKey.value}` };
+                        const userRes = await fetch('https://api.athom.com/authenticated/user', { headers });
                         
-                        // TODO: Implement actual fetch logic here. 
-                        // Usually requires: fetch('https://...', { headers: { Authorization: 'Bearer ' + apiKey.value } })
+                        if (!userRes.ok) throw new Error('Invalid token or API error');
+                        const user = await userRes.json();
                         
-                        await new Promise(r => setTimeout(r, 1000)); // Fake delay
+                        // 2. Get Homeys
+                        // Note: user.homeys might be available directly in user object for some scopes, 
+                        // otherwise verify endpoint. api.athom.com/user/homeys is common.
+                        // Or /api/manager/users/user/me/homeys
+                        // Let's try to extract from user object first if present
+                        let homeyList = user.homeys;
                         
-                        apiMessage.value = "Connected! (Simulation - Logic to be implemented)";
-                        // homeyDevices.value = ...
+                        if (!homeyList) {
+                             // Try fetching
+                             // This endpoint returns all homeys the user has access to
+                             // NOTE: This endpoint structure might vary. Using standard assumption.
+                             const homeysRes = await fetch(`https://api.athom.com/user/${user._id}/homeys`, { headers });
+                             if(homeysRes.ok) homeyList = await homeysRes.json();
+                        }
+                        
+                        // If still no list, fallback to simplified assumption or try another endpoint
+                        if(!homeyList) {
+                             const meRes = await fetch('https://api.athom.com/user/me', { headers });
+                             if(meRes.ok) {
+                                 const me = await meRes.json();
+                                 homeyList = me.homeys;
+                             }
+                        }
+
+                        if (!homeyList || homeyList.length === 0) {
+                            throw new Error('No Homeys found for this user.');
+                        }
+
+                        homeys.value = homeyList;
+
+                        if (homeyList.length > 1) {
+                            apiMessage.value = 'Select a Homey...';
+                            showHomeyModal.value = true;
+                        } else {
+                            selectHomey(homeyList[0]);
+                        }
                         
                     } catch (e) {
                         apiError.value = true;
-                        apiMessage.value = "Connection failed: " + e.message;
-                    } finally {
+                        console.error(e);
+                        if (e.name === 'TypeError' && e.message === 'Failed to fetch') {
+                             apiMessage.value = "Connection failed (CORS?). See Console.";
+                        } else {
+                             apiMessage.value = "Connection failed: " + e.message;
+                        }
                         isFetching.value = false;
+                    }
+                };
+
+                const selectHomey = async (homey) => {
+                    selectedHomey.value = homey;
+                    showHomeyModal.value = false;
+                    apiMessage.value = `Connecting to ${homey.name}...`;
+                    
+                    try {
+                        const headers = { 'Authorization': `Bearer ${apiKey.value}` };
+                        // Fetch devices from Homey
+                        // Note: The cloud URL format
+                        const cloudUrl = `https://${homey.id}.connect.athom.com/api/manager/devices/device`;
+                        
+                        const devicesRes = await fetch(cloudUrl, { headers });
+                        if (!devicesRes.ok) throw new Error(`Failed to fetch devices from Homey (${devicesRes.status})`);
+                        
+                        const allDevices = await devicesRes.json();
+                        const devicesArray = Object.values(allDevices);
+                        
+                        // Filter for State Devices
+                        // Look for driverUri containing 'state-device' or specific ID
+                        homeyDevices.value = devicesArray.filter(d => 
+                            (d.driverUri && d.driverUri.includes('state-device')) ||
+                            (d.driverId && d.driverId === 'state-device')
+                        ).map(d => ({
+                            id: d.id,
+                            name: d.name,
+                            zoneName: d.zoneName || 'Unknown', // Might need zone map to resolve name
+                            settings: d.settings
+                        }));
+
+                        apiMessage.value = `Found ${homeyDevices.value.length} State Devices.`;
+                        showDeviceModal.value = true;
+                        isFetching.value = false;
+
+                    } catch (e) {
+                        apiError.value = true;
+                        console.error(e);
+                        if (e.name === 'TypeError' && e.message === 'Failed to fetch') {
+                             apiMessage.value = "Fetch failed (CORS?). See Console.";
+                        } else {
+                             apiMessage.value = "Failed to fetch devices: " + e.message;
+                        }
+                        isFetching.value = false;
+                    }
+                };
+
+                const selectDevice = (device) => {
+                    if (device.settings && device.settings.json_data) {
+                        importText.value = device.settings.json_data;
+                        try {
+                            processImport('replace');
+                            showDeviceModal.value = false;
+                            apiMessage.value = `Loaded: ${device.name}`;
+                        } catch(e) {
+                            alert("Error loading device config: " + e.message);
+                        }
+                    } else {
+                        alert("This device has no configuration data.");
                     }
                 };
 
@@ -531,6 +691,8 @@
                         importText.value = '';
                     } catch (e) {
                         importError.value = e.message;
+                        // Re-throw to alert caller if needed
+                        throw e;
                     }
                 };
 
@@ -639,8 +801,9 @@
 
                 return {
                     config, zones, zoneNameKeys,
-                    showConfig, showInactive, showImportModal, showApiConfig, importText, importError,
-                    apiKey, isFetching, apiMessage, apiError, fetchDevices,
+                    showConfig, showInactive, showImportModal, showApiConfig, showHomeyModal, showDeviceModal, importText, importError,
+                    apiKey, isFetching, apiMessage, apiError, homeys, homeyDevices, fetchDevices, selectHomey, selectDevice,
+                    deviceSearchQuery, filteredDevices,
                     simulationState, isValid, generatedJson, getItemDomId,
                     toggleConfig, addZone, renameZone, deleteZone,
                     addItem: () => {}, removeItem, moveItem,

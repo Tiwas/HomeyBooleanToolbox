@@ -11,8 +11,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a202c;
-            color: #e2e8f0;
+            background-color: #f8fafc;
+            color: #1a202c;
         }
         .screen { display: none; }
         .screen.active { display: block; }
@@ -25,10 +25,10 @@
             right: 0;
             top: 100%;
             margin-top: 0.5rem;
-            background: #2d3748;
-            border: 1px solid #4a5568;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             z-index: 50;
             min-width: 200px;
         }
@@ -44,7 +44,7 @@
             transition: background 0.2s;
         }
         .language-option:hover {
-            background: #4a5568;
+            background: #f1f5f9;
         }
         .language-option:first-child {
             border-radius: 0.5rem 0.5rem 0 0;
@@ -80,20 +80,20 @@
 <body class="h-full">
     <div id="app" class="p-4 md:p-8 max-w-7xl mx-auto">
         
-        <header class="flex flex-col md:flex-row justify-between items-center pb-6 border-b border-gray-700 mb-6">
+        <header class="flex flex-col md:flex-row justify-between items-center pb-6 border-b border-gray-200 mb-6">
             <div class="flex items-center space-x-4">
-                 <img src="https://tiwas.github.io/HomeyBooleanToolbox/no.tiwas.booleantoolbox/assets/icon.svg" alt="Boolean Toolbox Logo" class="w-16 h-16 rounded-lg">
+                 <img src="https://tiwas.github.io/HomeyBooleanToolbox/no.tiwas.booleantoolbox/assets/icon.svg" alt="Boolean Toolbox Logo" class="w-16 h-16 rounded-lg shadow-sm">
                  <div>
-                    <h1 class="text-2xl font-bold text-white">Boolean Editor</h1>
-                    <p class="text-gray-400 mt-1" data-i18n="subtitle">For Homey Boolean Toolbox (Self-hosted)</p>
+                    <h1 class="text-2xl font-bold text-gray-900">Boolean Editor</h1>
+                    <p class="text-gray-500 mt-1" data-i18n="subtitle">For Homey Boolean Toolbox (Self-hosted)</p>
                  </div>
             </div>
             <div class="flex items-center gap-4 mt-4 md:mt-0">
-                <button id="api-settings-button" class="hidden px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm" data-i18n="apiSettings">
+                <button id="api-settings-button" class="hidden px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors text-sm border border-gray-300" data-i18n="apiSettings">
                     ⚙️ API Settings
                 </button>
                 <div class="language-selector">
-                    <button id="language-button" class="flex items-center gap-2 px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                    <button id="language-button" class="flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors border border-gray-300">
                         <span id="current-flag" class="text-xl">🇬🇧</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -123,68 +123,68 @@
                     </div>
                 </div>
                 <div id="user-info" class="hidden text-right">
-                    <p id="user-name" class="font-semibold"></p>
-                    <p id="homey-name" class="text-sm text-gray-400"></p>
-                    <button id="logout-button" class="text-sm text-red-400 hover:text-red-300" data-i18n="logout">Log out</button>
+                    <p id="user-name" class="font-semibold text-gray-900"></p>
+                    <p id="homey-name" class="text-sm text-gray-500"></p>
+                    <button id="logout-button" class="text-sm text-red-600 hover:text-red-500" data-i18n="logout">Log out</button>
                 </div>
             </div>
         </header>
 
-        <main id="main-content" class="bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8">
+        <main id="main-content" class="bg-white rounded-xl shadow-xl border border-gray-200 p-6 md:p-8">
             <!-- API Setup Screen -->
             <div id="api-setup-screen" class="screen active">
                 <div class="max-w-2xl mx-auto">
-                    <h2 class="text-2xl font-bold mb-6" data-i18n="apiSetup.title">🔧 API Setup Required</h2>
+                    <h2 class="text-2xl font-bold mb-6 text-gray-900" data-i18n="apiSetup.title">🔧 API Setup Required</h2>
                     
-                    <div class="bg-blue-900/30 border border-blue-500 rounded-lg p-6 mb-6">
-                        <h3 class="text-lg font-semibold mb-4" data-i18n="apiSetup.instructionsTitle">📋 How to get your API credentials:</h3>
-                        <ol class="space-y-3 text-sm">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+                        <h3 class="text-lg font-semibold mb-4 text-blue-800" data-i18n="apiSetup.instructionsTitle">📋 How to get your API credentials:</h3>
+                        <ol class="space-y-3 text-sm text-gray-700">
                             <li class="flex gap-3">
-                                <span class="font-bold">1.</span>
-                                <span><span data-i18n="apiSetup.step1">Go to</span> <a href="https://tools.developer.homey.app/api/clients" target="_blank" class="text-blue-400 hover:text-blue-300 underline" data-i18n="apiSetup.step1Link">Homey API Clients</a></span>
+                                <span class="font-bold text-blue-600">1.</span>
+                                <span><span data-i18n="apiSetup.step1">Go to</span> <a href="https://tools.developer.homey.app/api/clients" target="_blank" class="text-blue-600 hover:text-blue-500 underline" data-i18n="apiSetup.step1Link">Homey API Clients</a></span>
                             </li>
                             <li class="flex gap-3">
-                                <span class="font-bold">2.</span>
+                                <span class="font-bold text-blue-600">2.</span>
                                 <span data-i18n="apiSetup.step2">Click "Add client" or "Create new client"</span>
                             </li>
                             <li class="flex gap-3">
-                                <span class="font-bold">3.</span>
+                                <span class="font-bold text-blue-600">3.</span>
                                 <span data-i18n="apiSetup.step3">Fill in any name (e.g., "Boolean Editor")</span>
                             </li>
                             <li class="flex gap-3">
-                                <span class="font-bold">4.</span>
+                                <span class="font-bold text-blue-600">4.</span>
                                 <span data-i18n="apiSetup.step4">Add your Redirect URL (see below)</span>
                             </li>
                             <li class="flex gap-3">
-                                <span class="font-bold">5.</span>
-                                <span><strong>Select scopes:</strong> Check ✅ <code class="bg-gray-700 px-1 rounded">homey.zone.readonly</code>, <code class="bg-gray-700 px-1 rounded">homey.device.readonly</code>, and <code class="bg-gray-700 px-1 rounded">homey.device.control</code></span>
+                                <span class="font-bold text-blue-600">5.</span>
+                                <span><strong>Select scopes:</strong> Check ✅ <code class="bg-gray-100 px-1 rounded border border-gray-300">homey.zone.readonly</code>, <code class="bg-gray-100 px-1 rounded border border-gray-300">homey.device.readonly</code>, and <code class="bg-gray-100 px-1 rounded border border-gray-300">homey.device.control</code></span>
                             </li>
                             <li class="flex gap-3">
-                                <span class="font-bold">6.</span>
+                                <span class="font-bold text-blue-600">6.</span>
                                 <span data-i18n="apiSetup.step5">Click "Create" and copy the Client ID and Client Secret</span>
                             </li>
                         </ol>
                     </div>
 
-                    <div class="bg-gray-700 rounded-lg p-6 mb-6">
-                        <h3 class="text-lg font-semibold mb-3" data-i18n="apiSetup.redirectUrlTitle">🌐 Your Redirect URL</h3>
-                        <p class="text-sm text-gray-400 mb-2" data-i18n="apiSetup.redirectUrlHelp">Use this exact URL when creating your Cloud App:</p>
+                    <div class="bg-gray-50 rounded-lg p-6 mb-6 border border-gray-200">
+                        <h3 class="text-lg font-semibold mb-3 text-gray-900" data-i18n="apiSetup.redirectUrlTitle">🌐 Your Redirect URL</h3>
+                        <p class="text-sm text-gray-500 mb-2" data-i18n="apiSetup.redirectUrlHelp">Use this exact URL when creating your Cloud App:</p>
                         <div class="flex gap-2">
-                            <input type="text" id="redirect-url-display" readonly class="flex-grow p-2 bg-gray-800 border border-gray-600 rounded font-mono text-sm" value="">
-                            <button onclick="app.copyRedirectUrl()" class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded" data-i18n="apiSetup.copyButton">Copy</button>
+                            <input type="text" id="redirect-url-display" readonly class="flex-grow p-2 bg-white border border-gray-300 rounded font-mono text-sm text-gray-700" value="">
+                            <button onclick="app.copyRedirectUrl()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors" data-i18n="apiSetup.copyButton">Copy</button>
                         </div>
                     </div>
 
                     <form id="api-setup-form" class="space-y-4">
                         <div>
-                            <label for="client-id-input" class="block text-sm font-medium mb-2" data-i18n="apiSetup.clientIdLabel">Client ID</label>
-                            <input type="text" id="client-id-input" required class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500">
+                            <label for="client-id-input" class="block text-sm font-medium mb-2 text-gray-700" data-i18n="apiSetup.clientIdLabel">Client ID</label>
+                            <input type="text" id="client-id-input" required class="w-full p-3 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-gray-900">
                         </div>
                         <div>
-                            <label for="client-secret-input" class="block text-sm font-medium mb-2" data-i18n="apiSetup.clientSecretLabel">Client Secret</label>
-                            <input type="password" id="client-secret-input" required class="w-full p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500">
+                            <label for="client-secret-input" class="block text-sm font-medium mb-2 text-gray-700" data-i18n="apiSetup.clientSecretLabel">Client Secret</label>
+                            <input type="password" id="client-secret-input" required class="w-full p-3 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-gray-900">
                         </div>
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg" data-i18n="apiSetup.saveButton">
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors" data-i18n="apiSetup.saveButton">
                             Save and Continue
                         </button>
                     </form>
@@ -195,162 +195,162 @@
             
             <!-- Main Menu -->
             <div id="main-menu-screen" class="screen">
-                <h2 class="text-xl font-bold mb-6 text-center">What would you like to work with?</h2>
+                <h2 class="text-xl font-bold mb-6 text-center text-gray-900">What would you like to work with?</h2>
                 <div class="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="window.app.showScreen('edit-devices-screen')">
-                        <h3 class="text-lg font-semibold mb-2">⚙️ Manage Existing Devices</h3>
-                        <p class="text-gray-400 text-sm">View and modify settings for existing Boolean Toolbox devices.</p>
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer" onclick="window.app.showScreen('edit-devices-screen')">
+                        <h3 class="text-lg font-semibold mb-2 text-gray-900">⚙️ Manage Existing Devices</h3>
+                        <p class="text-gray-600 text-sm">View and modify settings for existing Boolean Toolbox devices.</p>
                     </div>
-                    <div class="bg-gradient-to-br from-blue-600 to-blue-700 p-6 rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all cursor-pointer shadow-lg" onclick="window.app.startLogicUnitFlow()">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all cursor-pointer shadow-lg text-white" onclick="window.app.startLogicUnitFlow()">
                         <h3 class="text-lg font-semibold mb-2">🔢 Logic Unit</h3>
-                        <p class="text-gray-200 text-sm">Create or edit formulas with predefined inputs (A, B, C...).</p>
-                        <p class="text-xs text-blue-200 mt-2">• Multiple formulas supported</p>
+                        <p class="text-blue-50 text-sm">Create or edit formulas with predefined inputs (A, B, C...).</p>
+                        <p class="text-xs text-blue-100 mt-2">• Multiple formulas supported</p>
                     </div>
-                    <div class="bg-gradient-to-br from-green-600 to-green-700 p-6 rounded-lg hover:from-green-500 hover:to-green-600 transition-all cursor-pointer shadow-lg" onclick="window.app.startLogicDeviceFlow()">
+                    <div class="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-lg hover:from-green-600 hover:to-green-700 transition-all cursor-pointer shadow-lg text-white" onclick="window.app.startLogicDeviceFlow()">
                         <h3 class="text-lg font-semibold mb-2">🔗 Logic Device</h3>
-                        <p class="text-gray-200 text-sm">Connect device capabilities and create boolean expressions.</p>
-                        <p class="text-xs text-green-200 mt-2">• Single formula with device inputs</p>
+                        <p class="text-green-50 text-sm">Connect device capabilities and create boolean expressions.</p>
+                        <p class="text-xs text-green-100 mt-2">• Single formula with device inputs</p>
                     </div>
-                    <div class="bg-gradient-to-br from-purple-600 to-purple-700 p-6 rounded-lg hover:from-purple-500 hover:to-purple-600 transition-all cursor-pointer shadow-lg" onclick="window.app.startSnapshotFlow()">
+                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-6 rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all cursor-pointer shadow-lg text-white" onclick="window.app.startSnapshotFlow()">
                         <h3 class="text-lg font-semibold mb-2">📸 Snapshot Manager</h3>
-                        <p class="text-gray-200 text-sm">Capture device states and create Restore JSON.</p>
-                        <p class="text-xs text-purple-200 mt-2">• Filter and export state</p>
+                        <p class="text-purple-50 text-sm">Capture device states and create Restore JSON.</p>
+                        <p class="text-xs text-purple-100 mt-2">• Filter and export state</p>
                     </div>
                 </div>
             </div>
 
             <!-- Edit Devices Screen -->
             <div id="edit-devices-screen" class="screen">
-                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
+                <button class="mb-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg border border-gray-300" onclick="app.showScreen('main-menu-screen')">
                     <span data-i18n="back">← Back to menu</span>
                 </button>
-                <h2 class="text-xl font-bold mb-4" data-i18n="editDevices.title">Edit Boolean Toolbox Devices</h2>
+                <h2 class="text-xl font-bold mb-4 text-gray-900" data-i18n="editDevices.title">Edit Boolean Toolbox Devices</h2>
                 <div id="edit-devices-list" class="space-y-6"></div>
             </div>
 
             <!-- Settings Modal -->
-            <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center p-4 z-50">
-                <div class="bg-gray-800 rounded-lg p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-700">
-                    <h3 id="settings-modal-title" class="text-lg font-bold mb-4" data-i18n="settings.title">Settings</h3>
+            <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50 backdrop-blur-sm">
+                <div class="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200">
+                    <h3 id="settings-modal-title" class="text-lg font-bold mb-4 text-gray-900" data-i18n="settings.title">Settings</h3>
                     <div id="settings-modal-content" class="space-y-4"></div>
-                    <div class="mt-6 flex justify-end gap-4 sticky bottom-0 bg-gray-800 pt-4 border-t border-gray-700">
-                        <button id="settings-modal-close" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" data-i18n="close">Close</button>
-                        <button id="settings-modal-save" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg" data-i18n="save">Save</button>
+                    <div class="mt-6 flex justify-end gap-4 sticky bottom-0 bg-white pt-4 border-t border-gray-200">
+                        <button id="settings-modal-close" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg border border-gray-300" data-i18n="close">Close</button>
+                        <button id="settings-modal-save" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm" data-i18n="save">Save</button>
                     </div>
                 </div>
             </div>
 
             <!-- Logic Unit Select Screen -->
             <div id="logic-unit-select-screen" class="screen">
-                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
+                <button class="mb-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg border border-gray-300" onclick="app.showScreen('main-menu-screen')">
                     <span>← Back to menu</span>
                 </button>
-                <h2 class="text-xl font-bold mb-6">Logic Unit</h2>
+                <h2 class="text-xl font-bold mb-6 text-gray-900">Logic Unit</h2>
                 <div class="grid md:grid-cols-2 gap-6 max-w-4xl">
-                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('logic-unit-port-screen')">
-                        <h3 class="text-lg font-semibold mb-2">➕ Create New</h3>
-                        <p class="text-gray-400">Create a new Logic Unit with custom formulas.</p>
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer" onclick="app.showScreen('logic-unit-port-screen')">
+                        <h3 class="text-lg font-semibold mb-2 text-gray-900">➕ Create New</h3>
+                        <p class="text-gray-600">Create a new Logic Unit with custom formulas.</p>
                     </div>
-                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.selectExistingLogicUnit()">
-                        <h3 class="text-lg font-semibold mb-2">✏️ Edit Existing</h3>
-                        <p class="text-gray-400">Modify an existing Logic Unit device.</p>
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer" onclick="app.selectExistingLogicUnit()">
+                        <h3 class="text-lg font-semibold mb-2 text-gray-900">✏️ Edit Existing</h3>
+                        <p class="text-gray-600">Modify an existing Logic Unit device.</p>
                     </div>
                 </div>
             </div>
             
             <!-- Logic Unit Port Select -->
             <div id="logic-unit-port-screen" class="screen">
-                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('logic-unit-select-screen')">
+                <button class="mb-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg border border-gray-300" onclick="app.showScreen('logic-unit-select-screen')">
                     <span>← Back</span>
                 </button>
-                <h2 class="text-xl font-bold mb-6">How many inputs?</h2>
-                <p class="text-gray-400 mb-6">Select the number of inputs (A, B, C...) for your Logic Unit.</p>
+                <h2 class="text-xl font-bold mb-6 text-gray-900">How many inputs?</h2>
+                <p class="text-gray-600 mb-6">Select the number of inputs (A, B, C...) for your Logic Unit.</p>
                 <div class="grid grid-cols-3 md:grid-cols-5 gap-4 max-w-4xl">
-                    <button onclick="window.app.setLogicUnitPorts(2)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">2</button>
-                    <button onclick="window.app.setLogicUnitPorts(3)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">3</button>
-                    <button onclick="window.app.setLogicUnitPorts(4)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">4</button>
-                    <button onclick="window.app.setLogicUnitPorts(5)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">5</button>
-                    <button onclick="window.app.setLogicUnitPorts(6)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">6</button>
-                    <button onclick="window.app.setLogicUnitPorts(7)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">7</button>
-                    <button onclick="window.app.setLogicUnitPorts(8)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">8</button>
-                    <button onclick="window.app.setLogicUnitPorts(9)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">9</button>
-                    <button onclick="window.app.setLogicUnitPorts(10)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors">10</button>
+                    <button onclick="window.app.setLogicUnitPorts(2)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors shadow-sm">2</button>
+                    <button onclick="window.app.setLogicUnitPorts(3)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors shadow-sm">3</button>
+                    <button onclick="window.app.setLogicUnitPorts(4)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors shadow-sm">4</button>
+                    <button onclick="window.app.setLogicUnitPorts(5)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors shadow-sm">5</button>
+                    <button onclick="window.app.setLogicUnitPorts(6)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors shadow-sm">6</button>
+                    <button onclick="window.app.setLogicUnitPorts(7)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors shadow-sm">7</button>
+                    <button onclick="window.app.setLogicUnitPorts(8)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors shadow-sm">8</button>
+                    <button onclick="window.app.setLogicUnitPorts(9)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors shadow-sm">9</button>
+                    <button onclick="window.app.setLogicUnitPorts(10)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-8 px-4 rounded-lg text-2xl transition-colors shadow-sm">10</button>
                 </div>
             </div>
             
             <!-- Logic Unit Editor -->
             <div id="logic-unit-editor-screen" class="screen">
-                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('logic-unit-select-screen')">
+                <button class="mb-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg border border-gray-300" onclick="app.showScreen('logic-unit-select-screen')">
                     <span>← Back</span>
                 </button>
-                <h2 class="text-xl font-bold mb-4">Logic Unit Formula Editor</h2>
-                <div id="logic-unit-inputs-info" class="bg-gray-700 p-4 rounded-lg mb-6"></div>
+                <h2 class="text-xl font-bold mb-4 text-gray-900">Logic Unit Formula Editor</h2>
+                <div id="logic-unit-inputs-info" class="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-6 text-blue-900"></div>
                 
                 <div class="space-y-6" id="logic-unit-formulas-container"></div>
                 
-                <button onclick="app.addLogicUnitFormula()" class="mt-4 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">
+                <button onclick="app.addLogicUnitFormula()" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm transition-colors">
                     ➕ Add Formula
                 </button>
                 
-                <button onclick="app.saveLogicUnit()" class="mt-6 w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg">
+                <button onclick="app.saveLogicUnit()" class="mt-6 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-colors">
                     💾 Save Logic Unit
                 </button>
             </div>
             
             <!-- Logic Device Select -->
             <div id="logic-device-select-screen" class="screen">
-                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
+                <button class="mb-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg border border-gray-300" onclick="app.showScreen('main-menu-screen')">
                     <span>← Back to menu</span>
                 </button>
-                <h2 class="text-xl font-bold mb-6">Logic Device</h2>
+                <h2 class="text-xl font-bold mb-6 text-gray-900">Logic Device</h2>
                 <div class="grid md:grid-cols-2 gap-6 max-w-4xl">
-                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.showScreen('logic-device-editor-screen')">
-                        <h3 class="text-lg font-semibold mb-2">➕ Create New</h3>
-                        <p class="text-gray-400">Create a new Logic Device with device capabilities.</p>
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer" onclick="app.showScreen('logic-device-editor-screen')">
+                        <h3 class="text-lg font-semibold mb-2 text-gray-900">➕ Create New</h3>
+                        <p class="text-gray-600">Create a new Logic Device with device capabilities.</p>
                     </div>
-                    <div class="bg-gray-700 p-6 rounded-lg hover:bg-gray-600 transition-colors cursor-pointer" onclick="app.selectExistingLogicDevice()">
-                        <h3 class="text-lg font-semibold mb-2">✏️ Edit Existing</h3>
-                        <p class="text-gray-400">Modify an existing Logic Device.</p>
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer" onclick="app.selectExistingLogicDevice()">
+                        <h3 class="text-lg font-semibold mb-2 text-gray-900">✏️ Edit Existing</h3>
+                        <p class="text-gray-600">Modify an existing Logic Device.</p>
                     </div>
                 </div>
             </div>
             
             <!-- Logic Device Editor -->
             <div id="logic-device-editor-screen" class="screen">
-                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('logic-device-select-screen')">
+                <button class="mb-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg border border-gray-300" onclick="app.showScreen('logic-device-select-screen')">
                     <span>← Back</span>
                 </button>
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="flex-grow">
-                        <h2 class="text-xl font-bold mb-4">Select Devices and Capabilities</h2>
-                        <p class="text-gray-400 mb-6">Select between 2 and 10 capabilities (A-J).</p>
+                        <h2 class="text-xl font-bold mb-4 text-gray-900">Select Devices and Capabilities</h2>
+                        <p class="text-gray-600 mb-6">Select between 2 and 10 capabilities (A-J).</p>
                         <div id="logic-device-capability-list" class="space-y-4"></div>
                     </div>
                     <aside class="w-full lg:w-2/5 lg:sticky top-8 self-start space-y-6">
-                        <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                            <h3 class="text-lg font-semibold mb-4">
+                        <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                            <h3 class="text-lg font-semibold mb-4 text-gray-900">
                                 Selected (<span id="logic-device-count">0</span>/10)
                             </h3>
                             <ul id="logic-device-selected-list" class="space-y-2 mb-4 max-h-64 overflow-y-auto"></ul>
                         </div>
                         
-                        <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                            <h3 class="text-lg font-semibold mb-2">Formula</h3>
-                            <p class="text-xs text-gray-400 mb-2">
-                                Operators: <code class="bg-gray-700 px-1 rounded">AND</code> <code class="bg-gray-700 px-1 rounded">*</code> · 
-                                <code class="bg-gray-700 px-1 rounded">OR</code> <code class="bg-gray-700 px-1 rounded">+</code> · 
-                                <code class="bg-gray-700 px-1 rounded">NOT</code> <code class="bg-gray-700 px-1 rounded">!</code> · 
-                                <code class="bg-gray-700 px-1 rounded">XOR</code> <code class="bg-gray-700 px-1 rounded">^</code>
-                                Parentheses <code class="bg-gray-700 px-1 rounded">()</code>
+                        <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                            <h3 class="text-lg font-semibold mb-2 text-gray-900">Formula</h3>
+                            <p class="text-xs text-gray-500 mb-2">
+                                Operators: <code class="bg-gray-100 px-1 rounded border border-gray-300">AND</code> <code class="bg-gray-100 px-1 rounded border border-gray-300">*</code> · 
+                                <code class="bg-gray-100 px-1 rounded border border-gray-300">OR</code> <code class="bg-gray-100 px-1 rounded border border-gray-300">+</code> · 
+                                <code class="bg-gray-100 px-1 rounded border border-gray-300">NOT</code> <code class="bg-gray-100 px-1 rounded border border-gray-300">!</code> · 
+                                <code class="bg-gray-100 px-1 rounded border border-gray-300">XOR</code> <code class="bg-gray-100 px-1 rounded border border-gray-300">^</code>
+                                Parentheses <code class="bg-gray-100 px-1 rounded border border-gray-300">()</code>
                             </p>
-                            <textarea id="logic-device-formula" class="w-full h-32 p-3 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm" placeholder="Examples: (A AND B) OR C
+                            <textarea id="logic-device-formula" class="w-full h-32 p-3 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm text-gray-900" placeholder="Examples: (A AND B) OR C
 A * B + !C
 a or (b and c)"></textarea>
                             
                             <div id="logic-device-truth-table" class="mt-4"></div>
                         </div>
                         
-                        <button onclick="app.saveLogicDevice()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg">
+                        <button onclick="app.saveLogicDevice()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-colors">
                             💾 Save Logic Device
                         </button>
                     </aside>
@@ -359,25 +359,25 @@ a or (b and c)"></textarea>
 
             <!-- Snapshot Screen -->
             <div id="snapshot-screen" class="screen">
-                <button class="mb-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="app.showScreen('main-menu-screen')">
+                <button class="mb-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg border border-gray-300" onclick="app.showScreen('main-menu-screen')">
                     <span>← Back to menu</span>
                 </button>
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-xl font-bold">Snapshot Manager</h2>
-                        <p class="text-gray-400 text-sm mt-1">Capture device states, remove unwanted items, and export JSON.</p>
+                        <h2 class="text-xl font-bold text-gray-900">Snapshot Manager</h2>
+                        <p class="text-gray-600 text-sm mt-1">Capture device states, remove unwanted items, and export JSON.</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="app.captureState()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2">
+                        <button onclick="app.captureState()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 shadow-sm transition-colors">
                             📸 Capture Current State
                         </button>
                     </div>
                 </div>
 
-                <div class="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                    <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
-                        <h3 class="font-semibold text-lg">Captured Items (<span id="snapshot-count">0</span>)</h3>
-                        <button id="snapshot-copy-btn" onclick="app.copySnapshotJSON()" class="hidden bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold py-1 px-3 rounded transition-colors">
+                <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-2">
+                        <h3 class="font-semibold text-lg text-gray-900">Captured Items (<span id="snapshot-count">0</span>)</h3>
+                        <button id="snapshot-copy-btn" onclick="app.copySnapshotJSON()" class="hidden bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-1 px-3 rounded transition-colors shadow-sm">
                             📋 Copy JSON
                         </button>
                     </div>
@@ -393,13 +393,13 @@ a or (b and c)"></textarea>
         </main>
         
         <!-- Loading Modal -->
-        <div id="loader-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
-            <div class="bg-gray-800 rounded-lg p-8 flex flex-col items-center gap-4">
-                <svg class="animate-spin h-12 w-12 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <div id="loader-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 backdrop-blur-sm">
+            <div class="bg-white rounded-lg p-8 flex flex-col items-center gap-4 shadow-xl border border-gray-200">
+                <svg class="animate-spin h-12 w-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <p class="text-white text-lg" id="loader-text">Loading...</p>
+                <p class="text-gray-900 text-lg" id="loader-text">Loading...</p>
             </div>
         </div>
     </div>
@@ -680,7 +680,7 @@ a or (b and c)"></textarea>
                 async handleAuthRedirect(code) {
                     if (this.processingAuth) return;
                     this.processingAuth = true;
-                    window.history.replaceState({}, document.title, window.location.pathname);
+                    window.history.replaceState({}, document.title, window.location.pathname); 
                     
                     this.showLoader('Authenticating...');
                     try {
@@ -763,7 +763,7 @@ a or (b and c)"></textarea>
                     );
                     
                     if (toolboxDevices.length === 0) {
-                        container.innerHTML = `<div class="bg-yellow-700 p-4 rounded-lg text-center"><p class="font-semibold mb-2">${this.t('editDevices.noDevices')}</p></div>`;
+                        container.innerHTML = `<div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg text-center"><p class="font-semibold mb-2 text-yellow-800">${this.t('editDevices.noDevices')}</p></div>`;
                         return;
                     }
                     
@@ -776,21 +776,21 @@ a or (b and c)"></textarea>
                         const zoneDevices = devicesByZone[zoneId];
                         const zoneEl = document.createElement('div');
                         zoneEl.className = 'mt-6';
-                        zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-4">${zone.name}</h3>
+                        zoneEl.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-200 pb-2 mb-4 text-gray-800">${zone.name}</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${zoneDevices.map(device => {
                                 const isLogicUnit = device.driverId.includes('logic-unit');
                                 const buttonText = isLogicUnit ? 'Edit Formula' : 'Edit Expression';
                                 const buttonClass = isLogicUnit ? 'edit-formula-button' : 'edit-expression-button';
                                 return `
-                                <div class="bg-gray-700 p-4 rounded-lg">
+                                <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
                                     <div class="flex justify-between items-start mb-2">
-                                        <span class="font-medium">${device.name}</span>
+                                        <span class="font-medium text-gray-900">${device.name}</span>
                                         <div class="flex gap-2">
-                                            <button data-device-id="${device.id}" class="${buttonClass} bg-green-600 hover:bg-green-500 text-white text-xs py-1 px-2 rounded-md">${buttonText}</button>
-                                            <button data-device-id="${device.id}" class="open-settings-button bg-gray-600 hover:bg-gray-500 text-white text-xs py-1 px-2 rounded-md">${this.t('editDevices.settings')}</button>
+                                            <button data-device-id="${device.id}" class="${buttonClass} bg-green-600 hover:bg-green-700 text-white text-xs py-1 px-2 rounded-md transition-colors">${buttonText}</button>
+                                            <button data-device-id="${device.id}" class="open-settings-button bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300 text-xs py-1 px-2 rounded-md transition-colors">${this.t('editDevices.settings')}</button>
                                         </div>
                                     </div>
-                                    <div class="text-xs text-gray-400 font-mono">${device.driverId}</div>
+                                    <div class="text-xs text-gray-500 font-mono">${device.driverId}</div>
                                 </div>`;
                             }).join('')}</div>`;
                         container.appendChild(zoneEl);
@@ -815,33 +815,33 @@ a or (b and c)"></textarea>
                         const zoneDevices = devicesByZone[zoneId];
                         
                         const zoneWrapper = document.createElement('div');
-                        zoneWrapper.className = 'mb-4 border border-gray-600 rounded-lg overflow-hidden';
+                        zoneWrapper.className = 'mb-4 border border-gray-300 rounded-lg overflow-hidden';
                         
                         const zoneHeader = document.createElement('div');
-                        zoneHeader.className = 'bg-gray-700 p-3 cursor-pointer hover:bg-gray-650 flex justify-between items-center';
+                        zoneHeader.className = 'bg-gray-100 p-3 cursor-pointer hover:bg-gray-200 flex justify-between items-center text-gray-900';
                         zoneHeader.innerHTML = `
                             <h3 class="font-semibold">${zone.name}</h3>
-                            <svg class="zone-chevron w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            <svg class="zone-chevron w-4 h-4 transition-transform text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         `;
                         
                         const zoneContent = document.createElement('div');
-                        zoneContent.className = 'hidden bg-gray-750 p-3 space-y-2';
+                        zoneContent.className = 'hidden bg-white p-3 space-y-2';
                         
                         zoneDevices.forEach(device => {
                             if (!device.capabilitiesObj || Object.keys(device.capabilitiesObj).length === 0) return;
                             
                             const deviceWrapper = document.createElement('div');
-                            deviceWrapper.className = 'border border-gray-600 rounded overflow-hidden';
+                            deviceWrapper.className = 'border border-gray-200 rounded overflow-hidden';
                             
                             const deviceHeader = document.createElement('div');
-                            deviceHeader.className = 'bg-gray-700 p-2 cursor-pointer hover:bg-gray-650 flex justify-between items-center';
+                            deviceHeader.className = 'bg-gray-50 p-2 cursor-pointer hover:bg-gray-100 flex justify-between items-center';
                             deviceHeader.innerHTML = `
-                                <div class="font-medium text-sm">${device.name}</div>
-                                <svg class="device-chevron w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                <div class="font-medium text-sm text-gray-800">${device.name}</div>
+                                <svg class="device-chevron w-3 h-3 transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                             `;
                             
                             const capsEl = document.createElement('div');
-                            capsEl.className = 'hidden bg-gray-800 space-y-1 p-2';
+                            capsEl.className = 'hidden bg-white space-y-1 p-2 border-t border-gray-100';
                             
                             Object.values(device.capabilitiesObj).forEach(cap => {
                                 const isSelected = this.logicDeviceCapabilities.some(
@@ -849,9 +849,9 @@ a or (b and c)"></textarea>
                                 );
                                 
                                 const label = document.createElement('label');
-                                label.className = 'flex items-center gap-2 text-sm cursor-pointer hover:bg-gray-700 p-1 rounded';
+                                label.className = 'flex items-center gap-2 text-sm cursor-pointer hover:bg-gray-50 p-1 rounded text-gray-700';
                                 label.innerHTML = `
-                                    <input type="checkbox" ${isSelected ? 'checked' : ''} data-device-id="${device.id}" data-capability-id="${cap.id}" data-device-name="${device.name}" data-capability-title="${cap.title}" class="form-checkbox h-4 w-4">
+                                    <input type="checkbox" ${isSelected ? 'checked' : ''} data-device-id="${device.id}" data-capability-id="${cap.id}" data-device-name="${device.name}" data-capability-title="${cap.title}" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                                     <span>${cap.title}</span>
                                 `;
                                 
@@ -918,17 +918,17 @@ a or (b and c)"></textarea>
                     list.innerHTML = this.logicDeviceCapabilities.length === 0 
                         ? '<li class="text-gray-500 text-sm italic">No capabilities selected</li>'
                         : this.logicDeviceCapabilities.map((cap, idx) => `
-                            <li class="bg-gray-700 p-2 rounded text-sm">
+                            <li class="bg-gray-100 p-2 rounded text-sm border border-gray-200">
                                 <div class="flex items-center gap-2">
                                     <div class="flex flex-col gap-1">
-                                        <button onclick="window.app.moveLogicDeviceCapability(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="text-gray-400 hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed text-xs leading-none" title="Move up">▲</button>
-                                        <button onclick="window.app.moveLogicDeviceCapability(${idx}, 1)" ${idx === this.logicDeviceCapabilities.length - 1 ? 'disabled' : ''} class="text-gray-400 hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed text-xs leading-none" title="Move down">▼</button>
+                                        <button onclick="window.app.moveLogicDeviceCapability(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="text-gray-500 hover:text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed text-xs leading-none" title="Move up">▲</button>
+                                        <button onclick="window.app.moveLogicDeviceCapability(${idx}, 1)" ${idx === this.logicDeviceCapabilities.length - 1 ? 'disabled' : ''} class="text-gray-500 hover:text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed text-xs leading-none" title="Move down">▼</button>
                                     </div>
                                     <div class="flex-grow min-w-0">
-                                        <span class="font-mono font-bold text-blue-400">${String.fromCharCode(65 + idx)}:</span>
-                                        <span class="text-xs block truncate">${cap.deviceName} - ${cap.capabilityTitle}</span>
+                                        <span class="font-mono font-bold text-blue-600">${String.fromCharCode(65 + idx)}:</span>
+                                        <span class="text-xs block truncate text-gray-800">${cap.deviceName} - ${cap.capabilityTitle}</span>
                                     </div>
-                                    <button onclick="window.app.removeLogicDeviceCapability(${idx})" class="text-red-400 hover:text-red-300 font-bold text-lg flex-shrink-0" title="Remove">×</button>
+                                    <button onclick="window.app.removeLogicDeviceCapability(${idx})" class="text-red-500 hover:text-red-700 font-bold text-lg flex-shrink-0">×</button>
                                 </div>
                             </li>
                         `).join('');
@@ -1047,7 +1047,7 @@ a or (b and c)"></textarea>
                             <div class="mb-6"><h4 class="font-semibold mb-2">Formulas (JSON):</h4><textarea readonly class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg font-mono text-sm" rows="12">${JSON.stringify(output.formulas, null, 2)}</textarea></div>
                             <div class="flex justify-end gap-4">
                                 <button onclick="this.closest('.fixed').remove()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Close</button>
-                                <button onclick="navigator.clipboard.writeText('${JSON.stringify(output, null, 2).replace(/'/g, "\\'")}'); alert('Copied to clipboard!')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Copy All JSON</button>
+                                <button onclick="navigator.clipboard.writeText('${JSON.stringify(output, null, 2).replace(/'/g, "\'")}'); alert('Copied to clipboard!')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Copy All JSON</button>
                             </div>
                         </div>`;
                     document.body.appendChild(modal);
@@ -1060,7 +1060,7 @@ a or (b and c)"></textarea>
                     try {
                         let formulas = device.settings.formulas || [];
                         if (typeof formulas === 'string') {
-                            try { formulas = JSON.parse(formulas); } catch (e) { formulas = []; }
+                            try { formulas = JSON.parse(formulas); } catch (e) { formulas = []; } 
                         }
                         this.logicUnitFormulas = formulas.length > 0 ? formulas : [{id: 'formula_1', name: 'My Formula', expression: '', enabled: true}];
                         const match = device.name.match(/\((\d+)\s+input/i);
@@ -1136,15 +1136,15 @@ a or (b and c)"></textarea>
                     const { id, title, value, type, hint, min, max, units } = setting;
                     const displayValue = typeof value === 'object' ? JSON.stringify(value, null, 2) : value;
                     const isObject = typeof value === 'object';
-                    let fieldHtml = `<div class="mb-4"><label for="setting-${id}" class="block text-sm font-medium text-gray-300 mb-1">${title || id}</label>`;
+                    let fieldHtml = `<div class="mb-4"><label for="setting-${id}" class="block text-sm font-medium text-gray-700 mb-1">${title || id}</label>`;
                     if (hint) fieldHtml += `<p class="text-xs text-gray-500 mb-2">${hint}</p>`;
                     if (type === 'textarea' || isObject) {
                         const rows = isObject ? Math.min(10, displayValue.split('\n').length + 1) : 4;
-                        fieldHtml += `<textarea id="setting-${id}" data-setting-id="${id}" data-is-object="${isObject}" class="block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm" rows="${rows}">${displayValue}</textarea>`;
+                        fieldHtml += `<textarea id="setting-${id}" data-setting-id="${id}" data-is-object="${isObject}" class="block w-full p-2 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm text-gray-900" rows="${rows}">${displayValue}</textarea>`;
                     } else if (type === 'number') {
-                        fieldHtml += `<div class="flex gap-2 items-center"><input type="number" id="setting-${id}" data-setting-id="${id}" ${min !== undefined ? `min="${min}"` : ''} ${max !== undefined ? `max="${max}"` : ''} class="flex-grow p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" value="${value}">${units ? `<span class="text-gray-400 text-sm">${units.en || units}</span>` : ''}</div>`;
+                        fieldHtml += `<div class="flex gap-2 items-center"><input type="number" id="setting-${id}" data-setting-id="${id}" ${min !== undefined ? `min="${min}"` : ''} ${max !== undefined ? `max="${max}"` : ''} class="flex-grow p-2 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-gray-900" value="${value}">${units ? `<span class="text-gray-500 text-sm">${units.en || units}</span>` : ''}</div>`;
                     } else {
-                        fieldHtml += `<input type="text" id="setting-${id}" data-setting-id="${id}" class="block w-full p-2 bg-gray-700 border-2 border-gray-600 rounded-lg focus:outline-none focus:border-blue-500" value="${displayValue}">`;
+                        fieldHtml += `<input type="text" id="setting-${id}" data-setting-id="${id}" class="block w-full p-2 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-gray-900" value="${displayValue}">`;
                     }
                     fieldHtml += `</div>`;
                     return fieldHtml;
@@ -1228,8 +1228,8 @@ a or (b and c)"></textarea>
                         content.innerHTML = settingsHtml || `<p>${this.t('settings.noSettings')}</p>`;
                     } catch(error) { 
                         content.innerHTML = `<p class="text-red-400">${this.t('settings.error')} ${error.message}</p>`; 
-                    } finally {
-                        this.hideLoader();
+                    } finally { 
+                        this.hideLoader(); 
                     }
                 }
 
@@ -1318,15 +1318,15 @@ a or (b and c)"></textarea>
                     const container = document.getElementById('logic-unit-formulas-container');
                     if (!infoBox || !container) return;
                     const inputs = Array.from({length: this.logicUnitPorts}, (_, i) => String.fromCharCode(65 + i));
-                    infoBox.innerHTML = `<h3 class="font-semibold mb-2">Available Inputs:</h3><p class="text-gray-300">${inputs.join(', ')}</p>`;
+                    infoBox.innerHTML = `<h3 class="font-semibold mb-2">Available Inputs:</h3><p class="text-blue-800">${inputs.join(', ')}</p>`;
                     container.innerHTML = this.logicUnitFormulas.map((formula, idx) => `
-                        <div class="bg-gray-700 p-4 rounded-lg">
+                        <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
                             <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-semibold">Formula ${idx + 1}</h3>
-                                ${this.logicUnitFormulas.length > 1 ? `<button onclick="window.app.removeLogicUnitFormula(${idx})" class="text-red-400 hover:text-red-300 text-sm">Remove</button>` : ''}
+                                <h3 class="font-semibold text-gray-900">Formula ${idx + 1}</h3>
+                                ${this.logicUnitFormulas.length > 1 ? `<button onclick="window.app.removeLogicUnitFormula(${idx})" class="text-red-600 hover:text-red-500 text-sm">Remove</button>` : ''}
                             </div>
-                            <div class="mb-3"><label class="block text-sm mb-1">Name</label><input type="text" value="${formula.name}" onchange="window.app.updateLogicUnitFormulaName(${idx}, this.value)" class="w-full p-2 bg-gray-600 border border-gray-500 rounded"></div>
-                            <div class="mb-3"><label class="block text-sm mb-1">Expression</label><p class="text-xs text-gray-400 mb-1">Operators: AND, OR, NOT, XOR</p><textarea oninput="window.app.updateLogicUnitFormulaExpression(${idx}, this.value)" class="w-full h-24 p-2 bg-gray-600 border border-gray-500 rounded font-mono">${formula.expression}</textarea></div>
+                            <div class="mb-3"><label class="block text-sm mb-1 text-gray-700">Name</label><input type="text" value="${formula.name}" onchange="window.app.updateLogicUnitFormulaName(${idx}, this.value)" class="w-full p-2 bg-white border border-gray-300 rounded text-gray-900 focus:border-blue-500 focus:outline-none"></div>
+                            <div class="mb-3"><label class="block text-sm mb-1 text-gray-700">Expression</label><p class="text-xs text-gray-500 mb-1">Operators: AND, OR, NOT, XOR</p><textarea oninput="window.app.updateLogicUnitFormulaExpression(${idx}, this.value)" class="w-full h-24 p-2 bg-white border border-gray-300 rounded font-mono text-gray-900 focus:border-blue-500 focus:outline-none">${formula.expression}</textarea></div>
                             <div id="truth-table-${idx}" class="mt-3"></div>
                         </div>
                     `).join('');
@@ -1376,7 +1376,7 @@ a or (b and c)"></textarea>
                         let jsExpr = expression.toUpperCase().replace(/\bAND\b/gi, '&&').replace(/\bOR\b/gi, '||').replace(/\bNOT\b/gi, '!').replace(/\bXOR\b/gi, '^');
                         Object.keys(values).forEach(variable => {
                             const upperVar = variable.toUpperCase();
-                            const regex = new RegExp(`\\b${upperVar}\\b`, 'g');
+                            const regex = new RegExp(`\b${upperVar}\b`, 'g');
                             jsExpr = jsExpr.replace(regex, values[variable] ? 'true' : 'false');
                         });
                         return eval(jsExpr) ? 1 : 0;
@@ -1388,7 +1388,7 @@ a or (b and c)"></textarea>
                     if (!container) return;
                     const inputs = Array.from({length: numInputs}, (_, i) => String.fromCharCode(65 + i));
                     const rows = Math.pow(2, numInputs);
-                    if (rows > 256) { container.innerHTML = '<p class="text-yellow-400 text-sm">Too many inputs for truth table preview (max 8)</p>'; return; }
+                    if (rows > 256) { container.innerHTML = '<p class="text-yellow-600 text-sm">Too many inputs for truth table preview (max 8)</p>'; return; }
                     
                     const usedInputs = new Set((expression.toUpperCase().match(/\b[A-J]\b/g) || []));
                     const missingInputs = Array.from(usedInputs).filter(input => {
@@ -1397,99 +1397,26 @@ a or (b and c)"></textarea>
                     });
                     
                     if (missingInputs.length > 0) {
-                        container.innerHTML = `<div class="bg-red-900/30 border border-red-500 rounded p-3 text-sm"><p class="font-semibold">❌ Error:</p><p>Formula uses <strong>${missingInputs.join(', ')}</strong> but only <strong>${inputs.join(', ')}</strong> ${numInputs === 1 ? 'is' : 'are'} selected.</p></div>`;
+                        container.innerHTML = `<div class="bg-red-50 border border-red-200 rounded p-3 text-sm text-red-800"><p class="font-semibold">❌ Error:</p><p>Formula uses <strong>${missingInputs.join(', ')}</strong> but only <strong>${inputs.join(', ')}</strong> ${numInputs === 1 ? 'is' : 'are'} selected.</p></div>`;
                         return;
                     }
                     
-                    let html = `<div class="overflow-x-auto"><table class="w-full text-xs border-collapse"><thead><tr class="bg-gray-600">${inputs.map(i => `<th class="border border-gray-500 p-1">${i}</th>`).join('')}<th class="border border-gray-500 p-1 font-bold">Result</th></tr></thead><tbody>`;
+                    let html = `<div class="overflow-x-auto"><table class="w-full text-xs border-collapse"><thead><tr class="bg-gray-200 text-gray-700">${inputs.map(i => `<th class="border border-gray-300 p-1">${i}</th>`).join('')}<th class="border border-gray-300 p-1 font-bold">Result</th></tr></thead><tbody>`;
                     for (let i = 0; i < rows; i++) {
                         const values = {};
                         let rowHtml = '<tr>';
                         for (let j = 0; j < numInputs; j++) {
                             const val = (i >> (numInputs - 1 - j)) & 1;
                             values[inputs[j]] = val;
-                            rowHtml += `<td class="border border-gray-500 p-1 text-center ${val ? 'bg-green-900' : 'bg-red-900'}">${val}</td>`;
+                            rowHtml += `<td class="border border-gray-300 p-1 text-center ${val ? 'bg-green-100 text-green-800' : 'bg-red-50 text-red-800'}">${val}</td>`;
                         }
                         const result = this.evaluateExpression(expression, values);
-                        const resultClass = result === 1 ? 'bg-green-700' : (result === 0 ? 'bg-red-700' : 'bg-yellow-700');
-                        rowHtml += `<td class="border border-gray-500 p-1 text-center font-bold ${resultClass}">${result === null ? '?' : result}</td></tr>`;
+                        const resultClass = result === 1 ? 'bg-green-200 text-green-900' : (result === 0 ? 'bg-red-100 text-red-900' : 'bg-yellow-100 text-yellow-900');
+                        rowHtml += `<td class="border border-gray-300 p-1 text-center font-bold ${resultClass}">${result === null ? '?' : result}</td></tr>`;
                         html += rowHtml;
                     }
                     html += '</tbody></table></div>';
                     container.innerHTML = html;
-                }
-
-                // --- Snapshot Manager Functions ---
-
-                startSnapshotFlow() {
-                    this.snapshotData = [];
-                    this.showScreen('snapshot-screen');
-                    this.renderSnapshotList();
-                }
-
-                async captureState() {
-                    this.showLoader('Capturing state...');
-                    
-                    // Ensure we have fresh data
-                    try {
-                         const devices = await this.api.devices.getDevices();
-                         this.allDevices = devices;
-                    } catch (e) {
-                        console.error("Could not refresh devices", e);
-                    }
-
-                    const snapshot = {};
-                    // Define what we consider "Safe" to restore automatically.
-                    // We exclude 'sensor' and 'lock' classes by default for safety.
-                    const unsafeClasses = ['sensor', 'lock', 'alarm', 'garage']; 
-                    
-                    // Define capabilities we are interested in
-                    const targetCapabilities = ['onoff', 'dim', 'light_hue', 'light_saturation', 'light_temperature', 'light_mode', 'target_temperature', 'volume_set', 'windowcoverings_set'];
-
-                    for (const device of Object.values(this.allDevices)) {
-                        if (!device.ready) continue;
-                        if (unsafeClasses.includes(device.class)) continue;
-
-                        const savedCaps = {};
-                        let hasData = false;
-
-                        for (const cap of targetCapabilities) {
-                            // Check if device has capability AND if it is setable
-                            if (device.capabilitiesObj && device.capabilitiesObj[cap] && device.capabilitiesObj[cap].setable) {
-                                savedCaps[cap] = device.capabilitiesObj[cap].value;
-                                hasData = true;
-                            }
-                        }
-
-                        if (hasData) {
-                            snapshot[device.id] = savedCaps;
-                        }
-                    }
-
-                    // Convert to array format for UI
-                    this.snapshotData = [];
-                    for (const [deviceId, caps] of Object.entries(snapshot)) {
-                        const device = this.allDevices[deviceId];
-                        for (const [capId, value] of Object.entries(caps)) {
-                            this.snapshotData.push({
-                                deviceId: deviceId,
-                                deviceName: device ? device.name : 'Unknown',
-                                zoneName: device && this.allZones[device.zone] ? this.allZones[device.zone].name : 'Unknown',
-                                capabilityId: capId,
-                                capabilityTitle: device.capabilitiesObj[capId].title || capId,
-                                value: value
-                            });
-                        }
-                    }
-                    
-                    // Sort by Zone then Name
-                    this.snapshotData.sort((a, b) => {
-                        if (a.zoneName !== b.zoneName) return a.zoneName.localeCompare(b.zoneName);
-                        return a.deviceName.localeCompare(b.deviceName);
-                    });
-
-                    this.hideLoader();
-                    this.renderSnapshotList();
                 }
 
                 renderSnapshotList() {
@@ -1512,22 +1439,21 @@ a or (b and c)"></textarea>
                     let currentZone = '';
 
                     this.snapshotData.forEach((item, index) => {
-                        // Zone Header
                         if (item.zoneName !== currentZone) {
                             currentZone = item.zoneName;
-                            html += `<div class="bg-gray-800 text-gray-300 px-3 py-2 font-bold text-sm border-t border-gray-700 mt-2 first:mt-0 sticky top-0">${currentZone}</div>`;
+                            html += `<div class="bg-gray-100 text-gray-700 px-3 py-2 font-bold text-sm border-t border-gray-200 mt-2 first:mt-0 sticky top-0 shadow-sm">${currentZone}</div>`;
                         }
 
                         html += `
-                            <div class="flex items-center justify-between p-3 border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
+                            <div class="flex items-center justify-between p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
                                 <div class="flex flex-col overflow-hidden">
-                                    <div class="font-medium truncate">${item.deviceName}</div>
-                                    <div class="text-xs text-gray-400 flex gap-2">
-                                        <span class="bg-gray-700 px-1.5 rounded text-blue-300">${item.capabilityTitle}</span>
-                                        <span class="text-green-400 font-mono">${String(item.value)}</span>
+                                    <div class="font-medium truncate text-gray-900">${item.deviceName}</div>
+                                    <div class="text-xs text-gray-500 flex gap-2">
+                                        <span class="bg-blue-50 px-1.5 rounded text-blue-700 border border-blue-100">${item.capabilityTitle}</span>
+                                        <span class="text-green-600 font-mono font-bold">${String(item.value)}</span>
                                     </div>
                                 </div>
-                                <button onclick="app.removeSnapshotItem(${index})" class="text-red-500 hover:text-red-400 hover:bg-red-900/20 p-2 rounded-full transition-colors" title="Remove from snapshot">
+                                <button onclick="app.removeSnapshotItem(${index})" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-full transition-colors" title="Remove from snapshot">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
                                     </svg>
@@ -1545,7 +1471,6 @@ a or (b and c)"></textarea>
                 }
 
                 copySnapshotJSON() {
-                    // Convert back to the nested structure required by Homey flows
                     const output = {};
                     
                     this.snapshotData.forEach(item => {
@@ -1561,7 +1486,6 @@ a or (b and c)"></textarea>
                         alert('JSON copied to clipboard! You can now paste this into a variable or flow card.');
                     }).catch(err => {
                         console.error('Could not copy text: ', err);
-                        // Fallback modal
                         this.showOutputModal('Snapshot JSON', { json: output }, 'Copy the JSON below:');
                     });
                 }
