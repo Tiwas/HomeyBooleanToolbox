@@ -540,13 +540,31 @@
                              }
                         }
 
-                        // Fallback 2: Raw API Call
+                        // Fallback 2: Raw API Call (Manual Fetch)
                         if (!homeyList || homeyList.length === 0) {
-                            console.log("Trying fallback API call to cloudApi.get('/user/me/homeys')...");
+                            console.log("Trying fallback API call to manual fetch...");
                             try {
-                                const rawRes = await cloudApi.get('/user/me/homeys');
-                                console.log("Raw /user/me/homeys response:", rawRes);
-                                if (Array.isArray(rawRes)) homeyList = rawRes;
+                                // Try to extract token from cloudApi internals
+                                // Inspecting possible locations for the token
+                                const tokenObj = cloudApi.token || (cloudApi.getToken && cloudApi.getToken()) || (cloudApi._token);
+                                const accessToken = tokenObj ? (tokenObj.access_token || tokenObj.accessToken) : null;
+                                
+                                console.log("Extracted access token:", accessToken ? "Yes (hidden)" : "No");
+
+                                if (accessToken) {
+                                    const res = await fetch('https://api.athom.com/user/me/homeys', {
+                                        headers: { 'Authorization': `Bearer ${accessToken}` }
+                                    });
+                                    if (res.ok) {
+                                        const rawRes = await res.json();
+                                        console.log("Manual fetch response:", rawRes);
+                                        if (Array.isArray(rawRes)) homeyList = rawRes;
+                                    } else {
+                                        console.warn("Manual fetch failed:", res.status, res.statusText);
+                                    }
+                                } else {
+                                    console.warn("Could not find access token in cloudApi object.");
+                                }
                             } catch (err) {
                                 console.error("Fallback API call failed:", err);
                             }
