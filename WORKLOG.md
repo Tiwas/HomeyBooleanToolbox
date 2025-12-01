@@ -52,4 +52,19 @@ This file tracks the progress and changes made to the Homey Boolean Toolbox proj
                             *   **Refactor:** Removed IIFE and instead renamed all global variables/functions in pairing views to be unique (e.g., `onHomeyReadyDev`, `nextButtonDev`) to strictly avoid collisions in the shared global scope while ensuring accessibility.
                             *   **Fix:** Updated `edit_configuration.html` to correctly call `Homey.createDevice(deviceData)` after receiving the device payload from the backend. Previously, it only called `Homey.done()`, which closed the wizard without saving the device.
                         *   **Status:** Settings page simplified. Pairing wizard now has 3 steps (Scope -> Devices -> JSON).
+
+## [2025-12-01] - Session Continuation
+
+### Feature: Web API Integration for State Editor
+*   **Context:** Continued work on `docs/state-editor-api.html` for Homey Web API integration.
+*   **Action:** Addressed deprecation warnings and updated API usage.
+*   **Implementation:**
+    *   Modified `docs/state-editor-api.html`:
+        *   Refactored `selectHomey` function to fetch devices and zones in parallel.
+        *   Removed usage of deprecated `Device.driverUri`, relying solely on `Device.driverId`.
+        *   Replaced usage of deprecated `Device.zoneName` with a lookup against the fetched `api.zones.getZones()` data for accurate zone names.
+    *   Updated `WEB-API.md`:
+        *   Revised content to accurately reflect the current implementation using `AthomCloudAPI` (OAuth with Client ID/Secret) instead of the previous "Bearer Token" approach.
+        *   Documented the resolution of deprecated API properties and the `AthomCloudAPI`'s role in handling CORS.
+*   **Status:** Deprecation warnings resolved in `docs/state-editor-api.html`, and related documentation (`WEB-API.md`) is up-to-date. Ready for user verification.
                         
