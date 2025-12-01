@@ -210,7 +210,10 @@ class StateDriver extends Homey.Driver {
             });
 
             generatedConfig = {
-                _comment: "Documentation: https://tiwas.github.io/HomeyBooleanToolbox/docs/state-device.html",
+                _meta: {
+                    editor: "https://tiwas.github.io/HomeyBooleanToolbox/docs/state-editor.html",
+                    documentation: "https://tiwas.github.io/HomeyBooleanToolbox/docs/state-device.html"
+                },
                 config: {
                     default_delay: 1000,
                     ignore_errors: true,
