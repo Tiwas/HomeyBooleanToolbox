@@ -124,6 +124,7 @@
                             
                             <!-- ITEM CARD -->
                             <div v-for="(item, index) in zone.items" :key="item.id + index" 
+                                 v-show="showInactive || item.active"
                                  :id="'card-' + getItemDomId(zoneName, index)"
                                  class="bg-white rounded border border-gray-200 p-3 shadow-sm hover:border-purple-300 hover:shadow-md transition relative group"
                                  :class="{'active-simulation-card': simulationState.currentItem === item}"
@@ -278,6 +279,13 @@
             </div>
         </div>
 
+        <!-- Floating Action Button -->
+        <button @click="showInactive = !showInactive"
+                class="fixed bottom-8 right-8 bg-purple-600 hover:bg-purple-700 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-xl transition transform hover:scale-110 z-40"
+                :title="showInactive ? 'Hide Inactive Devices' : 'Show Inactive Devices'">
+            <i class="fas" :class="showInactive ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+
     </div>
 
     <script>
@@ -296,6 +304,7 @@
 
                 const zoneNameKeys = ref({});
                 const showConfig = ref(true);
+                const showInactive = ref(true);
                 const showImportModal = ref(false);
                 const importText = ref('');
                 const importError = ref(null);
@@ -574,7 +583,7 @@
 
                 return {
                     config, zones, zoneNameKeys,
-                    showConfig, showImportModal, importText, importError,
+                    showConfig, showInactive, showImportModal, importText, importError,
                     simulationState, isValid, generatedJson, getItemDomId,
                     toggleConfig, addZone, renameZone, deleteZone,
                     addItem: () => {}, removeItem, moveItem,
