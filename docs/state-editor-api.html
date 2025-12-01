@@ -411,9 +411,9 @@
                     try {
                         // 1. Validate Token & Get User
                         const headers = { 'Authorization': `Bearer ${apiKey.value}` };
-                        const userRes = await fetch('https://api.athom.com/authenticated/user', { headers });
+                        const userRes = await fetch('https://api.athom.com/user/me', { headers });
                         
-                        if (!userRes.ok) throw new Error('Invalid token or API error');
+                        if (!userRes.ok) throw new Error(`API Error (${userRes.status}): ${userRes.statusText}`);
                         const user = await userRes.json();
                         
                         // 2. Get Homeys
