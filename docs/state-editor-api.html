@@ -690,10 +690,14 @@
                         currentDevice.value.settings.json_data = generatedJson.value;
                         alert("Configuration saved to device!");
                     } catch (e) {
-                        console.error(e);
+                        console.error("Auto-save failed:", e);
                         apiError.value = true;
-                        apiMessage.value = "Save failed: " + e.message;
-                        alert("Failed to save: " + e.message);
+                        apiMessage.value = "Save failed. Please copy JSON manually.";
+                        alert("Automatic save failed (likely missing permissions). Please copy the JSON manually.");
+                        
+                        // Open the modal with the JSON ready for copying
+                        importText.value = generatedJson.value;
+                        showImportModal.value = true;
                     }
                 };
 
