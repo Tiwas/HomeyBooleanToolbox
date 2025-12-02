@@ -654,6 +654,15 @@
                         }
 
                         if (!homeyList || homeyList.length === 0) {
+                            if (scopeMode.value === 'recommended') {
+                                apiError.value = true;
+                                apiMessage.value = 'No Homeys returned with Explicit scopes. Switch to Default and re-login to list devices.';
+                                alert('No Homeys returned when using Explicit scopes. Switching to Default mode; please log in again to list devices.');
+                                scopeMode.value = 'default';
+                                await logout();
+                                isFetching.value = false;
+                                return;
+                            }
                             throw new Error('No Homeys found. Check console for details.');
                         }
 
@@ -762,7 +771,8 @@
                     } catch (e) {
                         let lastError = e;
                         // Retry with local strategy if available and not already using it
-                        if (selectedHomey.value && activeAuthStrategy.value !== 'local') {
+                        const canLocalAuth = selectedHomey.value && typeof selectedHomey.value.authenticate === 'function';
+                        if (canLocalAuth && activeAuthStrategy.value !== 'local') {
                             try {
                                 apiMessage.value = "Retrying save with local auth...";
                                 const localApi = await selectedHomey.value.authenticate({ strategy: 'local' });
