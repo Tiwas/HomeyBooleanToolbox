@@ -477,24 +477,8 @@
                 const login = () => {
                     if (!cloudApi) return;
                     const authUrl = cloudApi.getLoginUrl({
-                        scopes: [
-                            'homey',
-                            'homey.zone.readonly', 
-                            'homey.device.readonly', 
-                            'homey.device.control', 
-                            'homey.flow.readonly', 
-                            'homey.flow.start', 
-                            'homey.user.readonly', 
-                            'homey.user.self', 
-                            'homey.presence.readonly', 
-                            'homey.presence.self', 
-                            'homey.notifications.readonly', 
-                            'homey.logic', 
-                            'homey.logic.readonly', 
-                            'homey.insights.readonly', 
-                            'homey.energy.readonly', 
-                            'homey.app.readonly'
-                        ], 
+                        // Removing explicit scopes to rely on client default (like the working editor)
+                        // scopes: ['homey', 'homey.device.control'], 
                         state: 'random_state_string' // Simple state
                     });
                     window.location.href = authUrl;
@@ -634,7 +618,8 @@
                     try {
                         // Connect to Homey API for this specific Homey
                         // Must authenticate first to get the API instance
-                        const api = await homey.authenticate();
+                        // Force cloud strategy to ensure token permissions are respected
+                        const api = await homey.authenticate({ strategy: 'cloud' });
                         activeHomeyApi = api;
                         
                         // Fetch devices and zones in parallel
