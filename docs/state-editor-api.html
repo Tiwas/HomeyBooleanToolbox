@@ -477,7 +477,8 @@
                 const login = () => {
                     if (!cloudApi) return;
                     const authUrl = cloudApi.getLoginUrl({
-                        scopes: ['homey', 'homey.device.control', 'homey.user.readonly', 'homey.device.readonly', 'homey.zone.readonly'], 
+                        // Removing explicit scopes to rely on client default (like the working editor)
+                        // scopes: ['homey', 'homey.device.control'], 
                         state: 'random_state_string' // Simple state
                     });
                     window.location.href = authUrl;
