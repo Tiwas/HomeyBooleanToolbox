@@ -475,10 +475,11 @@
                 };
 
                 const login = () => {
-                    if (!clientId.value) return;
-                    const redirectUrl = window.location.href.split('?')[0];
-                    const scopes = 'homey homey.device.control homey.user.readonly homey.device.readonly homey.zone.readonly';
-                    const authUrl = `https://api.athom.com/oauth2/authorise?response_type=code&client_id=${clientId.value}&redirect_uri=${encodeURIComponent(redirectUrl)}&scope=${encodeURIComponent(scopes)}&state=random_state_string`;
+                    if (!cloudApi) return;
+                    const authUrl = cloudApi.getLoginUrl({
+                        scopes: ['homey', 'homey.device.control', 'homey.user.readonly', 'homey.device.readonly', 'homey.zone.readonly'], 
+                        state: 'random_state_string' // Simple state
+                    });
                     window.location.href = authUrl;
                 };
 
