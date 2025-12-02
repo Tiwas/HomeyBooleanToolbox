@@ -477,7 +477,8 @@
                 const login = () => {
                     if (!cloudApi) return;
                     const authUrl = cloudApi.getLoginUrl({
-                        scopes: ['homey.user.readonly'], 
+                        // Removing explicit scopes to rely on client default (like the working editor)
+                        // scopes: ['homey', 'homey.device.control'], 
                         state: 'random_state_string' // Simple state
                     });
                     window.location.href = authUrl;
@@ -678,6 +679,9 @@
                     if (!confirm(`Overwrite configuration on device "${currentDevice.value.name}"?`)) return;
 
                     try {
+                        // Debug log for scopes
+                        try { console.log("[Debug] Active API Scopes:", activeHomeyApi.scopes); } catch(e) {}
+                        
                         apiMessage.value = "Saving to device...";
                         await activeHomeyApi.devices.setDeviceSettings({
                             id: currentDevice.value.id,
