@@ -67,4 +67,12 @@ This file tracks the progress and changes made to the Homey Boolean Toolbox proj
         *   Revised content to accurately reflect the current implementation using `AthomCloudAPI` (OAuth with Client ID/Secret) instead of the previous "Bearer Token" approach.
         *   Documented the resolution of deprecated API properties and the `AthomCloudAPI`'s role in handling CORS.
 *   **Status:** Deprecation warnings resolved in `docs/state-editor-api.html`, and related documentation (`WEB-API.md`) is up-to-date. Ready for user verification.
+
+## [2025-12-02] - State Editor Scopes & Save Fallback
+*   **Action:** Improved API login/save flow in `docs/state-editor-api.html`.
+*   **Implementation:**
+    *   Added scope-mode selector (Default vs Explicit) and display of granted scopes/auth strategy after login; persists choice locally.
+    *   Warns before saving if write scopes (`homey.device.control`/`homey.app.control`) are missing.
+    *   Save now retries with local auth strategy before falling back to manual copy/import; clearer error messaging.
+*   **Status:** UI now surfaces scopes/strategy and attempts a local-auth save before prompting manual fallback.
                         

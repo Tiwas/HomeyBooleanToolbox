@@ -101,14 +101,6 @@
                                 <button @click="login" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded text-sm font-semibold transition shadow-sm flex items-center">
                                     <i class="fas fa-sign-in-alt mr-2"></i> Log in with Homey
                                 </button>
-                                <div class="w-full">
-                                    <label class="block text-xs text-gray-500 uppercase mb-1">Scope Mode</label>
-                                    <select v-model="scopeMode" class="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:border-purple-500 focus:outline-none">
-                                        <option value="default">Default (works best for listing Homeys)</option>
-                                        <option value="recommended">Explicit (adds device control scopes)</option>
-                                    </select>
-                                    <p class="text-[11px] text-gray-500 mt-1 leading-relaxed">Explicit adds: {{ recommendedScopesText }}</p>
-                                </div>
                                 <button @click="resetCredentials" class="text-xs text-gray-400 hover:text-gray-600 underline">Change Client ID/Secret</button>
                             </div>
                         </div>
@@ -130,10 +122,6 @@
                                 </div>
                                 <button @click="logout" class="text-red-400 hover:text-red-600 text-xs font-medium">Logout</button>
                             </div>
-                            <div class="text-xs text-gray-600">
-                                Scope mode: {{ scopeMode === 'recommended' ? 'Explicit (write scopes)' : 'Default (compatibility)' }} | Granted scopes: {{ grantedScopesText }}
-                            </div>
-                            <div class="text-xs text-gray-500">Auth strategy: {{ activeAuthStrategy }}</div>
 
                             <div class="flex gap-2 mt-2">
                                 <button @click="fetchDevices" :disabled="isFetching" class="flex-grow bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500 text-white px-4 py-2 rounded text-sm font-semibold transition shadow-sm">
@@ -449,13 +437,6 @@
                 const isLoggedIn = ref(false);
                 const userName = ref('');
                 const userAvatar = ref('');
-                const scopeMode = ref(localStorage.getItem('homey_scope_mode') || 'default');
-                const grantedScopes = ref([]);
-                const recommendedScopes = ['homey', 'homey.user.readonly', 'homey.device.readonly', 'homey.zone.readonly', 'homey.device.control', 'homey.app.control'];
-                const recommendedScopesText = recommendedScopes.join(', ');
-                const writeScopeCandidates = ['homey.device.control', 'homey.app.control'];
-                const grantedScopesText = computed(() => grantedScopes.value.length ? grantedScopes.value.join(', ') : 'Not returned by token (default scopes likely)');
-                const hasWriteScope = computed(() => writeScopeCandidates.some(scope => grantedScopes.value.includes(scope)));
                 
                 // API State
                 const isFetching = ref(false);
@@ -469,9 +450,6 @@
                 const deviceSearchQuery = ref('');
                 let cloudApi = null;
                 let activeHomeyApi = null;
-                const activeAuthStrategy = ref('cloud');
-
-                watch(scopeMode, (val) => localStorage.setItem('homey_scope_mode', val));
 
                 // --- Auth Logic ---
 
@@ -496,50 +474,13 @@
                     }
                 };
 
-                const normalizeScopeList = (scopeField) => {
-                    if (Array.isArray(scopeField)) return scopeField;
-                    if (typeof scopeField === 'string') return scopeField.split(/[ ,]+/).filter(Boolean);
-                    return [];
-                };
-
-                const readTokenForScopes = async () => {
-                    let tokenObj = null;
-                    try {
-                        if (cloudApi && typeof cloudApi.getToken === 'function') {
-                            tokenObj = await cloudApi.getToken();
-                        }
-                    } catch (err) {
-                        console.warn("getToken() failed, falling back to token fields", err);
-                    }
-                    if (!tokenObj && cloudApi) {
-                        tokenObj = cloudApi.token || cloudApi.__token || cloudApi._token;
-                    }
-                    return tokenObj;
-                };
-
-                const updateGrantedScopes = async () => {
-                    try {
-                        const tokenObj = await readTokenForScopes();
-                        if (!tokenObj) {
-                            grantedScopes.value = [];
-                            return;
-                        }
-                        const scopes = normalizeScopeList(tokenObj.scope || tokenObj.scopes);
-                        grantedScopes.value = scopes;
-                    } catch (err) {
-                        console.warn("Could not read granted scopes", err);
-                        grantedScopes.value = [];
-                    }
-                };
-
                 const login = () => {
                     if (!cloudApi) return;
-                    const params = { state: 'random_state_string' };
-                    // Only request explicit scopes when the user picks it; default keeps empty scopes to retain "View Homeys"
-                    if (scopeMode.value === 'recommended') {
-                        params.scopes = recommendedScopes;
-                    }
-                    const authUrl = cloudApi.getLoginUrl(params);
+                    const authUrl = cloudApi.getLoginUrl({
+                        // Removing explicit scopes to rely on client default (like the working editor)
+                        // scopes: ['homey', 'homey.device.control'], 
+                        state: 'random_state_string' // Simple state
+                    });
                     window.location.href = authUrl;
                 };
 
@@ -556,7 +497,6 @@
                         isLoggedIn.value = true;
                         apiMessage.value = "Connected!";
                         apiError.value = false;
-                        await updateGrantedScopes();
                     } catch (e) {
                         console.error("Post Login Error:", e);
                         apiError.value = true;
@@ -569,10 +509,7 @@
                     isLoggedIn.value = false;
                     userName.value = '';
                     userAvatar.value = '';
-                    grantedScopes.value = [];
-                    activeAuthStrategy.value = 'cloud';
                     apiMessage.value = '';
-                    selectedHomey.value = null;
                     currentDevice.value = null;
                     activeHomeyApi = null;
                 };
@@ -684,7 +621,6 @@
                         // Force cloud strategy to ensure token permissions are respected
                         const api = await homey.authenticate({ strategy: 'cloud' });
                         activeHomeyApi = api;
-                        activeAuthStrategy.value = 'cloud';
                         
                         // Fetch devices and zones in parallel
                         // We need zones to look up zone names correctly (Device.zoneName is deprecated)
@@ -724,15 +660,15 @@
 
                 const selectDevice = (device) => {
                     currentDevice.value = device;
-                        if (device.settings && device.settings.json_data) {
-                            importText.value = device.settings.json_data;
-                            try {
-                                processImport('replace');
-                                showDeviceModal.value = false;
-                                apiMessage.value = `Loaded: ${device.name}`;
-                            } catch(e) {
-                                alert("Error loading device config: " + e.message);
-                            }
+                    if (device.settings && device.settings.json_data) {
+                        importText.value = device.settings.json_data;
+                        try {
+                            processImport('replace');
+                            showDeviceModal.value = false;
+                            apiMessage.value = `Loaded: ${device.name}`;
+                        } catch(e) {
+                            alert("Error loading device config: " + e.message);
+                        }
                     } else {
                         alert("This device has no configuration data.");
                     }
@@ -740,53 +676,26 @@
 
                 const saveToDevice = async () => {
                     if (!currentDevice.value || !activeHomeyApi) return;
-                    if (grantedScopes.value.length > 0 && !hasWriteScope.value) {
-                        const proceed = confirm('The current token does not include device-control scopes (homey.device.control / homey.app.control).\nTry logging in with "Explicit" scopes first. Continue with this token?');
-                        if (!proceed) return;
-                    }
                     
                     if (!confirm(`Overwrite configuration on device "${currentDevice.value.name}"?`)) return;
 
                     try {
                         apiMessage.value = "Saving to device...";
-                        const payload = { id: currentDevice.value.id, settings: { json_data: generatedJson.value } };
-                        const attemptSave = async (apiInstance) => {
-                            return apiInstance.devices.setDeviceSettings(payload);
-                        };
-
-                        await attemptSave(activeHomeyApi);
-                        apiError.value = false;
+                        await activeHomeyApi.devices.setDeviceSettings({
+                            id: currentDevice.value.id,
+                            settings: { json_data: generatedJson.value }
+                        });
                         apiMessage.value = "Saved successfully!";
+                        // Update local settings copy too just in case
                         currentDevice.value.settings.json_data = generatedJson.value;
                         alert("Configuration saved to device!");
                     } catch (e) {
-                        let lastError = e;
-                        // Retry with local strategy if available and not already using it
-                        if (selectedHomey.value && activeAuthStrategy.value !== 'local') {
-                            try {
-                                apiMessage.value = "Retrying save with local auth...";
-                                const localApi = await selectedHomey.value.authenticate({ strategy: 'local' });
-                                activeHomeyApi = localApi;
-                                activeAuthStrategy.value = 'local';
-                                await localApi.devices.setDeviceSettings({
-                                    id: currentDevice.value.id,
-                                    settings: { json_data: generatedJson.value }
-                                });
-                                apiError.value = false;
-                                apiMessage.value = "Saved successfully via local auth!";
-                                currentDevice.value.settings.json_data = generatedJson.value;
-                                alert("Configuration saved to device (local auth).");
-                                return;
-                            } catch (localErr) {
-                                lastError = localErr;
-                            }
-                        }
-
-                        console.error("Auto-save failed:", lastError);
+                        console.error("Auto-save failed:", e);
                         apiError.value = true;
                         apiMessage.value = "Save failed. Please copy JSON manually.";
-                        alert("Automatic save failed (likely missing permissions). Please copy the JSON manually.\n\nDetails: " + (lastError?.message || e?.message));
-
+                        alert("Automatic save failed (likely missing permissions). Please copy the JSON manually.");
+                        
+                        // Open the modal with the JSON ready for copying
                         importText.value = generatedJson.value;
                         showImportModal.value = true;
                     }
@@ -1126,7 +1035,6 @@
                     
                     // Auth
                     clientId, clientSecret, hasCredentials, isLoggedIn, userName, userAvatar,
-                    scopeMode, recommendedScopesText, grantedScopesText, activeAuthStrategy,
                     saveCredentials, resetCredentials, login, logout,
                     
                     // API

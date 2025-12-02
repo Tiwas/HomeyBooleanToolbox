@@ -16,18 +16,22 @@
     *   Updated UI text to list recommended scopes (`homey`, `homey.device.control` etc.) even if we request defaults in code.
     *   Removed excessive `console.log` debugging statements to clean up the console.
     *   Switched authentication strategy to `strategy: 'cloud'` in `selectHomey` to attempt to bypass local permission issues, though the 403 persists for writing.
+4.  **Scope Mode & Save Fallback Enhancements (2025-12-02):**
+    *   Added a scope-mode selector (Default vs Explicit) plus display of granted scopes and auth strategy after login.
+    *   Warns before save if write scopes (`homey.device.control`/`homey.app.control`) are missing; persists scope-mode choice locally.
+    *   Save now retries with a `strategy: 'local'` authentication before falling back to manual copy/import, with clearer error messaging.
 
 ### Current Status:
 *   **State Editor API (`docs/state-editor-api.html`):**
     *   **Authentication:** Uses default scopes to ensure device listing works.
     *   **Listing:** Successfully lists Homeys and State Devices.
     *   **Reading:** Successfully loads configuration from devices.
-    *   **Writing:** "Save to Device" attempts to write to the device. If it fails (likely due to scope restrictions on 3rd party API clients), it gracefully falls back to offering the JSON for manual copy-paste.
+    *   **Writing:** "Save to Device" attempts to write to the device. If it fails (likely due to scope restrictions on 3rd party API clients), it retries once with local auth before gracefully falling back to offering the JSON for manual copy-paste.
     *   **Code Quality:** Cleaned up debug logs and fallback code.
 
 ### Next Steps / Unresolved Issues:
-1.  **403 Forbidden on Save:** The underlying reason why `setDeviceSettings` fails despite "Control your Devices" permission remains verified but unresolved. It may require a specific scope not available to standard API clients or `homey.app.control`.
-2.  **User Verification:** User should verify that the manual copy-paste fallback flow is an acceptable user experience given the API limitations.
+1.  **403 Forbidden on Save:** The underlying reason why `setDeviceSettings` fails despite "Control your Devices" permission remains verified but unresolved. It may require a specific scope not available to standard API clients or `homey.app.control`. Now surfaced in the UI via granted scopes.
+2.  **User Verification:** User should verify whether the local-auth retry succeeds in their environment; otherwise confirm the manual copy-paste fallback is acceptable.
 
 ### File Tracker:
 *   `docs/state-editor-api.html` (Modified - Feature implementation & Fallback)
