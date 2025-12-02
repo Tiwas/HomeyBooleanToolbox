@@ -769,33 +769,10 @@
                         currentDevice.value.settings.json_data = generatedJson.value;
                         alert("Configuration saved to device!");
                     } catch (e) {
-                        let lastError = e;
-                        // Retry with local strategy if available and not already using it
-                        const canLocalAuth = selectedHomey.value && typeof selectedHomey.value.authenticate === 'function';
-                        if (canLocalAuth && activeAuthStrategy.value !== 'local') {
-                            try {
-                                apiMessage.value = "Retrying save with local auth...";
-                                const localApi = await selectedHomey.value.authenticate({ strategy: 'local' });
-                                activeHomeyApi = localApi;
-                                activeAuthStrategy.value = 'local';
-                                await localApi.devices.setDeviceSettings({
-                                    id: currentDevice.value.id,
-                                    settings: { json_data: generatedJson.value }
-                                });
-                                apiError.value = false;
-                                apiMessage.value = "Saved successfully via local auth!";
-                                currentDevice.value.settings.json_data = generatedJson.value;
-                                alert("Configuration saved to device (local auth).");
-                                return;
-                            } catch (localErr) {
-                                lastError = localErr;
-                            }
-                        }
-
-                        console.error("Auto-save failed:", lastError);
+                        console.error("Auto-save failed:", e);
                         apiError.value = true;
-                        apiMessage.value = "Save failed. Please copy JSON manually.";
-                        alert("Automatic save failed (likely missing permissions). Please copy the JSON manually.\n\nDetails: " + (lastError?.message || e?.message));
+                        apiMessage.value = "Save failed (likely Homey policy blocking writes). Please copy JSON manually.";
+                        alert("Automatic save failed (likely Homey policy blocking writes even with scopes). Please copy the JSON manually.\n\nDetails: " + (e?.message || 'Unknown error'));
 
                         importText.value = generatedJson.value;
                         showImportModal.value = true;
