@@ -68,118 +68,95 @@ module.exports = class LogicDeviceDriver extends Homey.Driver {
   async registerFlowCards() {
     this.logger.debug("driver.registering_flow_cards");
 
+    // Helper to verify device match
+    const isDeviceMatch = (args, state) => {
+      // Robustly extract device ID from args.device
+      let argDeviceId = null;
+      if (args && args.device) {
+        if (typeof args.device.getData === 'function') {
+           argDeviceId = args.device.getData().id;
+        } else if (args.device.id) {
+           argDeviceId = args.device.id;
+        }
+      }
+
+      const stateDeviceId = state?.device_id;
+      
+      this.logger.debug(`RunListener Check: Card Device ID: ${argDeviceId} | State Device ID: ${stateDeviceId}`);
+      
+      return argDeviceId && stateDeviceId && argDeviceId === stateDeviceId;
+    };
+
     // ===== DEPRECATED TRIGGERS (for backward compatibility) =====
     
     // Deprecated: Logic state changed (keep for existing users)
     const stateChangedCard = this.homey.flow.getTriggerCard("state_changed_ld");
     stateChangedCard.registerRunListener(async (args, state) => {
-      return args?.device?.driver?.id === "logic-device";
+      return isDeviceMatch(args, state);
     });
     this.logger.debug(` -> OK: DEPRECATED TRIGGER registered: 'state_changed_ld'`);
 
     // Deprecated: Logic state changed to specific value
     const stateChangedToCard = this.homey.flow.getTriggerCard("device_state_changed_ld");
     stateChangedToCard.registerRunListener(async (args, state) => {
-      const expectedState = args.state === "true";
-      return (
-        args?.device?.driver?.id === "logic-device" &&
-        state?.state === expectedState
-      );
+      // args.state is "true"/"false" (dropdown). state.state is "true"/"false" (passed from device).
+      return isDeviceMatch(args, state) && args.state === state.state;
     });
     this.logger.debug(` -> OK: DEPRECATED TRIGGER registered: 'device_state_changed_ld'`);
 
-    // Deprecated: Generic alarm turned on
-    try {
-      const alarmTurnedOnCard = this.homey.flow.getTriggerCard("device_alarm_turned_on_ld_deprecated");
-      alarmTurnedOnCard.registerRunListener(async (args, state) => {
-        return (
-          args?.device?.driver?.id === "logic-device" &&
-          state?.alarm_state === true
-        );
-      });
-      this.logger.debug(` -> OK: DEPRECATED TRIGGER registered: 'device_alarm_turned_on_ld_deprecated'`);
-    } catch (e) {
-      this.logger.warn(` -> SKIP: Deprecated trigger 'device_alarm_turned_on_ld_deprecated' not found`);
-    }
-
-    // Deprecated: Generic alarm turned off
-    try {
-      const alarmTurnedOffCard = this.homey.flow.getTriggerCard("device_alarm_turned_off_ld_deprecated");
-      alarmTurnedOffCard.registerRunListener(async (args, state) => {
-        return (
-          args?.device?.driver?.id === "logic-device" &&
-          state?.alarm_state === false
-        );
-      });
-      this.logger.debug(` -> OK: DEPRECATED TRIGGER registered: 'device_alarm_turned_off_ld_deprecated'`);
-    } catch (e) {
-      this.logger.warn(` -> SKIP: Deprecated trigger 'device_alarm_turned_off_ld_deprecated' not found`);
-    }
-
     // ===== NEW IMPROVED TRIGGERS =====
     
-    // New: Device alarm state changed (general)
-    const alarmStateChangedCard = this.homey.flow.getTriggerCard("device_alarm_state_changed_ld");
+    // Alarm state changed (any change) - device scoped
+    const alarmStateChangedCard = this.homey.flow.getDeviceTriggerCard("device_alarm_state_changed_ld");
     alarmStateChangedCard.registerRunListener(async (args, state) => {
-      return args?.device?.driver?.id === "logic-device";
+      return true; // device trigger already scoped
     });
     this.logger.debug(` -> OK: NEW TRIGGER registered: 'device_alarm_state_changed_ld'`);
 
     // New: Device alarm changed to [dropdown selection]
-    const alarmChangedToCard = this.homey.flow.getTriggerCard("device_alarm_changed_to_ld");
+    const alarmChangedToCard = this.homey.flow.getDeviceTriggerCard("device_alarm_changed_to_ld");
     alarmChangedToCard.registerRunListener(async (args, state) => {
-      const expectedAlarmState = args.alarm_state === "true";
-      return (
-        args?.device?.driver?.id === "logic-device" &&
-        state?.alarm_state === expectedAlarmState
-      );
+      // args.alarm_state is "true"/"false". state.alarm_state is "true"/"false".
+      return args.alarm_state === state.alarm_state;
     });
     this.logger.debug(` -> OK: NEW TRIGGER registered: 'device_alarm_changed_to_ld'`);
 
     // New: Device on-state changed (general)
-    const onStateChangedCard = this.homey.flow.getTriggerCard("device_on_state_changed_ld");
+    const onStateChangedCard = this.homey.flow.getDeviceTriggerCard("device_on_state_changed_ld");
     onStateChangedCard.registerRunListener(async (args, state) => {
-      return args?.device?.driver?.id === "logic-device";
+      return true;
     });
     this.logger.debug(` -> OK: NEW TRIGGER registered: 'device_on_state_changed_ld'`);
 
     // New: Device turned [dropdown selection]
-    const deviceTurnedCard = this.homey.flow.getTriggerCard("device_turned_ld");
+    const deviceTurnedCard = this.homey.flow.getDeviceTriggerCard("device_turned_ld");
     deviceTurnedCard.registerRunListener(async (args, state) => {
-      const expectedOnState = args.on_state === "true";
-      return (
-        args?.device?.driver?.id === "logic-device" &&
-        state?.on_state === expectedOnState
-      );
+      const stateValue = String(state?.on_state); 
+      return args.on_state === stateValue;
     });
     this.logger.debug(` -> OK: NEW TRIGGER registered: 'device_turned_ld'`);
 
     // New: Generic alarm turned [dropdown selection]
-    const alarmTurnedCard = this.homey.flow.getTriggerCard("device_alarm_turned_ld");
+    const alarmTurnedCard = this.homey.flow.getDeviceTriggerCard("device_alarm_turned_ld");
     alarmTurnedCard.registerRunListener(async (args, state) => {
-      const expectedAlarmState = args.alarm_state === "true";
-      return (
-        args?.device?.driver?.id === "logic-device" &&
-        state?.alarm_state === expectedAlarmState
-      );
+       const stateValue = String(state?.alarm_state);
+       return args.alarm_state === stateValue;
     });
     this.logger.debug(` -> OK: NEW TRIGGER registered: 'device_alarm_turned_ld'`);
+
 
     // New: Configuration alarm changed to [dropdown selection]
     const configAlarmChangedToCard = this.homey.flow.getTriggerCard("config_alarm_changed_to_ld");
     configAlarmChangedToCard.registerRunListener(async (args, state) => {
-      const expectedAlarmState = args.alarm_state === "true";
-      return (
-        args?.device?.driver?.id === "logic-device" &&
-        state?.alarm_state === expectedAlarmState
-      );
+      const stateValue = String(state?.alarm_state);
+      return isDeviceMatch(args, state) && args.alarm_state === stateValue;
     });
     this.logger.debug(` -> OK: NEW TRIGGER registered: 'config_alarm_changed_to_ld'`);
 
     // New: Configuration alarm state changed (no dropdown, triggers on any state change)
     const configAlarmStateChangedCard = this.homey.flow.getTriggerCard("config_alarm_state_changed_ld");
     configAlarmStateChangedCard.registerRunListener(async (args, state) => {
-      return args?.device?.driver?.id === "logic-device";
+      return isDeviceMatch(args, state);
     });
     this.logger.debug(` -> OK: NEW TRIGGER registered: 'config_alarm_state_changed_ld'`);
 

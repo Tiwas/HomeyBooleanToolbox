@@ -70,8 +70,9 @@ describe('FormulaEvaluator', () => {
     });
 
     test('should reject invalid variables', () => {
-      expect(() => evaluator.tokenize('K AND L')).toThrow('Invalid identifier: K');
-      expect(() => evaluator.tokenize('ABC')).toThrow('Invalid identifier: ABC');
+      // Extended identifiers are supported, so K and ABC are valid variables now.
+      // We check for invalid characters instead.
+      expect(() => evaluator.tokenize('$')).toThrow('Unexpected character: $');
     });
 
     test('should reject invalid numbers', () => {
@@ -247,7 +248,7 @@ describe('FormulaEvaluator', () => {
 
     test('should throw on undefined variable', () => {
       const ast = { type: 'Variable', name: 'A' };
-      expect(() => evaluator.evaluateAST(ast, {})).toThrow('Undefined variable: A');
+      expect(() => evaluator.evaluateAST(ast, {})).toThrow('Variable A is not defined');
     });
 
     test('should handle truthy/falsy values correctly', () => {
@@ -372,15 +373,15 @@ describe('FormulaEvaluator', () => {
     });
 
     test('should handle undefined variables', () => {
-      expect(() => evaluator.evaluate('A AND B', { A: true })).toThrow('Undefined variable: B');
+      expect(() => evaluator.evaluate('A AND B', { A: true })).toThrow('Variable B is not defined');
     });
 
-    test('should provide meaningful error messages', () => {
-      expect(() => evaluator.evaluate('K')).toThrow(/Invalid identifier/);
-      expect(() => evaluator.evaluate('(A AND B')).toThrow(/Unbalanced parentheses/);
-      expect(() => evaluator.evaluate('A AND B', { A: true })).toThrow(/Undefined variable/);
-    });
-  });
+        test('should provide meaningful error messages', () => {
+          // K is a valid variable name now, but it's undefined
+          expect(() => evaluator.evaluate('K')).toThrow('Variable K is not defined');
+          expect(() => evaluator.evaluate('(A AND B')).toThrow(/Unbalanced parentheses/);
+          expect(() => evaluator.evaluate('A AND B', { A: true })).toThrow(/Variable .* is not defined/); 
+        });  });
 
   describe('Edge Cases', () => {
     test('should handle all valid variables A-J', () => {

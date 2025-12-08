@@ -1985,27 +1985,45 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
 
     // ===== ALARM STATE TRIGGERS =====
     if (previousAlarmState !== null && previousAlarmState !== safeAlarmState) {
-      // Prepare alarm state trigger data
-      const alarmTriggerData = {
-        state: safeAlarmState,        // For deprecated triggers (boolean)
-        alarm_state: safeAlarmState,  // For new triggers (boolean)
-        device_name: this.getName()   // Device name for triggers that need it
-      };
+      
+      // Ensure primitives
+      const deviceName = String(this.getName() || "Unknown Device");
+      const isAlarmOn = safeAlarmState === true;
 
-      const alarmState = {
-        state: safeAlarmState,        // For deprecated triggers
-        alarm_state: safeAlarmState   // For new triggers
-      };
-
-      this.logger.flow(`🚨 Alarm state changed: ${previousAlarmState} → ${safeAlarmState}`);
+      this.logger.debug("DEBUG: Preparing trigger data", {
+        isAlarmOn,
+        deviceName
+      });
 
       // Fire deprecated triggers (for backward compatibility)
-      await this.safeTriggerCard("state_changed_ld", alarmTriggerData, alarmState);
-      await this.safeTriggerCard("device_state_changed_ld", alarmTriggerData, alarmState);
+      // state_changed_ld expects token: state (boolean). NO ARGS.
+      await this.safeTriggerCard("state_changed_ld", { state: isAlarmOn }, {});
+
+      // device_state_changed_ld expects token: state (boolean). ARG: state (dropdown string)
+      await this.safeTriggerCard("device_state_changed_ld", { state: isAlarmOn }, { state: String(isAlarmOn) });
 
       // Fire new alarm state triggers
-      await this.safeTriggerCard("device_alarm_state_changed_ld", alarmTriggerData, alarmState);
-      await this.safeTriggerCard("device_alarm_changed_to_ld", alarmTriggerData, alarmState);
+      // device_alarm_state_changed_ld expects token: alarm_state (boolean). NO ARGS.
+      // FIX: Removed device_name token as it is not in the card definition.
+      await this.safeTriggerCard("device_alarm_state_changed_ld", { 
+        alarm_state: isAlarmOn
+      }, {});
+
+      // device_alarm_turned_ld expects dropdown arg alarm_state ("true"/"false") and token alarm_state (boolean)
+      await this.safeTriggerCard("device_alarm_turned_ld", {
+        alarm_state: isAlarmOn,
+        device_name: deviceName
+      }, { 
+        alarm_state: String(isAlarmOn)
+      });
+
+      // device_alarm_changed_to_ld expects token: device_name (string), alarm_state (boolean). ARG: alarm_state (dropdown string)
+      await this.safeTriggerCard("device_alarm_changed_to_ld", { 
+        device_name: deviceName,
+        alarm_state: isAlarmOn
+      }, { 
+        alarm_state: String(isAlarmOn) 
+      });
     }
 
     // ===== ON/OFF STATE TRIGGERS =====
@@ -2036,8 +2054,58 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
   async safeTriggerCard(triggerCardId, triggerData, state) {
     try {
       this.logger.flow(`🎯 Triggering '${triggerCardId}' with data:`, triggerData);
-      const card = this.homey.flow.getDeviceTriggerCard(triggerCardId);
-      await card.trigger(this, triggerData, state);
+
+      // UNIVERSAL TRIGGER HANDLER
+      // Prefer device trigger card (with device scoping), fall back to app trigger if not found.
+      let card = null;
+      try {
+        card = this.homey.flow.getDeviceTriggerCard(triggerCardId);
+      } catch (_) {
+        // Ignore and try generic card below
+      }
+      if (!card) {
+        card = this.homey.flow.getTriggerCard(triggerCardId);
+      }
+
+      // Prepare robust state object
+      const safeState = state || {};
+      
+      // Add device_id for precise filtering in RunListener
+      safeState.device_id = this.getData().id;
+      
+      // Add simplified device object - passing full 'this' can cause serialization errors
+      // This might help Homey route the trigger if it attempts automatic matching
+      safeState.device = {
+        id: this.getData().id,
+        name: this.getName()
+      };
+
+      // Ensure string format for boolean-like state args (for dropdowns)
+      // This prevents "Invalid value..." errors during argument validation
+      if (typeof safeState.state === 'boolean') {
+        safeState.state = String(safeState.state);
+      }
+      const hasAlarmStateToken = typeof triggerData?.alarm_state === 'boolean';
+      if (typeof safeState.alarm_state === 'boolean') {
+        safeState.alarm_state = String(safeState.alarm_state);
+      } else if (hasAlarmStateToken) {
+        safeState.alarm_state = String(triggerData.alarm_state);
+      }
+      const hasOnStateToken = typeof triggerData?.on_state === 'boolean';
+      if (typeof safeState.on_state === 'boolean') {
+        safeState.on_state = String(safeState.on_state);
+      } else if (hasOnStateToken) {
+        safeState.on_state = String(triggerData.on_state);
+      }
+      
+      // Call trigger with or without device depending on card type signature
+      if (typeof card.trigger === 'function' && card.trigger.length >= 3) {
+        // FlowCardTriggerDevice signature: trigger(device, tokens, state)
+        await card.trigger(this, triggerData, safeState);
+      } else {
+        await card.trigger(triggerData, safeState);
+      }
+
       this.logger.debug(`✅ Successfully triggered: ${triggerCardId}`);
     } catch (e) {
       if (e.message && e.message.includes("Invalid Flow Card ID")) {
@@ -2046,7 +2114,7 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
           e
         );
       } else {
-        this.logger.error(`❌ Error triggering ${triggerCardId}:`, e);
+        this.logger.error(`❌ Error triggering ${triggerCardId} (Data: ${JSON.stringify(triggerData)}):`, e);
       }
     }
   }

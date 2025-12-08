@@ -125,8 +125,8 @@
             "fi": "JSON-taulukko. Jokaisella kaavalla on oma syötetila. Operaattorit: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nJSON muotoillaan automaattisesti tallennettaessa.\n\nEsimerkki:\n[{\"id\":\"f1\",\"name\":\"Päälogiikka\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: sekuntia ennen aikakatkaisua (jätä pois/0 = ääretön)\nfirstImpression: false (oletus) = reaktiivinen tila, true/1 = lukitse syötteet ensimmäiseen arvoon",
             "sv": "JSON-array. Varje formel har sin egen ingångsstatus. Operatorer: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nJSON kommer att autoformateras när du sparar.\n\nExempel:\n[{\"id\":\"f1\",\"name\":\"Huvudlogik\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: sekunder före timeout (utelämna/0 = oändlig)\nfirstImpression: false (standard) = reaktivt läge, true/1 = lås ingångar vid första värdet",
             "pl": "Tablica JSON. Każda formuła ma swój własny stan wejściowy. Operatory: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nJSON zostanie automatycznie sformatowany po zapisaniu.\n\nPrzykład:\n[{\"id\":\"f1\",\"name\":\"Główna Logika\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: sekundy do przekroczenia limitu czasu (pomiń/0 = nieskończony)\nfirstImpression: false (domyślnie) = tryb reaktywny, true/1 = zablokuj wejścia przy pierwszej wartości",
-            "it": "Array JSON. Ogni formula ha il proprio stato di input. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nIl JSON verrà formattato automaticamente al salvataggio.\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Logica Principale\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: secondi prima del timeout (omettere/0 = infinito)\nfirstImpression: false (predefinito) = modalità reattiva, true/1 = blocca gli input al primo valore",
-            "es": "Array JSON. Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEl JSON se formateará automáticamente al guardar.\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Lógica Principal\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: false (predeterminado) = modo reactivo, true/1 = bloquear entradas en el primer valor"
+            "it": "Array JSON Ogni formula ha il proprio stato di input. Operatori: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nIl JSON verrà formattato automaticamente al salvataggio.\n\nEsempio:\n[{\"id\":\"f1\",\"name\":\"Logica Principale\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: secondi prima del timeout (omettere/0 = infinito)\nfirstImpression: false (predefinito) = modalità reattiva, true/1 = blocca gli input al primo valore",
+            "es": "Array JSON Cada fórmula tiene su propio estado de entrada. Operadores: AND(*,&), OR(+,|), XOR(^,!=), NOT(!).\n\nEl JSON se formateará automáticamente al guardar.\n\nEjemplo:\n[{\"id\":\"f1\",\"name\":\"Lógica Principal\",\"expression\":\"A AND B AND NOT C\",\"enabled\":true,\"timeout\":30,\"firstImpression\":false}]\n\ntimeout: segundos antes del tiempo de espera (omitir/0 = infinito)\nfirstImpression: false (predeterminado) = modo reactivo, true/1 = bloquear entradas en el primer valor"
           },
           "value": "[]"
         }
@@ -182,142 +182,44 @@
       ]
     }
   ],
-"flow": [
-    {
-      "type": "trigger",
-      "id": "device_state_changed",
-      "titleFormatted": "flow.triggers.device_state_changed.titleFormatted",
-      "tokens": [
-        {
-          "name": "state",
-          "type": "string",
-          "title": "flow.tokens.state.title"
-        }
-      ]
-    },
-    {
-      "type": "trigger",
-      "id": "device_on_state_changed_ld",
-      "title": {
-        "en": "State changed (On/Off)",
-        "no": "Tilstand endret (På/Av)"
+  "flow": {
+    "triggers": [
+      {
+        "type": "trigger",
+        "id": "config_alarm_changed_to_ld"
       },
-      "tokens": [
-        {
-          "name": "on_state",
-          "type": "boolean",
-          "title": {
-            "en": "State",
-            "no": "Tilstand"
-          }
-        },
-        {
-          "name": "device_name",
-          "type": "string",
-          "title": {
-            "en": "Device Name",
-            "no": "Enhetsnavn"
-          }
-        }
-      ]
-    },
-    {
-      "type": "trigger",
-      "id": "device_turned_ld",
-      "title": {
-        "en": "Device turned On/Off",
-        "no": "Enhet slått På/Av"
+      {
+        "type": "trigger",
+        "id": "config_alarm_state_changed_ld"
+      }
+    ],
+    "conditions": [
+      {
+        "type": "condition",
+        "id": "formula_has_timed_out_ld"
       },
-      "tokens": [
-        {
-          "name": "on_state",
-          "type": "boolean",
-          "title": {
-            "en": "State",
-            "no": "Tilstand"
-          }
-        },
-        {
-          "name": "device_name",
-          "type": "string",
-          "title": {
-            "en": "Device Name",
-            "no": "Enhetsnavn"
-          }
-        }
-      ]
-    },
-    {
-      "type": "trigger",
-      "id": "device_alarm_state_changed_ld",
-      "title": {
-        "en": "Alarm state changed",
-        "no": "Alarmtilstand endret"
+      {
+        "type": "condition",
+        "id": "formula_result_is_ld"
       },
-      "tokens": [
-        {
-          "name": "alarm_state",
-          "type": "boolean",
-          "title": { "en": "Alarm State", "no": "Alarmtilstand" }
-        },
-        {
-          "name": "device_name",
-          "type": "string",
-          "title": { "en": "Device Name", "no": "Enhetsnavn" }
-        }
-      ]
-    },
-    {
-      "type": "trigger",
-      "id": "device_alarm_changed_to_ld",
-      "title": {
-        "en": "Alarm changed to...",
-        "no": "Alarm endret til..."
+      {
+        "type": "condition",
+        "id": "has_any_error_ld"
+      }
+    ],
+    "actions": [
+      {
+        "type": "action",
+        "id": "evaluate_formula_ld"
       },
-      "tokens": [
-        {
-          "name": "alarm_state",
-          "type": "boolean",
-          "title": { "en": "Alarm State", "no": "Alarmtilstand" }
-        },
-        {
-          "name": "device_name",
-          "type": "string",
-          "title": { "en": "Device Name", "no": "Enhetsnavn" }
-        }
-      ]
-    },
-    {
-      "type": "trigger",
-      "id": "config_alarm_changed_to_ld"
-    },
-    {
-      "type": "trigger",
-      "id": "config_alarm_state_changed_ld"
-    },
-    {
-      "type": "condition",
-      "id": "formula_has_timed_out_ld"
-    },
-    {
-      "type": "condition",
-      "id": "formula_result_is_ld"
-    },
-    {
-      "type": "condition",
-      "id": "has_any_error_ld"
-    },
-    {
-      "type": "action",
-      "id": "evaluate_formula_ld"
-    },
-    {
-      "type": "action",
-      "id": "clear_error_ld"
-    },
-    {
-      "type": "action",
-      "id": "validate_config_ld"
-    }
-  ]
+      {
+        "type": "action",
+        "id": "clear_error_ld"
+      },
+      {
+        "type": "action",
+        "id": "validate_config_ld"
+      }
+    ]
+  }
 }
