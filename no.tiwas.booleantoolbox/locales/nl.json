@@ -104,7 +104,10 @@
     "permission_denied": "Toegang geweigerd",
     "timeout": "Bewerking time-out",
     "trigger_timeout_card_failed": "Fout bij ophalen/triggeren van formula_timeout-kaart",
-    "unknown": "Onbekende fout opgetreden"
+    "unknown": "Onbekende fout opgetreden",
+    "state_name_required": "Statusnaam is vereist",
+    "state_not_found": "Status niet gevonden",
+    "stack_empty": "Stack is leeg"
   },
   "evaluation": {
     "initial_complete": "Initiële evaluatie van alle formules...",
@@ -460,25 +463,25 @@
     "unknown_device": "Onbekend Apparaat",
     "zone_label": "Zone/Kamer:",
     "select_scope": {
-      "title": "Select Scope",
-      "subtitle": "Choose which zones to include in the snapshot.",
-      "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
-      "whole_house": "Whole House",
-      "error_no_selection": "Please select at least one zone."
+      "title": "Selecteer Bereik",
+      "subtitle": "Kies welke zones u wilt opnemen in de momentopname.",
+      "description": "Selecteer de zones (kamers) waarvan u de status wilt vastleggen. Selecteer \"Hele huis\" om alles op te nemen (gebruik voorzichtig bij grote opstellingen).",
+      "whole_house": "Hele huis",
+      "error_no_selection": "Selecteer ten minste één zone."
     },
-    "generating_snapshot": "Generating snapshot...",
+    "generating_snapshot": "Genereren van momentopname...",
     "edit_configuration": {
-      "title": "Edit Configuration",
-      "subtitle": "Review and edit the captured state.",
-      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
+      "title": "Configuratie bewerken",
+      "subtitle": "Controleer en bewerk de vastgelegde status.",
+      "description": "De onderstaande JSON bevat de vastgelegde status van uw apparaten. U kunt waarden bewerken, apparaten verwijderen of vertragingen wijzigen."
     },
-    "error_name_required": "Please enter a device name.",
-    "error_invalid_json": "Invalid JSON:",
+    "error_name_required": "Voer een apparaatnaam in.",
+    "error_invalid_json": "Ongeldige JSON:",
     "select_devices": {
-      "deselect_all": "Deselect All",
-      "select_all": "Select All",
-      "subtitle": "Uncheck devices you don't want to include.",
-      "title": "Select Devices"
+      "deselect_all": "Deselecteer alles",
+      "select_all": "Selecteer alles",
+      "subtitle": "Vink apparaten uit die u niet wilt opnemen.",
+      "title": "Selecteer Apparaten"
     }
   },
   "parse": {
@@ -525,16 +528,16 @@
     "saved": "Instellingen opgeslagen",
     "title": "Instellingen",
     "auto_update": {
-      "enable_label": "Enable Automatic Update",
-      "help": "Automatically update configuration/snapshots when changes are detected."
+      "enable_label": "Automatische update inschakelen",
+      "help": "Configuratie/momentopnamen automatisch bijwerken wanneer wijzigingen worden gedetecteerd."
     },
     "debug": {
-      "enable_label": "Enable Debug Mode",
-      "help": "Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.",
-      "legend": "Debug"
+      "enable_label": "Foutopsporingsmodus inschakelen",
+      "help": "Schakelt gedetailleerde logging in voor probleemoplossing. Niet aanbevolen voor dagelijks gebruik omdat dit veel logs genereert.",
+      "legend": "Foutopsporing"
     },
     "general": {
-      "legend": "General"
+      "legend": "Algemeen"
     }
   },
   "timeout": {

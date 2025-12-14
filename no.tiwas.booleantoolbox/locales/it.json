@@ -104,7 +104,10 @@
     "permission_denied": "Permesso negato",
     "timeout": "Timeout operazione",
     "trigger_timeout_card_failed": "Errore nel recupero/attivazione della scheda formula_timeout",
-    "unknown": "Si è verificato un errore sconosciuto"
+    "unknown": "Si è verificato un errore sconosciuto",
+    "state_name_required": "Il nome dello stato è richiesto",
+    "state_not_found": "Stato non trovato",
+    "stack_empty": "Lo stack è vuoto"
   },
   "evaluation": {
     "initial_complete": "Valutazione iniziale di tutte le formule...",
@@ -460,25 +463,25 @@
     "unknown_device": "Dispositivo sconosciuto",
     "zone_label": "Zona/Stanza:",
     "select_scope": {
-      "title": "Select Scope",
-      "subtitle": "Choose which zones to include in the snapshot.",
-      "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
-      "whole_house": "Whole House",
-      "error_no_selection": "Please select at least one zone."
+      "title": "Seleziona ambito",
+      "subtitle": "Scegli quali zone includere nell'istantanea.",
+      "description": "Seleziona le zone (stanze) di cui vuoi catturare lo stato. Seleziona \"Intera casa\" per includere tutto (usa con cautela su configurazioni grandi).",
+      "whole_house": "Intera casa",
+      "error_no_selection": "Si prega di selezionare almeno una zona."
     },
-    "generating_snapshot": "Generating snapshot...",
+    "generating_snapshot": "Generazione istantanea...",
     "edit_configuration": {
-      "title": "Edit Configuration",
-      "subtitle": "Review and edit the captured state.",
-      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
+      "title": "Modifica configurazione",
+      "subtitle": "Rivedi e modifica lo stato catturato.",
+      "description": "Il JSON qui sotto contiene lo stato catturato dei tuoi dispositivi. Puoi modificare valori, rimuovere dispositivi o cambiare ritardi."
     },
-    "error_name_required": "Please enter a device name.",
-    "error_invalid_json": "Invalid JSON:",
+    "error_name_required": "Si prega di inserire un nome dispositivo.",
+    "error_invalid_json": "JSON non valido:",
     "select_devices": {
-      "deselect_all": "Deselect All",
-      "select_all": "Select All",
-      "subtitle": "Uncheck devices you don't want to include.",
-      "title": "Select Devices"
+      "deselect_all": "Deseleziona tutto",
+      "select_all": "Seleziona tutto",
+      "subtitle": "Deseleziona i dispositivi che non vuoi includere.",
+      "title": "Seleziona dispositivi"
     }
   },
   "parse": {
@@ -494,7 +497,7 @@
     "api_unavailable": "API app non disponibile per il polling",
     "device_not_found": "Dispositivo non trovato: {device}",
     "failed": "Polling fallito per {input}:",
-    "input": "Polling input \"{input}\" dal dispositivo \"{device}\" capacità \"{capability}\"",
+    "input": "Polling input \"{input}\" dal dispositivo \"{device}\" capacità \"{capability}"",
     "no_links": "Nessun inputLink disponibile per il polling",
     "no_value": "Nessun valore per {input} ({capability})",
     "value_received": "Polled {input}: {value} → {boolean}"
@@ -525,16 +528,16 @@
     "saved": "Impostazioni salvate",
     "title": "Impostazioni",
     "auto_update": {
-      "enable_label": "Enable Automatic Update",
-      "help": "Automatically update configuration/snapshots when changes are detected."
+      "enable_label": "Abilita aggiornamento automatico",
+      "help": "Aggiorna automaticamente configurazione/istantanee quando vengono rilevate modifiche."
     },
     "debug": {
-      "enable_label": "Enable Debug Mode",
-      "help": "Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.",
+      "enable_label": "Abilita modalità debug",
+      "help": "Abilita la registrazione dettagliata per la risoluzione dei problemi. Non raccomandato per l'uso quotidiano poiché genera molti log.",
       "legend": "Debug"
     },
     "general": {
-      "legend": "General"
+      "legend": "Generale"
     }
   },
   "timeout": {

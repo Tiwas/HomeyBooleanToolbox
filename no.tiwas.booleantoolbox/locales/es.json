@@ -104,7 +104,10 @@
     "permission_denied": "Permiso denegado",
     "timeout": "Tiempo de espera de operación agotado",
     "trigger_timeout_card_failed": "Error al obtener/activar la tarjeta formula_timeout",
-    "unknown": "Ocurrió un error desconocido"
+    "unknown": "Ocurrió un error desconocido",
+    "state_name_required": "Se requiere nombre de estado",
+    "state_not_found": "Estado no encontrado",
+    "stack_empty": "La pila está vacía"
   },
   "evaluation": {
     "initial_complete": "Evaluación inicial de todas las fórmulas...",
@@ -460,25 +463,25 @@
     "unknown_device": "Dispositivo desconocido",
     "zone_label": "Zona/Habitación:",
     "select_scope": {
-      "title": "Select Scope",
-      "subtitle": "Choose which zones to include in the snapshot.",
-      "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
-      "whole_house": "Whole House",
-      "error_no_selection": "Please select at least one zone."
+      "title": "Seleccionar alcance",
+      "subtitle": "Elija qué zonas incluir en la instantánea.",
+      "description": "Seleccione las zonas (habitaciones) de las que desea capturar el estado. Seleccione \"Casa entera\" para incluir todo (úselo con precaución en configuraciones grandes).",
+      "whole_house": "Casa entera",
+      "error_no_selection": "Por favor, seleccione al menos una zona."
     },
     "generating_snapshot": "Generating snapshot...",
     "edit_configuration": {
-      "title": "Edit Configuration",
-      "subtitle": "Review and edit the captured state.",
-      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
+      "title": "Editar configuración",
+      "subtitle": "Revise y edite el estado capturado.",
+      "description": "El JSON a continuación contiene el estado capturado de sus dispositivos. Puede editar valores, eliminar dispositivos o cambiar retrasos."
     },
     "error_name_required": "Please enter a device name.",
     "error_invalid_json": "Invalid JSON:",
     "select_devices": {
-      "deselect_all": "Deselect All",
-      "select_all": "Select All",
-      "subtitle": "Uncheck devices you don't want to include.",
-      "title": "Select Devices"
+      "deselect_all": "Deseleccionar todo",
+      "select_all": "Seleccionar todo",
+      "subtitle": "Desmarque los dispositivos que no desea incluir.",
+      "title": "Seleccionar dispositivos"
     }
   },
   "parse": {
@@ -494,7 +497,7 @@
     "api_unavailable": "API de la aplicación no disponible para sondear",
     "device_not_found": "Dispositivo no encontrado: {device}",
     "failed": "No se pudo sondear {input}:",
-    "input": "Sondeando entrada \"{input}\" del dispositivo \"{device}\" capacidad \"{capability}\"",
+    "input": "Sondeando entrada \"{input}\" del dispositivo \"{device}\" capacidad \"{capability}"",
     "no_links": "No hay inputLinks disponibles para sondear",
     "no_value": "Sin valor para {input} ({capability})",
     "value_received": "Sondeado {input}: {value} → {boolean}"
@@ -525,13 +528,13 @@
     "saved": "Configuración guardada",
     "title": "Configuración",
     "auto_update": {
-      "enable_label": "Enable Automatic Update",
-      "help": "Automatically update configuration/snapshots when changes are detected."
+      "enable_label": "Habilitar actualización automática",
+      "help": "Actualizar automáticamente la configuración/instantáneas cuando se detecten cambios."
     },
     "debug": {
-      "enable_label": "Enable Debug Mode",
-      "help": "Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.",
-      "legend": "Debug"
+      "enable_label": "Habilitar modo de depuración",
+      "help": "Habilita el registro detallado para la resolución de problemas. No recomendado para uso diario ya que genera muchos registros.",
+      "legend": "Depuración"
     },
     "general": {
       "legend": "General"

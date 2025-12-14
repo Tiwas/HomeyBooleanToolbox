@@ -104,7 +104,10 @@
     "permission_denied": "Odmowa dostępu",
     "timeout": "Przekroczenie czasu operacji",
     "trigger_timeout_card_failed": "Błąd podczas pobierania/wyzwalania karty formula_timeout",
-    "unknown": "Wystąpił nieznany błąd"
+    "unknown": "Wystąpił nieznany błąd",
+    "state_name_required": "Nazwa stanu jest wymagana",
+    "state_not_found": "Stan nie znaleziony",
+    "stack_empty": "Stos jest pusty"
   },
   "evaluation": {
     "initial_complete": "Wstępna ocena wszystkich formuł...",
@@ -460,25 +463,25 @@
     "unknown_device": "Nieznane urządzenie",
     "zone_label": "Strefa/Pomieszczenie:",
     "select_scope": {
-      "title": "Select Scope",
-      "subtitle": "Choose which zones to include in the snapshot.",
-      "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
-      "whole_house": "Whole House",
-      "error_no_selection": "Please select at least one zone."
+      "title": "Wybierz zakres",
+      "subtitle": "Wybierz strefy do uwzględnienia w migawce.",
+      "description": "Wybierz strefy (pokoje), z których chcesz przechwycić stan. Wybierz \"Cały dom\", aby uwzględnić wszystko (używaj ostrożnie przy dużych konfiguracjach).",
+      "whole_house": "Cały dom",
+      "error_no_selection": "Wybierz co najmniej jedną strefę."
     },
-    "generating_snapshot": "Generating snapshot...",
+    "generating_snapshot": "Generowanie migawki...",
     "edit_configuration": {
-      "title": "Edit Configuration",
-      "subtitle": "Review and edit the captured state.",
-      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
+      "title": "Edytuj konfigurację",
+      "subtitle": "Przejrzyj i edytuj przechwycony stan.",
+      "description": "Poniższy JSON zawiera przechwycony stan twoich urządzeń. Możesz edytować wartości, usuwać urządzenia lub zmieniać opóźnienia."
     },
-    "error_name_required": "Please enter a device name.",
-    "error_invalid_json": "Invalid JSON:",
+    "error_name_required": "Wprowadź nazwę urządzenia.",
+    "error_invalid_json": "Nieprawidłowy JSON:",
     "select_devices": {
-      "deselect_all": "Deselect All",
-      "select_all": "Select All",
-      "subtitle": "Uncheck devices you don't want to include.",
-      "title": "Select Devices"
+      "deselect_all": "Odznacz wszystko",
+      "select_all": "Zaznacz wszystko",
+      "subtitle": "Odznacz urządzenia, których nie chcesz uwzględniać.",
+      "title": "Wybierz urządzenia"
     }
   },
   "parse": {
@@ -525,16 +528,16 @@
     "saved": "Ustawienia zapisane",
     "title": "Ustawienia",
     "auto_update": {
-      "enable_label": "Enable Automatic Update",
-      "help": "Automatically update configuration/snapshots when changes are detected."
+      "enable_label": "Włącz automatyczną aktualizację",
+      "help": "Automatycznie aktualizuj konfigurację/migawki po wykryciu zmian."
     },
     "debug": {
-      "enable_label": "Enable Debug Mode",
-      "help": "Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.",
-      "legend": "Debug"
+      "enable_label": "Włącz tryb debugowania",
+      "help": "Włącza szczegółowe logowanie w celu rozwiązywania problemów. Nie zalecane do codziennego użytku, ponieważ generuje dużo logów.",
+      "legend": "Debugowanie"
     },
     "general": {
-      "legend": "General"
+      "legend": "Ogólne"
     }
   },
   "timeout": {

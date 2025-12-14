@@ -104,7 +104,10 @@
     "permission_denied": "Adgang nægtet",
     "timeout": "Operation timeout",
     "trigger_timeout_card_failed": "Fejl ved hentning/udløsning af formula_timeout-kort",
-    "unknown": "Ukendt fejl opstod"
+    "unknown": "Ukendt fejl opstod",
+    "state_name_required": "Tilstandsnavn er påkrævet",
+    "state_not_found": "Tilstand ikke fundet",
+    "stack_empty": "Stakken er tom"
   },
   "evaluation": {
     "initial_complete": "Initial evaluering af alle formler...",
@@ -459,27 +462,40 @@
     "unknown_capability_fallback": "Ukendt Kapabilitet",
     "unknown_device": "Ukendt Enhed",
     "zone_label": "Zone/Rum:",
-    "select_scope": {
-      "title": "Select Scope",
-      "subtitle": "Choose which zones to include in the snapshot.",
-      "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
-      "whole_house": "Whole House",
-      "error_no_selection": "Please select at least one zone."
-    },
-    "generating_snapshot": "Generating snapshot...",
-    "edit_configuration": {
-      "title": "Edit Configuration",
-      "subtitle": "Review and edit the captured state.",
-      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
-    },
-    "error_name_required": "Please enter a device name.",
-    "error_invalid_json": "Invalid JSON:",
     "select_devices": {
-      "deselect_all": "Deselect All",
-      "select_all": "Select All",
-      "subtitle": "Uncheck devices you don't want to include.",
-      "title": "Select Devices"
-    }
+      "deselect_all": "Fravælg alle",
+      "select_all": "Vælg alle",
+      "subtitle": "Fjern markeringen fra enheder du ikke vil inkludere.",
+      "subtitle_capture": "Vælg hvilke enheder der skal inkluderes i fangstskabelonen.",
+      "title": "Vælg enheder"
+    },
+    "select_scope": {
+      "description": "Vælg zonerne (rum) du vil hente tilstand fra. Vælg \"Hele huset\" for at inkludere alt (brug med forsigtighed på store opsætninger).",
+      "description_capture": "Vælg zonerne (rum) der indeholder de enheder du vil fange. Skabelonen definerer hvilke enheder og egenskaper der læses når du fanger tilstand.",
+      "error_no_selection": "Vælg venligst mindst én zone.",
+      "subtitle": "Vælg hvilke zoner der skal inkluderes i øjebliksbilledet.",
+      "subtitle_capture": "Vælg hvilke zoner der indeholder de enheder du vil fange.",
+      "title": "Vælg omfang",
+      "whole_house": "Hele huset"
+    },
+    "select_capabilities": {
+      "title": "Konfigurer enheder",
+      "title_capture": "Vælg egenskaber",
+      "subtitle": "Omarranger enheder og vælg egenskaber.",
+      "subtitle_capture": "Vælg hvilke egenskaber der skal fanges for hver enhed.",
+      "info_capture": "Vælg de egenskaber du vil fange. Værdier læses ved kørsel når du udløser en fangst."
+    },
+    "generating_snapshot": "Genererer øjebliksbillede...",
+    "edit_configuration": {
+      "title": "Rediger konfiguration",
+      "title_capture": "Gennemse skabelon",
+      "subtitle": "Gennemse og rediger den fangede tilstand.",
+      "subtitle_capture": "Gennemse fangstskabelonens konfiguration.",
+      "description": "JSON-koden nedenfor indeholder den fangede tilstand af dine enheder. Du kan redigere værdier, fjerne enheder eller ændre forsinkelser.",
+      "description_capture": "JSON-koden nedenfor definerer din fangstskabelon. Denne bestemmer hvilke enheder og egenskaber der læses når du fanger tilstand. Ingen værdier gemmes før du udløser en fangst."
+    },
+    "error_name_required": "Indtast venligst et enhedsnavn.",
+    "error_invalid_json": "Ugyldig JSON:"
   },
   "parse": {
     "error_detecting_inputs": "Fejl ved registrering af nødvendige indgange:",
@@ -516,7 +532,7 @@
     "description": "Konfigurer din Boolean Toolbox logisk enhed",
     "error": "Kunne ikke gemme indstillinger",
     "expanded": "Kapacitet udvidet til {numInputs} indgange: {availableInputs}",
-    "expanding_capacity": "Udvider kapacitet: {from} -> {to} (årsag: {reason})",
+    "expanding_capacity": "Udvider kapacitet: {from} -> {to} (årsak: {reason})",
     "expansion_failed": "Kunne ikke auto-udvide kapacitet:",
     "format_failed": "Kunne ikke auto-formatere indstillinger:",
     "formatting": "Vil auto-formatere {type} JSON",
@@ -525,16 +541,16 @@
     "saved": "Indstillinger gemt",
     "title": "Indstillinger",
     "auto_update": {
-      "enable_label": "Enable Automatic Update",
-      "help": "Automatically update configuration/snapshots when changes are detected."
+      "enable_label": "Aktiver automatisk opdatering",
+      "help": "Opdater konfiguration/øjebliksbilleder automatisk, når ændringer registreres."
     },
     "debug": {
-      "enable_label": "Enable Debug Mode",
-      "help": "Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.",
-      "legend": "Debug"
+      "enable_label": "Aktiver fejlsøgningstilstand",
+      "help": "Aktiverer detaljeret logning til fejlsøgning. Anbefales ikke til daglig brug, da det genererer mange logs.",
+      "legend": "Fejlsøgning"
     },
     "general": {
-      "legend": "General"
+      "legend": "Generelt"
     }
   },
   "timeout": {

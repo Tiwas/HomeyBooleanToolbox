@@ -104,7 +104,10 @@
     "permission_denied": "Permission refusée",
     "timeout": "Délai d'attente de l'opération",
     "trigger_timeout_card_failed": "Erreur lors de l'obtention/du déclenchement de la carte formula_timeout",
-    "unknown": "Erreur inconnue"
+    "unknown": "Erreur inconnue",
+    "state_name_required": "Le nom de l'état est requis",
+    "state_not_found": "État non trouvé",
+    "stack_empty": "La pile est vide"
   },
   "evaluation": {
     "initial_complete": "Évaluation initiale de toutes les formules...",
@@ -460,25 +463,25 @@
     "unknown_device": "Appareil inconnu",
     "zone_label": "Zone/Pièce:",
     "select_scope": {
-      "title": "Select Scope",
-      "subtitle": "Choose which zones to include in the snapshot.",
-      "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
-      "whole_house": "Whole House",
-      "error_no_selection": "Please select at least one zone."
+      "title": "Sélectionner la portée",
+      "subtitle": "Choisissez les zones à inclure dans l'instantané.",
+      "description": "Sélectionnez les zones (pièces) dont vous souhaitez capturer l'état. Sélectionnez \"Maison entière\" pour tout inclure (à utiliser avec prudence sur les grandes installations).",
+      "whole_house": "Maison entière",
+      "error_no_selection": "Veuillez sélectionner au moins une zone."
     },
-    "generating_snapshot": "Generating snapshot...",
+    "generating_snapshot": "Génération de l'instantané...",
     "edit_configuration": {
-      "title": "Edit Configuration",
-      "subtitle": "Review and edit the captured state.",
-      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
+      "title": "Modifier la configuration",
+      "subtitle": "Vérifiez et modifiez l'état capturé.",
+      "description": "Le JSON ci-dessous contient l'état capturé de vos appareils. Vous pouvez modifier les valeurs, supprimer des appareils ou modifier les délais."
     },
-    "error_name_required": "Please enter a device name.",
-    "error_invalid_json": "Invalid JSON:",
+    "error_name_required": "Veuillez entrer un nom d'appareil.",
+    "error_invalid_json": "JSON invalide :",
     "select_devices": {
-      "deselect_all": "Deselect All",
-      "select_all": "Select All",
-      "subtitle": "Uncheck devices you don't want to include.",
-      "title": "Select Devices"
+      "deselect_all": "Tout désélectionner",
+      "select_all": "Tout sélectionner",
+      "subtitle": "Décochez les appareils que vous ne souhaitez pas inclure.",
+      "title": "Sélectionner les appareils"
     }
   },
   "parse": {
@@ -494,7 +497,7 @@
     "api_unavailable": "L'API de l'application n'est pas disponible pour l'interrogation",
     "device_not_found": "Appareil non trouvé: {device}",
     "failed": "Échec de l'interrogation de {input}:",
-    "input": "Interrogation de l'entrée \"{input}\" de l'appareil \"{device}\" capacité \"{capability}\"",
+    "input": "Interrogation de l'entrée \"{input}\" de l'appareil \"{device}\" capacité \"{capability}"",
     "no_links": "Aucun inputLinks disponible pour l'interrogation",
     "no_value": "Aucune valeur pour {input} ({capability})",
     "value_received": "Interrogé {input}: {value} → {boolean}"
@@ -525,16 +528,16 @@
     "saved": "Paramètres enregistrés",
     "title": "Paramètres",
     "auto_update": {
-      "enable_label": "Enable Automatic Update",
-      "help": "Automatically update configuration/snapshots when changes are detected."
+      "enable_label": "Activer la mise à jour automatique",
+      "help": "Mettre à jour automatiquement la configuration/les instantanés lorsque des modifications sont détectées."
     },
     "debug": {
-      "enable_label": "Enable Debug Mode",
-      "help": "Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.",
-      "legend": "Debug"
+      "enable_label": "Activer le mode débogage",
+      "help": "Active la journalisation détaillée pour le dépannage. Non recommandé pour une utilisation quotidienne car cela génère beaucoup de journaux.",
+      "legend": "Débogage"
     },
     "general": {
-      "legend": "General"
+      "legend": "Général"
     }
   },
   "timeout": {

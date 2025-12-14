@@ -104,7 +104,10 @@
     "permission_denied": "Käyttö estetty",
     "timeout": "Toiminnon aikakatkaisu",
     "trigger_timeout_card_failed": "Virhe haettaessa/käynnistettäessä formula_timeout-korttia",
-    "unknown": "Tuntematon virhe tapahtui"
+    "unknown": "Tuntematon virhe tapahtui",
+    "state_name_required": "Tilan nimi vaaditaan",
+    "state_not_found": "Tilaa ei löytynyt",
+    "stack_empty": "Pino on tyhjä"
   },
   "evaluation": {
     "initial_complete": "Kaikkien kaavojen alkuarviointi...",
@@ -460,25 +463,25 @@
     "unknown_device": "Tuntematon laite",
     "zone_label": "Alue/Huone:",
     "select_scope": {
-      "title": "Select Scope",
-      "subtitle": "Choose which zones to include in the snapshot.",
-      "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
-      "whole_house": "Whole House",
-      "error_no_selection": "Please select at least one zone."
+      "title": "Valitse laajuus",
+      "subtitle": "Valitse, mitkä alueet sisällytetään tilannevedokseen.",
+      "description": "Valitse alueet (huoneet), joiden tilan haluat tallentaa. Valitse \"Koko talo\" sisällyttääksesi kaiken (käytä varoen suurissa kokoonpanoissa).",
+      "whole_house": "Koko talo",
+      "error_no_selection": "Valitse vähintään yksi alue."
     },
-    "generating_snapshot": "Generating snapshot...",
+    "generating_snapshot": "Luodaan tilannevedosta...",
     "edit_configuration": {
-      "title": "Edit Configuration",
-      "subtitle": "Review and edit the captured state.",
-      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
+      "title": "Muokkaa määritystä",
+      "subtitle": "Tarkista ja muokkaa tallennettua tilaa.",
+      "description": "Alla oleva JSON sisältää laitteidesi tallennetun tilan. Voit muokata arvoja, poistaa laitteita tai muuttaa viiveitä."
     },
-    "error_name_required": "Please enter a device name.",
-    "error_invalid_json": "Invalid JSON:",
+    "error_name_required": "Anna laitteen nimi.",
+    "error_invalid_json": "Virheellinen JSON:",
     "select_devices": {
-      "deselect_all": "Deselect All",
-      "select_all": "Select All",
-      "subtitle": "Uncheck devices you don't want to include.",
-      "title": "Select Devices"
+      "deselect_all": "Poista kaikki valinnat",
+      "select_all": "Valitse kaikki",
+      "subtitle": "Poista valinta laitteista, joita et halua sisällyttää.",
+      "title": "Valitse laitteet"
     }
   },
   "parse": {
@@ -494,7 +497,7 @@
     "api_unavailable": "Sovelluksen API ei ole käytettävissä pollaamiseen",
     "device_not_found": "Laitetta ei löydy: {device}",
     "failed": "Tiedonhaku epäonnistui kohteelle {input}:",
-    "input": "Pollataan tuloa \"{input}\" laitteesta \"{device}\" kyvykkyys \"{capability}\"",
+    "input": "Pollataan tuloa \"{input}\" laitteesta \"{device}\" kyvykkyys \"{capability}"",
     "no_links": "Ei inputLinks-määrityksiä pollattavaksi",
     "no_value": "Ei arvoa kohteelle {input} ({capability})",
     "value_received": "Pollattu {input}: {value} → {boolean}"
@@ -525,16 +528,16 @@
     "saved": "Asetukset tallennettu",
     "title": "Asetukset",
     "auto_update": {
-      "enable_label": "Enable Automatic Update",
-      "help": "Automatically update configuration/snapshots when changes are detected."
+      "enable_label": "Ota automaattinen päivitys käyttöön",
+      "help": "Päivitä kokoonpano/tilannevedokset automaattisesti, kun muutoksia havaitaan."
     },
     "debug": {
-      "enable_label": "Enable Debug Mode",
-      "help": "Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.",
-      "legend": "Debug"
+      "enable_label": "Ota vianetsintätila käyttöön",
+      "help": "Ottaa käyttöön yksityiskohtaisen lokituksen vianmääritystä varten. Ei suositella päivittäiseen käyttöön, koska se luo paljon lokeja.",
+      "legend": "Vianetsintä"
     },
     "general": {
-      "legend": "General"
+      "legend": "Yleiset"
     }
   },
   "timeout": {

@@ -104,7 +104,10 @@
     "permission_denied": "Åtkomst nekad",
     "timeout": "Operation timeout",
     "trigger_timeout_card_failed": "Fel vid hämtning/utlösning av formula_timeout-kort",
-    "unknown": "Okänt fel uppstod"
+    "unknown": "Okänt fel uppstod",
+    "state_name_required": "Tillståndsnamn krävs",
+    "state_not_found": "Tillstånd hittades inte",
+    "stack_empty": "Stacken är tom"
   },
   "evaluation": {
     "initial_complete": "Initial utvärdering av alla formler...",
@@ -460,25 +463,25 @@
     "unknown_device": "Okänd enhet",
     "zone_label": "Zon/Rum:",
     "select_scope": {
-      "title": "Select Scope",
-      "subtitle": "Choose which zones to include in the snapshot.",
-      "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
-      "whole_house": "Whole House",
-      "error_no_selection": "Please select at least one zone."
+      "title": "Välj omfattning",
+      "subtitle": "Välj vilka zoner som ska inkluderas i ögonblicksbilden.",
+      "description": "Välj de zoner (rum) du vill fånga statusen från. Välj \"Hela huset\" för att inkludera allt (använd med försiktighet på stora installationer).",
+      "whole_house": "Hela huset",
+      "error_no_selection": "Välj minst en zon."
     },
-    "generating_snapshot": "Generating snapshot...",
+    "generating_snapshot": "Genererar ögonblicksbild...",
     "edit_configuration": {
-      "title": "Edit Configuration",
-      "subtitle": "Review and edit the captured state.",
-      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
+      "title": "Redigera konfiguration",
+      "subtitle": "Granska och redigera det fångade tillståndet.",
+      "description": "JSON nedan innehåller det fångade tillståndet för dina enheter. Du kan redigera värden, ta bort enheter eller ändra fördröjningar."
     },
-    "error_name_required": "Please enter a device name.",
-    "error_invalid_json": "Invalid JSON:",
+    "error_name_required": "Ange ett enhetsnamn.",
+    "error_invalid_json": "Ogiltig JSON:",
     "select_devices": {
-      "deselect_all": "Deselect All",
-      "select_all": "Select All",
-      "subtitle": "Uncheck devices you don't want to include.",
-      "title": "Select Devices"
+      "deselect_all": "Avmarkera alla",
+      "select_all": "Markera alla",
+      "subtitle": "Avmarkera enheter du inte vill inkludera.",
+      "title": "Välj enheter"
     }
   },
   "parse": {
@@ -525,16 +528,16 @@
     "saved": "Inställningar sparade",
     "title": "Inställningar",
     "auto_update": {
-      "enable_label": "Enable Automatic Update",
-      "help": "Automatically update configuration/snapshots when changes are detected."
+      "enable_label": "Aktivera automatisk uppdatering",
+      "help": "Uppdatera konfiguration/ögonblicksbilder automatiskt när ändringar upptäcks."
     },
     "debug": {
-      "enable_label": "Enable Debug Mode",
-      "help": "Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.",
-      "legend": "Debug"
+      "enable_label": "Aktivera felsökningsläge",
+      "help": "Aktiverar detaljerad loggning för felsökning. Rekommenderas inte för daglig användning eftersom det genererar många loggar.",
+      "legend": "Felsökning"
     },
     "general": {
-      "legend": "General"
+      "legend": "Allmänt"
     }
   },
   "timeout": {

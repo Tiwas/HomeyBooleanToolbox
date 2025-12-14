@@ -104,7 +104,10 @@
     "permission_denied": "Zugriff verweigert",
     "timeout": "Zeitüberschreitung der Operation",
     "trigger_timeout_card_failed": "Fehler beim Abrufen/Auslösen der formula_timeout-Karte",
-    "unknown": "Unbekannter Fehler aufgetreten"
+    "unknown": "Unbekannter Fehler aufgetreten",
+    "state_name_required": "Zustandsname ist erforderlich",
+    "state_not_found": "Zustand nicht gefunden",
+    "stack_empty": "Stapel ist leer"
   },
   "evaluation": {
     "initial_complete": "Erste Auswertung aller Formeln...",
@@ -460,25 +463,39 @@
     "unknown_device": "Unbekanntes Gerät",
     "zone_label": "Zone/Raum:",
     "select_scope": {
-      "title": "Select Scope",
-      "subtitle": "Choose which zones to include in the snapshot.",
-      "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
-      "whole_house": "Whole House",
-      "error_no_selection": "Please select at least one zone."
+      "title": "Bereich auswählen",
+      "subtitle": "Wählen Sie die Zonen aus, die in den Snapshot aufgenommen werden sollen.",
+      "description": "Wählen Sie die Zonen (Räume), deren Zustand Sie erfassen möchten. Wählen Sie \"Ganzes Haus\" um alles einzuschließen (bei großen Installationen mit Vorsicht verwenden).",
+      "description_capture": "Wählen Sie die Zonen (Räume), die die Geräte enthalten, deren Zustand Sie erfassen möchten. Wählen Sie \"Ganzes Haus\" um alle zu erfassen (bei großen Installationen mit Vorsicht verwenden).",
+      "subtitle_capture": "Wählen Sie die Zonen aus, die die zu erfassenden Geräte enthalten.",
+      "whole_house": "Ganzes Haus",
+      "error_no_selection": "Bitte wählen Sie mindestens eine Zone aus."
     },
-    "generating_snapshot": "Generating snapshot...",
+    "generating_snapshot": "Snapshot wird erstellt...",
     "edit_configuration": {
-      "title": "Edit Configuration",
-      "subtitle": "Review and edit the captured state.",
-      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
+      "title": "Konfiguration bearbeiten",
+      "subtitle": "Überprüfen und bearbeiten Sie den erfassten Zustand.",
+      "description": "Der JSON unten enthält den erfassten Zustand Ihrer Geräte. Sie können Werte bearbeiten, Geräte entfernen oder Verzögerungen ändern.",
+      "title_capture": "Vorlage bearbeiten",
+      "subtitle_capture": "Überprüfen und bearbeiten Sie die ausgewählten Geräte und Capabilities.",
+      "description_capture": "Der JSON unten enthält die Vorlage für die Zustandserfassung. Werte werden zur Laufzeit gelesen, wenn Sie eine Erfassung auslösen."
     },
-    "error_name_required": "Please enter a device name.",
-    "error_invalid_json": "Invalid JSON:",
+    "error_name_required": "Bitte geben Sie einen Gerätenamen ein.",
+    "error_invalid_json": "Ungültiges JSON:",
     "select_devices": {
-      "deselect_all": "Deselect All",
-      "select_all": "Select All",
-      "subtitle": "Uncheck devices you don't want to include.",
-      "title": "Select Devices"
+      "deselect_all": "Alle abwählen",
+      "select_all": "Alle auswählen",
+      "subtitle": "Deaktivieren Sie Geräte, die Sie nicht einschließen möchten.",
+      "subtitle_capture": "Deaktivieren Sie Geräte, die Sie nicht in der Vorlage haben möchten.",
+      "title": "Geräte auswählen",
+      "title_capture": "Geräte für Vorlage auswählen"
+    },
+    "select_capabilities": {
+      "title": "Capabilities auswählen",
+      "subtitle": "Wählen Sie die Capabilities, die für jedes Gerät erfasst werden sollen.",
+      "title_capture": "Capabilities auswählen",
+      "subtitle_capture": "Wählen Sie die zu erfassenden Capabilities für jedes Gerät.",
+      "info_capture": "Wählen Sie die zu erfassenden Capabilities. Werte werden zur Laufzeit gelesen, wenn Sie eine Erfassung auslösen."
     }
   },
   "parse": {
@@ -525,16 +542,16 @@
     "saved": "Einstellungen gespeichert",
     "title": "Einstellungen",
     "auto_update": {
-      "enable_label": "Enable Automatic Update",
-      "help": "Automatically update configuration/snapshots when changes are detected."
+      "enable_label": "Automatische Aktualisierung aktivieren",
+      "help": "Konfiguration/Snapshots automatisch aktualisieren, wenn Änderungen erkannt werden."
     },
     "debug": {
-      "enable_label": "Enable Debug Mode",
-      "help": "Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.",
+      "enable_label": "Debug-Modus aktivieren",
+      "help": "Aktiviert detaillierte Protokollierung zur Fehlerbehebung. Nicht für den täglichen Gebrauch empfohlen, da viele Protokolle generiert werden.",
       "legend": "Debug"
     },
     "general": {
-      "legend": "General"
+      "legend": "Allgemein"
     }
   },
   "timeout": {
