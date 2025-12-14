@@ -465,24 +465,33 @@
       "deselect_all": "Deselect All",
       "select_all": "Select All",
       "subtitle": "Uncheck devices you don't want to include.",
+      "subtitle_capture": "Select which devices to include in the capture template.",
       "title": "Select Devices"
     },
     "select_scope": {
       "description": "Select the zones (rooms) you want to capture the state from. Select \"Whole House\" to include everything (use with caution on large setups).",
+      "description_capture": "Select the zones (rooms) containing devices you want to capture. The template will define which devices and capabilities to read when capturing state.",
       "error_no_selection": "Please select at least one zone.",
       "subtitle": "Choose which zones to include in the snapshot.",
+      "subtitle_capture": "Choose which zones contain the devices you want to capture.",
       "title": "Select Scope",
       "whole_house": "Whole House"
     },
     "select_capabilities": {
       "title": "Configure Devices",
-      "subtitle": "Reorder devices and select capabilities."
+      "title_capture": "Select Capabilities",
+      "subtitle": "Reorder devices and select capabilities.",
+      "subtitle_capture": "Choose which capabilities to capture for each device.",
+      "info_capture": "Select the capabilities you want to capture. Values will be read at runtime when you trigger a capture."
     },
     "generating_snapshot": "Generating snapshot...",
     "edit_configuration": {
       "title": "Edit Configuration",
+      "title_capture": "Review Template",
       "subtitle": "Review and edit the captured state.",
-      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays."
+      "subtitle_capture": "Review the capture template configuration.",
+      "description": "The JSON below contains the captured state of your devices. You can edit values, remove devices, or change delays.",
+      "description_capture": "The JSON below defines your capture template. This determines which devices and capabilities will be read when you capture state. No values are stored until you trigger a capture."
     },
     "error_name_required": "Please enter a device name.",
     "error_invalid_json": "Invalid JSON:"

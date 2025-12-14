@@ -466,25 +466,34 @@
             "deselect_all": "Fjern alle",
             "select_all": "Velg alle",
             "subtitle": "Fjern haken for enheter du ikke vil inkludere.",
+            "subtitle_capture": "Velg hvilke enheter som skal inkluderes i fangstmalen.",
             "title": "Velg enheter"
         },
         "select_scope": {
             "description": "Velg sonene (rommene) du vil hente tilstand fra. Velg \"Hele huset\" for å inkludere alt (bruk med forsiktighet på store oppsett).",
+            "description_capture": "Velg sonene (rommene) som inneholder enhetene du vil fange. Malen definerer hvilke enheter og egenskaper som leses når du fanger tilstand.",
             "error_no_selection": "Vennligst velg minst én sone.",
             "subtitle": "Velg hvilke soner som skal inkluderes i øyeblikksbildet.",
+            "subtitle_capture": "Velg hvilke soner som inneholder enhetene du vil fange.",
             "title": "Velg omfang",
             "whole_house": "Hele huset"
         },
         "select_capabilities": {
             "title": "Konfigurer enheter",
-            "subtitle": "Endre rekkefølge og velg egenskaper."
+            "title_capture": "Velg egenskaper",
+            "subtitle": "Endre rekkefølge og velg egenskaper.",
+            "subtitle_capture": "Velg hvilke egenskaper som skal fanges for hver enhet.",
+            "info_capture": "Velg egenskapene du vil fange. Verdier leses ved kjøring når du utløser en fangst."
         },
-            "generating_snapshot": "Genererer øyeblikksbilde...",
-            "edit_configuration": {
-              "title": "Rediger konfigurasjon",
-              "subtitle": "Se over og rediger den fangede tilstanden.",
-              "description": "JSON-koden nedenfor inneholder den fangede tilstanden til enhetene dine. Du kan redigere verdier, fjerne enheter eller endre forsinkelser."
-            },
+        "generating_snapshot": "Genererer øyeblikksbilde...",
+        "edit_configuration": {
+            "title": "Rediger konfigurasjon",
+            "title_capture": "Se over mal",
+            "subtitle": "Se over og rediger den fangede tilstanden.",
+            "subtitle_capture": "Se over konfigurasjonen av fangstmalen.",
+            "description": "JSON-koden nedenfor inneholder den fangede tilstanden til enhetene dine. Du kan redigere verdier, fjerne enheter eller endre forsinkelser.",
+            "description_capture": "JSON-koden nedenfor definerer fangstmalen din. Denne bestemmer hvilke enheter og egenskaper som leses når du fanger tilstand. Ingen verdier lagres før du utløser en fangst."
+        },
             "error_name_required": "Vennligst skriv inn et enhetsnavn.",
             "error_invalid_json": "Ugyldig JSON:"
           },    "parse": {
