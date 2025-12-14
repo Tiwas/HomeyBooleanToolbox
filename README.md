@@ -2,7 +2,7 @@
 
 Advanced boolean logic and state management for your Homey automations. Create smart devices that react to multiple inputs with customizable formulas, and manage device states with powerful capture/restore functionality.
 
-[![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
+[![Version](https://img.shields.io/badge/version-1.7.0-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
 [![Homey](https://img.shields.io/badge/Homey-5.0+-green.svg)](https://homey.app)
 
 ---
@@ -15,7 +15,7 @@ Test and build your logic before deploying:
 - **[Formula Builder](https://tiwas.github.io/HomeyBooleanToolbox/formula-builder.html)** - Visual formula editor with validation
 - **[Boolean Editor](https://tiwas.github.io/HomeyBooleanToolbox/homey-boolean-editor.html)** - Advanced editor for boolean device configurations
 - **[State Editor](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-editor.html)** - Visual editor for State Device configurations
-- **[State Editor (API)](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-editor-api.html)** - State editor with Homey API integration
+- **[State Editor (API)](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-editor-api.html)** - State editor with Homey API integration *(eternal beta)*
 
 ---
 
