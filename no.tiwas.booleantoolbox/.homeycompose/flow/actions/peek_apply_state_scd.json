@@ -1,0 +1,22 @@
+{
+  "id": "peek_apply_state_scd",
+  "title": {
+    "en": "Peek and apply state (keep on stack)",
+    "no": "Les og bruk tilstand (behold på stakken)"
+  },
+  "hint": {
+    "en": "Applies the top state from the stack WITHOUT removing it. The state remains on the stack.",
+    "no": "Bruker den øverste tilstanden fra stakken UTEN å fjerne den. Tilstanden forblir på stakken."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    }
+  ],
+  "titleFormatted": {
+    "en": "Peek and apply state (keep on stack)",
+    "no": "Les og bruk tilstand (behold på stakken)"
+  }
+}

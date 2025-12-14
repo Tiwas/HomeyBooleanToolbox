@@ -1,0 +1,122 @@
+{
+  "name": {
+    "en": "State Capture Device",
+    "no": "Tilstandsopptaker",
+    "de": "Zustandserfassungsgerät",
+    "nl": "Status Opname Apparaat",
+    "fr": "Appareil de Capture d'État",
+    "da": "Tilstandsoptagelsesenhed",
+    "fi": "State Capture Device",
+    "sv": "Tillståndslagrare",
+    "pl": "Urządzenie Przechwytywania Stanu",
+    "it": "Dispositivo di Cattura Stato",
+    "es": "Dispositivo de Captura de Estado"
+  },
+  "class": "other",
+  "capabilities": [
+    "onoff"
+  ],
+  "settings": [
+    {
+      "id": "template_json",
+      "type": "textarea",
+      "label": {
+        "en": "Template (JSON)",
+        "no": "Mal (JSON)",
+        "de": "Vorlage (JSON)",
+        "nl": "Sjabloon (JSON)",
+        "fr": "Modèle (JSON)",
+        "da": "Skabelon (JSON)",
+        "fi": "Malli (JSON)",
+        "sv": "Mall (JSON)",
+        "pl": "Szablon (JSON)",
+        "it": "Modello (JSON)",
+        "es": "Plantilla (JSON)"
+      },
+      "value": "{\n  \"items\": []\n}"
+    },
+    {
+      "id": "log_errors",
+      "type": "checkbox",
+      "label": {
+        "en": "Log errors to Timeline",
+        "no": "Logg feil til Tidslinjen",
+        "de": "Fehler in Timeline protokollieren",
+        "nl": "Log fouten naar tijdlijn",
+        "fr": "Journaliser les erreurs dans la chronologie",
+        "da": "Log fejl til tidslinjen",
+        "fi": "Log errors to Timeline",
+        "sv": "Logga fel till tidslinjen",
+        "pl": "Loguj błędy do osi czasu",
+        "it": "Registra errori nella timeline",
+        "es": "Registrar errores en la línea de tiempo"
+      },
+      "value": true
+    }
+  ],
+  "images": {
+    "large": "/assets/images_state_capture_device/large.png",
+    "small": "/assets/images_state_capture_device/small.png"
+  },
+  "pair": [
+    {
+      "id": "select_scope"
+    },
+    {
+      "id": "select_devices"
+    },
+    {
+      "id": "select_capabilities"
+    },
+    {
+      "id": "edit_configuration"
+    }
+  ],
+  "flow": {
+    "triggers": [
+      {
+        "id": "state_captured_scd"
+      },
+      {
+        "id": "state_applied_scd"
+      },
+      {
+        "id": "capture_error_scd"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "captured_state_exists_scd"
+      },
+      {
+        "id": "stack_is_empty_scd"
+      },
+      {
+        "id": "stack_depth_is_scd"
+      }
+    ],
+    "actions": [
+      {
+        "id": "capture_state_scd"
+      },
+      {
+        "id": "apply_captured_state_scd"
+      },
+      {
+        "id": "delete_captured_state_scd"
+      },
+      {
+        "id": "push_state_scd"
+      },
+      {
+        "id": "pop_state_scd"
+      },
+      {
+        "id": "peek_apply_state_scd"
+      },
+      {
+        "id": "clear_stack_scd"
+      }
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "capture_state_scd",
+  "title": {
+    "en": "Capture current state",
+    "no": "Lagre nåværende tilstand"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    },
+    {
+      "name": "state_name",
+      "type": "text",
+      "title": {
+        "en": "State name",
+        "no": "Tilstandsnavn"
+      },
+      "placeholder": {
+        "en": "My State",
+        "no": "Min tilstand"
+      }
+    }
+  ],
+  "titleFormatted": {
+    "en": "Capture state to [[state_name]]",
+    "no": "Lagre tilstand til [[state_name]]"
+  }
+}

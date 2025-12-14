@@ -104,7 +104,10 @@
         "permission_denied": "Tilgang nektet",
         "timeout": "Operasjon tidsavbrudd",
         "trigger_timeout_card_failed": "Feil ved henting/utløsing av formula_timeout-kort",
-        "unknown": "Ukjent feil oppstod"
+        "unknown": "Ukjent feil oppstod",
+        "state_name_required": "Tilstandsnavn er påkrevd",
+        "state_not_found": "Tilstand ikke funnet",
+        "stack_empty": "Stakken er tom"
     },
     "evaluation": {
         "initial_complete": "Initial evaluering av alle formler...",

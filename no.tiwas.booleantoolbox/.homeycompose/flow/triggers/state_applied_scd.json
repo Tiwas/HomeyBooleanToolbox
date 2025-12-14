@@ -1,0 +1,32 @@
+{
+  "id": "state_applied_scd",
+  "title": {
+    "en": "State was applied",
+    "no": "Tilstand ble brukt"
+  },
+  "hint": {
+    "en": "Triggers when a state is applied (from named state, pop, or peek).",
+    "no": "Utløses når en tilstand brukes (fra navngitt tilstand, pop eller peek)."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "state_name",
+      "type": "string",
+      "title": {
+        "en": "State name",
+        "no": "Tilstandsnavn"
+      },
+      "example": {
+        "en": "movie_night",
+        "no": "filmkveld"
+      }
+    }
+  ]
+}

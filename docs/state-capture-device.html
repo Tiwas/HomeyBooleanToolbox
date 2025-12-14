@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Capture Device - Boolean Toolbox for Homey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1a202c;
+        }
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            font-weight: 700;
+            margin-right: 1rem;
+            color: white;
+        }
+        .code-block {
+            background-color: #f1f5f9;
+            border-left: 4px solid #8b5cf6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: monospace;
+            color: #1e293b;
+        }
+        .tip-box {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        .warning-box {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        .beta-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="../README.md" class="text-xl font-bold text-purple-600 hover:text-purple-800">Boolean Toolbox</a>
+                <div class="space-x-4 text-sm hidden md:block">
+                    <a href="getting-started.html" class="text-gray-600 hover:text-purple-600">Getting Started</a>
+                    <a href="devices.html" class="text-gray-600 hover:text-purple-600">Devices</a>
+                    <a href="state-device.html" class="text-gray-600 hover:text-purple-600">State Device</a>
+                    <a href="state-capture-device.html" class="text-gray-900 font-semibold">State Capture Device</a>
+                    <a href="waiter-gates.html" class="text-gray-600 hover:text-purple-600">Waiter Gates</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
+        <div class="flex items-center gap-3 mb-2">
+            <h1 class="text-4xl font-bold text-gray-900">State Capture Device</h1>
+            <span class="beta-badge">BETA</span>
+        </div>
+        <p class="text-gray-600 mb-8">Dynamically capture and restore device states using templates, named slots, and stack operations.</p>
+
+        <!-- Beta Warning -->
+        <div class="warning-box mb-6">
+            <p class="font-semibold text-red-700 mb-1">BETA Feature</p>
+            <p class="text-red-800">This feature is currently in beta. The API and behavior may change in future versions. Please report any issues on GitHub.</p>
+        </div>
+
+        <!-- Introduction -->
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">What is a State Capture Device?</h2>
+            <p class="mb-4 text-gray-700">While the regular <a href="state-device.html" class="text-purple-600 hover:text-purple-800">State Device</a> stores fixed values defined during setup, the <strong>State Capture Device</strong> lets you dynamically capture the <em>current</em> values of devices at runtime.</p>
+
+            <p class="mb-4 text-gray-700">Think of it as a "template" that defines <strong>which</strong> devices and capabilities to capture, without storing the actual values until you explicitly capture them.</p>
+
+            <h3 class="text-lg font-semibold mb-3 text-purple-700">Key Differences from State Device</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="border-b-2 border-purple-500">
+                        <tr>
+                            <th class="pb-3 text-purple-700">Feature</th>
+                            <th class="pb-3 text-purple-700">State Device</th>
+                            <th class="pb-3 text-purple-700">State Capture Device</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        <tr class="border-b border-gray-200">
+                            <td class="py-3 font-semibold">Values</td>
+                            <td>Fixed at setup</td>
+                            <td>Captured at runtime</td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-3 font-semibold">Named States</td>
+                            <td>One per device</td>
+                            <td>Multiple named slots</td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-3 font-semibold">Stack Operations</td>
+                            <td>No</td>
+                            <td>Yes (push/pop/peek)</td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-3 font-semibold">Use Case</td>
+                            <td>Predefined scenes</td>
+                            <td>Dynamic state management</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Use Cases -->
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Use Cases</h2>
+
+            <div class="space-y-4">
+                <div class="border-l-4 border-green-500 pl-4">
+                    <h3 class="text-lg font-semibold text-green-600">Temporary Interruptions</h3>
+                    <p class="text-gray-700 mt-1">Save current lighting state before a doorbell ring, turn on all lights, then restore the previous state after.</p>
+                    <div class="code-block mt-2 text-sm">
+<pre>WHEN: Doorbell rings
+THEN: Push current state
+THEN: Set all lights to 100%
+THEN: Wait 5 minutes
+THEN: Pop state (restore previous)</pre>
+                    </div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-4">
+                    <h3 class="text-lg font-semibold text-blue-600">Named Scene Snapshots</h3>
+                    <p class="text-gray-700 mt-1">Capture and name the current state when users are happy with their lighting setup.</p>
+                    <div class="code-block mt-2 text-sm">
+<pre>WHEN: "Save Scene" button pressed
+THEN: Capture state as "[[scene_name]]"
+
+WHEN: "Apply Scene" triggered
+THEN: Apply captured state "[[scene_name]]"</pre>
+                    </div>
+                </div>
+
+                <div class="border-l-4 border-yellow-500 pl-4">
+                    <h3 class="text-lg font-semibold text-yellow-600">Undo Functionality</h3>
+                    <p class="text-gray-700 mt-1">Push state before any major change. Users can "undo" by popping the stack.</p>
+                </div>
+
+                <div class="border-l-4 border-purple-500 pl-4">
+                    <h3 class="text-lg font-semibold text-purple-600">Nested State Changes</h3>
+                    <p class="text-gray-700 mt-1">Stack supports multiple levels - push before each change, pop in reverse order to unwind.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Setup Guide -->
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-6 text-purple-600">Setting Up a State Capture Device</h2>
+
+            <!-- Step 1 -->
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="step-number">1</span>
+                    <h3 class="text-xl font-semibold text-gray-900">Select Scope</h3>
+                </div>
+                <p class="ml-12 text-gray-700 mb-2">Choose which zones (rooms) contain devices you want to capture. This defines the pool of available devices.</p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="step-number">2</span>
+                    <h3 class="text-xl font-semibold text-gray-900">Select Devices</h3>
+                </div>
+                <p class="ml-12 text-gray-700 mb-2">Choose which devices from the selected zones should be included in your capture template.</p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="step-number">3</span>
+                    <h3 class="text-xl font-semibold text-gray-900">Select Capabilities</h3>
+                </div>
+                <p class="ml-12 text-gray-700 mb-2">For each device, select which capabilities to capture (e.g., <code>onoff</code>, <code>dim</code>, <code>light_hue</code>).</p>
+                <div class="ml-12 tip-box">
+                    <p class="font-semibold text-blue-700">Note</p>
+                    <p class="text-blue-800">Unlike the regular State Device, you don't set values here - only the template of what to capture.</p>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="step-number">4</span>
+                    <h3 class="text-xl font-semibold text-gray-900">Review & Create</h3>
+                </div>
+                <p class="ml-12 text-gray-700 mb-2">Review the generated template configuration and create your device. The template defines what gets captured, not the values.</p>
+            </div>
+        </div>
+
+        <!-- Flow Cards - Named States -->
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Flow Cards: Named States</h2>
+            <p class="text-gray-700 mb-4">Named states are key-value storage for captured device states. Use dynamic names with Homey tokens.</p>
+
+            <div class="space-y-4">
+                <!-- Capture -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">Capture state to name</h3>
+                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Action</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-2">Reads current values from all devices in the template and stores them under the given name.</p>
+                    <div class="code-block text-sm">
+<pre>Capture current state as "[[scene_name]]" on [State Capture Device]</pre>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">State names support Homey tokens/variables for dynamic naming.</p>
+                </div>
+
+                <!-- Apply -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">Apply captured state</h3>
+                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Action</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-2">Retrieves a named state and applies all stored values to the devices.</p>
+                    <div class="code-block text-sm">
+<pre>Apply captured state "movie_night" on [State Capture Device]</pre>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Uses autocomplete to show existing state names.</p>
+                </div>
+
+                <!-- Delete -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">Delete captured state</h3>
+                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Action</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-2">Removes a named state from storage.</p>
+                </div>
+
+                <!-- Condition: Exists -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">State exists</h3>
+                        <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Condition</span>
+                    </div>
+                    <p class="text-gray-700 text-sm">Check if a named state has been captured.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flow Cards - Stack Operations -->
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Flow Cards: Stack Operations</h2>
+            <p class="text-gray-700 mb-4">The stack provides LIFO (Last-In-First-Out) storage for temporary state management. Perfect for "save and restore" patterns.</p>
+
+            <div class="space-y-4">
+                <!-- Push -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">Push state to stack</h3>
+                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Action</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-2">Captures current values and pushes them onto the stack.</p>
+                    <div class="code-block text-sm">
+<pre>Push current state to stack on [State Capture Device]</pre>
+                    </div>
+                </div>
+
+                <!-- Pop -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">Pop state from stack</h3>
+                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Action</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-2">Removes the most recent state from the stack and applies it to devices.</p>
+                    <div class="code-block text-sm">
+<pre>Pop and apply state from stack on [State Capture Device]</pre>
+                    </div>
+                </div>
+
+                <!-- Peek -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">Peek and apply state</h3>
+                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Action</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-2">Applies the most recent state from the stack <strong>without removing it</strong>.</p>
+                </div>
+
+                <!-- Clear -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">Clear stack</h3>
+                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Action</span>
+                    </div>
+                    <p class="text-gray-700 text-sm">Removes all states from the stack.</p>
+                </div>
+
+                <!-- Condition: Empty -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">Stack is empty</h3>
+                        <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Condition</span>
+                    </div>
+                    <p class="text-gray-700 text-sm">Returns true if the stack has no saved states.</p>
+                </div>
+
+                <!-- Condition: Depth -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">Stack depth comparison</h3>
+                        <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">Condition</span>
+                    </div>
+                    <p class="text-gray-700 text-sm">Compare stack depth using operators: equals, greater than, less than.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flow Cards - Triggers -->
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Flow Cards: Triggers</h2>
+
+            <div class="space-y-4">
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">State was captured</h3>
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Trigger</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-2">Fires when a state is captured (named or push).</p>
+                    <p class="text-xs text-gray-500">Token: <code>state_name</code> (empty for stack push)</p>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">State was applied</h3>
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Trigger</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-2">Fires when a state is applied (named, pop, or peek).</p>
+                    <p class="text-xs text-gray-500">Token: <code>state_name</code> (empty for stack operations)</p>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-purple-700">Capture/Apply error occurred</h3>
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Trigger</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-2">Fires when an error occurs during capture or apply operations.</p>
+                    <p class="text-xs text-gray-500">Tokens: <code>error</code>, <code>state_name</code></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Storage Limits -->
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Storage Limits</h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="border-b border-gray-200">
+                        <tr>
+                            <th class="pb-2 text-purple-700">Limit</th>
+                            <th class="pb-2 text-purple-700">Value</th>
+                            <th class="pb-2 text-purple-700">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        <tr class="border-b border-gray-200">
+                            <td class="py-2 font-semibold">Max named states</td>
+                            <td>50</td>
+                            <td>Per State Capture Device</td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-2 font-semibold">Max stack depth</td>
+                            <td>20</td>
+                            <td>Per State Capture Device</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tip-box mt-4">
+                <p class="font-semibold text-blue-700">Storage</p>
+                <p class="text-blue-800">States are stored persistently using Homey's app settings. They survive app restarts but are removed when the device is deleted.</p>
+            </div>
+        </div>
+
+        <!-- Example Workflow -->
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Example: Doorbell Interruption</h2>
+
+            <div class="space-y-4">
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-green-600 mb-2">Flow 1: Doorbell Rings</h3>
+                    <div class="code-block text-sm">
+<pre>WHEN: Doorbell button pressed
+THEN: Push current state to stack [Living Room Lights Capture]
+THEN: Set Living Room Lights to 100%
+THEN: Wait 5 minutes
+THEN: IF stack is NOT empty
+THEN:   Pop and apply state from stack [Living Room Lights Capture]</pre>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <p class="font-semibold text-blue-700">Why use the stack?</p>
+                    <p class="text-blue-800">If the doorbell rings multiple times, each push adds to the stack. When you pop, you get back to the state just before that specific ring. This handles nested interruptions gracefully.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Handling -->
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Error Handling</h2>
+
+            <div class="space-y-3">
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-red-600 mb-2">Device not found</h3>
+                    <p class="text-gray-700 text-sm">If a device in the template has been removed, it's skipped during capture/apply. Other devices continue normally.</p>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-red-600 mb-2">Capability not found</h3>
+                    <p class="text-gray-700 text-sm">If a capability no longer exists on a device, it's skipped. The error trigger fires with details.</p>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-red-600 mb-2">State not found</h3>
+                    <p class="text-gray-700 text-sm">Applying a non-existent named state or popping an empty stack will fail and trigger the error event.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to top -->
+        <div class="text-center">
+            <a href="#top" class="text-purple-600 hover:text-purple-800">^ Back to top</a>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-gray-200 mt-12 py-6 text-center text-gray-600">
+        <p>Boolean Toolbox for Homey | <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-purple-600 hover:text-purple-300">GitHub</a></p>
+    </footer>
+</body>
+</html>

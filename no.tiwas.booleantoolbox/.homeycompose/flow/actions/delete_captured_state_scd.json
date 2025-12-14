@@ -1,0 +1,30 @@
+{
+  "id": "delete_captured_state_scd",
+  "title": {
+    "en": "Delete captured state",
+    "no": "Slett lagret tilstand"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    },
+    {
+      "name": "state_name",
+      "type": "autocomplete",
+      "title": {
+        "en": "State name",
+        "no": "Tilstandsnavn"
+      },
+      "placeholder": {
+        "en": "Select state...",
+        "no": "Velg tilstand..."
+      }
+    }
+  ],
+  "titleFormatted": {
+    "en": "Delete state [[state_name]]",
+    "no": "Slett tilstand [[state_name]]"
+  }
+}

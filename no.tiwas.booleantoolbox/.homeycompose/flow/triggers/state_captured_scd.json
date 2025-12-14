@@ -1,0 +1,32 @@
+{
+  "id": "state_captured_scd",
+  "title": {
+    "en": "State was captured",
+    "no": "Tilstand ble lagret"
+  },
+  "hint": {
+    "en": "Triggers when a state is captured or pushed to the stack.",
+    "no": "Utløses når en tilstand lagres eller legges på stakken."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "state_name",
+      "type": "string",
+      "title": {
+        "en": "State name",
+        "no": "Tilstandsnavn"
+      },
+      "example": {
+        "en": "movie_night",
+        "no": "filmkveld"
+      }
+    }
+  ]
+}

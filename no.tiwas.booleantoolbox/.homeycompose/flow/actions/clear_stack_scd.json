@@ -1,0 +1,22 @@
+{
+  "id": "clear_stack_scd",
+  "title": {
+    "en": "Clear the stack",
+    "no": "Tøm stakken"
+  },
+  "hint": {
+    "en": "Removes all states from the stack without applying them.",
+    "no": "Fjerner alle tilstander fra stakken uten å bruke dem."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    }
+  ],
+  "titleFormatted": {
+    "en": "Clear the state stack",
+    "no": "Tøm tilstandsstakken"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "push_state_scd",
+  "title": {
+    "en": "Push state onto stack",
+    "no": "Legg tilstand på stakken"
+  },
+  "hint": {
+    "en": "Captures the current state and pushes it onto the stack. Use Pop to restore it later.",
+    "no": "Lagrer nåværende tilstand og legger den på stakken. Bruk Pop for å gjenopprette senere."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    }
+  ],
+  "titleFormatted": {
+    "en": "Push current state onto stack",
+    "no": "Legg nåværende tilstand på stakken"
+  }
+}

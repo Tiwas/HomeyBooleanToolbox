@@ -1,51 +1,326 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
-  </head>
-  <body>
-    <header class="homey-header">
-      <h1 class="homey-title" data-i18n="settings.title">Settings</h1>
-      <p class="homey-subtitle" data-i18n="settings.subtitle">Global configuration for Boolean Toolbox</p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boolean Toolbox for Homey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1a202c;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .code-block {
+            background-color: #f1f5f9;
+            border-left: 4px solid #8b5cf6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: monospace;
+            color: #1e293b;
+        }
+        .beta-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Boolean Toolbox for Homey</h1>
+            <p class="text-xl text-purple-100 mb-2">Advanced boolean logic for your Homey automations.</p>
+            <p class="text-purple-200 mb-6">Create smart devices that react to multiple inputs with customizable formulas.</p>
+            <div class="flex justify-center gap-4 flex-wrap mb-4">
+                <a href="https://homey.app/a/no.tiwas.booleantoolbox" class="bg-white text-purple-700 font-semibold px-6 py-3 rounded-lg hover:bg-purple-50 transition shadow-lg">
+                    Install from Homey App Store
+                </a>
+                <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="bg-purple-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-purple-900 transition shadow-lg">
+                    View on GitHub
+                </a>
+            </div>
+            <div class="flex justify-center gap-2">
+                <span class="bg-purple-800 text-white text-sm px-3 py-1 rounded">v1.5.0</span>
+                <span class="bg-green-600 text-white text-sm px-3 py-1 rounded">Homey 5.0+</span>
+            </div>
+        </div>
     </header>
 
-    <fieldset class="homey-form-fieldset">
-      <legend class="homey-form-legend" data-i18n="settings.general.legend">General</legend>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12 flex-grow max-w-5xl">
 
-      <div class="homey-form-group">
-        <label class="homey-form-label" for="debug_mode" data-i18n="settings.debug.enable_label">Enable Debug Mode</label>
-        <div class="homey-form-input-group">
-            <input class="homey-form-checkbox" type="checkbox" id="debug_mode" />
-        </div>
-        <p class="homey-form-help" data-i18n="settings.debug.help">
-            Enables detailed logging for troubleshooting. Not recommended for daily use as it generates a lot of logs.
-        </p>
-      </div>
-    </fieldset>
+        <!-- Interactive Tools -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Interactive Tools</h2>
+            <p class="text-gray-600 mb-4">Test and build your logic before deploying:</p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <a href="emulator.html" class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 card-hover transition">
+                    <h3 class="text-lg font-semibold text-green-600 mb-2">Boolean Logic Emulator</h3>
+                    <p class="text-gray-600">Test expressions with live truth tables</p>
+                </a>
+                <a href="formula-builder.html" class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 card-hover transition">
+                    <h3 class="text-lg font-semibold text-green-600 mb-2">Formula Builder</h3>
+                    <p class="text-gray-600">Visual formula editor with validation</p>
+                </a>
+            </div>
+        </section>
 
-    <button class="homey-button-primary-full" id="save_button" data-i18n="settings.save">Save</button>
+        <!-- What's Inside -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">What's Inside</h2>
 
-    <script type="text/javascript">
-      function onHomeyReady(Homey) {
-        const debugCheckbox = document.getElementById('debug_mode');
-        const saveButton = document.getElementById('save_button');
+            <!-- Logic Units & Logic Devices -->
+            <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-6">
+                <h3 class="text-xl font-semibold text-purple-600 mb-4">Logic Units & Logic Devices</h3>
+                <p class="text-gray-700 mb-4">Two flavors of boolean logic devices - choose what fits your needs:</p>
 
-        Homey.ready();
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-left">
+                        <thead class="border-b-2 border-purple-500">
+                            <tr>
+                                <th class="pb-3 text-purple-700">Feature</th>
+                                <th class="pb-3 text-purple-700">Logic Device</th>
+                                <th class="pb-3 text-purple-700">Logic Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr class="border-b border-gray-200">
+                                <td class="py-2 font-semibold">Setup</td>
+                                <td>Visual pairing wizard</td>
+                                <td>Quick add</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-2 font-semibold">Inputs</td>
+                                <td>Dynamic (2-10, auto-expands)</td>
+                                <td>Dynamic (2-10, auto-expands)</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-2 font-semibold">Configuration</td>
+                                <td>Zone/room selection</td>
+                                <td>Manual JSON</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-2 font-semibold">Formulas</td>
+                                <td>Single formula</td>
+                                <td>Multiple formulas</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 font-semibold">Best for</td>
+                                <td>Simple setups, beginners</td>
+                                <td>Advanced users, multi-formula needs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        // Load current settings
-        Homey.get('debug_mode', function(err, value) {
-            if (err) return console.error(err); // Alerting on load can be annoying
-            debugCheckbox.checked = value === true;
-        });
+                <p class="text-gray-600 text-sm mb-2"><strong>Capabilities:</strong> <code>alarm_generic</code> (formula result), <code>onoff</code> (enable/disable)</p>
+                <p class="text-gray-500 text-sm italic">Note: Logic Unit X (2, 3, 4...10 inputs) are legacy devices with fixed input counts - use the new Logic Unit or Logic Device instead.</p>
+                <p class="mt-4"><a href="docs/devices.html" class="text-purple-600 hover:text-purple-800 font-semibold">Read detailed guide &rarr;</a></p>
+            </div>
 
-        // Save settings
-        saveButton.addEventListener('click', function() {
-            Homey.set('debug_mode', debugCheckbox.checked, function(err) {
-                if (err) return Homey.alert(err);
-                Homey.alert(Homey.__('settings.saved'), 'info');
-            });
-        });
-      }
-    </script>
-  </body>
+            <!-- State Device -->
+            <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-6">
+                <h3 class="text-xl font-semibold text-purple-600 mb-4">State Device</h3>
+                <p class="text-gray-700 mb-4">Capture and restore device states. Create "scenes" by storing the current state of multiple devices and applying them later with a single action.</p>
+                <p><a href="docs/state-device.html" class="text-purple-600 hover:text-purple-800 font-semibold">Read State Device guide &rarr;</a></p>
+            </div>
+
+            <!-- State Capture Device (BETA) -->
+            <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 border-l-4 border-l-yellow-500 mb-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <h3 class="text-xl font-semibold text-purple-600">State Capture Device</h3>
+                    <span class="beta-badge">BETA</span>
+                </div>
+                <p class="text-gray-700 mb-4">Dynamic state capture with templates, named slots, and push/pop stack operations. Unlike State Device which stores fixed values, State Capture Device captures current values at runtime.</p>
+                <ul class="list-disc ml-6 text-gray-700 mb-4 space-y-1">
+                    <li>Capture current device states to named slots</li>
+                    <li>Push/pop stack for temporary state management</li>
+                    <li>Dynamic state names with Homey tokens</li>
+                </ul>
+                <p><a href="docs/state-capture-device.html" class="text-purple-600 hover:text-purple-800 font-semibold">Read State Capture Device guide &rarr;</a></p>
+            </div>
+
+            <!-- Waiter Gates (BETA) -->
+            <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 border-l-4 border-l-yellow-500 mb-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <h3 class="text-xl font-semibold text-purple-600">Waiter Gates</h3>
+                    <span class="beta-badge">BETA</span>
+                </div>
+                <p class="text-yellow-700 text-sm mb-3">Experimental feature - I'm still exploring if these provide real value. Feedback welcome!</p>
+                <p class="text-gray-700 mb-4">Waiter Gates let your flows pause and wait for device states to change, with YES/NO outputs:</p>
+                <ul class="list-disc ml-6 text-gray-700 mb-4 space-y-1">
+                    <li><strong>Wait until device capability becomes value</strong> (condition) - Waits for a device capability to reach a target value</li>
+                    <li><strong>Control waiter gate</strong> (action) - Enable/disable/stop a waiter by ID</li>
+                    <li><strong>Wait</strong> (action) - Simple delay (basic pause without device monitoring)</li>
+                </ul>
+                <p><a href="docs/waiter-gates.html" class="text-purple-600 hover:text-purple-800 font-semibold">Read Waiter Gates guide &rarr;</a></p>
+            </div>
+        </section>
+
+        <!-- Quick Start -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Quick Start</h2>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-6">
+                <h3 class="text-lg font-semibold text-purple-600 mb-4">1. Add a Device</h3>
+                <p class="text-gray-700 mb-2"><strong>Logic Device (recommended for beginners):</strong></p>
+                <ul class="list-disc ml-6 text-gray-700 mb-4 space-y-1">
+                    <li>Go to <strong>Devices</strong> &rarr; <strong>Add Device</strong> &rarr; <strong>Boolean Toolbox</strong> &rarr; <strong>Logic Device</strong></li>
+                    <li>Choose inputs (2-10) - expands automatically if needed</li>
+                    <li>Configure inputs by selecting room &rarr; device &rarr; capability</li>
+                </ul>
+                <p class="text-gray-700 mb-2"><strong>Logic Unit (for advanced users):</strong></p>
+                <ul class="list-disc ml-6 text-gray-700 space-y-1">
+                    <li>Go to <strong>Devices</strong> &rarr; <strong>Add Device</strong> &rarr; <strong>Boolean Toolbox</strong> &rarr; <strong>Logic Unit</strong></li>
+                    <li>Configure via settings JSON (supports multiple formulas)</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-6">
+                <h3 class="text-lg font-semibold text-purple-600 mb-4">2. Write Formulas</h3>
+                <div class="code-block mb-4">
+<pre>[
+  {
+    "id": "formula_1",
+    "name": "Motion & Dark",
+    "expression": "A AND B",
+    "enabled": true,
+    "timeout": 60,
+    "firstImpression": false
+  }
+]</pre>
+                </div>
+                <p class="text-gray-700"><strong>Operators:</strong> <code>AND</code>, <code>OR</code>, <code>XOR</code>, <code>NOT</code> (plus <code>&</code>, <code>|</code>, <code>^</code>, <code>!</code>)</p>
+            </div>
+
+            <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                <h3 class="text-lg font-semibold text-purple-600 mb-4">3. Use in Flows</h3>
+                <div class="code-block">
+<pre>WHEN: Formula [motion_detected] changed to TRUE
+THEN: Turn on lights</pre>
+                </div>
+                <p class="mt-4"><a href="docs/getting-started.html" class="text-purple-600 hover:text-purple-800 font-semibold">Read complete setup guide &rarr;</a></p>
+            </div>
+        </section>
+
+        <!-- Flow Cards -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Flow Cards</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-semibold text-green-600 mb-3">Triggers (WHEN)</h3>
+                    <ul class="text-gray-700 space-y-1">
+                        <li>Formula result changed to TRUE/FALSE</li>
+                        <li>Formula timed out</li>
+                        <li>State changed <em class="text-gray-500">(Logic Device only)</em></li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-semibold text-yellow-600 mb-3">Conditions (AND)</h3>
+                    <ul class="text-gray-700 space-y-1">
+                        <li>Formula result is...</li>
+                        <li>Formula has timed out</li>
+                        <li>Wait until device capability becomes value <em class="text-gray-500">(BETA)</em></li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-semibold text-blue-600 mb-3">Actions (THEN)</h3>
+                    <ul class="text-gray-700 space-y-1">
+                        <li>Set input value for formula</li>
+                        <li>Evaluate formula / Re-evaluate all</li>
+                        <li>Control waiter gate <em class="text-gray-500">(BETA)</em></li>
+                        <li>Wait <em class="text-gray-500">(Simple delay)</em></li>
+                    </ul>
+                </div>
+            </div>
+            <p class="mt-4 text-center"><a href="docs/flow-cards.html" class="text-purple-600 hover:text-purple-800 font-semibold">See all flow cards &rarr;</a></p>
+        </section>
+
+        <!-- Key Features -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Key Features</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-semibold text-purple-600 mb-3">Dynamic Input Expansion</h3>
+                    <p class="text-gray-700 mb-2">Start with 2 inputs, grow to 10 automatically:</p>
+                    <div class="code-block text-sm">
+<pre>// Created with 2 inputs, saved with:
+{"expression": "A AND B AND C AND D"}
+// Device auto-expands to 4 inputs!</pre>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-semibold text-purple-600 mb-3">First Impression Mode</h3>
+                    <p class="text-gray-700 mb-2">Lock inputs at first value for sequence-based logic:</p>
+                    <div class="code-block text-sm">
+<pre>{"firstImpression": true, "timeout": 30}</pre>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-semibold text-purple-600 mb-3">Multiple Independent Formulas</h3>
+                    <p class="text-gray-700 mb-2">Each formula maintains its own input states (Logic Unit only):</p>
+                    <div class="code-block text-sm">
+<pre>[
+  {"id": "day_mode", "expression": "A AND B"},
+  {"id": "night_mode", "expression": "A OR B"}
+]</pre>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-semibold text-purple-600 mb-3">JSON Auto-Formatting</h3>
+                    <p class="text-gray-700">Paste ugly JSON, get beautiful formatting on save. Works in all settings fields.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Support & Community -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Support & Community</h2>
+            <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <ul class="space-y-2 text-gray-700">
+                            <li><strong>Forum:</strong> <a href="https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906" class="text-purple-600 hover:text-purple-800">Homey Community</a></li>
+                            <li><strong>Issues:</strong> <a href="https://github.com/Tiwas/HomeyBooleanToolbox/issues" class="text-purple-600 hover:text-purple-800">GitHub Issues</a></li>
+                            <li><strong>Source:</strong> <a href="https://github.com/Tiwas/HomeyBooleanToolbox" class="text-purple-600 hover:text-purple-800">GitHub Repository</a></li>
+                            <li><strong>Changelog:</strong> <a href="docs/changelog.html" class="text-purple-600 hover:text-purple-800">Version History</a></li>
+                        </ul>
+                    </div>
+                    <div class="text-center md:text-right">
+                        <p class="text-gray-700 mb-3">If this app makes your life easier, consider buying me a coffee</p>
+                        <a href="https://www.paypal.com/paypalme/tiwasno" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition">
+                            Donate via PayPal
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Credits -->
+        <section class="text-center text-gray-600">
+            <p>Created by <strong>Lars Kvanum</strong> (<a href="https://github.com/Tiwas" class="text-purple-600 hover:text-purple-800">@Tiwas</a>)</p>
+            <p class="text-sm mt-2">This app is provided as-is. Use at your own risk.</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-gray-600">
+        <p><strong>Boolean Toolbox</strong> - Smarter automations with advanced boolean logic</p>
+    </footer>
+</body>
 </html>

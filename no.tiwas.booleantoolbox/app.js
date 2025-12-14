@@ -3,6 +3,7 @@
 const Homey = require("homey");
 const Logger = require("./lib/Logger");
 const WaiterManager = require("./lib/WaiterManager");
+const CapturedStateManager = require("./lib/CapturedStateManager");
 
 // Import autocomplete helpers from BaseLogicDriver
 // NOTE: Requires BaseLogicDriver to export them correctly
@@ -97,6 +98,9 @@ module.exports = class BooleanToolboxApp extends Homey.App {
 
         // Initialize WaiterManager
         this.waiterManager = new WaiterManager(this.homey, this.logger);
+
+        // Initialize CapturedStateManager
+        this.capturedStateManager = new CapturedStateManager(this.homey, this.logger);
 
         // Register ALL Flow Cards here using generic methods
         await this.registerAllFlowCards();

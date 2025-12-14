@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .json-editor {
+            width: 100%;
+            height: 280px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre;
+            overflow: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .info-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .info-box {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2196F3;
+        }
+        .info-box h4 {
+            margin: 0 0 8px 0;
+            color: #1976D2;
+        }
+        .info-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .info-box li {
+            margin-bottom: 4px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 15px 40px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="homey-header">
+        <h1 class="homey-title" data-i18n="pair.edit_configuration.title_capture">Finalize Template</h1>
+        <p class="homey-subtitle" data-i18n="pair.edit_configuration.subtitle_capture">Review the capture template.</p>
+    </header>
+
+    <div class="homey-view-content">
+        <div class="input-group">
+            <label data-i18n="pair.name">Device Name</label>
+            <input type="text" id="device-name" value="State Capture" placeholder="My State Capture Device">
+        </div>
+
+        <div class="info-box">
+            <h4>How it works</h4>
+            <ul>
+                <li><b>Capture State:</b> Reads current values from devices and stores them</li>
+                <li><b>Apply State:</b> Restores stored values to devices</li>
+                <li><b>Push/Pop:</b> Use like a stack for temporary state storage</li>
+            </ul>
+        </div>
+
+        <p class="info-text" data-i18n="pair.edit_configuration.description_capture">
+            The template below defines which devices and capabilities can be captured.
+            You can edit this JSON if needed.
+        </p>
+
+        <textarea id="json-editor" class="json-editor"></textarea>
+    </div>
+
+    <div class="homey-view-buttons">
+        <button id="create-button" data-i18n="pair.add">Create Device</button>
+    </div>
+
+    <script type="text/javascript">
+    (function() {
+        const jsonEditorConf = document.getElementById('json-editor');
+        const deviceNameInputConf = document.getElementById('device-name');
+        const createButtonConf = document.getElementById('create-button');
+
+        function applyTranslationsConf() {
+            if (typeof Homey === 'undefined' || typeof Homey.__ !== 'function') return;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                try { el.textContent = Homey.__(key); } catch(e) {}
+            });
+        }
+
+        function onHomeyReadyConf() {
+            console.log('[Edit Config] onHomeyReadyConf called');
+            Homey.setTitle(Homey.__('pair.edit_configuration.title_capture') || 'Finalize Template');
+            applyTranslationsConf();
+
+            // Get the generated JSON from the server session
+            Homey.emit('get_generated_json', {}, function(err, result) {
+                if (err) {
+                    jsonEditorConf.value = "// Error loading configuration: " + err.message;
+                    return;
+                }
+                // Format JSON nicely
+                try {
+                    // If result is an object, stringify it
+                    if (typeof result === 'object') {
+                        jsonEditorConf.value = JSON.stringify(result, null, 2);
+                    } else {
+                        jsonEditorConf.value = result;
+                    }
+                } catch (e) {
+                    jsonEditorConf.value = result;
+                }
+            });
+        }
+
+        function waitForHomeyConf() {
+            if (typeof Homey !== 'undefined') {
+                onHomeyReadyConf();
+            } else {
+                 setTimeout(waitForHomeyConf, 100);
+            }
+        }
+        waitForHomeyConf();
+
+        createButtonConf.addEventListener('click', function() {
+            console.log('[Edit Config] Create button clicked');
+            createButtonConf.disabled = true;
+
+            const name = deviceNameInputConf.value.trim();
+            let jsonContent = jsonEditorConf.value;
+
+            // Basic validation
+            if (!name) {
+                Homey.alert(Homey.__('pair.error_name_required') || 'Please enter a device name.');
+                createButtonConf.disabled = false;
+                return;
+            }
+
+            try {
+                JSON.parse(jsonContent);
+            } catch (e) {
+                Homey.alert((Homey.__('pair.error_invalid_json') || 'Invalid JSON:') + '\n' + e.message);
+                createButtonConf.disabled = false;
+                return;
+            }
+
+            // 1. Prepare device data on backend
+            console.log('[Edit Config] Emitting create_device...');
+            Homey.emit('create_device', {
+                name: name,
+                json_data: jsonContent
+            }, function(err, deviceData) {
+                if (err) {
+                    console.error('[Edit Config] create_device backend error:', err);
+                    Homey.alert(err.message || 'Error preparing device');
+                    createButtonConf.disabled = false;
+                    return;
+                }
+
+                console.log('[Edit Config] Backend returned device data:', deviceData);
+
+                // 2. Actually create the device in Homey
+                Homey.createDevice(deviceData, function(err) {
+                    if (err) {
+                        console.error('[Edit Config] Homey.createDevice error:', err);
+                        Homey.alert(err.message || 'Error creating device');
+                        createButtonConf.disabled = false;
+                        return;
+                    }
+
+                    console.log('[Edit Config] Device created successfully. Calling done().');
+                    Homey.done();
+                });
+            });
+        });
+    })();
+    </script>
+</body>
+</html>

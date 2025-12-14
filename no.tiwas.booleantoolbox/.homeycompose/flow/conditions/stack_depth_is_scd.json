@@ -1,0 +1,74 @@
+{
+  "id": "stack_depth_is_scd",
+  "title": {
+    "en": "Stack depth is...",
+    "no": "Stakkdybde er..."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    },
+    {
+      "name": "operator",
+      "type": "dropdown",
+      "title": {
+        "en": "Comparison",
+        "no": "Sammenligning"
+      },
+      "values": [
+        {
+          "id": "eq",
+          "title": {
+            "en": "Equal to (=)",
+            "no": "Lik (=)"
+          }
+        },
+        {
+          "id": "gt",
+          "title": {
+            "en": "Greater than (>)",
+            "no": "Større enn (>)"
+          }
+        },
+        {
+          "id": "gte",
+          "title": {
+            "en": "Greater or equal (>=)",
+            "no": "Større eller lik (>=)"
+          }
+        },
+        {
+          "id": "lt",
+          "title": {
+            "en": "Less than (<)",
+            "no": "Mindre enn (<)"
+          }
+        },
+        {
+          "id": "lte",
+          "title": {
+            "en": "Less or equal (<=)",
+            "no": "Mindre eller lik (<=)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "depth",
+      "type": "number",
+      "title": {
+        "en": "Depth",
+        "no": "Dybde"
+      },
+      "min": 0,
+      "max": 100,
+      "step": 1
+    }
+  ],
+  "titleFormatted": {
+    "en": "Stack depth [[operator]] [[depth]]",
+    "no": "Stakkdybde [[operator]] [[depth]]"
+  }
+}

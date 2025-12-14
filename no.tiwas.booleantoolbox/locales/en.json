@@ -104,7 +104,10 @@
     "permission_denied": "Permission denied",
     "timeout": "Operation timeout",
     "trigger_timeout_card_failed": "Error getting/triggering formula_timeout card",
-    "unknown": "Unknown error occurred"
+    "unknown": "Unknown error occurred",
+    "state_name_required": "State name is required",
+    "state_not_found": "State not found",
+    "stack_empty": "Stack is empty"
   },
   "evaluation": {
     "initial_complete": "Initial evaluation of all formulas...",

@@ -1,0 +1,18 @@
+{
+  "id": "stack_is_empty_scd",
+  "title": {
+    "en": "Stack is empty",
+    "no": "Stakken er tom"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    }
+  ],
+  "titleFormatted": {
+    "en": "The state stack !{{is empty|is not empty}}",
+    "no": "Tilstandsstakken !{{er tom|er ikke tom}}"
+  }
+}

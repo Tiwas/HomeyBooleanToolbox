@@ -1,0 +1,44 @@
+{
+  "id": "capture_error_scd",
+  "title": {
+    "en": "Capture/Apply error occurred",
+    "no": "Feil ved lagring/bruk oppstod"
+  },
+  "hint": {
+    "en": "Triggers when an error occurs during capture or apply operations.",
+    "no": "Utløses når en feil oppstår under lagring eller bruk av tilstander."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "error",
+      "type": "string",
+      "title": {
+        "en": "Error",
+        "no": "Feil"
+      },
+      "example": {
+        "en": "Device not found",
+        "no": "Enhet ikke funnet"
+      }
+    },
+    {
+      "name": "state_name",
+      "type": "string",
+      "title": {
+        "en": "State name",
+        "no": "Tilstandsnavn"
+      },
+      "example": {
+        "en": "movie_night",
+        "no": "filmkveld"
+      }
+    }
+  ]
+}
