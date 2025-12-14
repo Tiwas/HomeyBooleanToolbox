@@ -1,6 +1,6 @@
 # Boolean Toolbox for Homey
 
-Advanced boolean logic for your Homey automations. Create smart devices that react to multiple inputs with customizable formulas.
+Advanced boolean logic and state management for your Homey automations. Create smart devices that react to multiple inputs with customizable formulas, and manage device states with powerful capture/restore functionality.
 
 [![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
 [![Homey](https://img.shields.io/badge/Homey-5.0+-green.svg)](https://homey.app)
@@ -13,68 +13,114 @@ Test and build your logic before deploying:
 
 - **[Boolean Logic Emulator](https://tiwas.github.io/HomeyBooleanToolbox/emulator.html)** - Test expressions with live truth tables
 - **[Formula Builder](https://tiwas.github.io/HomeyBooleanToolbox/formula-builder.html)** - Visual formula editor with validation
+- **[Boolean Editor](https://tiwas.github.io/HomeyBooleanToolbox/homey-boolean-editor.html)** - Advanced editor for boolean device configurations
+- **[State Editor](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-editor.html)** - Visual editor for State Device configurations
+- **[State Editor (API)](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-editor-api.html)** - State editor with Homey API integration
 
 ---
 
-## 📦 What's Inside
+## 📦 Device Types
 
-### Logic Units & Logic Devices
+### Logic Device
 
-Two flavors of boolean logic devices - choose what fits your needs:
+The easiest way to create boolean logic with a visual pairing wizard.
 
-| Feature | Logic Device | Logic Unit |
-|---------|-------------|------------|
-| **Setup** | Visual pairing wizard | Quick add |
-| **Inputs** | Dynamic (2-10, auto-expands) | Dynamic (2-10, auto-expands) |
-| **Configuration** | Zone/room selection | Manual JSON |
-| **Formulas** | Single formula | Multiple formulas |
-| **Best for** | Simple setups, beginners | Advanced users, multi-formula needs |
+| Feature | Description |
+|---------|-------------|
+| **Setup** | Visual pairing wizard - select zone → device → capability |
+| **Inputs** | Dynamic (2-10, auto-expands based on formula) |
+| **Formulas** | Single formula per device |
+| **Best for** | Simple setups, beginners |
 
-**Capabilities:**
-- `alarm_generic` - Formula result (true/false)
-- `onoff` - Enable/disable device
-
-**Important:** Within a formula, there is no isolation between flows. This is by design to allow formulas to work across flows. If you need isolated formulas that can be used in multiple places within the same flow, create multiple copies of the device with different names.
-
-*Note: Logic Unit X (2, 3, 4...10 inputs) are legacy devices with fixed input counts - use the new Logic Unit or Logic Device instead.*
-
-[📚 Read detailed guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/devices.html)
+[📚 Read Logic Device guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/devices.html)
 
 ---
 
-### ⏳ Waiter Gates (BETA)
+### Logic Unit
 
-**⚠️ Experimental feature** - I'm still exploring if these provide real value. Feedback welcome!
+Powerful device for advanced users who need multiple formulas or prefer JSON configuration.
 
-Waiter Gates let your flows pause and wait for device states to change, with YES/NO outputs:
+| Feature | Description |
+|---------|-------------|
+| **Setup** | Quick add with manual JSON configuration |
+| **Inputs** | Dynamic (2-10, auto-expands based on formula) |
+| **Formulas** | Multiple independent formulas per device |
+| **Best for** | Advanced users, multi-formula needs |
 
-**Flow Cards:**
-- **Wait until device capability becomes value** *(condition)* - Waits for a device capability to reach a target value
-  - ✅ YES path: Value matches (or already matched)
-  - ❌ NO path: Timeout expired
-- **Control waiter gate** *(action)* - Enable/disable/stop a waiter by ID
-- **Wait** *(action)* - Simple delay (BONUS: basic pause without device monitoring)
+*Note: Logic Unit X (2, 3, 4...10 inputs) are legacy devices with fixed input counts - use the new Logic Unit instead.*
+
+[📚 Read Logic Unit guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/devices.html)
+
+---
+
+### State Device
+
+Capture and restore device states. Create "scenes" by storing the current state of multiple devices and applying them later with a single action.
+
+| Feature | Description |
+|---------|-------------|
+| **Setup** | Visual pairing wizard - select zones and devices |
+| **Values** | Fixed at setup time |
+| **Use case** | Predefined scenes (Movie Night, Cleaning, etc.) |
+
+**Key features:**
+- Capture current state of multiple devices across zones
+- Apply stored state with a single flow action
+- "Reset All" option to turn off other State Devices first
+- Hierarchical execution with configurable delays
+
+[📚 Read State Device guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-device.html)
+
+---
+
+### State Capture Device (BETA)
+
+Dynamic state capture with templates, named slots, and push/pop stack operations.
+
+| Feature | Description |
+|---------|-------------|
+| **Setup** | Visual pairing wizard - define template of devices/capabilities |
+| **Values** | Captured at runtime (not fixed) |
+| **Named states** | Store multiple named snapshots |
+| **Stack** | Push/pop for temporary state management |
+
+**Key features:**
+- Capture current device states to named slots at runtime
+- Push/pop stack for temporary state changes (e.g., doorbell interruption)
+- Dynamic state names with Homey tokens support
+- Max 50 named states, max 20 stack depth per device
 
 **Example use case:**
 ```
-WHEN motion detected
-AND wait until [Living Room Light].onoff becomes true (timeout: 5 minutes)
-THEN announce "Light turned on!"
-ELSE notify "Light didn't turn on - check bulb?"
+WHEN: Doorbell rings
+THEN: Push current state to stack
+THEN: Set all lights to 100%
+THEN: Wait 5 minutes
+THEN: Pop state (restore previous)
 ```
 
-**How it works:**
-1. Flow hits the wait condition and checks current value
-2. If already matches → Continue immediately (YES path)
-3. If not → Registers listener and waits for change
-4. On match → YES path | On timeout → NO path
+[📚 Read State Capture Device guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-capture-device.html)
 
-**Known limitations:**
-- IDs must be unique across flows (or leave empty for auto-generation)
-- Active waiters consume memory
-- Still figuring out real-world usefulness 🤔
+---
 
-[📚 Read waiter gates guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/waiter-gates.html)
+### Waiter Gates (BETA)
+
+**⚠️ Experimental feature** - Feedback welcome!
+
+Waiter Gates let your flows pause and wait for device states to change, with YES/NO outputs:
+
+| Feature | Description |
+|---------|-------------|
+| **Wait condition** | Pause flow until device capability reaches target value |
+| **YES path** | Value matches (or already matched) |
+| **NO path** | Timeout expired before match |
+
+**Flow Cards:**
+- **Wait until device capability becomes value** *(condition)* - Waits with timeout
+- **Control waiter gate** *(action)* - Enable/disable/stop a waiter by ID
+- **Wait** *(action)* - Simple delay (basic pause without device monitoring)
+
+[📚 Read Waiter Gates guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/waiter-gates.html)
 
 ---
 
@@ -84,18 +130,13 @@ ELSE notify "Light didn't turn on - check bulb?"
 
 **Logic Device (recommended for beginners):**
 - Go to **Devices** → **Add Device** → **Boolean Toolbox** → **Logic Device**
-- Choose inputs (2-10) - expands automatically if needed
-- Configure inputs by selecting room → device → capability
-- Save and configure formula in device settings (single formula)
+- Follow the pairing wizard to select inputs
+- Configure formula in device settings
 
-**Logic Unit (for advanced users):**
-- Go to **Devices** → **Add Device** → **Boolean Toolbox** → **Logic Unit**
-- Configure via settings JSON (supports multiple formulas)
-- Inputs expand automatically based on formula requirements
+**Other devices:**
+- Logic Unit, State Device, State Capture Device - same process, different wizards
 
-*Legacy: Logic Unit X (2, 3, 4...10 inputs) have fixed input counts - use the new devices instead.*
-
-### 2. Write Formulas
+### 2. Write Formulas (Logic devices)
 
 ```json
 [
@@ -104,8 +145,7 @@ ELSE notify "Light didn't turn on - check bulb?"
     "name": "Motion & Dark",
     "expression": "A AND B",
     "enabled": true,
-    "timeout": 60,
-    "firstImpression": false
+    "timeout": 60
   }
 ]
 ```
@@ -129,17 +169,22 @@ THEN: Turn on lights
 - Formula result changed to TRUE/FALSE
 - Formula timed out
 - State changed *(Logic Device only)*
+- State was captured/applied *(State Capture Device)*
 
 ### Conditions (AND)
 - Formula result is...
 - Formula has timed out
+- Captured state exists *(State Capture Device)*
+- Stack is empty / Stack depth is... *(State Capture Device)*
 - **Wait until device capability becomes value** *(Waiter Gates - BETA)*
 
 ### Actions (THEN)
 - Set input value for formula
 - Evaluate formula / Re-evaluate all
+- Apply state *(State Device)*
+- Capture/Apply/Delete state, Push/Pop/Peek/Clear stack *(State Capture Device)*
 - **Control waiter gate** *(Waiter Gates - BETA)*
-- **Wait** *(Simple delay - BONUS)*
+- **Wait** *(Simple delay)*
 
 [📚 See all flow cards →](https://tiwas.github.io/HomeyBooleanToolbox/docs/flow-cards.html)
 
@@ -150,9 +195,8 @@ THEN: Turn on lights
 ### Dynamic Input Expansion
 Start with 2 inputs, grow to 10 automatically:
 ```json
-// Created with 2 inputs, saved with:
 {"expression": "A AND B AND C AND D"}
-// Device auto-expands to 4 inputs! ✨
+// Device auto-expands to 4 inputs!
 ```
 
 ### First Impression Mode
@@ -170,12 +214,20 @@ Each formula maintains its own input states:
 ]
 ```
 
-**Note:** Formulas are not isolated between flows - they can be triggered from any flow. To use the same logic in multiple places within one flow, create separate device copies.
-
 ### JSON Auto-Formatting
 Paste ugly JSON, get beautiful formatting on save. Works in all settings fields.
 
-[📚 Read advanced features →](https://tiwas.github.io/HomeyBooleanToolbox/docs/advanced.html)
+---
+
+## 📚 Documentation
+
+- [Getting Started](https://tiwas.github.io/HomeyBooleanToolbox/docs/getting-started.html)
+- [Device Types Guide](https://tiwas.github.io/HomeyBooleanToolbox/docs/devices.html)
+- [State Device](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-device.html)
+- [State Capture Device (BETA)](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-capture-device.html)
+- [Waiter Gates (BETA)](https://tiwas.github.io/HomeyBooleanToolbox/docs/waiter-gates.html)
+- [Flow Cards Reference](https://tiwas.github.io/HomeyBooleanToolbox/docs/flow-cards.html)
+- [Changelog](https://tiwas.github.io/HomeyBooleanToolbox/docs/changelog.html)
 
 ---
 
@@ -184,7 +236,6 @@ Paste ugly JSON, get beautiful formatting on save. Works in all settings fields.
 - **Forum:** [Homey Community](https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906)
 - **Issues:** [GitHub Issues](https://github.com/Tiwas/HomeyBooleanToolbox/issues)
 - **Source:** [GitHub Repository](https://github.com/Tiwas/HomeyBooleanToolbox)
-- **Changelog:** [Version History](https://tiwas.github.io/HomeyBooleanToolbox/docs/changelog.html)
 
 ### Support Development
 
