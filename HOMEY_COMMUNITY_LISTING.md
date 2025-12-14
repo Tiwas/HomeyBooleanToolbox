@@ -1,6 +1,6 @@
 ![large|500x350](upload://p5hslvVrgjtVwqB76PnfDcsZAWL.jpeg)
 
-**Boolean Toolbox v1.5.0 is now available in the Homey App Store!**
+**Boolean Toolbox v1.6.5 is now available in the Homey App Store!**
 
 Replace complex flow networks with powerful logic devices controlled by dynamic formulas. Make your flows cleaner, more readable, and easier to maintain.
 
@@ -80,7 +80,7 @@ Reduced logging verbosity and improved code documentation
 
 ## Installation and Links
 
-* **Homey App Store:** <a href="https://homey.app/en-no/app/no.tiwas.booleantoolbox/Boolean-Toolbox/" target="_blank">Install Boolean Toolbox v1.5.0</a>
+* **Homey App Store:** <a href="https://homey.app/en-no/app/no.tiwas.booleantoolbox/Boolean-Toolbox/" target="_blank">Install Boolean Toolbox v1.6.5</a>
 * **Install test version:** <a href="https://homey.app/a/no.tiwas.booleantoolbox/test/" target="_blank">Install Boolean Toolbox v1.7.0 (test)</a>
 * **GitHub Repo (source code):** <a href="https://github.com/tiwas/HomeyBooleanToolbox" target="_blank">https://github.com/tiwas/HomeyBooleanToolbox</a>
 * **Online Emulator:** <a href="https://tiwas.github.io/HomeyBooleanToolbox/emulator.html" target="_blank">https://tiwas.github.io/HomeyBooleanToolbox/emulator.html</a>
