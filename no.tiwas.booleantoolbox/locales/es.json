@@ -497,7 +497,7 @@
     "api_unavailable": "API de la aplicación no disponible para sondear",
     "device_not_found": "Dispositivo no encontrado: {device}",
     "failed": "No se pudo sondear {input}:",
-    "input": "Sondeando entrada \"{input}\" del dispositivo \"{device}\" capacidad \"{capability}"",
+    "input": "Sondeando entrada \"{input}\" del dispositivo \"{device}\" capacidad \"{capability}\"",
     "no_links": "No hay inputLinks disponibles para sondear",
     "no_value": "Sin valor para {input} ({capability})",
     "value_received": "Sondeado {input}: {value} → {boolean}"
