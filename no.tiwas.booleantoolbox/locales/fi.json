@@ -497,7 +497,7 @@
     "api_unavailable": "Sovelluksen API ei ole käytettävissä pollaamiseen",
     "device_not_found": "Laitetta ei löydy: {device}",
     "failed": "Tiedonhaku epäonnistui kohteelle {input}:",
-    "input": "Pollataan tuloa \"{input}\" laitteesta \"{device}\" kyvykkyys \"{capability}"",
+    "input": "Pollataan tuloa \"{input}\" laitteesta \"{device}\" kyvykkyys \"{capability}\"",
     "no_links": "Ei inputLinks-määrityksiä pollattavaksi",
     "no_value": "Ei arvoa kohteelle {input} ({capability})",
     "value_received": "Pollattu {input}: {value} → {boolean}"

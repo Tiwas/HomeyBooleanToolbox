@@ -497,7 +497,7 @@
     "api_unavailable": "L'API de l'application n'est pas disponible pour l'interrogation",
     "device_not_found": "Appareil non trouvé: {device}",
     "failed": "Échec de l'interrogation de {input}:",
-    "input": "Interrogation de l'entrée \"{input}\" de l'appareil \"{device}\" capacité \"{capability}"",
+    "input": "Interrogation de l'entrée \"{input}\" de l'appareil \"{device}\" capacité \"{capability}\"",
     "no_links": "Aucun inputLinks disponible pour l'interrogation",
     "no_value": "Aucune valeur pour {input} ({capability})",
     "value_received": "Interrogé {input}: {value} → {boolean}"

@@ -497,7 +497,7 @@
     "api_unavailable": "API app non disponibile per il polling",
     "device_not_found": "Dispositivo non trovato: {device}",
     "failed": "Polling fallito per {input}:",
-    "input": "Polling input \"{input}\" dal dispositivo \"{device}\" capacità \"{capability}"",
+    "input": "Polling input \"{input}\" dal dispositivo \"{device}\" capacità \"{capability}\"",
     "no_links": "Nessun inputLink disponibile per il polling",
     "no_value": "Nessun valore per {input} ({capability})",
     "value_received": "Polled {input}: {value} → {boolean}"
