@@ -23,6 +23,9 @@ no.tiwas.booleantoolbox.old/
 # Other images
 extra_images/
 
+# Claude Code
+.claude/
+
 # Misc
 codebase.*
 codebase-manifest.*
