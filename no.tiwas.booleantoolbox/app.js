@@ -43,18 +43,10 @@ module.exports = class BooleanToolboxApp extends Homey.App {
         }
 
         // --- DEBUG SETTING ---
-        const debugMode = this.homey.settings.get('debug_mode');
+        // Respect user's debug_mode setting from app settings
+        const debugMode = this.homey.settings.get('debug_mode') === true;
+        this.logger.setLevel(debugMode ? 'DEBUG' : 'INFO');
 
-        // Force debug mode off per request
-        if (debugMode === true) {
-            try {
-                this.homey.settings.set('debug_mode', false);
-            } catch (e) {
-                this.logger.warn('Unable to update debug_mode setting', { message: e.message });
-            }
-        }
-        this.logger.setLevel('INFO');
-        
         this.homey.settings.on('set', (key, value) => {
             if (key === 'debug_mode') {
                 const level = value ? 'DEBUG' : 'INFO';
