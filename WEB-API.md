@@ -1,17 +1,17 @@
 # Status for Web API-integrasjon i State Editor
 
-Denne filen oppsummerer status og neste steg for `docs/state-editor-api.html` etter integrasjon av Homey Web API.
+Denne filen oppsummerer status og neste steg for `tools/state-editor-api.html` etter integrasjon av Homey Web API.
 
 ---
 
-## 1. Oppdatert `homey-boolean-editor.html`
+## 1. Oppdatert `tools/boolean-editor.html`
 
-*   Filen `homey-boolean-editor.html` (i rotmappen) er nå konvertert til et **lyst tema** for å matche resten av dokumentasjonssidene.
+*   Filen `tools/boolean-editor.html` (i rotmappen) er nå konvertert til et **lyst tema** for å matche resten av dokumentasjonssidene.
 *   Endringene er committet og pushet.
 
-## 2. Implementert API-integrasjon i `docs/state-editor-api.html`
+## 2. Implementert API-integrasjon i `tools/state-editor-api.html`
 
-Den nye siden `docs/state-editor-api.html` bruker nå **AthomCloudAPI** for autentisering, som er den anbefalte metoden for web-applikasjoner.
+Den nye siden `tools/state-editor-api.html` bruker nå **AthomCloudAPI** for autentisering, som er den anbefalte metoden for web-applikasjoner.
 
 *   **Client ID / Client Secret input:** Brukeren kan lime inn sine API-credentials direkte i grensesnittet. Disse lagres lokalt i nettleseren (`localStorage`) for bekvemmelighet.
 *   **OAuth Login:** Bruker `AthomCloudAPI` for å håndtere innlogging mot Homey Cloud.
@@ -43,5 +43,5 @@ Den nye siden `docs/state-editor-api.html` bruker nå **AthomCloudAPI** for aute
 ## Neste steg
 
 1.  **Verifisering:** Test at innlogging og utlisting av enheter fungerer fra GitHub Pages.
-    *   NB: Redirect URL må være korrekt registrert på [Athom Developer Portal](https://tools.developer.homey.app/api/clients) for at innlogging skal virke. URL-en vil være: `https://tiwas.github.io/SmartComponentsToolkit/docs/state-editor-api.html`.
+    *   NB: Redirect URL må være korrekt registrert på [Athom Developer Portal](https://tools.developer.homey.app/api/clients) for at innlogging skal virke. URL-en vil være: `https://tiwas.github.io/SmartComponentsToolkit/tools/state-editor-api.html`.
 2.  **Opprydding:** Vurdere å fjerne fallback-koden for manuell token-uthenting hvis SDK-metoden bekreftes stabil.

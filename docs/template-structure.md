@@ -201,27 +201,29 @@ Create these under `/docs/` directory:
 </html>
 ```
 
-## Tools Verification Status
+## Current File Structure (v1.8.0)
 
-### ✅ Boolean Logic Emulator (`emulator.html`)
-- **Status:** Functional
-- **Features:** Tri-state switches, live truth tables, expression testing
-- **Recommendation:** Keep as-is, link from docs
+```
+/                           # Root
+├── index.html              # Landing page
+├── README.md               # Main documentation
+├── CHANGELOG.md            # Version history
+├── docs/                   # Documentation pages
+│   ├── getting-started.html
+│   ├── devices.html
+│   ├── flow-cards.html
+│   ├── state-device.html
+│   ├── state-capture-device.html
+│   ├── waiter-gates.html
+│   └── changelog.html
+└── tools/                  # Interactive tools
+    ├── emulator.html       # Boolean Logic Emulator
+    ├── formula-builder.html # Formula Builder
+    ├── boolean-editor.html  # Boolean Editor
+    ├── state-editor.html    # State Editor
+    └── state-editor-api.html # State Editor (API)
+```
 
-### ✅ Formula Builder (`formula-builder.html`)
-- **Status:** Functional
-- **Features:** Visual editor, validation, truth tables
-- **Recommendation:** Keep as-is, link from docs
+## Tools Status
 
-Both tools are working and use consistent styling. No changes needed.
-
-## Next Steps
-
-1. Create `docs/` directory in repository
-2. Start with `getting-started.html` (highest priority)
-3. Reuse styling from `emulator.html` for consistency
-4. Add screenshots/diagrams as needed
-5. Test on mobile devices
-6. Update README.md links once pages are live
-
-Would you like me to create a starter template for any of these pages?
+All tools are functional and available at `https://tiwas.github.io/SmartComponentsToolkit/tools/`

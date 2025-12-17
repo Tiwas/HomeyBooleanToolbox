@@ -6,7 +6,25 @@ All notable changes to Smart (Components) Toolkit for Homey will be documented i
 
 ---
 
-## [1.7.0] - December 2025 (Current)
+## [1.8.0] - December 2025 (Current)
+
+### 📦 Device Types Overview
+
+This release includes improved documentation with clear descriptions of all device types:
+
+- **Logic Device** - Boolean logic with visual pairing wizard. Combine multiple device states (motion sensors, door contacts, etc.) into a single TRUE/FALSE output using formulas like `A AND B`.
+- **Logic Unit** - Advanced boolean logic with multiple formulas per device. For power users who need JSON configuration.
+- **State Device** - Scene management. Capture device states during setup and apply them later with a single action.
+- **State Capture Device** (BETA) - Dynamic state capture at runtime. Push/pop stack for temporary state changes.
+- **Waiter Gates** (BETA) - Flow control that pauses and waits for device states to change.
+
+### 🔗 Documentation
+- Full documentation available at: https://tiwas.github.io/SmartComponentsToolkit/
+- GitHub repository renamed from HomeyBooleanToolbox to SmartComponentsToolkit
+
+---
+
+## [1.7.0] - December 2025
 
 ### 🎨 Rebranding
 - **App renamed from "Boolean Toolbox" to "Smart (Components) Toolkit"**

@@ -22,7 +22,7 @@
     *   Save now retries with a `strategy: 'local'` authentication before falling back to manual copy/import, with clearer error messaging.
 
 ### Current Status:
-*   **State Editor API (`docs/state-editor-api.html`):**
+*   **State Editor API (`tools/state-editor-api.html`):**
     *   **Authentication:** Uses default scopes to ensure device listing works.
     *   **Listing:** Successfully lists Homeys and State Devices.
     *   **Reading:** Successfully loads configuration from devices.
@@ -34,5 +34,5 @@
 2.  **User Verification:** User should verify whether the local-auth retry succeeds in their environment; otherwise confirm the manual copy-paste fallback is acceptable.
 
 ### File Tracker:
-*   `docs/state-editor-api.html` (Modified - Feature implementation & Fallback)
+*   `tools/state-editor-api.html` (Modified - Feature implementation & Fallback)
 *   `SESSION_SUMMARY.md` (This file - Updated)

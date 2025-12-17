@@ -8,11 +8,11 @@ A web-based editor for managing Homey Boolean Toolbox devices and creating boole
 
 ### Option 1: Use GitHub Pages (Recommended)
 
-The app is already hosted at: **https://tiwas.github.io/SmartComponentsToolkit/homey-boolean-editor.html**
+The app is already hosted at: **https://tiwas.github.io/SmartComponentsToolkit/tools/boolean-editor.html**
 
 ### Option 2: Host it yourself
 
-1. Download the `homey-boolean-editor.html` file
+1. Download the `tools/boolean-editor.html` file
 2. Upload it to any web hosting service (GitHub Pages, Netlify, Vercel, etc.)
 3. Note your hosted URL - you'll need it for the next step
 
@@ -24,7 +24,7 @@ The app is already hosted at: **https://tiwas.github.io/SmartComponentsToolkit/h
 2. Click "Add client" or "Create new client"
 3. Fill in the form:
    - **Name**: `Boolean Editor` (or any name you prefer)
-   - **Redirect URL**: `https://tiwas.github.io/SmartComponentsToolkit/homey-boolean-editor.html`
+   - **Redirect URL**: `https://tiwas.github.io/SmartComponentsToolkit/tools/boolean-editor.html`
      - ⚠️ **Important**: Use the exact URL where you host the app
      - If hosting yourself, replace with your own URL
    - **Scopes**: Check the following boxes:
@@ -36,7 +36,7 @@ The app is already hosted at: **https://tiwas.github.io/SmartComponentsToolkit/h
 
 ### Step 2: Configure the App
 
-1. Open the app in your browser: [Boolean Editor](https://tiwas.github.io/SmartComponentsToolkit/homey-boolean-editor.html)
+1. Open the app in your browser: [Boolean Editor](https://tiwas.github.io/SmartComponentsToolkit/tools/boolean-editor.html)
 2. You'll see the API Setup screen
 3. Paste your **Client ID** and **Client Secret** from Step 1
 4. Click "Save and Continue"
@@ -45,7 +45,7 @@ The app is already hosted at: **https://tiwas.github.io/SmartComponentsToolkit/h
 ## 📁 File Structure
 
 ```
-homey-boolean-editor.html    # Main application (all-in-one file)
+tools/boolean-editor.html    # Main application (all-in-one file)
 resources/
   lang.en.json               # English translations
   lang.no.json               # Norwegian translations

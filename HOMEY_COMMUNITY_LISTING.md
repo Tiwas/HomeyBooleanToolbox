@@ -1,20 +1,30 @@
 ![large|500x350](upload://p5hslvVrgjtVwqB76PnfDcsZAWL.jpeg)
 
-# Smart (Components) Toolkit v1.7.0
+# Smart (Components) Toolkit v1.8.0
 
-> **🎨 New Name!** This app was previously called "Boolean Toolbox". It has been renamed to "Smart (Components) Toolkit" to better reflect its expanded functionality - the app now includes state management, scene control, and flow utilities in addition to boolean logic.
+> **📚 Full Documentation:** https://tiwas.github.io/SmartComponentsToolkit/
 
 Replace complex flow networks with powerful logic devices controlled by dynamic formulas. Make your flows cleaner, more readable, and easier to maintain.
 
-<a href="https://tiwas.github.io/SmartComponentsToolkit/" target="_blank">→ Full Documentation & Tools</a>
+<a href="https://tiwas.github.io/SmartComponentsToolkit/" target="_blank">→ Full Documentation & Interactive Tools</a>
 
 ---
 
-## -NEWS- State Capture Device (BETA)
+## Device Types at a Glance
 
-**Available on the test branch (v1.7.0)**
+| Device | Purpose |
+|--------|---------|
+| **Logic Device** | Boolean logic with visual wizard. Combine device states into TRUE/FALSE using formulas like `A AND B`. |
+| **Logic Unit** | Advanced boolean logic with multiple formulas per device. JSON configuration. |
+| **State Device** | Scene management. Capture states at setup, apply with one action. |
+| **State Capture Device** | Dynamic state capture at runtime. Push/pop stack for temporary changes. (BETA) |
+| **Waiter Gates** | Flow control that pauses and waits for device states to change. (BETA) |
 
-A new device type for dynamic state capture with templates, named slots, and push/pop stack operations:
+---
+
+## State Capture Device (BETA)
+
+A device type for dynamic state capture with templates, named slots, and push/pop stack operations:
 
 - **Template-based:** Define which devices/capabilities to capture (values read at runtime)
 - **Named states:** Store up to 50 named snapshots per device
@@ -85,8 +95,8 @@ Reduced logging verbosity and improved code documentation
 * **Homey App Store:** <a href="https://homey.app/en-no/app/no.tiwas.booleantoolbox/" target="_blank">Install Smart (Components) Toolkit</a>
 * **Install test version:** <a href="https://homey.app/a/no.tiwas.booleantoolbox/test/" target="_blank">Install test version</a>
 * **GitHub Repo (source code):** <a href="https://github.com/tiwas/SmartComponentsToolkit" target="_blank">https://github.com/tiwas/SmartComponentsToolkit</a>
-* **Online Emulator:** <a href="https://tiwas.github.io/SmartComponentsToolkit/emulator.html" target="_blank">https://tiwas.github.io/SmartComponentsToolkit/emulator.html</a>
-* **Formula Builder:** <a href="https://tiwas.github.io/SmartComponentsToolkit/formula-builder.html" target="_blank">https://tiwas.github.io/SmartComponentsToolkit/formula-builder.html</a>
+* **Online Emulator:** <a href="https://tiwas.github.io/SmartComponentsToolkit/tools/emulator.html" target="_blank">https://tiwas.github.io/SmartComponentsToolkit/tools/emulator.html</a>
+* **Formula Builder:** <a href="https://tiwas.github.io/SmartComponentsToolkit/tools/formula-builder.html" target="_blank">https://tiwas.github.io/SmartComponentsToolkit/tools/formula-builder.html</a>
 
 ---
 

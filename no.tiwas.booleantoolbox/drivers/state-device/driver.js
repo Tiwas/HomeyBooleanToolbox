@@ -211,7 +211,7 @@ class StateDriver extends Homey.Driver {
 
             generatedConfig = {
                 _meta: {
-                    editor: "https://tiwas.github.io/SmartComponentsToolkit/docs/state-editor.html",
+                    editor: "https://tiwas.github.io/SmartComponentsToolkit/tools/state-editor.html",
                     documentation: "https://tiwas.github.io/SmartComponentsToolkit/docs/state-device.html"
                 },
                 config: {

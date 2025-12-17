@@ -2,9 +2,11 @@
 
 > **Name Change:** This app was previously known as "Boolean Toolbox". The name was changed to "Smart (Components) Toolkit" to better reflect the expanded functionality beyond just boolean logic - now including state management, scene control, and flow utilities.
 
+> **📚 Full Documentation:** https://tiwas.github.io/SmartComponentsToolkit/
+
 Advanced logic and state management for your Homey automations. Create smart devices that react to multiple inputs with customizable formulas, and manage device states with powerful capture/restore functionality.
 
-[![Version](https://img.shields.io/badge/version-1.7.0-blue.svg)](https://github.com/Tiwas/SmartComponentsToolkit)
+[![Version](https://img.shields.io/badge/version-1.8.0-blue.svg)](https://github.com/Tiwas/SmartComponentsToolkit)
 [![Homey](https://img.shields.io/badge/Homey-5.0+-green.svg)](https://homey.app)
 
 ---
@@ -13,11 +15,11 @@ Advanced logic and state management for your Homey automations. Create smart dev
 
 Test and build your logic before deploying:
 
-- **[Boolean Logic Emulator](https://tiwas.github.io/SmartComponentsToolkit/emulator.html)** - Test expressions with live truth tables
-- **[Formula Builder](https://tiwas.github.io/SmartComponentsToolkit/formula-builder.html)** - Visual formula editor with validation
-- **[Boolean Editor](https://tiwas.github.io/SmartComponentsToolkit/homey-boolean-editor.html)** - Advanced editor for boolean device configurations
-- **[State Editor](https://tiwas.github.io/SmartComponentsToolkit/docs/state-editor.html)** - Visual editor for State Device configurations
-- **[State Editor (API)](https://tiwas.github.io/SmartComponentsToolkit/docs/state-editor-api.html)** - State editor with Homey API integration *(eternal beta)*
+- **[Boolean Logic Emulator](https://tiwas.github.io/SmartComponentsToolkit/tools/emulator.html)** - Test expressions with live truth tables
+- **[Formula Builder](https://tiwas.github.io/SmartComponentsToolkit/tools/formula-builder.html)** - Visual formula editor with validation
+- **[Boolean Editor](https://tiwas.github.io/SmartComponentsToolkit/tools/boolean-editor.html)** - Advanced editor for boolean device configurations
+- **[State Editor](https://tiwas.github.io/SmartComponentsToolkit/tools/state-editor.html)** - Visual editor for State Device configurations
+- **[State Editor (API)](https://tiwas.github.io/SmartComponentsToolkit/tools/state-editor-api.html)** - State editor with Homey API integration *(eternal beta)*
 
 ---
 
