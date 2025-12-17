@@ -4,4 +4,4 @@ Standard Homey Flows are powerful, but creating complex logic can quickly become
 
 Boolean Toolbox solves this by providing a virtual "Logic Unit" device. Instead of wiring together multiple cards, you define your entire logic in a single text-based expression. The device waits for all necessary input signals, evaluates the expression, and gives you a single, predictable true or false output.
 
-NEW IN BETA: State Capture Device - Dynamically capture device states at runtime using templates. Store multiple named states and use stack-based push/pop operations for temporary state management. See docs/state-capture-device.html for details.
+State Capture Device - Dynamically capture device states at runtime using templates. Store multiple named states and use stack-based push/pop operations for temporary state management. See docs/state-capture-device.html for details.

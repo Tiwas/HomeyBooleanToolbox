@@ -17,12 +17,12 @@ Replace complex flow networks with powerful logic devices controlled by dynamic 
 | **Logic Device** | Boolean logic with visual wizard. Combine device states into TRUE/FALSE using formulas like `A AND B`. |
 | **Logic Unit** | Advanced boolean logic with multiple formulas per device. JSON configuration. |
 | **State Device** | Scene management. Capture states at setup, apply with one action. |
-| **State Capture Device** | Dynamic state capture at runtime. Push/pop stack for temporary changes. (BETA) |
-| **Waiter Gates** | Flow control that pauses and waits for device states to change. (BETA) |
+| **State Capture Device** | Dynamic state capture at runtime. Push/pop stack for temporary changes. |
+| **Waiter Gates** | Flow control that pauses and waits for device states to change. |
 
 ---
 
-## State Capture Device (BETA)
+## State Capture Device
 
 A device type for dynamic state capture with templates, named slots, and push/pop stack operations:
 

@@ -77,15 +77,9 @@
     <div class="container mx-auto px-4 py-8 max-w-4xl flex-grow">
         <div class="flex items-center gap-3 mb-2">
             <h1 class="text-4xl font-bold text-gray-900">State Capture Device</h1>
-            <span class="beta-badge">BETA</span>
         </div>
         <p class="text-gray-600 mb-8">Dynamically capture and restore device states using templates, named slots, and stack operations.</p>
 
-        <!-- Beta Warning -->
-        <div class="warning-box mb-6">
-            <p class="font-semibold text-red-700 mb-1">BETA Feature</p>
-            <p class="text-red-800">This feature is currently in beta. The API and behavior may change in future versions. Please report any issues on GitHub.</p>
-        </div>
 
         <!-- Introduction -->
         <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
@@ -131,6 +125,102 @@
         </div>
 
         <!-- Use Cases -->
+
+            <h3 class="text-lg font-semibold mb-3 mt-6 text-purple-700">Advantages and Limitations</h3>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-green-700 mb-2">✓ Advantages</h4>
+                    <ul class="text-gray-700 text-sm space-y-1">
+                        <li>• Multiple named states on a single device</li>
+                        <li>• Dynamic capture at runtime (not fixed at setup)</li>
+                        <li>• Stack for temporary "undo" operations</li>
+                        <li>• Use Homey tokens for dynamic state names</li>
+                    </ul>
+                </div>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-yellow-700 mb-2">⚠ Limitations</h4>
+                    <ul class="text-gray-700 text-sm space-y-1">
+                        <li>• Cannot be activated like a regular device</li>
+                        <li>• Requires a flow to capture/apply states</li>
+                        <li>• State must be saved before it can be used</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two Separate Systems -->
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200 border-l-4 border-l-red-500">
+            <h2 class="text-2xl font-semibold mb-4 text-red-600">⚠ Important: Two Separate Systems</h2>
+            <p class="mb-4 text-gray-700">The State Capture Device has <strong>two completely separate storage systems</strong> that do NOT interact with each other:</p>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
+                    <h3 class="font-bold text-blue-700 mb-2">📁 Named States (Persistent)</h3>
+                    <p class="text-sm text-gray-700 mb-2">Permanent storage with explicit names.</p>
+                    <div class="code-block text-xs">
+<pre>• Capture state as "name"
+• Apply captured state "name"
+• Delete captured state "name"</pre>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">States persist until explicitly deleted. Survives restarts.</p>
+                </div>
+                <div class="bg-orange-50 border-2 border-orange-300 rounded-lg p-4">
+                    <h3 class="font-bold text-orange-700 mb-2">📚 Stack (Transient)</h3>
+                    <p class="text-sm text-gray-700 mb-2">Temporary LIFO storage for quick save/restore.</p>
+                    <div class="code-block text-xs">
+<pre>• Push current state to stack
+• Pop and apply from stack
+• Peek (apply without removing)</pre>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Designed for temporary operations. No names involved.</p>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <p class="font-semibold text-red-700 mb-2">These systems are NOT interchangeable!</p>
+                <ul class="text-red-800 text-sm space-y-1">
+                    <li>❌ You cannot "pop" a named state</li>
+                    <li>❌ You cannot "apply" something from the stack by name</li>
+                    <li>❌ You cannot "push" to a named slot</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Critical: Save Before Use -->
+        <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200 border-l-4 border-l-red-500">
+            <h2 class="text-2xl font-semibold mb-4 text-red-600">⚠ Critical: Save Before Use</h2>
+            <p class="mb-4 text-gray-700">A state <strong>must be saved in a separate flow</strong> before you can use it. You cannot save a state and then apply it in the same flow.</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-red-700 mb-2">❌ Will NOT Work</h4>
+                    <div class="code-block text-xs">
+<pre>WHEN: Button pressed
+THEN: Capture state as "my_scene"
+THEN: Apply captured state "my_scene"
+       ↑ FAILS - state not yet available!</pre>
+                    </div>
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-green-700 mb-2">✓ Correct Approach</h4>
+                    <div class="code-block text-xs">
+<pre>FLOW 1 - Save:
+WHEN: "Save" button pressed
+THEN: Capture state as "my_scene"
+
+FLOW 2 - Apply (later):
+WHEN: "Apply" button pressed
+THEN: Apply captured state "my_scene"</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box mt-4">
+                <p class="font-semibold text-blue-700">Why?</p>
+                <p class="text-blue-800 text-sm">The state is saved asynchronously. The "Apply" action in the same flow runs before the save completes, so the state doesn't exist yet.</p>
+            </div>
+        </div>
+
         <div class="bg-white rounded-lg p-6 mb-6 shadow-sm border border-gray-200">
             <h2 class="text-2xl font-semibold mb-4 text-purple-600">Use Cases</h2>
 

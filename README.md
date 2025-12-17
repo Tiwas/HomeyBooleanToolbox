@@ -77,7 +77,7 @@ Capture and restore device states. Create "scenes" by storing the current state 
 
 ---
 
-### State Capture Device (BETA)
+### State Capture Device
 
 Dynamic state capture with templates, named slots, and push/pop stack operations.
 
@@ -228,7 +228,7 @@ Paste ugly JSON, get beautiful formatting on save. Works in all settings fields.
 - [Getting Started](https://tiwas.github.io/SmartComponentsToolkit/docs/getting-started.html)
 - [Device Types Guide](https://tiwas.github.io/SmartComponentsToolkit/docs/devices.html)
 - [State Device](https://tiwas.github.io/SmartComponentsToolkit/docs/state-device.html)
-- [State Capture Device (BETA)](https://tiwas.github.io/SmartComponentsToolkit/docs/state-capture-device.html)
+- [State Capture Device](https://tiwas.github.io/SmartComponentsToolkit/docs/state-capture-device.html)
 - [Waiter Gates (BETA)](https://tiwas.github.io/SmartComponentsToolkit/docs/waiter-gates.html)
 - [Flow Cards Reference](https://tiwas.github.io/SmartComponentsToolkit/docs/flow-cards.html)
 - [Changelog](https://tiwas.github.io/SmartComponentsToolkit/docs/changelog.html)
