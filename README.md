@@ -1,8 +1,10 @@
-# Boolean Toolbox for Homey
+# Smart (Components) Toolkit for Homey
 
-Advanced boolean logic and state management for your Homey automations. Create smart devices that react to multiple inputs with customizable formulas, and manage device states with powerful capture/restore functionality.
+> **Name Change:** This app was previously known as "Boolean Toolbox". The name was changed to "Smart (Components) Toolkit" to better reflect the expanded functionality beyond just boolean logic - now including state management, scene control, and flow utilities.
 
-[![Version](https://img.shields.io/badge/version-1.7.0-blue.svg)](https://github.com/Tiwas/HomeyBooleanToolbox)
+Advanced logic and state management for your Homey automations. Create smart devices that react to multiple inputs with customizable formulas, and manage device states with powerful capture/restore functionality.
+
+[![Version](https://img.shields.io/badge/version-1.7.0-blue.svg)](https://github.com/Tiwas/SmartComponentsToolkit)
 [![Homey](https://img.shields.io/badge/Homey-5.0+-green.svg)](https://homey.app)
 
 ---
@@ -11,11 +13,11 @@ Advanced boolean logic and state management for your Homey automations. Create s
 
 Test and build your logic before deploying:
 
-- **[Boolean Logic Emulator](https://tiwas.github.io/HomeyBooleanToolbox/emulator.html)** - Test expressions with live truth tables
-- **[Formula Builder](https://tiwas.github.io/HomeyBooleanToolbox/formula-builder.html)** - Visual formula editor with validation
-- **[Boolean Editor](https://tiwas.github.io/HomeyBooleanToolbox/homey-boolean-editor.html)** - Advanced editor for boolean device configurations
-- **[State Editor](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-editor.html)** - Visual editor for State Device configurations
-- **[State Editor (API)](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-editor-api.html)** - State editor with Homey API integration *(eternal beta)*
+- **[Boolean Logic Emulator](https://tiwas.github.io/SmartComponentsToolkit/emulator.html)** - Test expressions with live truth tables
+- **[Formula Builder](https://tiwas.github.io/SmartComponentsToolkit/formula-builder.html)** - Visual formula editor with validation
+- **[Boolean Editor](https://tiwas.github.io/SmartComponentsToolkit/homey-boolean-editor.html)** - Advanced editor for boolean device configurations
+- **[State Editor](https://tiwas.github.io/SmartComponentsToolkit/docs/state-editor.html)** - Visual editor for State Device configurations
+- **[State Editor (API)](https://tiwas.github.io/SmartComponentsToolkit/docs/state-editor-api.html)** - State editor with Homey API integration *(eternal beta)*
 
 ---
 
@@ -32,7 +34,7 @@ The easiest way to create boolean logic with a visual pairing wizard.
 | **Formulas** | Single formula per device |
 | **Best for** | Simple setups, beginners |
 
-[📚 Read Logic Device guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/devices.html)
+[📚 Read Logic Device guide →](https://tiwas.github.io/SmartComponentsToolkit/docs/devices.html)
 
 ---
 
@@ -49,7 +51,7 @@ Powerful device for advanced users who need multiple formulas or prefer JSON con
 
 *Note: Logic Unit X (2, 3, 4...10 inputs) are legacy devices with fixed input counts - use the new Logic Unit instead.*
 
-[📚 Read Logic Unit guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/devices.html)
+[📚 Read Logic Unit guide →](https://tiwas.github.io/SmartComponentsToolkit/docs/devices.html)
 
 ---
 
@@ -69,7 +71,7 @@ Capture and restore device states. Create "scenes" by storing the current state 
 - "Reset All" option to turn off other State Devices first
 - Hierarchical execution with configurable delays
 
-[📚 Read State Device guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-device.html)
+[📚 Read State Device guide →](https://tiwas.github.io/SmartComponentsToolkit/docs/state-device.html)
 
 ---
 
@@ -99,7 +101,7 @@ THEN: Wait 5 minutes
 THEN: Pop state (restore previous)
 ```
 
-[📚 Read State Capture Device guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-capture-device.html)
+[📚 Read State Capture Device guide →](https://tiwas.github.io/SmartComponentsToolkit/docs/state-capture-device.html)
 
 ---
 
@@ -120,7 +122,7 @@ Waiter Gates let your flows pause and wait for device states to change, with YES
 - **Control waiter gate** *(action)* - Enable/disable/stop a waiter by ID
 - **Wait** *(action)* - Simple delay (basic pause without device monitoring)
 
-[📚 Read Waiter Gates guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/waiter-gates.html)
+[📚 Read Waiter Gates guide →](https://tiwas.github.io/SmartComponentsToolkit/docs/waiter-gates.html)
 
 ---
 
@@ -129,7 +131,7 @@ Waiter Gates let your flows pause and wait for device states to change, with YES
 ### 1. Add a Device
 
 **Logic Device (recommended for beginners):**
-- Go to **Devices** → **Add Device** → **Boolean Toolbox** → **Logic Device**
+- Go to **Devices** → **Add Device** → **Smart (Components) Toolkit** → **Logic Device**
 - Follow the pairing wizard to select inputs
 - Configure formula in device settings
 
@@ -159,7 +161,7 @@ WHEN: Formula [motion_detected] changed to TRUE
 THEN: Turn on lights
 ```
 
-[📚 Read complete setup guide →](https://tiwas.github.io/HomeyBooleanToolbox/docs/getting-started.html)
+[📚 Read complete setup guide →](https://tiwas.github.io/SmartComponentsToolkit/docs/getting-started.html)
 
 ---
 
@@ -186,7 +188,7 @@ THEN: Turn on lights
 - **Control waiter gate** *(Waiter Gates - BETA)*
 - **Wait** *(Simple delay)*
 
-[📚 See all flow cards →](https://tiwas.github.io/HomeyBooleanToolbox/docs/flow-cards.html)
+[📚 See all flow cards →](https://tiwas.github.io/SmartComponentsToolkit/docs/flow-cards.html)
 
 ---
 
@@ -221,21 +223,21 @@ Paste ugly JSON, get beautiful formatting on save. Works in all settings fields.
 
 ## 📚 Documentation
 
-- [Getting Started](https://tiwas.github.io/HomeyBooleanToolbox/docs/getting-started.html)
-- [Device Types Guide](https://tiwas.github.io/HomeyBooleanToolbox/docs/devices.html)
-- [State Device](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-device.html)
-- [State Capture Device (BETA)](https://tiwas.github.io/HomeyBooleanToolbox/docs/state-capture-device.html)
-- [Waiter Gates (BETA)](https://tiwas.github.io/HomeyBooleanToolbox/docs/waiter-gates.html)
-- [Flow Cards Reference](https://tiwas.github.io/HomeyBooleanToolbox/docs/flow-cards.html)
-- [Changelog](https://tiwas.github.io/HomeyBooleanToolbox/docs/changelog.html)
+- [Getting Started](https://tiwas.github.io/SmartComponentsToolkit/docs/getting-started.html)
+- [Device Types Guide](https://tiwas.github.io/SmartComponentsToolkit/docs/devices.html)
+- [State Device](https://tiwas.github.io/SmartComponentsToolkit/docs/state-device.html)
+- [State Capture Device (BETA)](https://tiwas.github.io/SmartComponentsToolkit/docs/state-capture-device.html)
+- [Waiter Gates (BETA)](https://tiwas.github.io/SmartComponentsToolkit/docs/waiter-gates.html)
+- [Flow Cards Reference](https://tiwas.github.io/SmartComponentsToolkit/docs/flow-cards.html)
+- [Changelog](https://tiwas.github.io/SmartComponentsToolkit/docs/changelog.html)
 
 ---
 
 ## 🤝 Support & Community
 
 - **Forum:** [Homey Community](https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906)
-- **Issues:** [GitHub Issues](https://github.com/Tiwas/HomeyBooleanToolbox/issues)
-- **Source:** [GitHub Repository](https://github.com/Tiwas/HomeyBooleanToolbox)
+- **Issues:** [GitHub Issues](https://github.com/Tiwas/SmartComponentsToolkit/issues)
+- **Source:** [GitHub Repository](https://github.com/Tiwas/SmartComponentsToolkit)
 
 ### Support Development
 
@@ -253,4 +255,4 @@ This app is provided as-is. Use at your own risk.
 
 ---
 
-**Boolean Toolbox** - Smarter automations with advanced boolean logic 🚀
+**Smart (Components) Toolkit** - Smarter automations with advanced logic and state management 🚀

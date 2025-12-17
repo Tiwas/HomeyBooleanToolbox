@@ -1,10 +1,26 @@
 # Changelog
 
-All notable changes to Boolean Toolbox for Homey will be documented in this file.
+All notable changes to Smart (Components) Toolkit for Homey will be documented in this file.
+
+> **Note:** This app was previously known as "Boolean Toolbox" until v1.7.0.
 
 ---
 
-## [1.5.0] - November 2025 (Current)
+## [1.7.0] - December 2025 (Current)
+
+### 🎨 Rebranding
+- **App renamed from "Boolean Toolbox" to "Smart (Components) Toolkit"**
+  - The app has grown beyond just boolean logic to include state management, scene control, and flow utilities
+  - App ID remains `no.tiwas.booleantoolbox` for compatibility with existing installations
+  - All existing devices and flows continue to work without changes
+
+### ✨ New Features
+- State Capture Device improvements
+- Updated app store images and branding
+
+---
+
+## [1.5.0] - November 2025
 
 ### ✨ New Features
 - **Waiter Gates (BETA)** - Reactive flow cards that pause flows and wait for device capability changes
@@ -152,8 +168,8 @@ All notable changes to Boolean Toolbox for Homey will be documented in this file
 ## Support
 
 - **Forum:** [Homey Community](https://community.homey.app/t/app-boolean-toolbox-create-advanced-logic-with-simple-formulas/143906)
-- **Issues:** [GitHub Issues](https://github.com/Tiwas/HomeyBooleanToolbox/issues)
-- **Source:** [GitHub Repository](https://github.com/Tiwas/HomeyBooleanToolbox)
+- **Issues:** [GitHub Issues](https://github.com/Tiwas/SmartComponentsToolkit/issues)
+- **Source:** [GitHub Repository](https://github.com/Tiwas/SmartComponentsToolkit)
 
 ---
 

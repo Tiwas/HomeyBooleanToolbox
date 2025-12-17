@@ -8,7 +8,7 @@ A web-based editor for managing Homey Boolean Toolbox devices and creating boole
 
 ### Option 1: Use GitHub Pages (Recommended)
 
-The app is already hosted at: **https://tiwas.github.io/HomeyBooleanToolbox/homey-boolean-editor.html**
+The app is already hosted at: **https://tiwas.github.io/SmartComponentsToolkit/homey-boolean-editor.html**
 
 ### Option 2: Host it yourself
 
@@ -24,7 +24,7 @@ The app is already hosted at: **https://tiwas.github.io/HomeyBooleanToolbox/home
 2. Click "Add client" or "Create new client"
 3. Fill in the form:
    - **Name**: `Boolean Editor` (or any name you prefer)
-   - **Redirect URL**: `https://tiwas.github.io/HomeyBooleanToolbox/homey-boolean-editor.html`
+   - **Redirect URL**: `https://tiwas.github.io/SmartComponentsToolkit/homey-boolean-editor.html`
      - ⚠️ **Important**: Use the exact URL where you host the app
      - If hosting yourself, replace with your own URL
    - **Scopes**: Check the following boxes:
@@ -36,7 +36,7 @@ The app is already hosted at: **https://tiwas.github.io/HomeyBooleanToolbox/home
 
 ### Step 2: Configure the App
 
-1. Open the app in your browser: [Boolean Editor](https://tiwas.github.io/HomeyBooleanToolbox/homey-boolean-editor.html)
+1. Open the app in your browser: [Boolean Editor](https://tiwas.github.io/SmartComponentsToolkit/homey-boolean-editor.html)
 2. You'll see the API Setup screen
 3. Paste your **Client ID** and **Client Secret** from Step 1
 4. Click "Save and Continue"

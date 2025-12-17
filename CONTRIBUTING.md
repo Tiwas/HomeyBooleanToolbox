@@ -42,7 +42,7 @@ Choose the method that works best for you:
 
 Don't know Git? No problem!
 
-1. Go to [Issues](https://github.com/Tiwas/HomeyBooleanToolbox/issues)
+1. Go to [Issues](https://github.com/Tiwas/SmartComponentsToolkit/issues)
 2. Click **"New Issue"**
 3. Title: `Translation: [Your Language]` (e.g., "Translation: German")
 4. Paste your translations in the issue
@@ -147,7 +147,7 @@ Not sure about something? Just ask!
 
 Found a bug? Please report it!
 
-1. Go to [Issues](https://github.com/Tiwas/HomeyBooleanToolbox/issues)
+1. Go to [Issues](https://github.com/Tiwas/SmartComponentsToolkit/issues)
 2. Click **"New Issue"**
 3. Describe:
    - What you expected to happen
@@ -162,7 +162,7 @@ Found a bug? Please report it!
 
 Have an idea for a new feature?
 
-1. Check if it's already requested in [Issues](https://github.com/Tiwas/HomeyBooleanToolbox/issues)
+1. Check if it's already requested in [Issues](https://github.com/Tiwas/SmartComponentsToolkit/issues)
 2. If not, create a new issue with:
    - Clear description of the feature
    - Why it would be useful
@@ -184,8 +184,8 @@ Want to contribute code?
 
 ```bash
 # Clone your fork
-git clone https://github.com/YOUR-USERNAME/HomeyBooleanToolbox.git
-cd HomeyBooleanToolbox/no.tiwas.booleantoolbox
+git clone https://github.com/YOUR-USERNAME/SmartComponentsToolkit.git
+cd SmartComponentsToolkit/no.tiwas.booleantoolbox
 
 # Install dependencies
 npm install

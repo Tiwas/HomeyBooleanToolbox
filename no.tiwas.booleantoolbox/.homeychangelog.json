@@ -15,7 +15,7 @@
     "en": "Updated images"
   },
   "1.6.2": {
-    "en": "https://github.com/Tiwas/HomeyBooleanToolbox/commit/29c9cb8b0b08a3228bdf53687315cd8e687fe5d8"
+    "en": "https://github.com/Tiwas/SmartComponentsToolkit/commit/29c9cb8b0b08a3228bdf53687315cd8e687fe5d8"
   },
   "1.6.3": {
     "en": "Refining the state device"
@@ -25,5 +25,8 @@
   },
   "1.6.5": {
     "en": "Bug fix..."
+  },
+  "1.7.0": {
+    "en": "State capturing device - BETA"
   }
 }

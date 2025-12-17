@@ -211,8 +211,8 @@ class StateDriver extends Homey.Driver {
 
             generatedConfig = {
                 _meta: {
-                    editor: "https://tiwas.github.io/HomeyBooleanToolbox/docs/state-editor.html",
-                    documentation: "https://tiwas.github.io/HomeyBooleanToolbox/docs/state-device.html"
+                    editor: "https://tiwas.github.io/SmartComponentsToolkit/docs/state-editor.html",
+                    documentation: "https://tiwas.github.io/SmartComponentsToolkit/docs/state-device.html"
                 },
                 config: {
                     default_delay: 1000,

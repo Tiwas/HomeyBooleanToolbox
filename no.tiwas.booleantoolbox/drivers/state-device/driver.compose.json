@@ -34,7 +34,7 @@
         "it": "Configurazione (JSON)",
         "es": "Configuración (JSON)"
       },
-      "value": "{\n  \"_comment\": \"Documentation: https://tiwas.github.io/HomeyBooleanToolbox/docs/state-device.html\",\n  \"config\": {\n    \"default_delay\": 1000,\n    \"ignore_errors\": true\n  },\n  \"items\": []\n}"
+      "value": "{\n  \"_comment\": \"Documentation: https://tiwas.github.io/SmartComponentsToolkit/docs/state-device.html\",\n  \"config\": {\n    \"default_delay\": 1000,\n    \"ignore_errors\": true\n  },\n  \"items\": []\n}"
     },
     {
       "id": "log_errors",

@@ -43,5 +43,5 @@ Den nye siden `docs/state-editor-api.html` bruker nå **AthomCloudAPI** for aute
 ## Neste steg
 
 1.  **Verifisering:** Test at innlogging og utlisting av enheter fungerer fra GitHub Pages.
-    *   NB: Redirect URL må være korrekt registrert på [Athom Developer Portal](https://tools.developer.homey.app/api/clients) for at innlogging skal virke. URL-en vil være: `https://tiwas.github.io/HomeyBooleanToolbox/docs/state-editor-api.html`.
+    *   NB: Redirect URL må være korrekt registrert på [Athom Developer Portal](https://tools.developer.homey.app/api/clients) for at innlogging skal virke. URL-en vil være: `https://tiwas.github.io/SmartComponentsToolkit/docs/state-editor-api.html`.
 2.  **Opprydding:** Vurdere å fjerne fallback-koden for manuell token-uthenting hvis SDK-metoden bekreftes stabil.
