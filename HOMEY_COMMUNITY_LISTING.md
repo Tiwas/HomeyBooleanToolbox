@@ -29,6 +29,7 @@ A device type for dynamic state capture with templates, named slots, and push/po
 - **Template-based:** Define which devices/capabilities to capture (values read at runtime)
 - **Named states:** Store up to 50 named snapshots per device
 - **Push/Pop stack:** Temporary state management with up to 20 levels
+- **Backup/Restore:** Export all named states as JSON, import to restore or transfer
 - **Homey tokens:** Use dynamic state names from flow variables
 
 **Example use case:**
@@ -56,6 +57,22 @@ THEN: Pop state (restore previous)
 - Full JSON configuration
 - Dynamic input expansion (2-10 inputs)
 
+**State Device** - Pre-defined scene management
+- Configure device states during setup
+- Apply states with a single flow action
+- Ideal for fixed scenes (movie mode, away mode, etc.)
+
+**State Capture Device** - Dynamic state management
+- Capture device states at runtime using templates
+- Named states for scene snapshots
+- Push/pop stack for temporary interruptions
+- Backup/restore via JSON export/import
+
+**Waiter Gates** *(BETA)* - Flow control
+- Pause flows until a device state changes
+- Wait for specific conditions to become true
+- Control flow execution with pause/resume gates
+
 **Logic Unit X** - Deprecated
 - Fixed input counts (2, 3, 4...10)
 - Still functional but not recommended for new setups
@@ -67,6 +84,10 @@ THEN: Pop state (restore previous)
 ## Documentation
 
 - <a href="https://tiwas.github.io/SmartComponentsToolkit/docs/getting-started.html" target="_blank">**Getting Started Guide**</a> - Create your first logic device in 5 minutes
+- <a href="https://tiwas.github.io/SmartComponentsToolkit/docs/devices.html" target="_blank">**Device Types Guide**</a> - Understanding all device types
+- <a href="https://tiwas.github.io/SmartComponentsToolkit/docs/state-device.html" target="_blank">**State Device**</a> - Pre-defined scene management
+- <a href="https://tiwas.github.io/SmartComponentsToolkit/docs/state-capture-device.html" target="_blank">**State Capture Device**</a> - Dynamic state capture and restore
+- <a href="https://tiwas.github.io/SmartComponentsToolkit/docs/waiter-gates.html" target="_blank">**Waiter Gates**</a> - Flow control with wait conditions
 - <a href="https://tiwas.github.io/SmartComponentsToolkit/docs/flow-cards.html" target="_blank">**Flow Cards Reference**</a> - Complete guide to all available cards
 
 
