@@ -44,24 +44,6 @@ THEN: Pop state (restore previous)
 
 ---
 
-## What's New in v1.5.0
-
-### ⏳ Waiter Gates (BETA)
-Reactive flow cards that pause and wait for device states to change:
-- **Wait until** device capability becomes value (with YES/NO paths)
-- Perfect for verifying that commands actually executed
-- Auto-generated waiter IDs for easy management
-
-<a href="https://tiwas.github.io/SmartComponentsToolkit/docs/waiter-gates.html" target="_blank">→ Read Waiter Gates Documentation</a>
-
-### 🌍 Complete Localization
-All flow cards now support 12 languages: English, Norwegian, Danish, German, Spanish, French, Italian, Dutch, Swedish, Polish, Finnish, Russian
-
-### 🔧 Code Quality Improvements
-Reduced logging verbosity and improved code documentation
-
----
-
 ## Device Types
 
 **Logic Device** - Recommended for beginners
@@ -86,7 +68,7 @@ Reduced logging verbosity and improved code documentation
 
 - <a href="https://tiwas.github.io/SmartComponentsToolkit/docs/getting-started.html" target="_blank">**Getting Started Guide**</a> - Create your first logic device in 5 minutes
 - <a href="https://tiwas.github.io/SmartComponentsToolkit/docs/flow-cards.html" target="_blank">**Flow Cards Reference**</a> - Complete guide to all available cards
-- <a href="https://tiwas.github.io/SmartComponentsToolkit/docs/changelog.html" target="_blank">**Changelog**</a> - Full version history
+
 
 ---
 

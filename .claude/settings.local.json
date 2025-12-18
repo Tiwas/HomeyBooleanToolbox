@@ -5,7 +5,9 @@
       "Bash(git ls-tree:*)",
       "Bash(ls:*)",
       "Bash(xargs ls:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }
