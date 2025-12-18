@@ -182,10 +182,10 @@
             </div>
         </div>
 
-        <!-- Critical: Save Before Use -->
+        <!-- Critical: Save Before Use (Named States) -->
         <div class="card card-warning">
-            <h2 class="text-2xl font-semibold mb-4 text-red-600">⚠ Critical: Save Before Use</h2>
-            <p class="mb-4 text-gray-700">A state <strong>must be saved in a separate flow</strong> before you can use it. You cannot save a state and then apply it in the same flow.</p>
+            <h2 class="text-2xl font-semibold mb-4 text-red-600">⚠ Critical: Named States Must Be Saved First</h2>
+            <p class="mb-4 text-gray-700">A <strong>named state</strong> must be saved in a separate flow before you can apply it. You cannot save and apply a named state in the same flow. <em>This does not apply to stack operations (push/pop), which work within the same flow.</em></p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-red-50 border border-red-200 rounded-lg p-4">
