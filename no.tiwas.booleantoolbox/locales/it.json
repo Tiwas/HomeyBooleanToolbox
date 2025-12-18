@@ -107,7 +107,12 @@
     "unknown": "Si è verificato un errore sconosciuto",
     "state_name_required": "Il nome dello stato è richiesto",
     "state_not_found": "Stato non trovato",
-    "stack_empty": "Lo stack è vuoto"
+    "stack_empty": "Lo stack è vuoto",
+    "export_failed": "Esportazione degli stati fallita",
+    "import_failed": "Importazione degli stati fallita",
+    "invalid_import_data": "Dati di importazione non validi",
+    "invalid_json_format": "Formato JSON non valido",
+    "import_would_exceed_limit": "L'importazione supererebbe il limite massimo di stati"
   },
   "evaluation": {
     "initial_complete": "Valutazione iniziale di tutte le formule...",

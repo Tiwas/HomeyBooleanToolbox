@@ -290,6 +290,84 @@ class CapturedStateManager {
         return data.stack.length === 0;
     }
 
+    // ==================== EXPORT/IMPORT ====================
+
+    /**
+     * Export all named states as JSON object
+     * @param {string} deviceId - State capture device ID
+     * @returns {object} - { states: { name: { captured_at, values }, ... } }
+     */
+    exportNamedStates(deviceId) {
+        const data = this._getDeviceData(deviceId);
+        this.logger.info(`📤 Exported ${Object.keys(data.named).length} named states for device ${deviceId}`);
+        return {
+            states: data.named
+        };
+    }
+
+    /**
+     * Import named states from JSON, overwriting existing states with same name
+     * @param {string} deviceId - State capture device ID
+     * @param {object} statesData - Object with states property containing named states
+     * @returns {object} - { imported, overwritten, errors }
+     */
+    importNamedStates(deviceId, statesData) {
+        if (!statesData || typeof statesData !== 'object') {
+            throw new Error('Invalid import data: expected object');
+        }
+
+        const states = statesData.states;
+        if (!states || typeof states !== 'object') {
+            throw new Error('Invalid import data: missing or invalid "states" property');
+        }
+
+        const data = this._getDeviceData(deviceId);
+        let imported = 0;
+        let overwritten = 0;
+        const errors = [];
+
+        for (const [stateName, stateData] of Object.entries(states)) {
+            try {
+                // Validate state structure
+                if (!stateData || typeof stateData !== 'object') {
+                    errors.push({ name: stateName, error: 'Invalid state data' });
+                    continue;
+                }
+
+                if (!stateData.values || typeof stateData.values !== 'object') {
+                    errors.push({ name: stateName, error: 'Missing or invalid values' });
+                    continue;
+                }
+
+                // Check if we're overwriting
+                if (data.named[stateName]) {
+                    overwritten++;
+                }
+
+                // Import the state
+                data.named[stateName] = {
+                    captured_at: stateData.captured_at || new Date().toISOString(),
+                    values: stateData.values
+                };
+                imported++;
+
+            } catch (e) {
+                errors.push({ name: stateName, error: e.message });
+            }
+        }
+
+        // Check total count after import
+        if (Object.keys(data.named).length > this.MAX_NAMED_STATES) {
+            throw new Error(`Import would exceed maximum ${this.MAX_NAMED_STATES} named states`);
+        }
+
+        this._saveDeviceData(deviceId, data);
+
+        this.logger.info(`📥 Imported ${imported} states (${overwritten} overwritten) for device ${deviceId}`);
+
+        return { imported, overwritten, errors };
+    }
+
     // ==================== UTILITY ====================
 
     /**

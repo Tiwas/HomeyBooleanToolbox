@@ -311,6 +311,60 @@ class StateCaptureDevice extends Homey.Device {
         return true;
     }
 
+    // ==================== FLOW ACTIONS: EXPORT/IMPORT ====================
+
+    /**
+     * Flow Action: Export all named states as JSON
+     */
+    async onFlowExportStates(args) {
+        try {
+            const exportData = this.stateManager.exportNamedStates(this.getDeviceId());
+            const jsonString = JSON.stringify(exportData);
+
+            this.debug(`Exported ${Object.keys(exportData.states).length} named states`);
+
+            return { json_data: jsonString };
+
+        } catch (e) {
+            this.error('Export failed:', e);
+            throw e;
+        }
+    }
+
+    /**
+     * Flow Action: Import named states from JSON
+     */
+    async onFlowImportStates(args) {
+        const jsonData = args.json_data;
+
+        if (!jsonData || jsonData.trim() === '') {
+            throw new Error('JSON data is required');
+        }
+
+        let statesData;
+        try {
+            statesData = JSON.parse(jsonData);
+        } catch (e) {
+            throw new Error('Invalid JSON format: ' + e.message);
+        }
+
+        try {
+            const result = this.stateManager.importNamedStates(this.getDeviceId(), statesData);
+
+            this.debug(`Imported ${result.imported} states (${result.overwritten} overwritten)`);
+
+            if (result.errors.length > 0) {
+                this.debug('Import errors:', result.errors);
+            }
+
+            return true;
+
+        } catch (e) {
+            this.error('Import failed:', e);
+            throw e;
+        }
+    }
+
     // ==================== FLOW CONDITIONS ====================
 
     /**

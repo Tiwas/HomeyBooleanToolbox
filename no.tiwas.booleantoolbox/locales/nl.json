@@ -107,7 +107,12 @@
     "unknown": "Onbekende fout opgetreden",
     "state_name_required": "Statusnaam is vereist",
     "state_not_found": "Status niet gevonden",
-    "stack_empty": "Stack is leeg"
+    "stack_empty": "Stack is leeg",
+    "export_failed": "Exporteren van statussen mislukt",
+    "import_failed": "Importeren van statussen mislukt",
+    "invalid_import_data": "Ongeldige importgegevens",
+    "invalid_json_format": "Ongeldig JSON-formaat",
+    "import_would_exceed_limit": "Import zou het maximale aantal statussen overschrijden"
   },
   "evaluation": {
     "initial_complete": "Initiële evaluatie van alle formules...",

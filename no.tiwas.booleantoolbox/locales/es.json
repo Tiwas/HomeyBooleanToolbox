@@ -107,7 +107,12 @@
     "unknown": "Ocurrió un error desconocido",
     "state_name_required": "Se requiere nombre de estado",
     "state_not_found": "Estado no encontrado",
-    "stack_empty": "La pila está vacía"
+    "stack_empty": "La pila está vacía",
+    "export_failed": "Error al exportar estados",
+    "import_failed": "Error al importar estados",
+    "invalid_import_data": "Datos de importación no válidos",
+    "invalid_json_format": "Formato JSON no válido",
+    "import_would_exceed_limit": "La importación superaría el límite máximo de estados"
   },
   "evaluation": {
     "initial_complete": "Evaluación inicial de todas las fórmulas...",

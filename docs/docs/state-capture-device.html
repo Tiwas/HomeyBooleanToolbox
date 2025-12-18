@@ -334,6 +334,60 @@ THEN: Apply captured state "[[scene_name]]"</pre>
             </div>
         </div>
 
+        <!-- Backup & Restore -->
+        <div class="card">
+            <h2 class="text-2xl font-semibold mb-4 text-purple-600">Backup & Restore Named States</h2>
+            <p class="text-gray-700 mb-4 text-sm">Export all named states as JSON for backup, or import them to restore or transfer states between devices.</p>
+
+            <div class="space-y-3">
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="font-semibold text-purple-700 text-sm">Export named states</h3>
+                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Action</span>
+                    </div>
+                    <p class="text-gray-700 text-xs">Exports all named states as a JSON string. Use the <code class="bg-gray-100 px-1 rounded">json_data</code> token to store or send the backup.</p>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                    <div class="flex items-center justify-between mb-1">
+                        <h3 class="font-semibold text-purple-700 text-sm">Import named states</h3>
+                        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Action</span>
+                    </div>
+                    <p class="text-gray-700 text-xs">Imports named states from a JSON string. States with the same name will be <strong>overwritten</strong>.</p>
+                </div>
+            </div>
+
+            <h3 class="text-lg font-semibold mb-3 mt-6 text-purple-700">JSON Structure</h3>
+            <p class="text-gray-700 text-sm mb-2">The exported JSON contains all named states (not stack data):</p>
+            <div class="code-block text-xs">
+<pre>{
+  "states": {
+    "movie_night": {
+      "captured_at": "2025-01-15T20:30:00.000Z",
+      "values": {
+        "device-uuid-1": { "onoff": true, "dim": 0.3 },
+        "device-uuid-2": { "onoff": false }
+      }
+    },
+    "morning_routine": {
+      "captured_at": "2025-01-15T07:00:00.000Z",
+      "values": { ... }
+    }
+  }
+}</pre>
+            </div>
+
+            <div class="warning-box mt-4">
+                <p class="font-semibold text-red-700 mb-1">Import overwrites existing states!</p>
+                <p class="text-red-800 text-sm">If you import a state with a name that already exists, the existing state will be replaced with the imported one.</p>
+            </div>
+
+            <div class="tip-box">
+                <p class="font-semibold text-blue-700 mb-1">Use Case: Backup to Timeline</p>
+                <p class="text-blue-800 text-sm">Use the export action and send the <code class="bg-blue-100 px-1 rounded">json_data</code> token to a Timeline notification for safekeeping.</p>
+            </div>
+        </div>
+
         <!-- Flow Cards - Stack Operations -->
         <div class="card">
             <h2 class="text-2xl font-semibold mb-4 text-purple-600">Flow Cards: Stack Operations</h2>

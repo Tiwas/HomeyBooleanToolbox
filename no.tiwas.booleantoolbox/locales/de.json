@@ -107,7 +107,12 @@
     "unknown": "Unbekannter Fehler aufgetreten",
     "state_name_required": "Zustandsname ist erforderlich",
     "state_not_found": "Zustand nicht gefunden",
-    "stack_empty": "Stapel ist leer"
+    "stack_empty": "Stapel ist leer",
+    "export_failed": "Zustände konnten nicht exportiert werden",
+    "import_failed": "Zustände konnten nicht importiert werden",
+    "invalid_import_data": "Ungültige Importdaten",
+    "invalid_json_format": "Ungültiges JSON-Format",
+    "import_would_exceed_limit": "Import würde das Zustandslimit überschreiten"
   },
   "evaluation": {
     "initial_complete": "Erste Auswertung aller Formeln...",

@@ -107,7 +107,12 @@
     "unknown": "Okänt fel uppstod",
     "state_name_required": "Tillståndsnamn krävs",
     "state_not_found": "Tillstånd hittades inte",
-    "stack_empty": "Stacken är tom"
+    "stack_empty": "Stacken är tom",
+    "export_failed": "Kunde inte exportera tillstånd",
+    "import_failed": "Kunde inte importera tillstånd",
+    "invalid_import_data": "Ogiltiga importdata",
+    "invalid_json_format": "Ogiltigt JSON-format",
+    "import_would_exceed_limit": "Import skulle överskrida maxgränsen för tillstånd"
   },
   "evaluation": {
     "initial_complete": "Initial utvärdering av alla formler...",

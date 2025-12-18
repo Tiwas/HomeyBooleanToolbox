@@ -1,0 +1,34 @@
+{
+  "id": "import_named_states_scd",
+  "title": {
+    "en": "Import named states",
+    "no": "Importer navngitte tilstander"
+  },
+  "hint": {
+    "en": "Imports named states from JSON. Existing states with the same name will be overwritten.",
+    "no": "Importerer navngitte tilstander fra JSON. Eksisterende tilstander med samme navn vil bli overskrevet."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    },
+    {
+      "name": "json_data",
+      "type": "text",
+      "title": {
+        "en": "JSON data",
+        "no": "JSON-data"
+      },
+      "placeholder": {
+        "en": "{\"states\":{...}}",
+        "no": "{\"states\":{...}}"
+      }
+    }
+  ],
+  "titleFormatted": {
+    "en": "Import named states from [[json_data]]",
+    "no": "Importer navngitte tilstander fra [[json_data]]"
+  }
+}

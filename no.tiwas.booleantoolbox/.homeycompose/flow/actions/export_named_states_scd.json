@@ -1,0 +1,33 @@
+{
+  "id": "export_named_states_scd",
+  "title": {
+    "en": "Export named states",
+    "no": "Eksporter navngitte tilstander"
+  },
+  "hint": {
+    "en": "Exports all named states as JSON. Use the token in a notification or store it for backup.",
+    "no": "Eksporterer alle navngitte tilstander som JSON. Bruk tokenet i en varsling eller lagre det som backup."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "json_data",
+      "type": "string",
+      "title": {
+        "en": "JSON data",
+        "no": "JSON-data"
+      },
+      "example": "{\"states\":{\"movie_night\":{...}}}"
+    }
+  ],
+  "titleFormatted": {
+    "en": "Export all named states",
+    "no": "Eksporter alle navngitte tilstander"
+  }
+}

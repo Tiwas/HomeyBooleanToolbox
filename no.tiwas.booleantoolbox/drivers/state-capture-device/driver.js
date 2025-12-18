@@ -70,6 +70,20 @@ class StateCaptureDriver extends Homey.Driver {
                 return args.device.onFlowClearStack(args);
             });
 
+        // === EXPORT/IMPORT ACTIONS ===
+
+        // Action: Export named states
+        this.homey.flow.getActionCard('export_named_states_scd')
+            .registerRunListener(async (args, state) => {
+                return args.device.onFlowExportStates(args);
+            });
+
+        // Action: Import named states
+        this.homey.flow.getActionCard('import_named_states_scd')
+            .registerRunListener(async (args, state) => {
+                return args.device.onFlowImportStates(args);
+            });
+
         // === CONDITIONS ===
 
         // Condition: State exists

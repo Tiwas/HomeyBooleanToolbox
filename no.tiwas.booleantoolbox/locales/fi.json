@@ -107,7 +107,12 @@
     "unknown": "Tuntematon virhe tapahtui",
     "state_name_required": "Tilan nimi vaaditaan",
     "state_not_found": "Tilaa ei löytynyt",
-    "stack_empty": "Pino on tyhjä"
+    "stack_empty": "Pino on tyhjä",
+    "export_failed": "Tilojen vienti epäonnistui",
+    "import_failed": "Tilojen tuonti epäonnistui",
+    "invalid_import_data": "Virheelliset tuontitiedot",
+    "invalid_json_format": "Virheellinen JSON-muoto",
+    "import_would_exceed_limit": "Tuonti ylittäisi tilojen enimmäismäärän"
   },
   "evaluation": {
     "initial_complete": "Kaikkien kaavojen alkuarviointi...",

@@ -107,7 +107,12 @@
     "unknown": "Ukendt fejl opstod",
     "state_name_required": "Tilstandsnavn er påkrævet",
     "state_not_found": "Tilstand ikke fundet",
-    "stack_empty": "Stakken er tom"
+    "stack_empty": "Stakken er tom",
+    "export_failed": "Kunne ikke eksportere tilstande",
+    "import_failed": "Kunne ikke importere tilstande",
+    "invalid_import_data": "Ugyldige importdata",
+    "invalid_json_format": "Ugyldigt JSON-format",
+    "import_would_exceed_limit": "Import ville overskride maksimumgrænsen for tilstande"
   },
   "evaluation": {
     "initial_complete": "Initial evaluering af alle formler...",

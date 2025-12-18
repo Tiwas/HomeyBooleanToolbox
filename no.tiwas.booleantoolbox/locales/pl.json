@@ -107,7 +107,12 @@
     "unknown": "Wystąpił nieznany błąd",
     "state_name_required": "Nazwa stanu jest wymagana",
     "state_not_found": "Stan nie znaleziony",
-    "stack_empty": "Stos jest pusty"
+    "stack_empty": "Stos jest pusty",
+    "export_failed": "Nie udało się wyeksportować stanów",
+    "import_failed": "Nie udało się zaimportować stanów",
+    "invalid_import_data": "Nieprawidłowe dane importu",
+    "invalid_json_format": "Nieprawidłowy format JSON",
+    "import_would_exceed_limit": "Import przekroczyłby maksymalny limit stanów"
   },
   "evaluation": {
     "initial_complete": "Wstępna ocena wszystkich formuł...",
