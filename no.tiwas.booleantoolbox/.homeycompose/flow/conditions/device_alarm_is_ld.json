@@ -31,19 +31,19 @@
     "fi": "Laitteen hälytys !{{on|ei ole}} [[alarm_state]]"
   },
   "hint": {
-    "en": "Check if the device's alarm is currently on or off.",
-    "no": "Sjekk om enhetens alarm er på eller av.",
-    "da": "Tjek om enhedens alarm er til eller fra.",
-    "de": "Überprüfen Sie, ob der Gerätealarm ein- oder ausgeschaltet ist.",
-    "es": "Verifica si la alarma del dispositivo está encendida o apagada.",
-    "fr": "Vérifiez si l'alarme de l'appareil est allumée ou éteinte.",
-    "it": "Controlla se l'allarme del dispositivo è acceso o spento.",
-    "nl": "Controleer of het apparaat alarm aan of uit staat.",
-    "sv": "Kontrollera om enhetens alarm är på eller av.",
-    "pl": "Sprawdź, czy alarm urządzenia jest włączony lub wyłączony.",
-    "ru": "Проверьте, включена или выключена тревога устройства.",
-    "ko": "장치의 알람이 현재 켜져 있는지 꺼져 있는지 확인하세요.",
-    "fi": "Tarkista, onko laitteen hälytys päällä vai pois päältä."
+    "en": "The alarm reflects the formula result: ON when the formula evaluates to TRUE, OFF when FALSE. Use this to check the current logic state of the device.",
+    "no": "Alarmen gjenspeiler formelresultatet: PÅ når formelen evalueres til SANN, AV når USANN. Bruk dette for å sjekke enhetens nåværende logiske tilstand.",
+    "da": "Alarmen afspejler formelresultatet: TIL når formlen evalueres til SAND, FRA når FALSK. Brug dette til at kontrollere enhedens aktuelle logiske tilstand.",
+    "de": "Der Alarm spiegelt das Formelergebnis wider: EIN wenn die Formel WAHR ergibt, AUS bei FALSCH. Verwenden Sie dies, um den aktuellen Logikzustand des Geräts zu prüfen.",
+    "es": "La alarma refleja el resultado de la fórmula: ENCENDIDA cuando la fórmula es VERDADERA, APAGADA cuando es FALSA. Úselo para verificar el estado lógico actual del dispositivo.",
+    "fr": "L'alarme reflète le résultat de la formule : ALLUMÉE quand la formule est VRAIE, ÉTEINTE quand elle est FAUSSE. Utilisez ceci pour vérifier l'état logique actuel de l'appareil.",
+    "it": "L'allarme riflette il risultato della formula: ACCESO quando la formula è VERA, SPENTO quando è FALSA. Usalo per verificare lo stato logico attuale del dispositivo.",
+    "nl": "De alarm weerspiegelt het formuleresultaat: AAN wanneer de formule WAAR is, UIT wanneer ONWAAR. Gebruik dit om de huidige logische status van het apparaat te controleren.",
+    "sv": "Alarmet återspeglar formelresultatet: PÅ när formeln utvärderas till SANT, AV när FALSKT. Använd detta för att kontrollera enhetens aktuella logiska status.",
+    "pl": "Alarm odzwierciedla wynik formuły: WŁĄCZONY gdy formuła jest PRAWDZIWA, WYŁĄCZONY gdy FAŁSZYWA. Użyj tego, aby sprawdzić aktualny stan logiczny urządzenia.",
+    "ru": "Сигнал отражает результат формулы: ВКЛ когда формула ИСТИНА, ВЫКЛ когда ЛОЖЬ. Используйте для проверки текущего логического состояния устройства.",
+    "ko": "알람은 수식 결과를 반영합니다: 수식이 TRUE일 때 켜짐, FALSE일 때 꺼짐. 장치의 현재 논리 상태를 확인하는 데 사용하세요.",
+    "fi": "Hälytys heijastaa kaavan tulosta: PÄÄLLÄ kun kaava on TOSI, POIS kun EPÄTOSI. Käytä tätä tarkistaaksesi laitteen nykyisen logiikkatilan."
   },
   "args": [
     {

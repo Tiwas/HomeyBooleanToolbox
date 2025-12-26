@@ -5,8 +5,18 @@
     "no": "Hent og bruk tilstand fra stakken"
   },
   "hint": {
-    "en": "Removes the top state from the stack and applies it to the devices.",
-    "no": "Fjerner den øverste tilstanden fra stakken og bruker den på enhetene."
+    "en": "Removes the most recent state from the stack and restores all devices to those values. Like an 'undo' operation. Fails if the stack is empty - use 'Stack is empty' condition to check first.",
+    "no": "Fjerner den nyeste tilstanden fra stakken og gjenoppretter alle enheter til disse verdiene. Som en 'angre'-operasjon. Feiler hvis stakken er tom - bruk 'Stakken er tom'-betingelse for å sjekke først.",
+    "de": "Entfernt den neuesten Zustand vom Stapel und stellt alle Geräte auf diese Werte wieder her. Wie eine 'Rückgängig'-Operation. Schlägt fehl, wenn der Stapel leer ist - verwenden Sie die Bedingung 'Stapel ist leer' zur Überprüfung.",
+    "nl": "Verwijdert de meest recente status van de stapel en herstelt alle apparaten naar die waarden. Zoals een 'ongedaan maken'-operatie. Mislukt als de stapel leeg is - gebruik de voorwaarde 'Stapel is leeg' om eerst te controleren.",
+    "fr": "Supprime l'état le plus récent de la pile et restaure tous les appareils à ces valeurs. Comme une opération 'annuler'. Échoue si la pile est vide - utilisez la condition 'La pile est vide' pour vérifier d'abord.",
+    "da": "Fjerner den seneste tilstand fra stakken og gendanner alle enheder til disse værdier. Som en 'fortryd'-operation. Fejler hvis stakken er tom - brug betingelsen 'Stakken er tom' til at kontrollere først.",
+    "fi": "Poistaa viimeisimmän tilan pinosta ja palauttaa kaikki laitteet näihin arvoihin. Kuten 'kumoa'-toiminto. Epäonnistuu, jos pino on tyhjä - käytä 'Pino on tyhjä' -ehtoa tarkistaaksesi ensin.",
+    "sv": "Tar bort det senaste tillståndet från stacken och återställer alla enheter till dessa värden. Som en 'ångra'-operation. Misslyckas om stacken är tom - använd villkoret 'Stacken är tom' för att kontrollera först.",
+    "pl": "Usuwa najnowszy stan ze stosu i przywraca wszystkie urządzenia do tych wartości. Jak operacja 'cofnij'. Kończy się niepowodzeniem, jeśli stos jest pusty - użyj warunku 'Stos jest pusty', aby najpierw sprawdzić.",
+    "it": "Rimuove lo stato più recente dallo stack e ripristina tutti i dispositivi a quei valori. Come un'operazione 'annulla'. Fallisce se lo stack è vuoto - usa la condizione 'Lo stack è vuoto' per verificare prima.",
+    "es": "Elimina el estado más reciente de la pila y restaura todos los dispositivos a esos valores. Como una operación 'deshacer'. Falla si la pila está vacía - use la condición 'La pila está vacía' para verificar primero.",
+    "ru": "Удаляет последнее состояние из стека и восстанавливает все устройства до этих значений. Как операция 'отменить'. Завершается неудачей, если стек пуст - используйте условие 'Стек пуст' для предварительной проверки."
   },
   "args": [
     {

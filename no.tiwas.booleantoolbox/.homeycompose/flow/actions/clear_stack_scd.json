@@ -5,8 +5,18 @@
     "no": "Tøm stakken"
   },
   "hint": {
-    "en": "Removes all states from the stack without applying them.",
-    "no": "Fjerner alle tilstander fra stakken uten å bruke dem."
+    "en": "Removes all states from the stack without applying any of them. Use this to reset the undo history or free up memory when states are no longer needed.",
+    "no": "Fjerner alle tilstander fra stakken uten å bruke noen av dem. Bruk dette for å nullstille angre-historikken eller frigjøre minne når tilstander ikke lenger trengs.",
+    "de": "Entfernt alle Zustände vom Stapel, ohne sie anzuwenden. Verwenden Sie dies, um die Rückgängig-Historie zurückzusetzen oder Speicher freizugeben, wenn Zustände nicht mehr benötigt werden.",
+    "nl": "Verwijdert alle statussen van de stapel zonder ze toe te passen. Gebruik dit om de ongedaan-maken-geschiedenis te resetten of geheugen vrij te maken wanneer statussen niet meer nodig zijn.",
+    "fr": "Supprime tous les états de la pile sans les appliquer. Utilisez ceci pour réinitialiser l'historique d'annulation ou libérer de la mémoire lorsque les états ne sont plus nécessaires.",
+    "da": "Fjerner alle tilstande fra stakken uden at anvende nogen af dem. Brug dette til at nulstille fortryd-historikken eller frigøre hukommelse, når tilstande ikke længere er nødvendige.",
+    "fi": "Poistaa kaikki tilat pinosta soveltamatta mitään niistä. Käytä tätä kumoushistorian nollaamiseen tai muistin vapauttamiseen, kun tiloja ei enää tarvita.",
+    "sv": "Tar bort alla tillstånd från stacken utan att tillämpa något av dem. Använd detta för att återställa ångra-historiken eller frigöra minne när tillstånd inte längre behövs.",
+    "pl": "Usuwa wszystkie stany ze stosu bez stosowania żadnego z nich. Użyj tego, aby zresetować historię cofania lub zwolnić pamięć, gdy stany nie są już potrzebne.",
+    "it": "Rimuove tutti gli stati dallo stack senza applicarne nessuno. Usalo per reimpostare la cronologia di annullamento o liberare memoria quando gli stati non sono più necessari.",
+    "es": "Elimina todos los estados de la pila sin aplicar ninguno de ellos. Úselo para restablecer el historial de deshacer o liberar memoria cuando los estados ya no sean necesarios.",
+    "ru": "Удаляет все состояния из стека без их применения. Используйте для сброса истории отмены или освобождения памяти, когда состояния больше не нужны."
   },
   "args": [
     {

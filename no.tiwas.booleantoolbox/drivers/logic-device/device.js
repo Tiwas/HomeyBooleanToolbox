@@ -1565,6 +1565,68 @@ module.exports = class LogicDeviceDevice extends Homey.Device {
     return true;
   }
 
+  /**
+   * Action card handler: Evaluate formula manually
+   */
+  async onFlowActionEvaluateFormula(args, state) {
+    this.logger.info("🔄 Manual formula evaluation triggered");
+    await this.evaluateAllFormulas();
+    return true;
+  }
+
+  /**
+   * Action card handler: Clear error/timeout state
+   */
+  async onFlowActionClearError(args, state) {
+    this.logger.info("🧹 Clearing error state");
+
+    // Clear timeout state for all formulas
+    for (const formula of this.formulas) {
+      formula.timedOut = false;
+      formula.lastInputTime = Date.now();
+    }
+
+    // Re-evaluate to update state
+    await this.evaluateAllFormulas();
+    return true;
+  }
+
+  /**
+   * Condition card handler for formula_result_is_ld, formula_has_timed_out_ld, has_any_error_ld
+   * @param {object} args - Flow card arguments
+   * @param {object} state - Flow card state
+   * @param {string|boolean} checkType - Type of check: "timeout", "has_error", or boolean for result check
+   */
+  async onFlowCondition(args, state, checkType) {
+    // Check for timeout
+    if (checkType === "timeout") {
+      const hasTimeout = this.formulas.some((f) => this.hasFormulaTimedOut(f.id));
+      this.logger.debug("Condition check: timeout", { hasTimeout });
+      return hasTimeout;
+    }
+
+    // Check for any error (config error or timeout)
+    if (checkType === "has_error") {
+      const hasConfigError = this.getCapabilityValue("alarm_config") === true;
+      const hasTimeout = this.formulas.some((f) => this.hasFormulaTimedOut(f.id));
+      const hasError = hasConfigError || hasTimeout;
+      this.logger.debug("Condition check: has_error", { hasConfigError, hasTimeout, hasError });
+      return hasError;
+    }
+
+    // Check formula result (checkType is boolean: true or false)
+    if (typeof checkType === "boolean") {
+      // For Logic Device there's only one formula, use alarm_generic capability
+      const currentResult = this.getCapabilityValue("alarm_generic");
+      const matches = currentResult === checkType;
+      this.logger.debug("Condition check: result", { expected: checkType, current: currentResult, matches });
+      return matches;
+    }
+
+    this.logger.warn("Unknown condition checkType", { checkType });
+    return false;
+  }
+
   hasFormulaTimedOut(formulaId) {
     const formula = this.formulas.find((f) => f.id === formulaId);
     if (!formula) return false;

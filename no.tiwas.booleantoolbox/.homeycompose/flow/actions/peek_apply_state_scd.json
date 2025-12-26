@@ -5,8 +5,18 @@
     "no": "Les og bruk tilstand (behold på stakken)"
   },
   "hint": {
-    "en": "Applies the top state from the stack WITHOUT removing it. The state remains on the stack.",
-    "no": "Bruker den øverste tilstanden fra stakken UTEN å fjerne den. Tilstanden forblir på stakken."
+    "en": "Restores devices to the most recent stack state WITHOUT removing it. Useful when you want to reapply the same state multiple times or preview before committing with Pop.",
+    "no": "Gjenoppretter enheter til den nyeste stakktilstanden UTEN å fjerne den. Nyttig når du vil bruke samme tilstand flere ganger eller forhåndsvise før du bekrefter med Pop.",
+    "de": "Stellt Geräte auf den neuesten Stapelzustand wieder her, OHNE ihn zu entfernen. Nützlich, wenn Sie denselben Zustand mehrmals anwenden oder vor dem Bestätigen mit Pop eine Vorschau anzeigen möchten.",
+    "nl": "Herstelt apparaten naar de meest recente stapelstatus ZONDER deze te verwijderen. Handig wanneer u dezelfde status meerdere keren wilt toepassen of een voorbeeld wilt bekijken voordat u bevestigt met Pop.",
+    "fr": "Restaure les appareils à l'état de pile le plus récent SANS le supprimer. Utile lorsque vous souhaitez réappliquer le même état plusieurs fois ou prévisualiser avant de valider avec Pop.",
+    "da": "Gendanner enheder til den seneste staktilstand UDEN at fjerne den. Nyttigt når du vil genanvende den samme tilstand flere gange eller forhåndsvise før du bekræfter med Pop.",
+    "fi": "Palauttaa laitteet viimeisimpään pinotilaan POISTAMATTA sitä. Hyödyllinen, kun haluat soveltaa samaa tilaa useita kertoja tai esikatsella ennen vahvistamista Popilla.",
+    "sv": "Återställer enheter till det senaste stacktillståndet UTAN att ta bort det. Användbart när du vill återanvända samma tillstånd flera gånger eller förhandsgranska innan du bekräftar med Pop.",
+    "pl": "Przywraca urządzenia do najnowszego stanu stosu BEZ usuwania go. Przydatne, gdy chcesz ponownie zastosować ten sam stan wielokrotnie lub wyświetlić podgląd przed zatwierdzeniem za pomocą Pop.",
+    "it": "Ripristina i dispositivi allo stato dello stack più recente SENZA rimuoverlo. Utile quando vuoi riapplicare lo stesso stato più volte o visualizzare l'anteprima prima di confermare con Pop.",
+    "es": "Restaura los dispositivos al estado de pila más reciente SIN eliminarlo. Útil cuando desea volver a aplicar el mismo estado varias veces o previsualizar antes de confirmar con Pop.",
+    "ru": "Восстанавливает устройства до последнего состояния стека БЕЗ его удаления. Полезно, когда вы хотите повторно применить то же состояние несколько раз или просмотреть перед подтверждением с помощью Pop."
   },
   "args": [
     {

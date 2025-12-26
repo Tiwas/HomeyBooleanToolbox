@@ -14,6 +14,20 @@
     "pl": "Wyczyść błąd",
     "ru": "Очистить ошибку"
   },
+  "hint": {
+    "en": "Clears the device's error state and re-evaluates the formula. Use this after fixing the issue that caused the error.",
+    "no": "Fjerner enhetens feiltilstand og evaluerer formelen på nytt. Bruk dette etter å ha fikset problemet som forårsaket feilen.",
+    "nl": "Wist de foutstatus van het apparaat en evalueert de formule opnieuw. Gebruik dit na het oplossen van het probleem dat de fout veroorzaakte.",
+    "sv": "Rensar enhetens feltillstånd och utvärderar formeln på nytt. Använd detta efter att ha åtgärdat problemet som orsakade felet.",
+    "de": "Löscht den Fehlerstatus des Geräts und wertet die Formel neu aus. Verwenden Sie dies nach Behebung des Problems, das den Fehler verursacht hat.",
+    "da": "Rydder enhedens fejltilstand og evaluerer formlen igen. Brug dette efter at have løst problemet, der forårsagede fejlen.",
+    "es": "Borra el estado de error del dispositivo y vuelve a evaluar la fórmula. Úselo después de corregir el problema que causó el error.",
+    "fr": "Efface l'état d'erreur de l'appareil et réévalue la formule. Utilisez après avoir corrigé le problème qui a causé l'erreur.",
+    "it": "Cancella lo stato di errore del dispositivo e rivaluta la formula. Usalo dopo aver risolto il problema che ha causato l'errore.",
+    "fi": "Tyhjentää laitteen virhetilan ja arvioi kaavan uudelleen. Käytä tätä virheen aiheuttaneen ongelman korjaamisen jälkeen.",
+    "pl": "Czyści stan błędu urządzenia i ponownie ocenia formułę. Użyj po naprawieniu problemu, który spowodował błąd.",
+    "ru": "Очищает состояние ошибки устройства и повторно оценивает формулу. Используйте после устранения проблемы, вызвавшей ошибку."
+  },
   "args": [
     {
       "type": "device",

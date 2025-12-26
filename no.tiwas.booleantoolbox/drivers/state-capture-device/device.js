@@ -38,65 +38,182 @@ class StateCaptureDevice extends Homey.Device {
     }
 
     /**
-     * Apply values to devices based on template
-     * @param {object} values - Object with device_id -> { capability: value }
+     * Execute state application (supports both hierarchical and flat formats)
+     * Uses same logic as state-device for consistency
+     * @param {object} stateData - State data in hierarchical (zones) or flat (values) format
      * @returns {object} - { success, errors }
      */
-    async _applyValues(values) {
+    async _executeApply(stateData) {
         const api = this.homey.app.api;
         const template = this.getTemplate();
         const errors = [];
         const logErrors = this.getSetting('log_errors');
 
-        for (const item of template.items || []) {
-            const deviceValues = values[item.device_id];
-            if (!deviceValues) continue;
+        // Build execution queue based on format
+        const queue = [];
+        const globalDelay = stateData.config?.default_delay ?? template.config?.default_delay ?? 100;
+        const ignoreErrors = stateData.config?.ignore_errors !== false;
 
+        if (stateData.zones) {
+            // Hierarchical format (state-editor compatible)
+            for (const [zoneName, zoneData] of Object.entries(stateData.zones)) {
+                if (zoneData.active === false) continue;
+
+                const zoneDelay = zoneData.config?.delay_between ?? globalDelay;
+                const items = zoneData.items || [];
+
+                for (const item of items) {
+                    if (item.active === false) continue;
+
+                    const delay = item.delay ?? zoneDelay;
+                    queue.push({
+                        id: item.id,
+                        name: item.name || 'Unknown',
+                        capabilities: item.capabilities,
+                        delay
+                    });
+                }
+            }
+        } else if (stateData.values) {
+            // Legacy flat format - convert to queue using template for device names
+            const templateLookup = {};
+            for (const item of template.items || []) {
+                templateLookup[item.device_id] = {
+                    name: item.device_name || 'Unknown',
+                    delay: item.delay ?? globalDelay,
+                    active: item.active !== false
+                };
+            }
+
+            for (const [deviceId, capValues] of Object.entries(stateData.values)) {
+                const templateInfo = templateLookup[deviceId];
+                if (!templateInfo || !templateInfo.active) continue;
+
+                // Convert capability values to array format
+                const capabilities = Object.entries(capValues).map(([capId, value]) => ({
+                    capability: capId,
+                    value
+                }));
+
+                queue.push({
+                    id: deviceId,
+                    name: templateInfo.name,
+                    capabilities,
+                    delay: templateInfo.delay
+                });
+            }
+        }
+
+        if (queue.length === 0) {
+            this.debug('Queue empty, nothing to apply.');
+            return { success: true, errors: [] };
+        }
+
+        this.debug(`Starting apply sequence with ${queue.length} items...`);
+
+        // Execute queue
+        for (const item of queue) {
+            if (!item.id || !item.capabilities) continue;
+
+            let apiDevice;
             try {
-                const apiDevice = await api.devices.getDevice({ id: item.device_id });
+                apiDevice = await api.devices.getDevice({ id: item.id });
+            } catch (e) {
+                const errMessage = e.message || 'Unknown error';
+                if (errMessage.includes('Could not reach device')) {
+                    this.error(`[UNREACHABLE] Failed to get device ${item.name}: ${errMessage}`);
+                } else {
+                    this.error(`Failed to get device ${item.name}: ${errMessage}`);
+                }
+                errors.push({ device: item.name, device_id: item.id, error: errMessage });
+                if (!ignoreErrors) break;
+                continue;
+            }
 
-                for (const capId of item.capabilities || []) {
-                    if (deviceValues[capId] !== undefined) {
-                        try {
-                            // Check if capability exists and is setable
-                            if (apiDevice.capabilitiesObj &&
-                                apiDevice.capabilitiesObj[capId] &&
-                                apiDevice.capabilitiesObj[capId].setable) {
-                                await apiDevice.setCapabilityValue(capId, deviceValues[capId]);
-                                this.debug(`Set ${item.device_name}.${capId} = ${deviceValues[capId]}`);
-                            } else {
-                                this.debug(`Skipping ${item.device_name}.${capId}: Not setable or doesn't exist`);
-                            }
-                        } catch (capError) {
-                            const errMessage = capError.message || 'Unknown error';
-                            errors.push({
-                                device: item.device_name,
-                                capability: capId,
-                                error: errMessage
-                            });
-                            if (logErrors) {
-                                this.error(`Failed to set ${item.device_name}.${capId}: ${errMessage}`);
-                            }
-                        }
+            // Normalize capabilities to array format
+            let capsToSet = [];
+            if (Array.isArray(item.capabilities)) {
+                capsToSet = item.capabilities;
+            } else {
+                capsToSet = Object.entries(item.capabilities).map(([k, v]) => ({ capability: k, value: v }));
+            }
+
+            // Filter for valid/setable capabilities
+            const validCaps = [];
+            for (const capEntry of capsToSet) {
+                const capId = capEntry.capability || capEntry.id;
+                if (apiDevice.capabilitiesObj && apiDevice.capabilitiesObj[capId]) {
+                    if (apiDevice.capabilitiesObj[capId].setable) {
+                        validCaps.push(capEntry);
+                    } else {
+                        this.debug(`Skipping ${item.name} (${capId}): Capability is read-only`);
+                    }
+                } else {
+                    this.debug(`Skipping ${item.name} (${capId}): Capability not found`);
+                }
+            }
+
+            if (validCaps.length === 0) {
+                this.debug(`Skipping item ${item.name}: No valid/setable capabilities`);
+                continue;
+            }
+
+            // Wait delay before processing
+            if (item.delay > 0) {
+                await new Promise(resolve => setTimeout(resolve, item.delay));
+            }
+
+            // Execute capabilities
+            for (let i = 0; i < validCaps.length; i++) {
+                const capEntry = validCaps[i];
+                const capId = capEntry.capability || capEntry.id;
+                const value = capEntry.value;
+
+                try {
+                    await apiDevice.setCapabilityValue(capId, value);
+                    this.debug(`Set ${item.name} (${capId}) -> ${value}`);
+                } catch (capError) {
+                    const errParams = capError.cause || capError;
+                    const errMessage = errParams.message || errParams.error || 'Unknown error';
+
+                    if (errMessage.includes('Missing Capability Listener')) {
+                        this.log(`[WARN] Skipped ${item.name} (${capId}): Device driver does not support controlling`);
+                    } else if (errMessage.includes('TRANSMIT_COMPLETE_NO_ACK')) {
+                        this.error(`[NETWORK] Failed to set ${item.name} (${capId}): Device did not respond`);
+                        errors.push({ device: item.name, capability: capId, error: errMessage });
+                        if (!ignoreErrors) break;
+                    } else if (errMessage.includes('device is currently unavailable') || errMessage.includes('Could not reach device')) {
+                        this.error(`[UNREACHABLE] Failed to set ${item.name} (${capId}): Device unavailable`);
+                        errors.push({ device: item.name, capability: capId, error: errMessage });
+                        if (!ignoreErrors) break;
+                    } else if (capError.code === 'TIMEOUT' || errMessage.includes('Timed out')) {
+                        this.error(`[TIMEOUT] Failed to set ${item.name} (${capId}): Operation timed out`);
+                        errors.push({ device: item.name, capability: capId, error: errMessage });
+                        if (!ignoreErrors) break;
+                    } else {
+                        this.error(`Failed to set ${item.name} (${capId}): ${errMessage}`);
+                        errors.push({ device: item.name, capability: capId, error: errMessage });
+                        if (!ignoreErrors) break;
                     }
                 }
 
-                // Small delay between devices
-                await new Promise(resolve => setTimeout(resolve, 100));
-
-            } catch (e) {
-                errors.push({
-                    device: item.device_name,
-                    device_id: item.device_id,
-                    error: e.message
-                });
-                if (logErrors) {
-                    this.error(`Failed to access device ${item.device_name}: ${e.message}`);
+                // Small delay between capabilities (same as state-device)
+                if (i < validCaps.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
                 }
             }
         }
 
+        this.debug('Apply sequence completed.');
         return { success: errors.length === 0, errors };
+    }
+
+    /**
+     * Legacy wrapper for backward compatibility
+     * @deprecated Use _executeApply() instead
+     */
+    async _applyValues(values) {
+        return this._executeApply({ values });
     }
 
     // ==================== FLOW ACTIONS: NAMED STATES ====================
@@ -152,13 +269,16 @@ class StateCaptureDevice extends Homey.Device {
             throw new Error(this.homey.__('errors.state_name_required') || 'State name is required');
         }
 
-        const state = this.stateManager.getState(this.getDeviceId(), stateName);
+        // Get state with template for legacy format conversion
+        const template = this.getTemplate();
+        const state = this.stateManager.getState(this.getDeviceId(), stateName, template);
         if (!state) {
             throw new Error(this.homey.__('errors.state_not_found') || `State '${stateName}' not found`);
         }
 
         try {
-            const result = await this._applyValues(state.values);
+            // Use _executeApply with full state object (supports both formats)
+            const result = await this._executeApply(state);
 
             // Trigger success
             await this.homey.flow.getTriggerCard('state_applied_scd')
@@ -242,14 +362,17 @@ class StateCaptureDevice extends Homey.Device {
      * Flow Action: Pop state from stack and apply it
      */
     async onFlowPopState(args) {
-        const state = this.stateManager.popState(this.getDeviceId());
+        // Get state with template for legacy format conversion
+        const template = this.getTemplate();
+        const state = this.stateManager.popState(this.getDeviceId(), template);
 
         if (!state) {
             throw new Error(this.homey.__('errors.stack_empty') || 'Stack is empty');
         }
 
         try {
-            const result = await this._applyValues(state.values);
+            // Use _executeApply with full state object
+            const result = await this._executeApply(state);
 
             // Trigger success
             await this.homey.flow.getTriggerCard('state_applied_scd')
@@ -274,14 +397,17 @@ class StateCaptureDevice extends Homey.Device {
      * Flow Action: Peek at top of stack and apply (without removing)
      */
     async onFlowPeekApplyState(args) {
-        const state = this.stateManager.peekState(this.getDeviceId());
+        // Get state with template for legacy format conversion
+        const template = this.getTemplate();
+        const state = this.stateManager.peekState(this.getDeviceId(), template);
 
         if (!state) {
             throw new Error(this.homey.__('errors.stack_empty') || 'Stack is empty');
         }
 
         try {
-            const result = await this._applyValues(state.values);
+            // Use _executeApply with full state object
+            const result = await this._executeApply(state);
 
             // Trigger success
             await this.homey.flow.getTriggerCard('state_applied_scd')
@@ -361,6 +487,62 @@ class StateCaptureDevice extends Homey.Device {
 
         } catch (e) {
             this.error('Import failed:', e);
+            throw e;
+        }
+    }
+
+    // ==================== FLOW ACTIONS: GET/SET STATE JSON ====================
+
+    /**
+     * Flow Action: Get a specific state as JSON
+     */
+    async onFlowGetStateJson(args) {
+        // Handle both autocomplete object and direct string
+        const stateName = args.state_name?.name || args.state_name;
+
+        if (!stateName) {
+            throw new Error(this.homey.__('errors.state_name_required') || 'State name is required');
+        }
+
+        const state = this.stateManager.getState(this.getDeviceId(), stateName);
+        if (!state) {
+            throw new Error(this.homey.__('errors.state_not_found') || `State '${stateName}' not found`);
+        }
+
+        const jsonString = JSON.stringify(state);
+        this.debug(`Got state "${stateName}" as JSON (${jsonString.length} chars)`);
+
+        return { json_data: jsonString };
+    }
+
+    /**
+     * Flow Action: Set a named state from JSON
+     */
+    async onFlowSetStateJson(args) {
+        const stateName = args.state_name;
+        const jsonData = args.json_data;
+
+        if (!stateName || stateName.trim() === '') {
+            throw new Error(this.homey.__('errors.state_name_required') || 'State name is required');
+        }
+
+        if (!jsonData || jsonData.trim() === '') {
+            throw new Error('JSON data is required');
+        }
+
+        let stateData;
+        try {
+            stateData = JSON.parse(jsonData);
+        } catch (e) {
+            throw new Error('Invalid JSON format: ' + e.message);
+        }
+
+        try {
+            this.stateManager.setStateFromJson(this.getDeviceId(), stateName.trim(), stateData);
+            this.debug(`Set state "${stateName}" from JSON`);
+            return true;
+        } catch (e) {
+            this.error('Set state from JSON failed:', e);
             throw e;
         }
     }

@@ -13,6 +13,20 @@
     "it": "Stato applicato con successo",
     "es": "Estado aplicado con éxito"
   },
+  "hint": {
+    "en": "Triggers when the State Device successfully applies all configured device states. Use this to chain additional actions after the state is fully applied.",
+    "no": "Utløses når State Device vellykket bruker alle konfigurerte enhetstilstander. Bruk dette for å kjede flere handlinger etter at tilstanden er fullt brukt.",
+    "de": "Wird ausgelöst, wenn das State Device alle konfigurierten Gerätezustände erfolgreich anwendet. Verwenden Sie dies, um weitere Aktionen zu verketten, nachdem der Zustand vollständig angewendet wurde.",
+    "nl": "Wordt geactiveerd wanneer het State Device alle geconfigureerde apparaatstatussen succesvol toepast. Gebruik dit om extra acties te koppelen nadat de status volledig is toegepast.",
+    "fr": "Se déclenche lorsque le State Device applique avec succès tous les états d'appareil configurés. Utilisez ceci pour enchaîner des actions supplémentaires après l'application complète de l'état.",
+    "da": "Udløses når State Device succesfuldt anvender alle konfigurerede enhedstilstande. Brug dette til at kæde yderligere handlinger efter tilstanden er fuldt anvendt.",
+    "fi": "Laukaistaan, kun State Device onnistuneesti soveltaa kaikki määritetyt laitetilat. Käytä tätä ketjuttaaksesi lisätoimintoja tilan täydellisen soveltamisen jälkeen.",
+    "sv": "Utlöses när State Device framgångsrikt tillämpar alla konfigurerade enhetstillstånd. Använd detta för att kedja ytterligare åtgärder efter att tillståndet har tillämpats helt.",
+    "pl": "Wyzwala się, gdy State Device pomyślnie zastosuje wszystkie skonfigurowane stany urządzeń. Użyj tego, aby połączyć dodatkowe akcje po pełnym zastosowaniu stanu.",
+    "it": "Si attiva quando lo State Device applica con successo tutti gli stati dispositivo configurati. Usalo per concatenare azioni aggiuntive dopo che lo stato è stato completamente applicato.",
+    "es": "Se activa cuando el State Device aplica con éxito todos los estados de dispositivo configurados. Úselo para encadenar acciones adicionales después de que el estado se haya aplicado completamente.",
+    "ru": "Срабатывает, когда State Device успешно применяет все настроенные состояния устройств. Используйте для цепочки дополнительных действий после полного применения состояния."
+  },
   "args": [
     {
       "type": "device",

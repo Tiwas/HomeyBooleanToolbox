@@ -4,6 +4,20 @@
     "en": "Stack depth is...",
     "no": "Stakkdybde er..."
   },
+  "hint": {
+    "en": "Checks the number of states currently on the stack. Useful for limiting stack growth or implementing complex undo scenarios.",
+    "no": "Sjekker antall tilstander som for øyeblikket er på stakken. Nyttig for å begrense stakkvekst eller implementere komplekse angre-scenarier.",
+    "de": "Überprüft die Anzahl der aktuell auf dem Stapel befindlichen Zustände. Nützlich zur Begrenzung des Stapelwachstums oder zur Implementierung komplexer Rückgängig-Szenarien.",
+    "nl": "Controleert het aantal statussen dat momenteel op de stapel staat. Handig om stapelgroei te beperken of complexe ongedaan-maken-scenario's te implementeren.",
+    "fr": "Vérifie le nombre d'états actuellement sur la pile. Utile pour limiter la croissance de la pile ou implémenter des scénarios d'annulation complexes.",
+    "da": "Kontrollerer antallet af tilstande, der i øjeblikket er på stakken. Nyttigt til at begrænse stakvækst eller implementere komplekse fortryd-scenarier.",
+    "fi": "Tarkistaa tällä hetkellä pinossa olevien tilojen määrän. Hyödyllinen pinon kasvun rajoittamiseen tai monimutkaisten kumousskenaarioiden toteuttamiseen.",
+    "sv": "Kontrollerar antalet tillstånd som för närvarande finns på stacken. Användbart för att begränsa stacktillväxt eller implementera komplexa ångra-scenarier.",
+    "pl": "Sprawdza liczbę stanów aktualnie na stosie. Przydatne do ograniczania wzrostu stosu lub implementowania złożonych scenariuszy cofania.",
+    "it": "Verifica il numero di stati attualmente nello stack. Utile per limitare la crescita dello stack o implementare scenari di annullamento complessi.",
+    "es": "Verifica el número de estados actualmente en la pila. Útil para limitar el crecimiento de la pila o implementar escenarios complejos de deshacer.",
+    "ru": "Проверяет количество состояний, находящихся в данный момент в стеке. Полезно для ограничения роста стека или реализации сложных сценариев отмены."
+  },
   "args": [
     {
       "type": "device",

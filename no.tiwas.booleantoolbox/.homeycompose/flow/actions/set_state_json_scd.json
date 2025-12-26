@@ -1,0 +1,56 @@
+{
+  "id": "set_state_json_scd",
+  "title": {
+    "en": "Set state from JSON",
+    "no": "Sett tilstand fra JSON"
+  },
+  "hint": {
+    "en": "Creates or updates a named state from JSON (must include 'values' object). Use to programmatically define states or receive state data from external sources via webhooks.",
+    "no": "Oppretter eller oppdaterer en navngitt tilstand fra JSON (må inkludere 'values'-objekt). Bruk for å programmatisk definere tilstander eller motta tilstandsdata fra eksterne kilder via webhooks.",
+    "de": "Erstellt oder aktualisiert einen benannten Zustand aus JSON (muss ein 'values'-Objekt enthalten). Verwenden Sie dies, um Zustände programmatisch zu definieren oder Zustandsdaten von externen Quellen über Webhooks zu empfangen.",
+    "nl": "Maakt of werkt een benoemde status bij vanuit JSON (moet een 'values'-object bevatten). Gebruik om statussen programmatisch te definiëren of statusgegevens van externe bronnen via webhooks te ontvangen.",
+    "fr": "Crée ou met à jour un état nommé à partir de JSON (doit inclure un objet 'values'). Utilisez pour définir des états par programmation ou recevoir des données d'état de sources externes via webhooks.",
+    "da": "Opretter eller opdaterer en navngivet tilstand fra JSON (skal inkludere et 'values'-objekt). Brug til programmatisk at definere tilstande eller modtage tilstandsdata fra eksterne kilder via webhooks.",
+    "fi": "Luo tai päivittää nimetyn tilan JSON:sta (täytyy sisältää 'values'-objekti). Käytä tilojen ohjelmalliseen määrittämiseen tai tilatietojen vastaanottamiseen ulkoisista lähteistä webhookien kautta.",
+    "sv": "Skapar eller uppdaterar ett namngivet tillstånd från JSON (måste inkludera ett 'values'-objekt). Använd för att programmatiskt definiera tillstånd eller ta emot tillståndsdata från externa källor via webhooks.",
+    "pl": "Tworzy lub aktualizuje nazwany stan z JSON (musi zawierać obiekt 'values'). Użyj do programowego definiowania stanów lub odbierania danych stanu z zewnętrznych źródeł przez webhooks.",
+    "it": "Crea o aggiorna uno stato nominato da JSON (deve includere un oggetto 'values'). Usalo per definire stati programmaticamente o ricevere dati di stato da fonti esterne tramite webhook.",
+    "es": "Crea o actualiza un estado nombrado desde JSON (debe incluir un objeto 'values'). Úselo para definir estados programáticamente o recibir datos de estado de fuentes externas a través de webhooks.",
+    "ru": "Создаёт или обновляет именованное состояние из JSON (должен включать объект 'values'). Используйте для программного определения состояний или получения данных состояния из внешних источников через webhooks."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    },
+    {
+      "name": "state_name",
+      "type": "text",
+      "title": {
+        "en": "State name",
+        "no": "Tilstandsnavn"
+      },
+      "placeholder": {
+        "en": "my_state",
+        "no": "min_tilstand"
+      }
+    },
+    {
+      "name": "json_data",
+      "type": "text",
+      "title": {
+        "en": "JSON data",
+        "no": "JSON-data"
+      },
+      "placeholder": {
+        "en": "{\"values\":{...}}",
+        "no": "{\"values\":{...}}"
+      }
+    }
+  ],
+  "titleFormatted": {
+    "en": "Set state [[state_name]] from [[json_data]]",
+    "no": "Sett tilstand [[state_name]] fra [[json_data]]"
+  }
+}

@@ -1,18 +1,32 @@
 {
   "id": "formula_has_timed_out_ld",
   "title": {
-    "en": "Has an error",
-    "nl": "Heeft een fout",
-    "sv": "Har ett fel",
-    "no": "Har en feil",
-    "it": "Ha un errore",
-    "de": "Hat einen Fehler",
-    "da": "Har en fejl",
-    "es": "Tiene un error",
-    "fi": "Sisältää virheen",
-    "fr": "A une erreur",
-    "pl": "Wystąpił błąd",
-    "ru": "Есть ошибка"
+    "en": "Formula !{{has|has not}} timed out",
+    "nl": "Formule !{{is|is niet}} verlopen",
+    "sv": "Formeln !{{har|har inte}} tidsgränsen",
+    "no": "Formel !{{har|har ikke}} gått ut på tid",
+    "it": "La formula !{{è|non è}} scaduta",
+    "de": "Formel !{{ist|ist nicht}} abgelaufen",
+    "da": "Formel !{{er|er ikke}} udløbet",
+    "es": "La fórmula !{{ha|no ha}} expirado",
+    "fi": "Kaava !{{on|ei ole}} aikakatkaissut",
+    "fr": "La formule !{{a|n'a pas}} expiré",
+    "pl": "Formuła !{{przekroczyła|nie przekroczyła}} limit czasu",
+    "ru": "Формула !{{истекла|не истекла}}"
+  },
+  "hint": {
+    "en": "Checks if the formula has timed out (no input received within the configured timeout period). Configure timeout in device settings.",
+    "no": "Sjekker om formelen har gått ut på tid (ingen inngang mottatt innen den konfigurerte tidsperioden). Konfigurer timeout i enhetsinnstillingene.",
+    "nl": "Controleert of de formule is verlopen (geen invoer ontvangen binnen de geconfigureerde time-outperiode). Configureer time-out in apparaatinstellingen.",
+    "sv": "Kontrollerar om formeln har tidsgränsen (ingen indata mottagen inom den konfigurerade tidsgränsperioden). Konfigurera tidsgräns i enhetsinställningarna.",
+    "de": "Überprüft, ob die Formel abgelaufen ist (keine Eingabe innerhalb des konfigurierten Zeitlimits erhalten). Konfigurieren Sie das Zeitlimit in den Geräteeinstellungen.",
+    "da": "Kontrollerer om formlen er udløbet (ingen input modtaget inden for den konfigurerede timeout-periode). Konfigurer timeout i enhedsindstillingerne.",
+    "es": "Verifica si la fórmula ha expirado (no se recibió entrada dentro del período de tiempo límite configurado). Configure el tiempo límite en la configuración del dispositivo.",
+    "fr": "Vérifie si la formule a expiré (aucune entrée reçue dans le délai configuré). Configurez le délai dans les paramètres de l'appareil.",
+    "it": "Controlla se la formula è scaduta (nessun input ricevuto entro il periodo di timeout configurato). Configura il timeout nelle impostazioni del dispositivo.",
+    "fi": "Tarkistaa, onko kaava aikakatkaissut (syötettä ei vastaanotettu määritetyn aikakatkaisujakson aikana). Määritä aikakatkaisu laiteasetuksissa.",
+    "pl": "Sprawdza, czy formuła przekroczyła limit czasu (nie otrzymano danych wejściowych w skonfigurowanym okresie). Skonfiguruj limit czasu w ustawieniach urządzenia.",
+    "ru": "Проверяет, истекло ли время формулы (входные данные не получены в течение настроенного периода). Настройте тайм-аут в настройках устройства."
   },
   "args": [
     {

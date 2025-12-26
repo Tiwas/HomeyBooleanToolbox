@@ -5,8 +5,18 @@
     "no": "Tilstand ble brukt"
   },
   "hint": {
-    "en": "Triggers when a state is applied (from named state, pop, or peek).",
-    "no": "Utløses når en tilstand brukes (fra navngitt tilstand, pop eller peek)."
+    "en": "Triggers after devices have been restored to a saved state. Fires for Apply, Pop, and Peek operations. Use 'State name' token to identify which state was applied.",
+    "no": "Utløses etter at enheter har blitt gjenopprettet til en lagret tilstand. Utløses for Bruk, Pop og Peek-operasjoner. Bruk 'Tilstandsnavn'-tokenet for å identifisere hvilken tilstand som ble brukt.",
+    "de": "Wird ausgelöst, nachdem Geräte auf einen gespeicherten Zustand wiederhergestellt wurden. Wird für Anwenden-, Pop- und Peek-Operationen ausgelöst. Verwenden Sie das 'Zustandsname'-Token, um zu identifizieren, welcher Zustand angewendet wurde.",
+    "nl": "Wordt geactiveerd nadat apparaten zijn hersteld naar een opgeslagen status. Wordt geactiveerd voor Toepassen-, Pop- en Peek-operaties. Gebruik het 'Statusnaam'-token om te identificeren welke status is toegepast.",
+    "fr": "Se déclenche après que les appareils ont été restaurés à un état enregistré. Se déclenche pour les opérations Appliquer, Pop et Peek. Utilisez le jeton 'Nom de l'état' pour identifier quel état a été appliqué.",
+    "da": "Udløses efter at enheder er blevet gendannet til en gemt tilstand. Udløses for Anvend-, Pop- og Peek-operationer. Brug 'Tilstandsnavn'-tokenet til at identificere hvilken tilstand der blev anvendt.",
+    "fi": "Laukaistaan, kun laitteet on palautettu tallennettuun tilaan. Laukeaa Sovella-, Pop- ja Peek-toiminnoille. Käytä 'Tilan nimi' -tokenia tunnistaaksesi, mikä tila sovellettiin.",
+    "sv": "Utlöses efter att enheter har återställts till ett sparat tillstånd. Utlöses för Tillämpa-, Pop- och Peek-operationer. Använd 'Tillståndsnamn'-token för att identifiera vilket tillstånd som tillämpades.",
+    "pl": "Wyzwala się po przywróceniu urządzeń do zapisanego stanu. Uruchamia się dla operacji Zastosuj, Pop i Peek. Użyj tokena 'Nazwa stanu', aby zidentyfikować, który stan został zastosowany.",
+    "it": "Si attiva dopo che i dispositivi sono stati ripristinati a uno stato salvato. Si attiva per le operazioni Applica, Pop e Peek. Usa il token 'Nome stato' per identificare quale stato è stato applicato.",
+    "es": "Se activa después de que los dispositivos han sido restaurados a un estado guardado. Se activa para operaciones Aplicar, Pop y Peek. Use el token 'Nombre del estado' para identificar qué estado se aplicó.",
+    "ru": "Срабатывает после восстановления устройств до сохранённого состояния. Срабатывает для операций Применить, Pop и Peek. Используйте токен 'Имя состояния', чтобы определить, какое состояние было применено."
   },
   "args": [
     {

@@ -15,18 +15,18 @@
     "ru": "Состояние тревоги устройства изменено"
   },
   "hint": {
-    "en": "Triggers when the Logic Device's alarm state changes (true/false)",
-    "no": "Utløses når Logic Device sin alarmstatus endres (sant/usant)",
-    "de": "Wird ausgelöst, wenn sich der Alarmstatus des Logic Device ändert (wahr/falsch)",
-    "nl": "Wordt geactiveerd wanneer de alarmstatus van het Logic Device verandert (waar/onwaar)",
-    "fr": "Se déclenche lorsque l'état d'alarme du Logic Device change (vrai/faux)",
-    "da": "Udløses, når Logic Device's alarmstatus ændres (sand/falsk)",
-    "fi": "Laukaistaan, kun Logic Device:n hälytystila muuttuu (tosi/epätosi)",
-    "sv": "Utlöses när Logic Device:s larmstatus ändras (sant/falskt)",
-    "pl": "Wyzwalane, gdy stan alarmu Logic Device zmienia się (prawda/fałsz)",
-    "it": "Si attiva quando lo stato di allarme del Logic Device cambia (vero/falso)",
-    "es": "Se activa cuando el estado de alarma del Logic Device cambia (verdadero/falso)",
-    "ru": "Срабатывает при изменении состояния тревоги Logic Device (истина/ложь)"
+    "en": "Triggers whenever the formula result changes (either direction). Use the 'Alarm state' token to check the new value. Ideal for logging or notification flows.",
+    "no": "Utløses når formelresultatet endres (begge retninger). Bruk 'Alarmtilstand'-tokenet for å sjekke den nye verdien. Ideell for logging- eller varslingsflows.",
+    "de": "Wird ausgelöst, wenn sich das Formelergebnis ändert (beide Richtungen). Verwenden Sie das 'Alarmzustand'-Token, um den neuen Wert zu prüfen. Ideal für Protokollierungs- oder Benachrichtigungsflows.",
+    "nl": "Wordt geactiveerd wanneer het formuleresultaat verandert (beide richtingen). Gebruik het 'Alarmstatus'-token om de nieuwe waarde te controleren. Ideaal voor logging- of meldingsflows.",
+    "fr": "Se déclenche chaque fois que le résultat de la formule change (dans les deux sens). Utilisez le jeton 'État d'alarme' pour vérifier la nouvelle valeur. Idéal pour les flows de journalisation ou de notification.",
+    "da": "Udløses når formelresultatet ændres (begge retninger). Brug 'Alarmtilstand'-tokenet til at tjekke den nye værdi. Ideel til logning- eller notifikationsflows.",
+    "fi": "Laukaistaan, kun kaavan tulos muuttuu (kumpaankin suuntaan). Käytä 'Hälytystila'-tokenia uuden arvon tarkistamiseen. Ihanteellinen kirjaus- tai ilmoitusvuoille.",
+    "sv": "Utlöses när formelresultatet ändras (åt båda håll). Använd 'Larmstatus'-token för att kontrollera det nya värdet. Idealiskt för loggning- eller notifieringsflöden.",
+    "pl": "Wyzwala się przy każdej zmianie wyniku formuły (w obu kierunkach). Użyj tokena 'Stan alarmu', aby sprawdzić nową wartość. Idealny do przepływów logowania lub powiadomień.",
+    "it": "Si attiva ogni volta che il risultato della formula cambia (in entrambe le direzioni). Usa il token 'Stato allarme' per verificare il nuovo valore. Ideale per flussi di registrazione o notifica.",
+    "es": "Se activa cada vez que el resultado de la fórmula cambia (en cualquier dirección). Use el token 'Estado de alarma' para verificar el nuevo valor. Ideal para flujos de registro o notificación.",
+    "ru": "Срабатывает при любом изменении результата формулы (в любом направлении). Используйте токен 'Состояние тревоги' для проверки нового значения. Идеально для потоков логирования или уведомлений."
   },
   "args": [
     {

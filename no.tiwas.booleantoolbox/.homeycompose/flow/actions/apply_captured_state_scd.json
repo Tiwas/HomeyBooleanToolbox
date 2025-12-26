@@ -4,6 +4,20 @@
     "en": "Apply captured state",
     "no": "Bruk lagret tilstand"
   },
+  "hint": {
+    "en": "Restores all devices to the values stored in the selected named state. Devices are updated in the order they were configured.",
+    "no": "Gjenoppretter alle enheter til verdiene lagret i den valgte navngitte tilstanden. Enheter oppdateres i den rekkefølgen de ble konfigurert.",
+    "de": "Stellt alle Geräte auf die im ausgewählten benannten Zustand gespeicherten Werte wieder her. Geräte werden in der konfigurierten Reihenfolge aktualisiert.",
+    "nl": "Herstelt alle apparaten naar de waarden die zijn opgeslagen in de geselecteerde benoemde status. Apparaten worden bijgewerkt in de volgorde waarin ze zijn geconfigureerd.",
+    "fr": "Restaure tous les appareils aux valeurs stockées dans l'état nommé sélectionné. Les appareils sont mis à jour dans l'ordre de leur configuration.",
+    "da": "Gendanner alle enheder til værdierne gemt i den valgte navngivne tilstand. Enheder opdateres i den rækkefølge, de blev konfigureret.",
+    "fi": "Palauttaa kaikki laitteet valittuun nimettyyn tilaan tallennettuihin arvoihin. Laitteet päivitetään siinä järjestyksessä kuin ne määritettiin.",
+    "sv": "Återställer alla enheter till värdena lagrade i det valda namngivna tillståndet. Enheter uppdateras i den ordning de konfigurerades.",
+    "pl": "Przywraca wszystkie urządzenia do wartości zapisanych w wybranym nazwanym stanie. Urządzenia są aktualizowane w kolejności, w jakiej zostały skonfigurowane.",
+    "it": "Ripristina tutti i dispositivi ai valori memorizzati nello stato nominato selezionato. I dispositivi vengono aggiornati nell'ordine in cui sono stati configurati.",
+    "es": "Restaura todos los dispositivos a los valores almacenados en el estado nombrado seleccionado. Los dispositivos se actualizan en el orden en que fueron configurados.",
+    "ru": "Восстанавливает все устройства до значений, сохранённых в выбранном именованном состоянии. Устройства обновляются в порядке их настройки."
+  },
   "args": [
     {
       "type": "device",

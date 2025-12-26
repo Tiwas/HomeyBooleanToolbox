@@ -13,6 +13,20 @@
     "it": "Applica stato",
     "es": "Aplicar estado"
   },
+  "hint": {
+    "en": "Applies the pre-configured state to all devices. Enable 'Turn off other State Devices first' to ensure only this state is active (like a scene selector).",
+    "no": "Bruker den forhåndskonfigurerte tilstanden på alle enheter. Aktiver 'Slå av andre tilstandsenheter først' for å sikre at bare denne tilstanden er aktiv (som en scenevelger).",
+    "de": "Wendet den vorkonfigurierten Zustand auf alle Geräte an. Aktivieren Sie 'Andere Zustandsgeräte zuerst ausschalten', um sicherzustellen, dass nur dieser Zustand aktiv ist (wie ein Szenenauswähler).",
+    "nl": "Past de vooraf geconfigureerde status toe op alle apparaten. Schakel 'Andere statusapparaten eerst uitschakelen' in om ervoor te zorgen dat alleen deze status actief is (zoals een scènekiezer).",
+    "fr": "Applique l'état préconfiguré à tous les appareils. Activez 'Éteindre d'abord les autres appareils d'état' pour s'assurer que seul cet état est actif (comme un sélecteur de scène).",
+    "da": "Anvender den forudkonfigurerede tilstand på alle enheder. Aktivér 'Sluk andre tilstandsenheder først' for at sikre, at kun denne tilstand er aktiv (som en scenevælger).",
+    "fi": "Soveltaa esimääritetyn tilan kaikkiin laitteisiin. Ota käyttöön 'Sammuta muut tilalaitteet ensin' varmistaaksesi, että vain tämä tila on aktiivinen (kuten kohtausvalitsin).",
+    "sv": "Tillämpar det förkonfigurerade tillståndet på alla enheter. Aktivera 'Stäng av andra tillståndsenheter först' för att säkerställa att endast detta tillstånd är aktivt (som en scenväljare).",
+    "pl": "Stosuje wstępnie skonfigurowany stan do wszystkich urządzeń. Włącz 'Wyłącz inne urządzenia stanu najpierw', aby upewnić się, że tylko ten stan jest aktywny (jak selektor scen).",
+    "it": "Applica lo stato preconfigurato a tutti i dispositivi. Abilita 'Spegni prima gli altri dispositivi di stato' per assicurarti che solo questo stato sia attivo (come un selettore di scene).",
+    "es": "Aplica el estado preconfigurado a todos los dispositivos. Habilite 'Apagar primero otros dispositivos de estado' para asegurar que solo este estado esté activo (como un selector de escenas).",
+    "ru": "Применяет предварительно настроенное состояние ко всем устройствам. Включите 'Сначала выключить другие State Device', чтобы только это состояние было активным (как селектор сцен)."
+  },
   "args": [
     {
       "type": "device",

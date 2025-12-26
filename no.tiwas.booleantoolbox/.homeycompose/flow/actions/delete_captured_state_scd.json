@@ -4,6 +4,20 @@
     "en": "Delete captured state",
     "no": "Slett lagret tilstand"
   },
+  "hint": {
+    "en": "Permanently removes a named state from storage. This cannot be undone. The state will no longer appear in the autocomplete list.",
+    "no": "Fjerner permanent en navngitt tilstand fra lagring. Dette kan ikke angres. Tilstanden vil ikke lenger vises i autofullføringslisten.",
+    "de": "Entfernt einen benannten Zustand dauerhaft aus dem Speicher. Dies kann nicht rückgängig gemacht werden. Der Zustand erscheint nicht mehr in der Autovervollständigungsliste.",
+    "nl": "Verwijdert een benoemde status permanent uit de opslag. Dit kan niet ongedaan worden gemaakt. De status verschijnt niet meer in de autocomplete-lijst.",
+    "fr": "Supprime définitivement un état nommé du stockage. Cette action est irréversible. L'état n'apparaîtra plus dans la liste d'autocomplétion.",
+    "da": "Fjerner permanent en navngivet tilstand fra lagring. Dette kan ikke fortrydes. Tilstanden vil ikke længere vises i autofuldførelseslisten.",
+    "fi": "Poistaa nimetyn tilan pysyvästi tallennustilasta. Tätä ei voi kumota. Tila ei enää näy automaattitäydennysluettelossa.",
+    "sv": "Tar permanent bort ett namngivet tillstånd från lagring. Detta kan inte ångras. Tillståndet visas inte längre i autokompletteringslistan.",
+    "pl": "Trwale usuwa nazwany stan z pamięci. Nie można tego cofnąć. Stan nie będzie już wyświetlany na liście autouzupełniania.",
+    "it": "Rimuove permanentemente uno stato nominato dalla memoria. Questa azione non può essere annullata. Lo stato non apparirà più nell'elenco di autocompletamento.",
+    "es": "Elimina permanentemente un estado nombrado del almacenamiento. Esto no se puede deshacer. El estado ya no aparecerá en la lista de autocompletar.",
+    "ru": "Безвозвратно удаляет именованное состояние из хранилища. Это действие нельзя отменить. Состояние больше не будет отображаться в списке автозаполнения."
+  },
   "args": [
     {
       "type": "device",

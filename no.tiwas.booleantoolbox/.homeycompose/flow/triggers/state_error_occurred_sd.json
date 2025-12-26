@@ -13,6 +13,20 @@
     "it": "Si è verificato un errore",
     "es": "Ocurrió un error"
   },
+  "hint": {
+    "en": "Triggers when an error occurs while applying the state (e.g., device not found, capability unavailable). The 'Error' token contains the error message.",
+    "no": "Utløses når en feil oppstår under bruk av tilstanden (f.eks. enhet ikke funnet, funksjon utilgjengelig). 'Feil'-tokenet inneholder feilmeldingen.",
+    "de": "Wird ausgelöst, wenn beim Anwenden des Zustands ein Fehler auftritt (z.B. Gerät nicht gefunden, Fähigkeit nicht verfügbar). Das 'Fehler'-Token enthält die Fehlermeldung.",
+    "nl": "Wordt geactiveerd wanneer er een fout optreedt bij het toepassen van de status (bijv. apparaat niet gevonden, mogelijkheid niet beschikbaar). Het 'Fout'-token bevat de foutmelding.",
+    "fr": "Se déclenche lorsqu'une erreur survient lors de l'application de l'état (ex: appareil introuvable, capacité indisponible). Le jeton 'Erreur' contient le message d'erreur.",
+    "da": "Udløses når der opstår en fejl under anvendelse af tilstanden (f.eks. enhed ikke fundet, evne utilgængelig). 'Fejl'-tokenet indeholder fejlmeddelelsen.",
+    "fi": "Laukaistaan, kun tilan soveltamisessa tapahtuu virhe (esim. laitetta ei löydy, ominaisuus ei ole käytettävissä). 'Virhe'-token sisältää virheilmoituksen.",
+    "sv": "Utlöses när ett fel uppstår vid tillämpning av tillståndet (t.ex. enhet inte hittad, förmåga otillgänglig). 'Fel'-token innehåller felmeddelandet.",
+    "pl": "Wyzwala się, gdy wystąpi błąd podczas stosowania stanu (np. urządzenie nie znalezione, możliwość niedostępna). Token 'Błąd' zawiera komunikat o błędzie.",
+    "it": "Si attiva quando si verifica un errore durante l'applicazione dello stato (es. dispositivo non trovato, capacità non disponibile). Il token 'Errore' contiene il messaggio di errore.",
+    "es": "Se activa cuando ocurre un error al aplicar el estado (ej: dispositivo no encontrado, capacidad no disponible). El token 'Error' contiene el mensaje de error.",
+    "ru": "Срабатывает при ошибке применения состояния (например, устройство не найдено, функция недоступна). Токен 'Ошибка' содержит сообщение об ошибке."
+  },
   "args": [
     {
       "type": "device",

@@ -248,10 +248,6 @@ module.exports = class LogicDeviceDriver extends Homey.Driver {
         checkType: "timeout",
       },
       {
-        id: "formula_result_is_ld",
-        checkTypeFromArg: "result",
-      },
-      {
         id: "has_any_error_ld",
         checkType: "has_error",
       },

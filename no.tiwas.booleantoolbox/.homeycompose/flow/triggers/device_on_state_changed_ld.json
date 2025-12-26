@@ -15,18 +15,18 @@
     "ru": "Состояние включения устройства изменено"
   },
   "hint": {
-    "en": "Triggers when the Logic Device's on/off state changes (enabled/disabled)",
-    "no": "Utløses når Logic Device sin på/av-status endres (aktivert/deaktivert)",
-    "de": "Wird ausgelöst, wenn sich der Ein/Aus-Status des Logic Device ändert (aktiviert/deaktiviert)",
-    "nl": "Wordt geactiveerd wanneer de aan/uit-status van het Logic Device verandert (ingeschakeld/uitgeschakeld)",
-    "fr": "Se déclenche lorsque l'état marche/arrêt du Logic Device change (activé/désactivé)",
-    "da": "Udløses, når Logic Device's tænd/sluk-status ændres (aktiveret/deaktiveret)",
-    "fi": "Laukaistaan, kun Logic Device:n päällä/pois-tila muuttuu (aktivoitu/deaktivoitu)",
-    "sv": "Utlöses när Logic Device:s på/av-status ändras (aktiverad/inaktiverad)",
-    "pl": "Wyzwalane, gdy stan włączenia/wyłączenia Logic Device zmienia się (aktywowany/dezaktywowany)",
-    "it": "Si attiva quando lo stato acceso/spento del Logic Device cambia (attivato/disattivato)",
-    "es": "Se activa cuando el estado encendido/apagado del Logic Device cambia (activado/desactivado)",
-    "ru": "Срабатывает при изменении состояния вкл/выкл Logic Device (активировано/деактивировано)"
+    "en": "Triggers when the device is toggled on or off (enabled/disabled). Use this to detect when someone enables or disables the logic evaluation - not the formula result.",
+    "no": "Utløses når enheten slås på eller av (aktivert/deaktivert). Bruk dette for å oppdage når noen aktiverer eller deaktiverer logikkevalueringen - ikke formelresultatet.",
+    "de": "Wird ausgelöst, wenn das Gerät ein- oder ausgeschaltet wird (aktiviert/deaktiviert). Nutzen Sie dies, um zu erkennen, wann jemand die Logikauswertung aktiviert oder deaktiviert - nicht das Formelergebnis.",
+    "nl": "Wordt geactiveerd wanneer het apparaat wordt in- of uitgeschakeld (ingeschakeld/uitgeschakeld). Gebruik dit om te detecteren wanneer iemand de logische evaluatie in- of uitschakelt - niet het formuleresultaat.",
+    "fr": "Se déclenche lorsque l'appareil est activé ou désactivé. Utilisez ceci pour détecter quand quelqu'un active ou désactive l'évaluation logique - pas le résultat de la formule.",
+    "da": "Udløses når enheden tændes eller slukkes (aktiveret/deaktiveret). Brug dette til at opdage, når nogen aktiverer eller deaktiverer logikevalueringen - ikke formelresultatet.",
+    "fi": "Laukaistaan, kun laite kytketään päälle tai pois (aktivoitu/deaktivoitu). Käytä tätä havaitaksesi, kun joku aktivoi tai deaktivoi logiikka-arvioinnin - ei kaavan tulosta.",
+    "sv": "Utlöses när enheten slås på eller av (aktiverad/inaktiverad). Använd detta för att upptäcka när någon aktiverar eller inaktiverar logikutvärderingen - inte formelresultatet.",
+    "pl": "Wyzwala się, gdy urządzenie jest włączane lub wyłączane (aktywowane/dezaktywowane). Użyj tego, aby wykryć, kiedy ktoś włącza lub wyłącza ocenę logiczną - nie wynik formuły.",
+    "it": "Si attiva quando il dispositivo viene acceso o spento (abilitato/disabilitato). Usalo per rilevare quando qualcuno abilita o disabilita la valutazione logica - non il risultato della formula.",
+    "es": "Se activa cuando el dispositivo se enciende o apaga (habilitado/deshabilitado). Úselo para detectar cuando alguien habilita o deshabilita la evaluación lógica - no el resultado de la fórmula.",
+    "ru": "Срабатывает при включении или выключении устройства (активировано/деактивировано). Используйте для обнаружения, когда кто-то включает или выключает логическую оценку - не результат формулы."
   },
   "args": [
     {

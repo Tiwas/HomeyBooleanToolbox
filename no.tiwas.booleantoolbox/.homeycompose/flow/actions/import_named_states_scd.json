@@ -5,8 +5,18 @@
     "no": "Importer navngitte tilstander"
   },
   "hint": {
-    "en": "Imports named states from JSON. Existing states with the same name will be overwritten.",
-    "no": "Importerer navngitte tilstander fra JSON. Eksisterende tilstander med samme navn vil bli overskrevet."
+    "en": "Imports states from JSON exported by 'Export named states'. Existing states with matching names are overwritten. Use to restore backups or sync between devices.",
+    "no": "Importerer tilstander fra JSON eksportert av 'Eksporter navngitte tilstander'. Eksisterende tilstander med matchende navn overskrives. Bruk for å gjenopprette backups eller synkronisere mellom enheter.",
+    "de": "Importiert Zustände aus JSON, das von 'Benannte Zustände exportieren' exportiert wurde. Vorhandene Zustände mit übereinstimmenden Namen werden überschrieben. Verwenden Sie dies zum Wiederherstellen von Backups oder Synchronisieren zwischen Geräten.",
+    "nl": "Importeert statussen van JSON geëxporteerd door 'Benoemde statussen exporteren'. Bestaande statussen met overeenkomende namen worden overschreven. Gebruik om back-ups te herstellen of te synchroniseren tussen apparaten.",
+    "fr": "Importe les états du JSON exporté par 'Exporter les états nommés'. Les états existants avec des noms correspondants sont écrasés. Utilisez pour restaurer des sauvegardes ou synchroniser entre appareils.",
+    "da": "Importerer tilstande fra JSON eksporteret af 'Eksporter navngivne tilstande'. Eksisterende tilstande med matchende navne overskrives. Brug til at gendanne backups eller synkronisere mellem enheder.",
+    "fi": "Tuo tilat 'Vie nimetyt tilat' -toiminnolla viedystä JSON:sta. Olemassa olevat tilat vastaavilla nimillä korvataan. Käytä varmuuskopioiden palauttamiseen tai synkronointiin laitteiden välillä.",
+    "sv": "Importerar tillstånd från JSON exporterad av 'Exportera namngivna tillstånd'. Befintliga tillstånd med matchande namn skrivs över. Använd för att återställa säkerhetskopior eller synkronisera mellan enheter.",
+    "pl": "Importuje stany z JSON wyeksportowanego przez 'Eksportuj nazwane stany'. Istniejące stany o pasujących nazwach są nadpisywane. Użyj do przywracania kopii zapasowych lub synchronizacji między urządzeniami.",
+    "it": "Importa gli stati dal JSON esportato da 'Esporta stati nominati'. Gli stati esistenti con nomi corrispondenti vengono sovrascritti. Usalo per ripristinare backup o sincronizzare tra dispositivi.",
+    "es": "Importa estados desde JSON exportado por 'Exportar estados nombrados'. Los estados existentes con nombres coincidentes se sobrescriben. Úselo para restaurar copias de seguridad o sincronizar entre dispositivos.",
+    "ru": "Импортирует состояния из JSON, экспортированного функцией 'Экспорт именованных состояний'. Существующие состояния с совпадающими именами перезаписываются. Используйте для восстановления резервных копий или синхронизации между устройствами."
   },
   "args": [
     {

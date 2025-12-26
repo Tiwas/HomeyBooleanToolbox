@@ -4,6 +4,20 @@
     "en": "Capture current state",
     "no": "Lagre nåværende tilstand"
   },
+  "hint": {
+    "en": "Reads current values from all configured devices and saves them under the specified name. Overwrites any existing state with the same name.",
+    "no": "Leser nåværende verdier fra alle konfigurerte enheter og lagrer dem under det angitte navnet. Overskriver eksisterende tilstand med samme navn.",
+    "de": "Liest aktuelle Werte von allen konfigurierten Geräten und speichert sie unter dem angegebenen Namen. Überschreibt vorhandene Zustände mit demselben Namen.",
+    "nl": "Leest huidige waarden van alle geconfigureerde apparaten en slaat ze op onder de opgegeven naam. Overschrijft bestaande status met dezelfde naam.",
+    "fr": "Lit les valeurs actuelles de tous les appareils configurés et les enregistre sous le nom spécifié. Écrase tout état existant portant le même nom.",
+    "da": "Læser aktuelle værdier fra alle konfigurerede enheder og gemmer dem under det angivne navn. Overskriver eksisterende tilstand med samme navn.",
+    "fi": "Lukee nykyiset arvot kaikista määritetyistä laitteista ja tallentaa ne määritetyllä nimellä. Korvaa olemassa olevan tilan samalla nimellä.",
+    "sv": "Läser aktuella värden från alla konfigurerade enheter och sparar dem under det angivna namnet. Skriver över befintligt tillstånd med samma namn.",
+    "pl": "Odczytuje bieżące wartości ze wszystkich skonfigurowanych urządzeń i zapisuje je pod określoną nazwą. Nadpisuje istniejący stan o tej samej nazwie.",
+    "it": "Legge i valori correnti da tutti i dispositivi configurati e li salva con il nome specificato. Sovrascrive qualsiasi stato esistente con lo stesso nome.",
+    "es": "Lee los valores actuales de todos los dispositivos configurados y los guarda con el nombre especificado. Sobrescribe cualquier estado existente con el mismo nombre.",
+    "ru": "Считывает текущие значения со всех настроенных устройств и сохраняет их под указанным именем. Перезаписывает существующее состояние с тем же именем."
+  },
   "args": [
     {
       "type": "device",

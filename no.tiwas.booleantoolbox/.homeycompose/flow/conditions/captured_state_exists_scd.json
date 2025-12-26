@@ -4,6 +4,20 @@
     "en": "Captured state exists",
     "no": "Lagret tilstand eksisterer"
   },
+  "hint": {
+    "en": "Checks if a named state with the specified name has been saved. Useful to avoid errors when applying a state that might not exist yet.",
+    "no": "Sjekker om en navngitt tilstand med det angitte navnet har blitt lagret. Nyttig for å unngå feil når du bruker en tilstand som kanskje ikke eksisterer ennå.",
+    "de": "Überprüft, ob ein benannter Zustand mit dem angegebenen Namen gespeichert wurde. Nützlich, um Fehler zu vermeiden, wenn ein Zustand angewendet wird, der möglicherweise noch nicht existiert.",
+    "nl": "Controleert of een benoemde status met de opgegeven naam is opgeslagen. Handig om fouten te voorkomen bij het toepassen van een status die mogelijk nog niet bestaat.",
+    "fr": "Vérifie si un état nommé avec le nom spécifié a été enregistré. Utile pour éviter les erreurs lors de l'application d'un état qui n'existe peut-être pas encore.",
+    "da": "Kontrollerer om en navngivet tilstand med det angivne navn er blevet gemt. Nyttigt for at undgå fejl ved anvendelse af en tilstand, der muligvis ikke eksisterer endnu.",
+    "fi": "Tarkistaa, onko määritetyllä nimellä nimetty tila tallennettu. Hyödyllinen virheiden välttämiseksi sovellettaessa tilaa, jota ei ehkä vielä ole olemassa.",
+    "sv": "Kontrollerar om ett namngivet tillstånd med det angivna namnet har sparats. Användbart för att undvika fel vid tillämpning av ett tillstånd som kanske inte finns ännu.",
+    "pl": "Sprawdza, czy nazwany stan o określonej nazwie został zapisany. Przydatne, aby uniknąć błędów podczas stosowania stanu, który może jeszcze nie istnieć.",
+    "it": "Verifica se uno stato nominato con il nome specificato è stato salvato. Utile per evitare errori quando si applica uno stato che potrebbe non esistere ancora.",
+    "es": "Verifica si se ha guardado un estado nombrado con el nombre especificado. Útil para evitar errores al aplicar un estado que podría no existir todavía.",
+    "ru": "Проверяет, было ли сохранено именованное состояние с указанным именем. Полезно для избежания ошибок при применении состояния, которое может ещё не существовать."
+  },
   "args": [
     {
       "type": "device",

@@ -29,18 +29,18 @@
     "ko": "장치 [[on_state]]"
   },
   "hint": {
-    "en": "Triggers when the device is turned on or off.",
-    "no": "Utløses når enheten blir skrudd på eller av.",
-    "da": "Udløser når enheden slås til eller fra.",
-    "de": "Wird ausgelöst, wenn das Gerät ein- oder ausgeschaltet wird.",
-    "es": "Se activa cuando el dispositivo se enciende o apaga.",
-    "fr": "Se déclenche lorsque l'appareil est allumé ou éteint.",
-    "it": "Si attiva quando il dispositivo viene acceso o spento.",
-    "nl": "Wordt geactiveerd wanneer het apparaat wordt aan- of uitgezet.",
-    "sv": "Utlöser när enheten slås på eller av.",
-    "pl": "Wyzwala się, gdy urządzenie jest włączone lub wyłączone.",
-    "ru": "Срабатывает при включении или выключении устройства.",
-    "ko": "장치가 켜지거나 꺼질 때 트리거됩니다."
+    "en": "Triggers when the device is enabled or disabled (on/off toggle). This controls whether the device evaluates formulas - not the formula result itself.",
+    "no": "Utløses når enheten aktiveres eller deaktiveres (på/av-bryter). Dette styrer om enheten evaluerer formler - ikke selve formelresultatet.",
+    "da": "Udløser når enheden aktiveres eller deaktiveres (til/fra-skift). Dette styrer om enheden evaluerer formler - ikke selve formelresultatet.",
+    "de": "Wird ausgelöst, wenn das Gerät aktiviert oder deaktiviert wird (Ein/Aus-Schalter). Dies steuert, ob das Gerät Formeln auswertet - nicht das Formelergebnis selbst.",
+    "es": "Se activa cuando el dispositivo se habilita o deshabilita (interruptor encendido/apagado). Esto controla si el dispositivo evalúa fórmulas - no el resultado de la fórmula en sí.",
+    "fr": "Se déclenche lorsque l'appareil est activé ou désactivé (bascule marche/arrêt). Ceci contrôle si l'appareil évalue les formules - pas le résultat de la formule lui-même.",
+    "it": "Si attiva quando il dispositivo viene abilitato o disabilitato (interruttore on/off). Questo controlla se il dispositivo valuta le formule - non il risultato della formula stesso.",
+    "nl": "Wordt geactiveerd wanneer het apparaat wordt ingeschakeld of uitgeschakeld (aan/uit schakelaar). Dit bepaalt of het apparaat formules evalueert - niet het formuleresultaat zelf.",
+    "sv": "Utlöses när enheten aktiveras eller inaktiveras (på/av-växling). Detta styr om enheten utvärderar formler - inte formelresultatet i sig.",
+    "pl": "Wyzwala się, gdy urządzenie jest włączone lub wyłączone (przełącznik wł./wył.). To kontroluje, czy urządzenie ocenia formuły - nie sam wynik formuły.",
+    "ru": "Срабатывает при включении или выключении устройства (переключатель вкл/выкл). Это управляет тем, оценивает ли устройство формулы - а не самим результатом формулы.",
+    "ko": "장치가 활성화 또는 비활성화될 때(켜기/끄기 토글) 트리거됩니다. 이것은 장치가 수식을 평가하는지 여부를 제어합니다 - 수식 결과 자체가 아닙니다."
   },
   "args": [
     {

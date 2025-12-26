@@ -1,0 +1,55 @@
+{
+  "id": "get_state_json_scd",
+  "title": {
+    "en": "Get state as JSON",
+    "no": "Hent tilstand som JSON"
+  },
+  "hint": {
+    "en": "Retrieves a single named state as JSON. The output includes captured values and timestamp. Use for debugging, logging, or sharing state data with external systems.",
+    "no": "Henter en enkelt navngitt tilstand som JSON. Utdataene inkluderer lagrede verdier og tidsstempel. Bruk for feilsøking, logging eller deling av tilstandsdata med eksterne systemer.",
+    "de": "Ruft einen einzelnen benannten Zustand als JSON ab. Die Ausgabe enthält erfasste Werte und Zeitstempel. Verwenden Sie dies für Debugging, Protokollierung oder Teilen von Zustandsdaten mit externen Systemen.",
+    "nl": "Haalt een enkele benoemde status op als JSON. De uitvoer bevat vastgelegde waarden en tijdstempel. Gebruik voor debugging, logging of het delen van statusgegevens met externe systemen.",
+    "fr": "Récupère un seul état nommé en JSON. La sortie inclut les valeurs capturées et l'horodatage. Utilisez pour le débogage, la journalisation ou le partage de données d'état avec des systèmes externes.",
+    "da": "Henter en enkelt navngivet tilstand som JSON. Outputtet inkluderer fangede værdier og tidsstempel. Brug til debugging, logning eller deling af tilstandsdata med eksterne systemer.",
+    "fi": "Hakee yksittäisen nimetyn tilan JSON-muodossa. Tulos sisältää kaapatut arvot ja aikaleiman. Käytä virheenkorjaukseen, lokitukseen tai tilatietojen jakamiseen ulkoisten järjestelmien kanssa.",
+    "sv": "Hämtar ett enskilt namngivet tillstånd som JSON. Utdata inkluderar fångade värden och tidsstämpel. Använd för felsökning, loggning eller delning av tillståndsdata med externa system.",
+    "pl": "Pobiera pojedynczy nazwany stan jako JSON. Dane wyjściowe zawierają przechwycone wartości i znacznik czasu. Użyj do debugowania, logowania lub udostępniania danych stanu zewnętrznym systemom.",
+    "it": "Recupera un singolo stato nominato come JSON. L'output include valori catturati e timestamp. Usalo per debug, registrazione o condivisione di dati di stato con sistemi esterni.",
+    "es": "Recupera un único estado nombrado como JSON. La salida incluye valores capturados y marca de tiempo. Úselo para depuración, registro o compartir datos de estado con sistemas externos.",
+    "ru": "Получает одно именованное состояние в формате JSON. Вывод включает захваченные значения и временную метку. Используйте для отладки, логирования или обмена данными состояния с внешними системами."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=state-capture-device"
+    },
+    {
+      "name": "state_name",
+      "type": "autocomplete",
+      "title": {
+        "en": "State name",
+        "no": "Tilstandsnavn"
+      },
+      "placeholder": {
+        "en": "Select state...",
+        "no": "Velg tilstand..."
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "name": "json_data",
+      "type": "string",
+      "title": {
+        "en": "JSON data",
+        "no": "JSON-data"
+      },
+      "example": "{\"captured_at\":\"...\",\"values\":{...}}"
+    }
+  ],
+  "titleFormatted": {
+    "en": "Get state [[state_name]] as JSON",
+    "no": "Hent tilstand [[state_name]] som JSON"
+  }
+}

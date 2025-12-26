@@ -29,18 +29,18 @@
     "ko": "장치 알람 [[alarm_state]]"
   },
   "hint": {
-    "en": "Triggers when the device's alarm is turned on or off.",
-    "no": "Utløses når enhetens alarm blir skrudd på eller av.",
-    "da": "Udløser når enhedens alarm slås til eller fra.",
-    "de": "Wird ausgelöst, wenn der Gerätealarm ein- oder ausgeschaltet wird.",
-    "es": "Se activa cuando la alarma del dispositivo se enciende o apaga.",
-    "fr": "Se déclenche lorsque l'alarme de l'appareil est allumée ou éteinte.",
-    "it": "Si attiva quando l'allarme del dispositivo viene acceso o spento.",
-    "nl": "Wordt geactiveerd wanneer het apparaat alarm wordt aan- of uitgezet.",
-    "sv": "Utlöser när enhetens alarm slås på eller av.",
-    "pl": "Wyzwala się, gdy alarm urządzenia jest włączony lub wyłączony.",
-    "ru": "Срабатывает при включении или выключении тревоги устройства.",
-    "ko": "장치의 알람이 켜지거나 꺼질 때 트리거됩니다."
+    "en": "Triggers when the formula result changes to TRUE (On) or FALSE (Off). The alarm reflects the formula output - use this to react to logic state changes.",
+    "no": "Utløses når formelresultatet endres til SANN (På) eller USANN (Av). Alarmen gjenspeiler formelens resultat - bruk dette for å reagere på endringer i logisk tilstand.",
+    "da": "Udløser når formelresultatet ændres til SAND (Til) eller FALSK (Fra). Alarmen afspejler formelens output - brug dette til at reagere på logiske tilstandsændringer.",
+    "de": "Wird ausgelöst, wenn das Formelergebnis zu WAHR (Ein) oder FALSCH (Aus) wechselt. Der Alarm spiegelt die Formelausgabe wider - nutzen Sie dies, um auf Logikzustandsänderungen zu reagieren.",
+    "es": "Se activa cuando el resultado de la fórmula cambia a VERDADERO (Encendido) o FALSO (Apagado). La alarma refleja la salida de la fórmula - úselo para reaccionar a cambios de estado lógico.",
+    "fr": "Se déclenche lorsque le résultat de la formule passe à VRAI (Allumé) ou FAUX (Éteint). L'alarme reflète la sortie de la formule - utilisez ceci pour réagir aux changements d'état logique.",
+    "it": "Si attiva quando il risultato della formula cambia in VERO (Acceso) o FALSO (Spento). L'allarme riflette l'output della formula - usalo per reagire ai cambiamenti di stato logico.",
+    "nl": "Wordt geactiveerd wanneer het formuleresultaat verandert naar WAAR (Aan) of ONWAAR (Uit). De alarm weerspiegelt de formule-output - gebruik dit om te reageren op logische statuswijzigingen.",
+    "sv": "Utlöses när formelresultatet ändras till SANT (På) eller FALSKT (Av). Larmet återspeglar formelns utdata - använd detta för att reagera på logiska statusändringar.",
+    "pl": "Wyzwala się, gdy wynik formuły zmienia się na PRAWDA (Włączony) lub FAŁSZ (Wyłączony). Alarm odzwierciedla wynik formuły - użyj tego, aby reagować na zmiany stanu logicznego.",
+    "ru": "Срабатывает, когда результат формулы меняется на ИСТИНА (Вкл) или ЛОЖЬ (Выкл). Тревога отражает результат формулы - используйте для реагирования на изменения логического состояния.",
+    "ko": "수식 결과가 TRUE(켜짐) 또는 FALSE(꺼짐)로 변경될 때 트리거됩니다. 알람은 수식 출력을 반영합니다 - 논리 상태 변경에 반응하는 데 사용하세요."
   },
   "args": [
     {

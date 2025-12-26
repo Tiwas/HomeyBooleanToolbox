@@ -28,6 +28,20 @@
     "es": "Evaluar fórmula",
     "ru": "Вычислить формулу"
   },
+  "hint": {
+    "en": "Manually triggers a re-evaluation of the formula using current input values. Useful when you want to force an update without waiting for input changes.",
+    "no": "Utløser manuelt en ny evaluering av formelen med gjeldende inngangsverdier. Nyttig når du vil tvinge en oppdatering uten å vente på inngangsendringer.",
+    "de": "Löst manuell eine Neuauswertung der Formel mit aktuellen Eingabewerten aus. Nützlich, wenn Sie ein Update erzwingen möchten, ohne auf Eingabeänderungen zu warten.",
+    "nl": "Activeert handmatig een herevaluatie van de formule met huidige invoerwaarden. Handig wanneer u een update wilt forceren zonder te wachten op invoerwijzigingen.",
+    "fr": "Déclenche manuellement une réévaluation de la formule avec les valeurs d'entrée actuelles. Utile lorsque vous souhaitez forcer une mise à jour sans attendre les changements d'entrée.",
+    "da": "Udløser manuelt en genevaluering af formlen med aktuelle inputværdier. Nyttigt når du vil tvinge en opdatering uden at vente på inputændringer.",
+    "fi": "Käynnistää manuaalisesti kaavan uudelleenarvioinnin nykyisillä syöttöarvoilla. Hyödyllinen, kun haluat pakottaa päivityksen odottamatta syöttömuutoksia.",
+    "sv": "Utlöser manuellt en omvärdering av formeln med aktuella ingångsvärden. Användbart när du vill tvinga en uppdatering utan att vänta på ingångsändringar.",
+    "pl": "Ręcznie uruchamia ponowną ocenę formuły przy użyciu bieżących wartości wejściowych. Przydatne, gdy chcesz wymusić aktualizację bez czekania na zmiany danych wejściowych.",
+    "it": "Attiva manualmente una rivalutazione della formula utilizzando i valori di input correnti. Utile quando vuoi forzare un aggiornamento senza attendere le modifiche degli input.",
+    "es": "Activa manualmente una reevaluación de la fórmula usando los valores de entrada actuales. Útil cuando desea forzar una actualización sin esperar cambios de entrada.",
+    "ru": "Вручную запускает повторную оценку формулы с использованием текущих входных значений. Полезно, когда вы хотите принудительно обновить без ожидания изменений входных данных."
+  },
   "args": [
     {
       "type": "device",

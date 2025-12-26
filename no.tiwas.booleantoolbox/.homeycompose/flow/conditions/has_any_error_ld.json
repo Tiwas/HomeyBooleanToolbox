@@ -28,6 +28,20 @@
     "es": "Dispositivo !{{tiene|no tiene}} error",
     "ru": "Устройство !{{имеет|не имеет}} ошибку"
   },
+  "hint": {
+    "en": "Checks if the device has any error (configuration error, timeout, or evaluation error). Use 'Clear error' action to reset the error state.",
+    "no": "Sjekker om enheten har noen feil (konfigurasjonsfeil, timeout eller evalueringsfeil). Bruk 'Fjern feil'-handling for å nullstille feiltilstanden.",
+    "de": "Überprüft, ob das Gerät einen Fehler hat (Konfigurationsfehler, Timeout oder Auswertungsfehler). Verwenden Sie die Aktion 'Fehler löschen', um den Fehlerzustand zurückzusetzen.",
+    "nl": "Controleert of het apparaat een fout heeft (configuratiefout, time-out of evaluatiefout). Gebruik de actie 'Fout wissen' om de foutstatus te resetten.",
+    "fr": "Vérifie si l'appareil a une erreur (erreur de configuration, délai dépassé ou erreur d'évaluation). Utilisez l'action 'Effacer l'erreur' pour réinitialiser l'état d'erreur.",
+    "da": "Kontrollerer om enheden har en fejl (konfigurationsfejl, timeout eller evalueringsfejl). Brug handlingen 'Ryd fejl' for at nulstille fejltilstanden.",
+    "fi": "Tarkistaa, onko laitteessa virhe (konfiguraatiovirhe, aikakatkaisu tai arviointivirhe). Käytä 'Tyhjennä virhe' -toimintoa virheen tilan nollaamiseksi.",
+    "sv": "Kontrollerar om enheten har något fel (konfigurationsfel, tidsgräns eller utvärderingsfel). Använd åtgärden 'Rensa fel' för att återställa feltillståndet.",
+    "pl": "Sprawdza, czy urządzenie ma jakikolwiek błąd (błąd konfiguracji, przekroczenie limitu czasu lub błąd oceny). Użyj akcji 'Wyczyść błąd', aby zresetować stan błędu.",
+    "it": "Controlla se il dispositivo ha un errore (errore di configurazione, timeout o errore di valutazione). Usa l'azione 'Cancella errore' per reimpostare lo stato di errore.",
+    "es": "Verifica si el dispositivo tiene algún error (error de configuración, tiempo de espera o error de evaluación). Use la acción 'Borrar error' para restablecer el estado de error.",
+    "ru": "Проверяет, есть ли у устройства ошибка (ошибка конфигурации, тайм-аут или ошибка оценки). Используйте действие 'Очистить ошибку' для сброса состояния ошибки."
+  },
   "args": [
     {
       "type": "device",

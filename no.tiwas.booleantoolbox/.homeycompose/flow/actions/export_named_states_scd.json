@@ -5,8 +5,18 @@
     "no": "Eksporter navngitte tilstander"
   },
   "hint": {
-    "en": "Exports all named states as JSON. Use the token in a notification or store it for backup.",
-    "no": "Eksporterer alle navngitte tilstander som JSON. Bruk tokenet i en varsling eller lagre det som backup."
+    "en": "Exports all named states as a JSON string. Use the 'JSON data' token to save to a file, send via webhook, or store in a variable for backup purposes.",
+    "no": "Eksporterer alle navngitte tilstander som en JSON-streng. Bruk 'JSON-data'-tokenet for å lagre til fil, sende via webhook, eller lagre i en variabel for backup-formål.",
+    "de": "Exportiert alle benannten Zustände als JSON-String. Verwenden Sie das 'JSON-Daten'-Token zum Speichern in einer Datei, Senden über Webhook oder Speichern in einer Variable für Backup-Zwecke.",
+    "nl": "Exporteert alle benoemde statussen als een JSON-string. Gebruik het 'JSON-gegevens'-token om op te slaan in een bestand, te verzenden via webhook of op te slaan in een variabele voor back-updoeleinden.",
+    "fr": "Exporte tous les états nommés sous forme de chaîne JSON. Utilisez le jeton 'Données JSON' pour enregistrer dans un fichier, envoyer via webhook ou stocker dans une variable à des fins de sauvegarde.",
+    "da": "Eksporterer alle navngivne tilstande som en JSON-streng. Brug 'JSON-data'-tokenet til at gemme i en fil, sende via webhook eller gemme i en variabel til backup-formål.",
+    "fi": "Vie kaikki nimetyt tilat JSON-merkkijonona. Käytä 'JSON-data' -tokenia tallentaaksesi tiedostoon, lähettääksesi webhookin kautta tai tallentaaksesi muuttujaan varmuuskopiointia varten.",
+    "sv": "Exporterar alla namngivna tillstånd som en JSON-sträng. Använd 'JSON-data'-token för att spara till en fil, skicka via webhook eller lagra i en variabel för säkerhetskopiering.",
+    "pl": "Eksportuje wszystkie nazwane stany jako ciąg JSON. Użyj tokena 'Dane JSON', aby zapisać do pliku, wysłać przez webhook lub przechować w zmiennej do celów kopii zapasowej.",
+    "it": "Esporta tutti gli stati nominati come stringa JSON. Usa il token 'Dati JSON' per salvare in un file, inviare tramite webhook o memorizzare in una variabile per scopi di backup.",
+    "es": "Exporta todos los estados nombrados como una cadena JSON. Use el token 'Datos JSON' para guardar en un archivo, enviar a través de webhook o almacenar en una variable para propósitos de respaldo.",
+    "ru": "Экспортирует все именованные состояния в виде JSON-строки. Используйте токен 'JSON данные' для сохранения в файл, отправки через webhook или хранения в переменной для резервного копирования."
   },
   "args": [
     {

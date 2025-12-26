@@ -49,9 +49,28 @@
                 <div class="flex items-center space-x-4">
                     <a href="../README.md" class="text-xl font-bold text-purple-600 hover:text-purple-700">Smart (Components) Toolkit</a>
                     <span class="text-gray-300">|</span>
-                    <span class="text-gray-700 font-semibold">State Editor (API)</span>
+                    <!-- Mode Selector -->
+                    <div class="flex bg-gray-100 rounded-lg p-0.5">
+                        <button @click="editorMode = 'state'"
+                                :class="editorMode === 'state' ? 'bg-white shadow text-purple-600' : 'text-gray-600 hover:text-gray-800'"
+                                class="px-3 py-1 rounded-md text-sm font-medium transition">
+                            <i class="fas fa-play-circle mr-1"></i>State Device
+                        </button>
+                        <button @click="editorMode = 'captured'"
+                                :class="editorMode === 'captured' ? 'bg-white shadow text-orange-600' : 'text-gray-600 hover:text-gray-800'"
+                                class="px-3 py-1 rounded-md text-sm font-medium transition">
+                            <i class="fas fa-camera mr-1"></i>Captured State
+                        </button>
+                    </div>
+                    <span class="text-xs text-gray-500">(API)</span>
                 </div>
                 <div class="space-x-3">
+                    <!-- Template button for captured mode -->
+                    <button v-if="editorMode === 'captured'" @click="showTemplateModal = true"
+                            :class="capturedTemplate ? 'bg-orange-600 hover:bg-orange-700' : 'bg-orange-400 hover:bg-orange-500'"
+                            class="text-white px-3 py-1.5 rounded text-sm transition shadow-sm">
+                        <i class="fas fa-list-check mr-2"></i>{{ capturedTemplate ? 'Template Loaded' : 'Load Template' }}
+                    </button>
                     <button v-if="currentDevice" @click="saveToDevice" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded text-sm transition shadow-sm">
                         <i class="fas fa-save mr-2"></i>Save to Device
                     </button>
@@ -361,6 +380,33 @@
             </div>
         </div>
 
+        <!-- Template Modal (Captured State Mode) -->
+        <div v-if="showTemplateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full flex flex-col max-h-[90vh]">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-orange-50 rounded-t-lg">
+                    <h2 class="text-xl font-bold text-gray-800"><i class="fas fa-list-check mr-2 text-orange-600"></i>Load Template</h2>
+                    <button @click="showTemplateModal = false" class="text-gray-400 hover:text-gray-600 transition"><i class="fas fa-times text-lg"></i></button>
+                </div>
+                <div class="p-4 flex-grow flex flex-col">
+                    <p class="text-sm text-gray-600 mb-2">Paste the template JSON from your State Capture Device. This defines which devices are allowed in the captured state.</p>
+                    <textarea v-model="templateText" class="w-full flex-grow bg-gray-50 border border-gray-300 rounded p-3 font-mono text-xs text-gray-800 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 focus:outline-none min-h-[200px]" placeholder='{ "items": [ { "device_id": "...", "device_name": "...", "capabilities": [...] } ] }'></textarea>
+
+                    <div v-if="templateError" class="mt-2 text-red-600 text-sm bg-red-50 p-2 rounded border border-red-200">
+                        <i class="fas fa-exclamation-circle mr-1"></i> {{ templateError }}
+                    </div>
+
+                    <div v-if="capturedTemplate" class="mt-2 text-green-600 text-sm bg-green-50 p-2 rounded border border-green-200">
+                        <i class="fas fa-check-circle mr-1"></i> Template loaded: {{ capturedTemplate.items?.length || 0 }} devices
+                    </div>
+                </div>
+                <div class="p-4 border-t border-gray-200 flex justify-end space-x-3 bg-orange-50 rounded-b-lg">
+                    <button @click="loadTemplate" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded text-sm font-semibold shadow-sm transition">
+                        Load Template
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Homey Selection Modal -->
         <div v-if="showHomeyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
             <div class="bg-white rounded-lg shadow-xl max-w-md w-full flex flex-col">
@@ -423,13 +469,22 @@
 
         createApp({
             setup() {
+                // Editor Mode: 'state' (State Device) or 'captured' (Captured State)
+                const editorMode = ref('state');
+
+                // Template for captured state mode (devices allowed in state)
+                const capturedTemplate = ref(null);
+                const showTemplateModal = ref(false);
+                const templateText = ref('');
+                const templateError = ref(null);
+
                 // Global Config
                 const config = ref({
                     default_delay: 200,
                     ignore_errors: true,
                     debug: false
                 });
-                
+
                 // Editor State
                 const zones = ref({});
                 const zoneNameKeys = ref({});
@@ -889,6 +944,21 @@
                 };
 
 
+                // Template Loading for Captured State Mode
+                const loadTemplate = () => {
+                    templateError.value = null;
+                    try {
+                        const data = JSON.parse(templateText.value);
+                        if (!data.items || !Array.isArray(data.items)) {
+                            throw new Error("Invalid template: missing 'items' array");
+                        }
+                        capturedTemplate.value = data;
+                        showTemplateModal.value = false;
+                    } catch (e) {
+                        templateError.value = e.message;
+                    }
+                };
+
                 // Import Logic
                 const processImport = (mode) => {
                     importError.value = null;
@@ -908,6 +978,24 @@
                             throw new Error("Invalid JSON: No 'zones' or 'items' found.");
                         }
 
+                        // Validate against template in captured mode
+                        if (editorMode.value === 'captured' && capturedTemplate.value) {
+                            const allowedIds = new Set(capturedTemplate.value.items.map(item => item.device_id));
+                            const invalidDevices = [];
+
+                            for (const [zoneName, zoneData] of Object.entries(importedZones)) {
+                                for (const item of (zoneData.items || [])) {
+                                    if (!allowedIds.has(item.id)) {
+                                        invalidDevices.push(item.name || item.id);
+                                    }
+                                }
+                            }
+
+                            if (invalidDevices.length > 0) {
+                                throw new Error(`Devices not in template: ${invalidDevices.join(', ')}`);
+                            }
+                        }
+
                         if (mode === 'replace') {
                             config.value = { ...config.value, ...importedConfig };
                             zones.value = importedZones;
@@ -917,7 +1005,7 @@
                             if (importedConfig) {
                                 config.value = { ...config.value, ...importedConfig };
                             }
-                            
+
                             for (const [zName, zData] of Object.entries(importedZones)) {
                                 if (!zones.value[zName]) {
                                     zones.value[zName] = zData;
@@ -1110,22 +1198,23 @@
                 return {
                     config, zones, zoneNameKeys,
                     showConfig, showInactive, showImportModal, showApiConfig, showHomeyModal, showDeviceModal, importText, importError,
-                    
+                    editorMode, capturedTemplate, showTemplateModal, templateText, templateError,
+
                     // Auth
                     clientId, clientSecret, hasCredentials, isLoggedIn, userName, userAvatar,
                     scopeMode, recommendedScopesText, grantedScopesText, activeAuthStrategy,
                     saveCredentials, resetCredentials, login, logout,
-                    
+
                     // API
                     isFetching, apiMessage, apiError, homeys, homeyDevices, fetchDevices, selectHomey, selectDevice,
                     deviceSearchQuery, filteredDevices, currentDevice, saveToDevice,
-                    
+
                     simulationState, isValid, generatedJson, getItemDomId,
                     toggleConfig, addZone, renameZone, deleteZone,
                     addItem: () => {}, removeItem, moveItem,
                     addCapability, removeCapability, moveCapability,
                     onDragStart, onDragEnd, onDropItem,
-                    processImport, copyToClipboard,
+                    processImport, copyToClipboard, loadTemplate,
                     startSimulation, stopSimulation
                 };
             }

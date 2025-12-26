@@ -5,8 +5,18 @@
     "no": "Tilstand ble lagret"
   },
   "hint": {
-    "en": "Triggers when a state is captured or pushed to the stack.",
-    "no": "Utløses når en tilstand lagres eller legges på stakken."
+    "en": "Triggers when a state is saved (via Capture or Push). The 'State name' token contains the name used, or '__stack__' for stack operations.",
+    "no": "Utløses når en tilstand lagres (via Lagre eller Push). 'Tilstandsnavn'-tokenet inneholder navnet som ble brukt, eller '__stack__' for stakkoperasjoner.",
+    "de": "Wird ausgelöst, wenn ein Zustand gespeichert wird (über Erfassen oder Push). Das 'Zustandsname'-Token enthält den verwendeten Namen oder '__stack__' für Stapeloperationen.",
+    "nl": "Wordt geactiveerd wanneer een status wordt opgeslagen (via Vastleggen of Push). Het 'Statusnaam'-token bevat de gebruikte naam, of '__stack__' voor stapeloperaties.",
+    "fr": "Se déclenche lorsqu'un état est enregistré (via Capturer ou Push). Le jeton 'Nom de l'état' contient le nom utilisé, ou '__stack__' pour les opérations de pile.",
+    "da": "Udløses når en tilstand gemmes (via Fang eller Push). 'Tilstandsnavn'-tokenet indeholder det brugte navn, eller '__stack__' for stakoperationer.",
+    "fi": "Laukaistaan, kun tila tallennetaan (Capture tai Push kautta). 'Tilan nimi' -token sisältää käytetyn nimen tai '__stack__' pinotoiminnoille.",
+    "sv": "Utlöses när ett tillstånd sparas (via Fånga eller Push). 'Tillståndsnamn'-token innehåller det använda namnet, eller '__stack__' för stackoperationer.",
+    "pl": "Wyzwala się, gdy stan zostanie zapisany (przez Przechwytywanie lub Push). Token 'Nazwa stanu' zawiera użytą nazwę lub '__stack__' dla operacji stosu.",
+    "it": "Si attiva quando uno stato viene salvato (tramite Cattura o Push). Il token 'Nome stato' contiene il nome utilizzato, o '__stack__' per le operazioni dello stack.",
+    "es": "Se activa cuando se guarda un estado (a través de Capturar o Push). El token 'Nombre del estado' contiene el nombre utilizado, o '__stack__' para operaciones de pila.",
+    "ru": "Срабатывает при сохранении состояния (через Захват или Push). Токен 'Имя состояния' содержит использованное имя или '__stack__' для операций со стеком."
   },
   "args": [
     {

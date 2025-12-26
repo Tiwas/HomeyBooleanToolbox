@@ -4,6 +4,20 @@
     "en": "Stack is empty",
     "no": "Stakken er tom"
   },
+  "hint": {
+    "en": "Checks if the state stack has any saved states. Use this before Pop operations to avoid errors when the stack is empty.",
+    "no": "Sjekker om tilstandsstakken har noen lagrede tilstander. Bruk dette før Pop-operasjoner for å unngå feil når stakken er tom.",
+    "de": "Überprüft, ob der Zustandsstapel gespeicherte Zustände enthält. Verwenden Sie dies vor Pop-Operationen, um Fehler zu vermeiden, wenn der Stapel leer ist.",
+    "nl": "Controleert of de statusstapel opgeslagen statussen heeft. Gebruik dit vóór Pop-operaties om fouten te voorkomen wanneer de stapel leeg is.",
+    "fr": "Vérifie si la pile d'états contient des états enregistrés. Utilisez ceci avant les opérations Pop pour éviter les erreurs lorsque la pile est vide.",
+    "da": "Kontrollerer om tilstandsstakken har gemte tilstande. Brug dette før Pop-operationer for at undgå fejl, når stakken er tom.",
+    "fi": "Tarkistaa, onko tilapinossa tallennettuja tiloja. Käytä tätä ennen Pop-toimintoja virheiden välttämiseksi, kun pino on tyhjä.",
+    "sv": "Kontrollerar om tillståndsstacken har några sparade tillstånd. Använd detta före Pop-operationer för att undvika fel när stacken är tom.",
+    "pl": "Sprawdza, czy stos stanów ma jakiekolwiek zapisane stany. Użyj tego przed operacjami Pop, aby uniknąć błędów, gdy stos jest pusty.",
+    "it": "Verifica se lo stack degli stati ha stati salvati. Usalo prima delle operazioni Pop per evitare errori quando lo stack è vuoto.",
+    "es": "Verifica si la pila de estados tiene estados guardados. Úselo antes de las operaciones Pop para evitar errores cuando la pila está vacía.",
+    "ru": "Проверяет, есть ли в стеке состояний сохранённые состояния. Используйте перед операциями Pop, чтобы избежать ошибок, когда стек пуст."
+  },
   "args": [
     {
       "type": "device",

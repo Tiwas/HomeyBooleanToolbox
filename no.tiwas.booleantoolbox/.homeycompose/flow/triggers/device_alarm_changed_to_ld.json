@@ -29,18 +29,18 @@
     "ko": "장치 알람이 [[alarm_state]](으)로 변경됨"
   },
   "hint": {
-    "en": "Triggers when the device's alarm state changes to the selected value.",
-    "no": "Utløses når enhetens alarmtilstand endres til den valgte verdien.",
-    "da": "Udløser når enhedens alarmstilstand ændres til den valgte værdi.",
-    "de": "Wird ausgelöst, wenn sich der Alarmzustand des Geräts auf den ausgewählten Wert ändert.",
-    "es": "Se activa cuando el estado de alarma del dispositivo cambia al valor seleccionado.",
-    "fr": "Se déclenche lorsque l'état d'alarme de l'appareil change vers la valeur sélectionnée.",
-    "it": "Si attiva quando lo stato di allarme del dispositivo cambia al valore selezionato.",
-    "nl": "Wordt geactiveerd wanneer de alarmstatus van het apparaat verandert naar de geselecteerde waarde.",
-    "sv": "Utlöser när enhetens alarmtillstånd ändras till det valda värdet.",
-    "pl": "Wyzwala się, gdy stan alarmu urządzenia zmienia się na wybraną wartość.",
-    "ru": "Срабатывает при изменении состояния тревоги устройства на выбранное значение.",
-    "ko": "장치의 알람 상태가 선택한 값으로 변경될 때 트리거됩니다."
+    "en": "Triggers when the formula result changes to the selected value. On = formula TRUE, Off = formula FALSE. Use this to run flows when your logic condition becomes true or false.",
+    "no": "Utløses når formelresultatet endres til den valgte verdien. På = formel SANN, Av = formel USANN. Bruk dette til å kjøre flows når logikkbetingelsen din blir sann eller usann.",
+    "da": "Udløser når formelresultatet ændres til den valgte værdi. Til = formel SAND, Fra = formel FALSK. Brug dette til at køre flows, når din logikbetingelse bliver sand eller falsk.",
+    "de": "Wird ausgelöst, wenn das Formelergebnis zum ausgewählten Wert wechselt. Ein = Formel WAHR, Aus = Formel FALSCH. Nutzen Sie dies, um Flows auszuführen, wenn Ihre Logikbedingung wahr oder falsch wird.",
+    "es": "Se activa cuando el resultado de la fórmula cambia al valor seleccionado. Encendido = fórmula VERDADERA, Apagado = fórmula FALSA. Úselo para ejecutar flujos cuando su condición lógica se vuelva verdadera o falsa.",
+    "fr": "Se déclenche lorsque le résultat de la formule change vers la valeur sélectionnée. Allumé = formule VRAIE, Éteint = formule FAUSSE. Utilisez ceci pour exécuter des flows lorsque votre condition logique devient vraie ou fausse.",
+    "it": "Si attiva quando il risultato della formula cambia al valore selezionato. Acceso = formula VERA, Spento = formula FALSA. Usalo per eseguire flussi quando la tua condizione logica diventa vera o falsa.",
+    "nl": "Wordt geactiveerd wanneer het formuleresultaat verandert naar de geselecteerde waarde. Aan = formule WAAR, Uit = formule ONWAAR. Gebruik dit om flows uit te voeren wanneer uw logische voorwaarde waar of onwaar wordt.",
+    "sv": "Utlöses när formelresultatet ändras till det valda värdet. På = formel SANT, Av = formel FALSKT. Använd detta för att köra flöden när ditt logikvillkor blir sant eller falskt.",
+    "pl": "Wyzwala się, gdy wynik formuły zmienia się na wybraną wartość. Włączony = formuła PRAWDA, Wyłączony = formuła FAŁSZ. Użyj tego do uruchamiania przepływów, gdy warunek logiczny stanie się prawdziwy lub fałszywy.",
+    "ru": "Срабатывает, когда результат формулы меняется на выбранное значение. Вкл = формула ИСТИНА, Выкл = формула ЛОЖЬ. Используйте для запуска потоков, когда логическое условие становится истинным или ложным.",
+    "ko": "수식 결과가 선택한 값으로 변경될 때 트리거됩니다. 켜짐 = 수식 TRUE, 꺼짐 = 수식 FALSE. 논리 조건이 참 또는 거짓이 될 때 흐름을 실행하는 데 사용하세요."
   },
   "args": [
     {

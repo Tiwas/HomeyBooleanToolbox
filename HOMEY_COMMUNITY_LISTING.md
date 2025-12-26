@@ -1,4 +1,4 @@
-![large|500x350](upload://p5hslvVrgjtVwqB76PnfDcsZAWL.jpeg)
+![xlarge|690x483](upload://iSxhJPUltgcgPQ7gy4z5iisCv5F.jpeg)
 
 # Smart (Components) Toolkit v1.8.0
 
@@ -16,7 +16,7 @@ Replace complex flow networks with powerful logic devices controlled by dynamic 
 |--------|---------|
 | **Logic Device** | Boolean logic with visual wizard. Combine device states into TRUE/FALSE using formulas like `A AND B`. |
 | **Logic Unit** | Advanced boolean logic with multiple formulas per device. JSON configuration. |
-| **State Device** | Scene management. Capture states at setup, apply with one action. |
+| **State Device** | Scene management. Capture states at setup, apply with one action. "Virtual device". |
 | **State Capture Device** | Dynamic state capture at runtime. Push/pop stack for temporary changes. |
 | **Waiter Gates** | Flow control that pauses and waits for device states to change. |
 

@@ -5,8 +5,18 @@
     "no": "Feil ved lagring/bruk oppstod"
   },
   "hint": {
-    "en": "Triggers when an error occurs during capture or apply operations.",
-    "no": "Utløses når en feil oppstår under lagring eller bruk av tilstander."
+    "en": "Triggers when capture or apply fails (e.g., device unavailable, stack empty). Use 'Error' and 'State name' tokens for logging or notifications.",
+    "no": "Utløses når lagring eller bruk feiler (f.eks. enhet utilgjengelig, stakk tom). Bruk 'Feil' og 'Tilstandsnavn'-tokenene for logging eller varsler.",
+    "de": "Wird ausgelöst, wenn Erfassen oder Anwenden fehlschlägt (z.B. Gerät nicht verfügbar, Stapel leer). Verwenden Sie 'Fehler'- und 'Zustandsname'-Token für Protokollierung oder Benachrichtigungen.",
+    "nl": "Wordt geactiveerd wanneer vastleggen of toepassen mislukt (bijv. apparaat niet beschikbaar, stapel leeg). Gebruik 'Fout'- en 'Statusnaam'-tokens voor logging of meldingen.",
+    "fr": "Se déclenche lorsque la capture ou l'application échoue (ex: appareil indisponible, pile vide). Utilisez les jetons 'Erreur' et 'Nom de l'état' pour la journalisation ou les notifications.",
+    "da": "Udløses når fangst eller anvendelse fejler (f.eks. enhed utilgængelig, stak tom). Brug 'Fejl'- og 'Tilstandsnavn'-tokens til logning eller notifikationer.",
+    "fi": "Laukaistaan, kun kaappaus tai soveltaminen epäonnistuu (esim. laite ei käytettävissä, pino tyhjä). Käytä 'Virhe'- ja 'Tilan nimi' -tokeneita lokitukseen tai ilmoituksiin.",
+    "sv": "Utlöses när fångst eller tillämpning misslyckas (t.ex. enhet inte tillgänglig, stack tom). Använd 'Fel'- och 'Tillståndsnamn'-tokens för loggning eller notifieringar.",
+    "pl": "Wyzwala się, gdy przechwytywanie lub stosowanie nie powiedzie się (np. urządzenie niedostępne, stos pusty). Użyj tokenów 'Błąd' i 'Nazwa stanu' do logowania lub powiadomień.",
+    "it": "Si attiva quando la cattura o l'applicazione fallisce (es. dispositivo non disponibile, stack vuoto). Usa i token 'Errore' e 'Nome stato' per la registrazione o le notifiche.",
+    "es": "Se activa cuando la captura o aplicación falla (ej: dispositivo no disponible, pila vacía). Use los tokens 'Error' y 'Nombre del estado' para registro o notificaciones.",
+    "ru": "Срабатывает при сбое захвата или применения (например, устройство недоступно, стек пуст). Используйте токены 'Ошибка' и 'Имя состояния' для логирования или уведомлений."
   },
   "args": [
     {

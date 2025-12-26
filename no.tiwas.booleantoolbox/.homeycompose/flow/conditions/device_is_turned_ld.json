@@ -31,19 +31,19 @@
     "fi": "Laite !{{on|ei ole}} [[on_state]]"
   },
   "hint": {
-    "en": "Check if the device is currently turned on or off.",
-    "no": "Sjekk om enheten er skrudd på eller av.",
-    "da": "Tjek om enheden er slået til eller fra.",
-    "de": "Überprüfen Sie, ob das Gerät ein- oder ausgeschaltet ist.",
-    "es": "Verifica si el dispositivo está encendido o apagado.",
-    "fr": "Vérifiez si l'appareil est allumé ou éteint.",
-    "it": "Controlla se il dispositivo è acceso o spento.",
-    "nl": "Controleer of het apparaat aan of uit staat.",
-    "sv": "Kontrollera om enheten är på eller av.",
-    "pl": "Sprawdź, czy urządzenie jest włączone lub wyłączone.",
-    "ru": "Проверьте, включено или выключено устройство.",
-    "ko": "장치가 현재 켜져 있는지 꺼져 있는지 확인하세요.",
-    "fi": "Tarkista, onko laite päällä vai pois päältä."
+    "en": "Checks if the device is enabled or disabled. When OFF, the device stops evaluating the formula and ignores input changes. The alarm state remains unchanged.",
+    "no": "Sjekker om enheten er aktivert eller deaktivert. Når AV, slutter enheten å evaluere formelen og ignorerer inngangsendringer. Alarmtilstanden forblir uendret.",
+    "da": "Tjekker om enheden er aktiveret eller deaktiveret. Når FRA, stopper enheden med at evaluere formlen og ignorerer inputændringer. Alarmtilstanden forbliver uændret.",
+    "de": "Überprüft, ob das Gerät aktiviert oder deaktiviert ist. Bei AUS stoppt das Gerät die Formelauswertung und ignoriert Eingabeänderungen. Der Alarmzustand bleibt unverändert.",
+    "es": "Verifica si el dispositivo está habilitado o deshabilitado. Cuando está APAGADO, el dispositivo deja de evaluar la fórmula e ignora los cambios de entrada. El estado de alarma permanece sin cambios.",
+    "fr": "Vérifie si l'appareil est activé ou désactivé. Quand ÉTEINT, l'appareil cesse d'évaluer la formule et ignore les changements d'entrée. L'état d'alarme reste inchangé.",
+    "it": "Controlla se il dispositivo è abilitato o disabilitato. Quando SPENTO, il dispositivo smette di valutare la formula e ignora le modifiche degli input. Lo stato dell'allarme rimane invariato.",
+    "nl": "Controleert of het apparaat is ingeschakeld of uitgeschakeld. Wanneer UIT, stopt het apparaat met het evalueren van de formule en negeert het invoerwijzigingen. De alarmstatus blijft ongewijzigd.",
+    "sv": "Kontrollerar om enheten är aktiverad eller inaktiverad. När AV, slutar enheten utvärdera formeln och ignorerar ingångsändringar. Larmstatusen förblir oförändrad.",
+    "pl": "Sprawdza, czy urządzenie jest włączone lub wyłączone. Gdy WYŁĄCZONE, urządzenie przestaje oceniać formułę i ignoruje zmiany danych wejściowych. Stan alarmu pozostaje niezmieniony.",
+    "ru": "Проверяет, включено или выключено устройство. Когда ВЫКЛ, устройство прекращает оценку формулы и игнорирует изменения входных данных. Состояние тревоги остается неизменным.",
+    "ko": "장치가 활성화 또는 비활성화되었는지 확인합니다. 꺼진 상태에서 장치는 수식 평가를 중지하고 입력 변경을 무시합니다. 알람 상태는 변경되지 않습니다.",
+    "fi": "Tarkistaa, onko laite käytössä vai pois käytöstä. Kun POIS, laite lopettaa kaavan arvioinnin ja jättää syöttömuutokset huomiotta. Hälytystila pysyy muuttumattomana."
   },
   "args": [
     {

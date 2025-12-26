@@ -84,6 +84,24 @@ class StateCaptureDriver extends Homey.Driver {
                 return args.device.onFlowImportStates(args);
             });
 
+        // === GET/SET STATE JSON ===
+
+        // Action: Get state as JSON
+        const getStateJsonCard = this.homey.flow.getActionCard('get_state_json_scd');
+        getStateJsonCard.registerRunListener(async (args, state) => {
+            return args.device.onFlowGetStateJson(args);
+        });
+        getStateJsonCard.registerArgumentAutocompleteListener('state_name', async (query, args) => {
+            if (!args.device) return [];
+            return args.device.getStateNamesForAutocomplete(query);
+        });
+
+        // Action: Set state from JSON
+        this.homey.flow.getActionCard('set_state_json_scd')
+            .registerRunListener(async (args, state) => {
+                return args.device.onFlowSetStateJson(args);
+            });
+
         // === CONDITIONS ===
 
         // Condition: State exists

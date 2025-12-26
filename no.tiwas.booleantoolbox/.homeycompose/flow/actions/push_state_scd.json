@@ -5,8 +5,18 @@
     "no": "Legg tilstand på stakken"
   },
   "hint": {
-    "en": "Captures the current state and pushes it onto the stack. Use Pop to restore it later.",
-    "no": "Lagrer nåværende tilstand og legger den på stakken. Bruk Pop for å gjenopprette senere."
+    "en": "Captures current device values and adds them to the top of the stack. The stack works like an undo history - use Pop to restore the most recent state, or Peek to apply without removing.",
+    "no": "Lagrer nåværende enhetsverdier og legger dem på toppen av stakken. Stakken fungerer som en angre-historikk - bruk Pop for å gjenopprette den nyeste tilstanden, eller Peek for å bruke uten å fjerne.",
+    "de": "Erfasst aktuelle Gerätewerte und fügt sie oben auf dem Stapel hinzu. Der Stapel funktioniert wie eine Rückgängig-Historie - verwenden Sie Pop zum Wiederherstellen des neuesten Zustands oder Peek zum Anwenden ohne Entfernen.",
+    "nl": "Legt huidige apparaatwaarden vast en voegt ze toe bovenaan de stapel. De stapel werkt als een ongedaan-maken-geschiedenis - gebruik Pop om de meest recente status te herstellen, of Peek om toe te passen zonder te verwijderen.",
+    "fr": "Capture les valeurs actuelles des appareils et les ajoute en haut de la pile. La pile fonctionne comme un historique d'annulation - utilisez Pop pour restaurer l'état le plus récent, ou Peek pour appliquer sans supprimer.",
+    "da": "Fanger aktuelle enhedsværdier og tilføjer dem til toppen af stakken. Stakken fungerer som en fortryd-historik - brug Pop til at gendanne den seneste tilstand, eller Peek til at anvende uden at fjerne.",
+    "fi": "Tallentaa nykyiset laitearvot ja lisää ne pinon päälle. Pino toimii kuin kumoushistoria - käytä Pop palauttaaksesi viimeisimmän tilan tai Peek soveltaaksesi poistamatta.",
+    "sv": "Fångar aktuella enhetsvärden och lägger dem överst på stacken. Stacken fungerar som en ångra-historik - använd Pop för att återställa det senaste tillståndet, eller Peek för att tillämpa utan att ta bort.",
+    "pl": "Przechwytuje bieżące wartości urządzeń i dodaje je na szczyt stosu. Stos działa jak historia cofania - użyj Pop, aby przywrócić najnowszy stan, lub Peek, aby zastosować bez usuwania.",
+    "it": "Cattura i valori correnti dei dispositivi e li aggiunge in cima allo stack. Lo stack funziona come una cronologia di annullamento - usa Pop per ripristinare lo stato più recente, o Peek per applicare senza rimuovere.",
+    "es": "Captura los valores actuales de los dispositivos y los agrega a la parte superior de la pila. La pila funciona como un historial de deshacer - use Pop para restaurar el estado más reciente, o Peek para aplicar sin eliminar.",
+    "ru": "Захватывает текущие значения устройств и добавляет их на вершину стека. Стек работает как история отмены - используйте Pop для восстановления последнего состояния или Peek для применения без удаления."
   },
   "args": [
     {

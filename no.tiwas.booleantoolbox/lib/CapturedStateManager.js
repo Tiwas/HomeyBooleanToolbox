@@ -73,6 +73,77 @@ class CapturedStateManager {
     }
 
     /**
+     * Convert flat state format to hierarchical format (compatible with state-editor)
+     * @param {object} flatState - State in flat format { values: { device_id: { cap: val } } }
+     * @param {object} template - Template with device names and zone info
+     * @returns {object} - State in hierarchical format { zones: { ... } }
+     */
+    _convertFlatToHierarchical(flatState, template) {
+        // Build device lookup from template
+        const deviceLookup = {};
+        for (const item of template.items || []) {
+            deviceLookup[item.device_id] = {
+                name: item.device_name || 'Unknown Device',
+                zone: item.zone_name || 'Captured',
+                capabilities: item.capabilities || []
+            };
+        }
+
+        // Group items by zone
+        const zoneItems = {};
+
+        for (const [deviceId, capValues] of Object.entries(flatState.values || {})) {
+            const deviceInfo = deviceLookup[deviceId] || {
+                name: 'Unknown Device',
+                zone: 'Captured',
+                capabilities: Object.keys(capValues)
+            };
+            const zoneName = deviceInfo.zone;
+
+            if (!zoneItems[zoneName]) {
+                zoneItems[zoneName] = [];
+            }
+
+            // Build capabilities array with values
+            const capabilities = [];
+            for (const [capId, value] of Object.entries(capValues)) {
+                capabilities.push({ capability: capId, value });
+            }
+
+            zoneItems[zoneName].push({
+                id: deviceId,
+                name: deviceInfo.name,
+                active: true,
+                capabilities
+            });
+        }
+
+        // Build zones structure
+        const zones = {};
+        for (const [zoneName, items] of Object.entries(zoneItems)) {
+            zones[zoneName] = {
+                config: {},
+                items
+            };
+        }
+
+        return {
+            captured_at: flatState.captured_at,
+            config: flatState.config || { default_delay: 100 },
+            zones
+        };
+    }
+
+    /**
+     * Check if state is in flat format (legacy)
+     * @param {object} state - State object
+     * @returns {boolean} - True if flat format
+     */
+    _isFlatFormat(state) {
+        return state && state.values && !state.zones;
+    }
+
+    /**
      * Read current values from devices based on template
      * @param {object} template - Template with items array
      * @param {object} api - Homey API instance
@@ -111,7 +182,7 @@ class CapturedStateManager {
     // ==================== NAMED STATES ====================
 
     /**
-     * Capture current state to a named slot
+     * Capture current state to a named slot (saves in hierarchical format)
      * @param {string} deviceId - State capture device ID
      * @param {string} stateName - Name for this state
      * @param {object} template - Template defining what to capture
@@ -126,14 +197,18 @@ class CapturedStateManager {
             throw new Error(`Maximum ${this.MAX_NAMED_STATES} named states per device reached`);
         }
 
-        // Read current values
+        // Read current values (flat format)
         const { values, errors } = await this._readCurrentValues(template, api);
 
-        // Store state
-        data.named[stateName] = {
+        // Convert to hierarchical format for storage
+        const flatState = {
             captured_at: new Date().toISOString(),
             values
         };
+        const hierarchicalState = this._convertFlatToHierarchical(flatState, template);
+
+        // Store state in hierarchical format
+        data.named[stateName] = hierarchicalState;
 
         this._saveDeviceData(deviceId, data);
 
@@ -148,10 +223,25 @@ class CapturedStateManager {
 
     /**
      * Get a specific captured state
+     * @param {string} deviceId - State capture device ID
+     * @param {string} stateName - Name of the state to retrieve
+     * @param {object} template - Optional template for legacy format conversion
+     * @returns {object|null} - State in hierarchical format, or null if not found
      */
-    getState(deviceId, stateName) {
+    getState(deviceId, stateName, template = null) {
         const data = this._getDeviceData(deviceId);
-        return data.named[stateName] || null;
+        const state = data.named[stateName];
+
+        if (!state) {
+            return null;
+        }
+
+        // Convert legacy flat format to hierarchical if needed
+        if (this._isFlatFormat(state) && template) {
+            return this._convertFlatToHierarchical(state, template);
+        }
+
+        return state;
     }
 
     /**
@@ -177,6 +267,110 @@ class CapturedStateManager {
     }
 
     /**
+     * Set a named state from JSON data (with validation)
+     * Supports both flat format (legacy) and hierarchical format (state-editor compatible)
+     * @param {string} deviceId - State capture device ID
+     * @param {string} stateName - Name for this state
+     * @param {object} stateData - State data object (flat or hierarchical)
+     * @returns {object} - { success: true }
+     * @throws {Error} - If validation fails
+     */
+    setStateFromJson(deviceId, stateName, stateData) {
+        // Validate stateData is an object
+        if (!stateData || typeof stateData !== 'object') {
+            throw new Error('Invalid state data: expected object');
+        }
+
+        // Detect format and validate accordingly
+        const isHierarchical = stateData.zones && typeof stateData.zones === 'object';
+        const isFlat = stateData.values && typeof stateData.values === 'object';
+
+        if (!isHierarchical && !isFlat) {
+            throw new Error('Missing "zones" or "values" property');
+        }
+
+        if (isHierarchical) {
+            // Validate hierarchical format (zones structure)
+            this._validateHierarchicalState(stateData);
+        } else {
+            // Validate flat format (legacy)
+            this._validateFlatState(stateData);
+        }
+
+        const data = this._getDeviceData(deviceId);
+
+        // Check limit (only if this is a NEW state)
+        if (Object.keys(data.named).length >= this.MAX_NAMED_STATES && !data.named[stateName]) {
+            throw new Error(`Maximum ${this.MAX_NAMED_STATES} named states per device reached`);
+        }
+
+        // Store state (hierarchical stored as-is, flat stored as-is for backward compat)
+        data.named[stateName] = {
+            ...stateData,
+            captured_at: stateData.captured_at || new Date().toISOString()
+        };
+
+        this._saveDeviceData(deviceId, data);
+
+        this.logger.info(`✅ Set state "${stateName}" from JSON for device ${deviceId}`);
+
+        return { success: true };
+    }
+
+    /**
+     * Validate flat state format
+     */
+    _validateFlatState(stateData) {
+        for (const [deviceIdKey, deviceValues] of Object.entries(stateData.values)) {
+            if (!deviceValues || typeof deviceValues !== 'object' || Array.isArray(deviceValues)) {
+                throw new Error(`Invalid values for device "${deviceIdKey}": expected object`);
+            }
+
+            for (const [capId, value] of Object.entries(deviceValues)) {
+                const valueType = typeof value;
+                if (valueType !== 'boolean' && valueType !== 'number' && valueType !== 'string' && value !== null) {
+                    throw new Error(`Invalid value for "${capId}": expected boolean, number, string, or null`);
+                }
+            }
+        }
+    }
+
+    /**
+     * Validate hierarchical state format (state-editor compatible)
+     */
+    _validateHierarchicalState(stateData) {
+        for (const [zoneName, zoneData] of Object.entries(stateData.zones)) {
+            if (!zoneData || typeof zoneData !== 'object') {
+                throw new Error(`Invalid zone "${zoneName}": expected object`);
+            }
+
+            const items = zoneData.items || [];
+            if (!Array.isArray(items)) {
+                throw new Error(`Invalid items in zone "${zoneName}": expected array`);
+            }
+
+            for (const item of items) {
+                if (!item.id) {
+                    throw new Error(`Item in zone "${zoneName}" missing "id" property`);
+                }
+
+                if (!item.capabilities || !Array.isArray(item.capabilities)) {
+                    throw new Error(`Item "${item.name || item.id}" missing or invalid "capabilities" array`);
+                }
+
+                for (const cap of item.capabilities) {
+                    if (!cap.capability) {
+                        throw new Error(`Capability in item "${item.name || item.id}" missing "capability" property`);
+                    }
+                    if (cap.value === undefined) {
+                        throw new Error(`Capability "${cap.capability}" in item "${item.name || item.id}" missing "value"`);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * List all named state names for a device
      */
     listStateNames(deviceId) {
@@ -190,7 +384,7 @@ class CapturedStateManager {
     // ==================== STACK OPERATIONS ====================
 
     /**
-     * Push current state onto the stack
+     * Push current state onto the stack (saves in hierarchical format)
      * @param {string} deviceId - State capture device ID
      * @param {object} template - Template defining what to capture
      * @param {object} api - Homey API instance
@@ -204,14 +398,19 @@ class CapturedStateManager {
             throw new Error(`Maximum stack depth (${this.MAX_STACK_DEPTH}) reached`);
         }
 
-        // Read current values
+        // Read current values (flat format)
         const { values, errors } = await this._readCurrentValues(template, api);
 
-        // Push to front of array (top of stack)
-        data.stack.unshift({
+        // Convert to hierarchical format
+        const flatState = {
             pushed_at: new Date().toISOString(),
             values
-        });
+        };
+        const hierarchicalState = this._convertFlatToHierarchical(flatState, template);
+        hierarchicalState.pushed_at = flatState.pushed_at; // Keep pushed_at for stack
+
+        // Push to front of array (top of stack)
+        data.stack.unshift(hierarchicalState);
 
         this._saveDeviceData(deviceId, data);
 
@@ -227,9 +426,10 @@ class CapturedStateManager {
     /**
      * Pop state from stack (removes and returns top)
      * @param {string} deviceId - State capture device ID
+     * @param {object} template - Optional template for legacy format conversion
      * @returns {object|null} - The popped state or null if empty
      */
-    popState(deviceId) {
+    popState(deviceId, template = null) {
         const data = this._getDeviceData(deviceId);
 
         if (data.stack.length === 0) {
@@ -237,8 +437,13 @@ class CapturedStateManager {
         }
 
         // Remove from front (top of stack)
-        const state = data.stack.shift();
+        let state = data.stack.shift();
         this._saveDeviceData(deviceId, data);
+
+        // Convert legacy flat format to hierarchical if needed
+        if (this._isFlatFormat(state) && template) {
+            state = this._convertFlatToHierarchical(state, template);
+        }
 
         this.logger.info(`📤 Popped state from stack for device ${deviceId} (remaining: ${data.stack.length})`);
 
@@ -248,16 +453,24 @@ class CapturedStateManager {
     /**
      * Peek at top of stack (returns without removing)
      * @param {string} deviceId - State capture device ID
+     * @param {object} template - Optional template for legacy format conversion
      * @returns {object|null} - The top state or null if empty
      */
-    peekState(deviceId) {
+    peekState(deviceId, template = null) {
         const data = this._getDeviceData(deviceId);
 
         if (data.stack.length === 0) {
             return null;
         }
 
-        return data.stack[0];
+        let state = data.stack[0];
+
+        // Convert legacy flat format to hierarchical if needed
+        if (this._isFlatFormat(state) && template) {
+            return this._convertFlatToHierarchical(state, template);
+        }
+
+        return state;
     }
 
     /**

@@ -31,5 +31,8 @@
   },
   "1.8.0": {
     "en": "Name change and scene functionality live"
+  },
+  "1.8.1": {
+    "en": "Bug fix + better hints"
   }
 }
